@@ -1226,7 +1226,7 @@ prints no modified tracked source files.
 
 Update `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md` with actual Task 8 results. If a runtime check fails, leave it unchecked and add the exact failure under notes.
 
-- [ ] **Step 8: Commit and push**
+- [x] **Step 8: Commit and push**
 
 Run:
 
