@@ -853,7 +853,7 @@ git commit -m "Add Oak regional starter menu"
 - Temporarily modify: `engine/pokeemerald-expansion/src/data/wild_encounters.json`
 - Create: `patches/engine/0006-route1-3-badge-scaled-encounters.patch`
 
-- [ ] **Step 1: Replace Route 1 FireRed and LeafGreen land tables**
+- [x] **Step 1: Replace Route 1 FireRed and LeafGreen land tables**
 
 For both `sRoute1_FireRed` and `sRoute1_LeafGreen`, use these 12 slots:
 
@@ -874,7 +874,7 @@ For both `sRoute1_FireRed` and `sRoute1_LeafGreen`, use these 12 slots:
 ]
 ```
 
-- [ ] **Step 2: Replace Route 2 FireRed and LeafGreen land tables**
+- [x] **Step 2: Replace Route 2 FireRed and LeafGreen land tables**
 
 For both `sRoute2_FireRed` and `sRoute2_LeafGreen`, use:
 
@@ -895,7 +895,7 @@ For both `sRoute2_FireRed` and `sRoute2_LeafGreen`, use:
 ]
 ```
 
-- [ ] **Step 3: Replace Route 3 FireRed and LeafGreen land tables**
+- [x] **Step 3: Replace Route 3 FireRed and LeafGreen land tables**
 
 For both `sRoute3_FireRed` and `sRoute3_LeafGreen`, use:
 
@@ -918,7 +918,7 @@ For both `sRoute3_FireRed` and `sRoute3_LeafGreen`, use:
 
 Route 3 scripted anomalies in Task 7 cover Dratini, Larvitar, and Kubfu. Galar and Paldea starters require Task 7 static anomaly events as well because the 36 total land slots cannot hold all 39 requested early species.
 
-- [ ] **Step 4: Run validator and expect remaining missing species**
+- [x] **Step 4: Run validator and expect remaining missing species**
 
 Run:
 
@@ -934,7 +934,7 @@ Nexus milestone validation failed:
 
 The missing list should include Galar/Paldea starters plus Dratini, Larvitar, and Kubfu.
 
-- [ ] **Step 5: Build and generate patch**
+- [x] **Step 5: Build and generate patch**
 
 Run the Nexus Red build command, then:
 
@@ -943,7 +943,7 @@ git -C engine/pokeemerald-expansion diff -- src/data/wild_encounters.json > patc
 test -s patches/engine/0006-route1-3-badge-scaled-encounters.patch
 ```
 
-- [ ] **Step 6: Restore source and commit**
+- [x] **Step 6: Restore source and commit**
 
 Run:
 

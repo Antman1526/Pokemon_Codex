@@ -67,6 +67,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0003-oak-lab-nexus-intro.patch` - Oak lab Nexus Red framing.
 - `patches/engine/0004-worldlink-route1-alert.patch` - first Pokédex-style WorldLink alert after Blue's lab battle.
 - `patches/engine/0005-oak-27-starter-menu.patch` - Oak's 27 official regional starter menu.
+- `patches/engine/0006-route1-3-badge-scaled-encounters.patch` - badge-scaled Route 1-3 wild starter and special encounter tables.
 
 ## Validation
 
