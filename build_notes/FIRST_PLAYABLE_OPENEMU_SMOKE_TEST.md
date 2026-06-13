@@ -20,10 +20,16 @@ Output ROM:
 engine/pokeemerald-expansion/pokefirered.gba
 ```
 
-Verified ROM:
+ROM file verification:
 
 ```text
 /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokefirered.gba
+```
+
+Verification performed:
+
+```text
+File exists and is 32M. This is build-artifact verification only; OpenEmu runtime checks remain unchecked below.
 ```
 
 ## Smoke Test Checklist

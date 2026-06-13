@@ -16,19 +16,26 @@ It is tracked as a git submodule pointing to:
 https://github.com/rh-hideout/pokeemerald-expansion.git
 ```
 
-## Build Attempt
+## Toolchain Check
 
 Command:
 
 ```sh
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
-make -j$(sysctl -n hw.ncpu)
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
+command -v arm-none-eabi-gcc
+command -v arm-none-eabi-as
+command -v dkp-pacman
 ```
 
 Result:
 
 ```text
-Ready with explicit devkitPro shell exports.
+/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc
+/opt/devkitpro/devkitARM/bin/arm-none-eabi-as
+/usr/local/bin/dkp-pacman
 ```
 
 Confirmed available:
@@ -137,24 +144,16 @@ usable when the build command exports `DEVKITPRO`, `DEVKITARM`, and `PATH`.
 Permanent shell configuration is still recommended later for convenience, but
 it is not required to attempt the next baseline build.
 
-## Next Step
+## Proven Build Command
 
-Use explicit devkitPro exports in build commands:
-
-```sh
-export DEVKITPRO=/opt/devkitpro
-export DEVKITARM=/opt/devkitpro/devkitARM
-export PATH="$DEVKITARM/bin:$PATH"
-command -v arm-none-eabi-gcc
-command -v arm-none-eabi-as
-command -v dkp-pacman
-```
-
-After those commands resolve, rerun:
+The clean FireRed baseline build has succeeded with this command:
 
 ```sh
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
-make -j$(sysctl -n hw.ncpu)
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
+make -j"$(sysctl -n hw.ncpu)" firered
 ```
 
 ## FireRed Baseline Build - 2026-06-13
@@ -199,12 +198,18 @@ Memory region         Used Size  Region Size  %age Used
              ROM:    27044024 B        32 MB     80.60%
 ```
 
-Non-fatal build warnings observed:
+Build warnings observed:
 
 ```text
 ld: warning: ignoring file '/usr/local/lib/libz.dylib': found architecture 'i386', required architecture 'arm64'
 arm-none-eabi-ld: warning: ../../pokefirered.elf has a LOAD segment with RWX permissions
 ```
+
+These warnings did not fail the baseline build. They have not been fully
+investigated or accepted as harmless. Before release packaging, re-check whether
+the `/usr/local/lib/libz.dylib` architecture warning is coming from stale local
+library search paths and whether the `RWX permissions` linker warning is
+expected for this engine/toolchain combination.
 
 ROM verification:
 
