@@ -1,0 +1,53 @@
+# Region activity and reward planning.
+
+regions:
+  kanto:
+    activity_identity: "classic journey, starter anomalies, Rocket escalation"
+    major_rewards: [WorldLink, Infinite Repel, VS Seeker prototype, Kanto badge set, World Circuit Passport]
+    repeatable_hooks: [gym_rematches, route_swarms, Rocket cleanup, starter_hunts]
+
+  johto:
+    activity_identity: "day/night, friendship, towers, Rocket remnants"
+    major_rewards: [time_tracker_upgrade, friendship_checker, roaming_tracker, Johto badge set]
+    repeatable_hooks: [night_swarms, tower_trials, Silver_rematches, apricorn_ball_crafting]
+
+  hoenn:
+    activity_identity: "weather, sea routes, fishing, ecology"
+    major_rewards: [weather_radar, Good_Rod, Super_Rod, Dive_Gear, Hoenn_badge_set]
+    repeatable_hooks: [weather_outbreaks, fishing_chains, secret_base_trainers, dive_treasure]
+
+  sinnoh_hisui:
+    activity_identity: "myth, ancient forms, space-time anomalies"
+    major_rewards: [anomaly_tracker, ancient_map, Rock_Climb_Gear, Sinnoh_badge_set]
+    repeatable_hooks: [ruin_puzzles, ancient_form_hunts, Cynthia_trials, distortion_rifts]
+
+  unova:
+    activity_identity: "public debate, city systems, battle formats"
+    major_rewards: [reputation_board, Battle_Subway_pass, truth_ideal_balance_flag, Unova_badge_set]
+    repeatable_hooks: [subway_battles, Castelia_market, N_natural_team_rematches, Plasma_cleanup]
+
+  kalos:
+    activity_identity: "style, Mega Evolution, old weapon"
+    major_rewards: [Keystone_Resonator, customization_pass, Kalos_badge_set]
+    repeatable_hooks: [Mega_stone_hunts, style_challenges, Flare_remnants, boutique_rewards]
+
+  alola:
+    activity_identity: "trials, islands, Ultra Space"
+    major_rewards: [Z_Ring, wormhole_access, island_challenge_clear, Alola_league_access]
+    repeatable_hooks: [trial_rematches, Ultra_Beast_hunts, island_swarms, Skull_favors]
+
+  galar:
+    activity_identity: "stadiums, raids, energy industry"
+    major_rewards: [raid_pass, power_spot_access, Galar_champion_cup_entry]
+    repeatable_hooks: [raid_dens, stadium_rematches, Marnie_challenges, Gold_Dust_reward_routes]
+
+  paldea:
+    activity_identity: "academy, Titans, Team Star, Area Zero"
+    major_rewards: [Tera_Orb, academy_board, Area_Zero_access, Paldea_champion_clear]
+    repeatable_hooks: [Tera_raids, Titan_rematches, Team_Star_favors, academy_exams]
+
+  world_nexus_championship:
+    activity_identity: "champion ladder, final villain convergence"
+    major_rewards: [Champion_of_Champions_entry, final_dungeon_access, full_world_roam]
+    repeatable_hooks: [rival_ladder, champion_rematches, legendary_trials, battle_frontier]
+

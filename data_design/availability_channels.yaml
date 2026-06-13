@@ -1,0 +1,70 @@
+# Pokemon availability channel planning.
+
+availability_goal:
+  all_base_species_before_final_boss: true
+  postgame_required_for_base_species: false
+  postgame_role: "Convenience, rematches, shiny hunting, alternate rewards, and mastery challenges."
+
+channels:
+  wild_grass:
+    role: "Common and regional identity encounters."
+  time_of_day:
+    role: "Night, morning, and evening identity encounters."
+  weather:
+    role: "Hoenn and global anomaly encounters."
+  fishing:
+    role: "Four-rod water progression and chain hunting."
+  surfing_diving:
+    role: "Water route and underwater species."
+  static_gift:
+    role: "Rare starters, fossils, story Pokemon, and special one-offs."
+  breeding:
+    role: "Baby Pokemon, egg moves, completion support."
+  fossil_restoration:
+    role: "Fossils and Team Phoenix story tie-ins."
+  swarms_outbreaks:
+    role: "Rotating rare species without overloaded route tables."
+  raid_dens:
+    role: "Galar-style high-value encounters and rewards."
+  ultra_wormholes:
+    role: "Ultra Beasts, dimensional species, rare forms."
+  area_zero_anomalies:
+    role: "Paradox/anomaly Pokemon and final missing species."
+  gold_dust_auctions:
+    role: "Rare item/Pokemon side route; should not be the only source for base species."
+  legendary_trials:
+    role: "Pre-final access to major legendaries through difficult quests."
+
+regional_distribution:
+  kanto:
+    focus: [classic_species, all_starters_rare, special_starters, early_anomalies]
+  johto:
+    focus: [baby_pokemon, friendship_species, night_species, roaming_legends]
+  hoenn:
+    focus: [weather_species, water_species, fossils, tropical_species]
+  sinnoh_hisui:
+    focus: [evolution_expansions, cold_species, ancient_forms, mythic_lore_species]
+  unova:
+    focus: [urban_species, rural_species, high_density_species, gift_moral_choices]
+  kalos:
+    focus: [fairy_species, mega_linked_species, style_rewards]
+  alola:
+    focus: [regional_variants, island_species, ultra_beasts]
+  galar:
+    focus: [raid_species, fossils, competitive_rewards, dynamax_species]
+  paldea:
+    focus: [open_world_species, titan_related_species, paradox_species, tera_species]
+  world_nexus_championship:
+    focus: [final_missing_species, mythicals, legendary_guardians]
+
+pre_final_readiness_check:
+  enabled: true
+  surface: WorldLink
+  shows:
+    - missing_species_by_region
+    - known_availability_hints
+    - active_swarms
+    - remaining_legendary_trials
+    - remaining_fossil_restorations
+    - remaining_evolution_item_needs
+
