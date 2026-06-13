@@ -22,9 +22,9 @@ index 47e6a2bcf0..7e16c0d1b8 100644
 +	.string "I was hoping you would see this\n"
 +	.string "before the adults cleaned it up.\p"
 +	.string "These tracks are wrong for PALLET,\n"
-+	.string "but I do not think it is danger yet.\p"
++	.string "but I do not think danger is here.\p"
 +	.string "Stay close today. If OAK is right,\n"
-+	.string "your road starts bigger than mine did.$"
++	.string "your road may start wider than mine.$"
 +
 +PalletTown_Frlg_Text_BluePressure::
 +	.string "BLUE: So RED noticed you now?\p"
