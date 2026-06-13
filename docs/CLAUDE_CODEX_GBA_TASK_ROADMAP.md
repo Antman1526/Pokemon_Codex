@@ -46,6 +46,17 @@ Acceptance:
 - save/load works,
 - build steps documented in `build_notes/MAC_OPENEMU_BUILD_NOTES.md`.
 
+### Task 0.2b - First Build Title Identity
+
+Apply the Pokemon Nexus Red title identity as early as practical.
+
+Acceptance:
+
+- title/name placeholder no longer presents the project as generic Emerald,
+- ROM header/title-screen text strategy is documented before asset replacement,
+- placeholder quality is acceptable for the first build,
+- no custom art requirement blocks engine proof.
+
 ### Task 0.3 - Feature Flag Audit
 
 Map requested features to engine support.

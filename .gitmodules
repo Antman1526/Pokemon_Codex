@@ -1,0 +1,3 @@
+[submodule "engine/pokeemerald-expansion"]
+	path = engine/pokeemerald-expansion
+	url = https://github.com/rh-hideout/pokeemerald-expansion.git

@@ -29,6 +29,7 @@ The project goal is to create a legal, phased build framework that Claude Code a
 - `docs/CLAUDE_CODEX_GBA_TASK_ROADMAP.md` - phased task roadmap for Claude Code and Codex.
 - `data_design/` - structured planning data for regions, rivals, starters, encounters, and WorldLink.
 - `build_notes/MAC_OPENEMU_BUILD_NOTES.md` - macOS build and OpenEmu smoke-test notes.
+- `build_notes/ENGINE_PROOF_STATUS.md` - current local engine build status and blocker.
 - `tools/validate_design_data.py` - validates the YAML planning files.
 
 ## Validation

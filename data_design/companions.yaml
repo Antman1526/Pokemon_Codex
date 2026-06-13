@@ -6,6 +6,7 @@ companions:
     frequency: frequent
     can_follow: true
     can_tag_battle: true
+    tag_battle_control: ai_controlled
     can_train_player: true
     can_help_gym_battles: false
     personality: quiet_warm_observant
@@ -68,4 +69,3 @@ global_rules:
   - "Companion dialogue should be concise and useful."
   - "Red is the most frequent companion but should still leave space for Antman's agency."
   - "Rotate companion presence to avoid overcrowding."
-

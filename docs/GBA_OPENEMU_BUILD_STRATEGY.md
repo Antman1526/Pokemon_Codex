@@ -109,6 +109,13 @@ Deliverables:
 - OpenEmu smoke test,
 - save/load smoke test.
 
+Current local status:
+
+- `pokeemerald-expansion` is added as a git submodule at `engine/pokeemerald-expansion`.
+- `libpng` and `pkg-config` are available through Homebrew.
+- Baseline build currently cannot produce a `.gba` because `devkitARM` / `arm-none-eabi-*` tools are not installed.
+- Next required local setup step is devkitPro/devkitARM installation.
+
 ### Milestone 1 - Kanto Nexus Vertical Slice
 
 Scope:

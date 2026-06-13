@@ -136,3 +136,52 @@ Build order:
 - Dynamax and Tera should be restricted to specific battle contexts.
 - Day/night should prefer an in-game clock unless RTC support is confirmed stable.
 
+## 9. Local Engine Proof Status
+
+Checked on: 2026-06-13
+
+Engine source:
+
+```text
+engine/pokeemerald-expansion
+```
+
+The engine is tracked as a git submodule:
+
+```text
+https://github.com/rh-hideout/pokeemerald-expansion.git
+```
+
+Local dependency check:
+
+- `make`: available
+- `git`: available
+- `python3`: available
+- `brew`: available
+- `pkg-config`: available
+- `libpng` via pkg-config: available
+- `arm-none-eabi-gcc`: missing
+- `arm-none-eabi-as`: missing
+- `dkp-pacman`: missing
+
+Baseline build attempt:
+
+```sh
+cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+make -j$(sysctl -n hw.ncpu)
+```
+
+Result: failed before ROM output because the devkitARM toolchain is missing.
+
+Representative errors:
+
+```text
+arm-none-eabi-gcc: command not found
+arm-none-eabi-as: command not found
+```
+
+Next required step:
+
+Install devkitPro/devkitARM, then rerun the baseline build.
+
+Homebrew does not provide a local formula/cask for `devkitpro`, `devkitarm`, or `gba-dev` on this machine, so use the official devkitPro package installer flow described above.

@@ -11,6 +11,7 @@ Rules:
 
 - Companions may follow Antman during routes, towns, dungeons, and side quests.
 - Companions may join tag battles, training battles, and villain skirmishes.
+- Companion tag partners are AI-controlled unless a later battle facility explicitly experiments with manual partner control.
 - Companions may give advice before gyms.
 - Companions do not fight Antman's gym battles.
 - Companions do not solve major solo trials.
@@ -159,4 +160,3 @@ Companion scenes can reward:
 - friendship-based side quests.
 
 Avoid over-rewarding every scene. Sometimes the reward is character, worldbuilding, or a new objective.
-

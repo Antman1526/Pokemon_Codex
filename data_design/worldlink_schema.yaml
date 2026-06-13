@@ -36,7 +36,7 @@ pages:
     mvp: false
     fields: [opponent_id, region, tier, suggested_cap, availability]
   transit:
-    purpose: "Unlocked travel routes."
+    purpose: "Unlocked travel route information; not a quick-jump menu."
     mvp: false
     fields: [region_id, method, unlock_flag, destination_hub]
   settings:
@@ -96,4 +96,3 @@ unlock_stages:
   after_kanto_league: [transit, regional_pokedex_checklist]
   after_hoenn_rayquaza: [anomaly_tracker]
   pre_world_nexus_championship: [full_pokedex_readiness]
-

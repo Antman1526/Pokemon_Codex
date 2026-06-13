@@ -13,6 +13,7 @@ Design rules:
 - Red helps at key moments, but Antman solves the journey.
 - Red can follow Antman through routes, towns, and dungeons.
 - Red can join tag battles and training battles.
+- Red is AI-controlled in tag battles.
 - Red can give tactical advice and route observations.
 - Red cannot fight Antman's gym battles.
 - Red cannot clear major solo trials for Antman.

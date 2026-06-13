@@ -198,6 +198,8 @@ Full:
 
 Transit is not unlocked immediately.
 
+WorldLink Transit is not a quick-jump menu. It is a passport, timetable, and route-status page. The player still travels through in-world systems: trains, ferries, airports, Fly/Sky Pass points, wormholes, Academy gates, or story-specific transit NPCs.
+
 Stages:
 
 - Kanto local Fly/Sky Pass preview.
@@ -206,6 +208,8 @@ Stages:
 - Alola: wormhole travel events.
 - Paldea: Academy gate.
 - Postgame: full world roam.
+
+Rule: WorldLink may show where the player can go, but the player should not warp to a new region directly from WorldLink during the main story.
 
 ## 12. Settings
 
@@ -294,4 +298,3 @@ Full WorldLink is complete when:
 - alerts cover villains, swarms, anomalies, and weather,
 - player can reduce or silence notifications,
 - no route or battle becomes spammed by updates.
-

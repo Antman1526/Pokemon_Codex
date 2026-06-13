@@ -101,3 +101,27 @@ Implication: add a Pokedex Readiness checklist with missing-species summaries, h
 Decision: deepen Full Kanto first.
 
 Implication: Kanto must become the tone-setting 12-15 hour foundation with Red, Blue, Ava, Dax, Rocket, Moonlight, Phoenix, Gold Dust, early rare Pokemon, and a complete Indigo League arc.
+
+### WorldLink Travel Role
+
+Decision: WorldLink is not a quick-jump system to other regions.
+
+Implication: WorldLink can show travel unlocks, route status, tickets, and destination information, but actual travel must happen through in-world methods such as trains, ferries, airports, Fly/Sky Pass points, wormholes, or Academy gates.
+
+### Red Battle Control
+
+Decision: Red is AI-controlled in tag battles.
+
+Implication: Red should feel like a companion with his own agency. The player controls Antman's side; Red's team and behavior are tuned through AI/team scripts.
+
+### Engine Proof Priority
+
+Decision: the best next build step is engine proof/build readiness.
+
+Implication: add `pokeemerald-expansion` as the engine source reference, verify local macOS build dependencies, and document blockers before implementing custom systems.
+
+### First Build Title Identity
+
+Decision: the first build should carry the Pokemon Nexus Red title identity.
+
+Implication: even if the first title screen is placeholder-quality, the project should stop presenting itself as generic Emerald as early as practical.
