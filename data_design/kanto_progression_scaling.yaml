@@ -1,0 +1,67 @@
+# Badge-scaled early Kanto progression for Pokemon Nexus Red.
+
+early_kanto_progression:
+  design_goal: mainline_hard_with_options
+  default_difficulty: classic_plus
+  route_1:
+    wild_level_min: 2
+    wild_level_max: 5
+    purpose: "first team texture, safe catches, no power spike"
+    notable_species:
+      - Bulbasaur
+      - Charmander
+      - Squirtle
+      - Pikachu
+      - Eevee
+      - Ralts
+  route_2:
+    wild_level_min: 3
+    wild_level_max: 6
+    purpose: "Johto/Hoenn/Sinnoh expansion and first trickier catches"
+    notable_species:
+      - Chikorita
+      - Cyndaquil
+      - Totodile
+      - Treecko
+      - Torchic
+      - Mudkip
+      - Turtwig
+      - Chimchar
+      - Piplup
+      - Abra
+      - Gastly
+      - Shroomish
+  route_3:
+    wild_level_min: 5
+    wild_level_max: 8
+    anomaly_static_level: 7
+    purpose: "pre-Brock global starter promise, rare catches remain controlled"
+    notable_species:
+      - Snivy
+      - Tepig
+      - Oshawott
+      - Chespin
+      - Fennekin
+      - Froakie
+      - Rowlet
+      - Litten
+      - Popplio
+      - Grookey
+      - Scorbunny
+      - Sobble
+      - Sprigatito
+      - Fuecoco
+      - Quaxly
+      - Sandile
+      - Rockruff
+      - Staryu
+      - Dratini
+      - Larvitar
+      - Kubfu
+  brock:
+    level_cap: 14
+    tuning: "mainline-hard, not punishing"
+    rule: "Brock should respect expanded player options without requiring grinding."
+  blue_lab:
+    level: 5
+    rule: "Blue counters by broad starter type, not by harsh rare-pick punishment."

@@ -240,3 +240,26 @@ Result:
 ```text
 OpenEmu opens the ROM, the title screen appears, and Antman confirmed the first playable playthrough works.
 ```
+
+## 12. Nexus Identity And Starter Expansion Milestone
+
+The next milestone keeps the ROM OpenEmu-first and uses project patches after the first-playable patches:
+
+```text
+0004-worldlink-route1-alert.patch
+0005-oak-27-starter-menu.patch
+0006-route1-3-badge-scaled-encounters.patch
+0007-route3-anomaly-wild-battles.patch
+```
+
+Title art direction is tracked in:
+
+```text
+assets/title_screen/NEXUS_RED_TITLE_SCREEN_BRIEF.md
+```
+
+Badge-scaled progression data is tracked in:
+
+```text
+data_design/kanto_progression_scaling.yaml
+```
