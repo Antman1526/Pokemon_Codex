@@ -523,7 +523,7 @@ Expected:
 - Temporarily modify: `engine/pokeemerald-expansion/include/constants/script_menu.h`
 - Temporarily modify: `engine/pokeemerald-expansion/src/data/script_menu.h`
 
-- [ ] **Step 1: Add multichoice ids**
+- [x] **Step 1: Add multichoice ids**
 
 In `engine/pokeemerald-expansion/include/constants/script_menu.h`, append these enum entries before the enum terminator:
 
@@ -540,7 +540,7 @@ In `engine/pokeemerald-expansion/include/constants/script_menu.h`, append these 
     MULTI_NEXUS_STARTER_PALDEA,
 ```
 
-- [ ] **Step 2: Add starter menu actions**
+- [x] **Step 2: Add starter menu actions**
 
 In `engine/pokeemerald-expansion/src/data/script_menu.h`, add these menu lists before `sMultichoiceLists`:
 
@@ -632,7 +632,7 @@ static const struct MenuAction sMultichoiceList_NexusStarterPaldea[] =
 };
 ```
 
-- [ ] **Step 3: Register menu lists**
+- [x] **Step 3: Register menu lists**
 
 In `sMultichoiceLists[]`, add:
 
@@ -649,7 +649,7 @@ In `sMultichoiceLists[]`, add:
     [MULTI_NEXUS_STARTER_PALDEA] = MULTICHOICE(sMultichoiceList_NexusStarterPaldea),
 ```
 
-- [ ] **Step 4: Build to verify menu table compiles**
+- [x] **Step 4: Build to verify menu table compiles**
 
 Apply patches `0001` through `0004`, then run:
 
@@ -678,7 +678,7 @@ Do not commit yet. Task 5 completes the Oak script before patch generation.
 - Create: `patches/engine/0005-oak-27-starter-menu.patch`
 - Modify: `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`
 
-- [ ] **Step 1: Route all three starter balls to the Nexus menu**
+- [x] **Step 1: Route all three starter balls to the Nexus menu**
 
 Replace the bodies of `PalletTown_ProfessorOaksLab_EventScript_BulbasaurBall`, `PalletTown_ProfessorOaksLab_EventScript_SquirtleBall`, and `PalletTown_ProfessorOaksLab_EventScript_CharmanderBall` with:
 
@@ -692,7 +692,7 @@ Replace the bodies of `PalletTown_ProfessorOaksLab_EventScript_BulbasaurBall`, `
 	end
 ```
 
-- [ ] **Step 2: Replace confirmation with generic species confirmation**
+- [x] **Step 2: Replace confirmation with generic species confirmation**
 
 Replace `PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice` and the three species-specific confirmation labels with:
 
@@ -713,7 +713,7 @@ PalletTown_ProfessorOaksLab_Text_NexusConfirmStarter::
 	.string "with {STR_VAR_1}?$"
 ```
 
-- [ ] **Step 3: Add region menu**
+- [x] **Step 3: Add region menu**
 
 Add:
 
@@ -742,7 +742,7 @@ PalletTown_ProfessorOaksLab_Text_NexusStarterIntro::
 	.string "calls to you.$"
 ```
 
-- [ ] **Step 4: Add starter trio menus**
+- [x] **Step 4: Add starter trio menus**
 
 Add one menu label per region. Use this Kanto pattern and repeat with the species mappings below:
 
@@ -772,7 +772,7 @@ SetStarterGrookey / Scorbunny / Sobble
 SetStarterSprigatito / Fuecoco / Quaxly
 ```
 
-- [ ] **Step 5: Add starter setter labels**
+- [x] **Step 5: Add starter setter labels**
 
 Use broad type mapping so Blue's first battle stays stable:
 
@@ -806,7 +806,7 @@ PalletTown_ProfessorOaksLab_EventScript_SetStarterBulbasaur::
 
 Repeat for all 27 official starters.
 
-- [ ] **Step 6: Build and generate patch**
+- [x] **Step 6: Build and generate patch**
 
 Run the Nexus Red build command. Then generate:
 
@@ -819,7 +819,7 @@ git -C engine/pokeemerald-expansion diff -- \
 test -s patches/engine/0005-oak-27-starter-menu.patch
 ```
 
-- [ ] **Step 7: Restore engine source**
+- [x] **Step 7: Restore engine source**
 
 Run:
 
@@ -830,7 +830,7 @@ git -C engine/pokeemerald-expansion restore -- \
   data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
 ```
 
-- [ ] **Step 8: Update smoke-test note and commit**
+- [x] **Step 8: Update smoke-test note and commit**
 
 Add:
 

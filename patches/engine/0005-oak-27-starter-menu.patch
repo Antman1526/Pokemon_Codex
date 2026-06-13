@@ -1,0 +1,457 @@
+diff --git a/include/constants/script_menu.h b/include/constants/script_menu.h
+index 246fb47c12..f79a740738 100644
+--- a/include/constants/script_menu.h
++++ b/include/constants/script_menu.h
+@@ -169,6 +169,16 @@ enum
+     MULTI_HOF_VICTORIES_QUIT,
+     MULTI_EGGS_VICTORIES_QUIT,
+     MULTI_HOF_EGGS_VICTORIES_QUIT,
++    MULTI_NEXUS_STARTER_REGION,
++    MULTI_NEXUS_STARTER_KANTO,
++    MULTI_NEXUS_STARTER_JOHTO,
++    MULTI_NEXUS_STARTER_HOENN,
++    MULTI_NEXUS_STARTER_SINNOH,
++    MULTI_NEXUS_STARTER_UNOVA,
++    MULTI_NEXUS_STARTER_KALOS,
++    MULTI_NEXUS_STARTER_ALOLA,
++    MULTI_NEXUS_STARTER_GALAR,
++    MULTI_NEXUS_STARTER_PALDEA,
+ };
+ 
+ #define MULTI_NONE 255
+diff --git a/src/data/script_menu.h b/src/data/script_menu.h
+index a4260e72c5..19a36637af 100644
+--- a/src/data/script_menu.h
++++ b/src/data/script_menu.h
+@@ -1127,6 +1127,92 @@ static const struct MenuAction MultichoiceList_Exit[] =
+     {gText_Exit},
+ };
+ 
++static const struct MenuAction MultichoiceList_NexusStarterRegion[] =
++{
++    {COMPOUND_STRING("KANTO")},
++    {COMPOUND_STRING("JOHTO")},
++    {COMPOUND_STRING("HOENN")},
++    {COMPOUND_STRING("SINNOH")},
++    {COMPOUND_STRING("UNOVA")},
++    {COMPOUND_STRING("KALOS")},
++    {COMPOUND_STRING("ALOLA")},
++    {COMPOUND_STRING("GALAR")},
++    {COMPOUND_STRING("PALDEA")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterKanto[] =
++{
++    {COMPOUND_STRING("BULBASAUR")},
++    {COMPOUND_STRING("CHARMANDER")},
++    {COMPOUND_STRING("SQUIRTLE")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterJohto[] =
++{
++    {COMPOUND_STRING("CHIKORITA")},
++    {COMPOUND_STRING("CYNDAQUIL")},
++    {COMPOUND_STRING("TOTODILE")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterHoenn[] =
++{
++    {COMPOUND_STRING("TREECKO")},
++    {COMPOUND_STRING("TORCHIC")},
++    {COMPOUND_STRING("MUDKIP")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterSinnoh[] =
++{
++    {COMPOUND_STRING("TURTWIG")},
++    {COMPOUND_STRING("CHIMCHAR")},
++    {COMPOUND_STRING("PIPLUP")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterUnova[] =
++{
++    {COMPOUND_STRING("SNIVY")},
++    {COMPOUND_STRING("TEPIG")},
++    {COMPOUND_STRING("OSHAWOTT")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterKalos[] =
++{
++    {COMPOUND_STRING("CHESPIN")},
++    {COMPOUND_STRING("FENNEKIN")},
++    {COMPOUND_STRING("FROAKIE")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterAlola[] =
++{
++    {COMPOUND_STRING("ROWLET")},
++    {COMPOUND_STRING("LITTEN")},
++    {COMPOUND_STRING("POPPLIO")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterGalar[] =
++{
++    {COMPOUND_STRING("GROOKEY")},
++    {COMPOUND_STRING("SCORBUNNY")},
++    {COMPOUND_STRING("SOBBLE")},
++    {COMPOUND_STRING("BACK")},
++};
++
++static const struct MenuAction MultichoiceList_NexusStarterPaldea[] =
++{
++    {COMPOUND_STRING("SPRIGATITO")},
++    {COMPOUND_STRING("FUECOCO")},
++    {COMPOUND_STRING("QUAXLY")},
++    {COMPOUND_STRING("BACK")},
++};
++
+ struct MultichoiceListStruct
+ {
+     const struct MenuAction *list;
+@@ -1294,6 +1380,16 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
+     [MULTI_HOF_VICTORIES_QUIT]                         = MULTICHOICE(sMultichoiceList_HOF_Victories_Quit),
+     [MULTI_EGGS_VICTORIES_QUIT]                        = MULTICHOICE(sMultichoiceList_Eggs_Victories_Quit),
+     [MULTI_HOF_EGGS_VICTORIES_QUIT]                    = MULTICHOICE(sMultichoiceList_HOF_Eggs_Victories_Quit),
++    [MULTI_NEXUS_STARTER_REGION]                       = MULTICHOICE(MultichoiceList_NexusStarterRegion),
++    [MULTI_NEXUS_STARTER_KANTO]                        = MULTICHOICE(MultichoiceList_NexusStarterKanto),
++    [MULTI_NEXUS_STARTER_JOHTO]                        = MULTICHOICE(MultichoiceList_NexusStarterJohto),
++    [MULTI_NEXUS_STARTER_HOENN]                        = MULTICHOICE(MultichoiceList_NexusStarterHoenn),
++    [MULTI_NEXUS_STARTER_SINNOH]                       = MULTICHOICE(MultichoiceList_NexusStarterSinnoh),
++    [MULTI_NEXUS_STARTER_UNOVA]                        = MULTICHOICE(MultichoiceList_NexusStarterUnova),
++    [MULTI_NEXUS_STARTER_KALOS]                        = MULTICHOICE(MultichoiceList_NexusStarterKalos),
++    [MULTI_NEXUS_STARTER_ALOLA]                        = MULTICHOICE(MultichoiceList_NexusStarterAlola),
++    [MULTI_NEXUS_STARTER_GALAR]                        = MULTICHOICE(MultichoiceList_NexusStarterGalar),
++    [MULTI_NEXUS_STARTER_PALDEA]                       = MULTICHOICE(MultichoiceList_NexusStarterPaldea),
+ };
+ 
+ const u8 *const gStdStrings[] =
+--- a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
++++ b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+@@ -1074,12 +1074,8 @@
+ PalletTown_ProfessorOaksLab_EventScript_BulbasaurBall::
+ 	lock
+ 	faceplayer
+-	setvar PLAYER_STARTER_NUM, 0
+-	setvar PLAYER_STARTER_SPECIES, SPECIES_BULBASAUR
+-	setvar RIVAL_STARTER_SPECIES, SPECIES_CHARMANDER
+-	setvar RIVAL_STARTER_ID, LOCALID_CHARMANDER_BALL
+ 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
+-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
++	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
+ 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
+ 	release
+ 	end
+@@ -1089,29 +1085,245 @@
+ 	waitmovement 0
+ 	showmonpic PLAYER_STARTER_SPECIES, 10, 3
+ 	textcolor NPC_TEXT_COLOR_MALE
+-	goto_if_eq PLAYER_STARTER_NUM, 0, PalletTown_ProfessorOaksLab_EventScript_ConfirmBulbasaur
+-	goto_if_eq PLAYER_STARTER_NUM, 1, PalletTown_ProfessorOaksLab_EventScript_ConfirmSquirtle
+-	goto_if_eq PLAYER_STARTER_NUM, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmCharmander
+-	end
+-
+-PalletTown_ProfessorOaksLab_EventScript_ConfirmBulbasaur::
+-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur, MSGBOX_YESNO
++	bufferspeciesname STR_VAR_1, PLAYER_STARTER_SPECIES
++	msgbox PalletTown_ProfessorOaksLab_Text_NexusConfirmStarter, MSGBOX_YESNO
+ 	goto_if_eq VAR_RESULT, YES, PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
+ 	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
+ 	end
+ 
+-PalletTown_ProfessorOaksLab_EventScript_ConfirmSquirtle::
+-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle, MSGBOX_YESNO
+-	goto_if_eq VAR_RESULT, YES, PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
+-	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu::
++	msgbox PalletTown_ProfessorOaksLab_Text_NexusStarterIntro
++	multichoice 0, 0, MULTI_NEXUS_STARTER_REGION, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_NexusStarterKanto
++	case 1, PalletTown_ProfessorOaksLab_EventScript_NexusStarterJohto
++	case 2, PalletTown_ProfessorOaksLab_EventScript_NexusStarterHoenn
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterSinnoh
++	case 4, PalletTown_ProfessorOaksLab_EventScript_NexusStarterUnova
++	case 5, PalletTown_ProfessorOaksLab_EventScript_NexusStarterKalos
++	case 6, PalletTown_ProfessorOaksLab_EventScript_NexusStarterAlola
++	case 7, PalletTown_ProfessorOaksLab_EventScript_NexusStarterGalar
++	case 8, PalletTown_ProfessorOaksLab_EventScript_NexusStarterPaldea
++	case 9, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
+ 	end
+ 
+-PalletTown_ProfessorOaksLab_EventScript_ConfirmCharmander::
+-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingCharmander, MSGBOX_YESNO
+-	goto_if_eq VAR_RESULT, YES, PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
+-	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterKanto::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_KANTO, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterBulbasaur
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterCharmander
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterSquirtle
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
+ 	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterJohto::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_JOHTO, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterChikorita
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterCyndaquil
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterTotodile
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterHoenn::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_HOENN, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterTreecko
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterTorchic
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterMudkip
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterSinnoh::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_SINNOH, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterTurtwig
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterChimchar
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterPiplup
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterUnova::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_UNOVA, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterSnivy
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterTepig
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterOshawott
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterKalos::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_KALOS, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterChespin
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterFennekin
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterFroakie
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterAlola::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_ALOLA, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterRowlet
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterLitten
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterPopplio
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterGalar::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_GALAR, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterGrookey
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterScorbunny
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterSobble
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_NexusStarterPaldea::
++	multichoice 0, 0, MULTI_NEXUS_STARTER_PALDEA, FALSE
++	switch VAR_RESULT
++	case 0, PalletTown_ProfessorOaksLab_EventScript_SetStarterSprigatito
++	case 1, PalletTown_ProfessorOaksLab_EventScript_SetStarterFuecoco
++	case 2, PalletTown_ProfessorOaksLab_EventScript_SetStarterQuaxly
++	case 3, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	case MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter::
++	setvar PLAYER_STARTER_NUM, 0
++	setvar RIVAL_STARTER_SPECIES, SPECIES_CHARMANDER
++	setvar RIVAL_STARTER_ID, LOCALID_CHARMANDER_BALL
++	goto PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
++
++PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter::
++	setvar PLAYER_STARTER_NUM, 1
++	setvar RIVAL_STARTER_SPECIES, SPECIES_BULBASAUR
++	setvar RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL
++	goto PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
++
++PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter::
++	setvar PLAYER_STARTER_NUM, 2
++	setvar RIVAL_STARTER_SPECIES, SPECIES_SQUIRTLE
++	setvar RIVAL_STARTER_ID, LOCALID_SQUIRTLE_BALL
++	goto PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterBulbasaur::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_BULBASAUR
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterCharmander::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_CHARMANDER
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterSquirtle::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_SQUIRTLE
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterChikorita::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_CHIKORITA
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterCyndaquil::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_CYNDAQUIL
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterTotodile::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_TOTODILE
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterTreecko::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_TREECKO
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterTorchic::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_TORCHIC
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterMudkip::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_MUDKIP
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterTurtwig::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_TURTWIG
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterChimchar::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_CHIMCHAR
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterPiplup::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_PIPLUP
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterSnivy::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_SNIVY
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterTepig::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_TEPIG
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterOshawott::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_OSHAWOTT
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterChespin::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_CHESPIN
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterFennekin::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_FENNEKIN
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterFroakie::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_FROAKIE
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterRowlet::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_ROWLET
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterLitten::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_LITTEN
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterPopplio::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_POPPLIO
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterGrookey::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_GROOKEY
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterScorbunny::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_SCORBUNNY
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterSobble::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_SOBBLE
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterSprigatito::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_SPRIGATITO
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusGrassStarter
++
++PalletTown_ProfessorOaksLab_EventScript_SetStarterFuecoco::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_FUECOCO
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusFireStarter
+ 
++PalletTown_ProfessorOaksLab_EventScript_SetStarterQuaxly::
++	setvar PLAYER_STARTER_SPECIES, SPECIES_QUAXLY
++	goto PalletTown_ProfessorOaksLab_EventScript_SetNexusWaterStarter
++
+ PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter::
+ 	hidemonpic
+ 	release
+@@ -1217,12 +1429,8 @@
+ PalletTown_ProfessorOaksLab_EventScript_SquirtleBall::
+ 	lock
+ 	faceplayer
+-	setvar PLAYER_STARTER_NUM, 1
+-	setvar PLAYER_STARTER_SPECIES, SPECIES_SQUIRTLE
+-	setvar RIVAL_STARTER_SPECIES, SPECIES_BULBASAUR
+-	setvar RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL
+ 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
+-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
++	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
+ 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
+ 	release
+ 	end
+@@ -1230,12 +1438,8 @@
+ PalletTown_ProfessorOaksLab_EventScript_CharmanderBall::
+ 	lock
+ 	faceplayer
+-	setvar PLAYER_STARTER_NUM, 2
+-	setvar PLAYER_STARTER_SPECIES, SPECIES_CHARMANDER
+-	setvar RIVAL_STARTER_SPECIES, SPECIES_SQUIRTLE
+-	setvar RIVAL_STARTER_ID, LOCALID_SQUIRTLE_BALL
+ 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
+-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
++	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_NexusStarterMenu
+ 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
+ 	release
+ 	end
+@@ -1405,6 +1609,16 @@
+ 	.string "Which one will you choose for\n"
+ 	.string "yourself?$"
+ 
++PalletTown_ProfessorOaksLab_Text_NexusStarterIntro::
++	.string "OAK: These terminals hold\n"
++	.string "regional starter records.\p"
++	.string "Choose the region whose partner\n"
++	.string "calls to you.$"
++
++PalletTown_ProfessorOaksLab_Text_NexusConfirmStarter::
++	.string "OAK: Begin your journey\n"
++	.string "with {STR_VAR_1}?$"
++
+ PalletTown_ProfessorOaksLab_Text_OakHeyDontGoAwayYet::
+ 	.string "OAK: Hey!\n"
+ 	.string "Don't go away yet!$"
