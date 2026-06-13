@@ -1,0 +1,38 @@
+diff --git a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+--- a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
++++ b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+@@ -477,6 +477,7 @@ PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle::
+ 	fadedefaultbgm
+ 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
+ 	setflag FLAG_BEAT_RIVAL_IN_OAKS_LAB
++	call PalletTown_ProfessorOaksLab_EventScript_WorldLinkFirstAlert
+ 	releaseall
+ 	end
+ 
+@@ -498,6 +499,12 @@ PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleRight::
+ 	waitmovement LOCALID_OAKS_LAB_RIVAL
+ 	return
+ 
++PalletTown_ProfessorOaksLab_EventScript_WorldLinkFirstAlert::
++	textcolor NPC_TEXT_COLOR_NEUTRAL
++	msgbox PalletTown_ProfessorOaksLab_Text_WorldLinkFirstAlert
++	call EventScript_RestorePrevTextColor
++	return
++
+ PalletTown_ProfessorOaksLab_Movement_RivalExitAfterBattleLeft::
+ 	walk_right
+ 	walk_down
+@@ -1347,6 +1354,13 @@ PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon::
+ 	.string "{PLAYER}! Gramps!\n"
+ 	.string "Smell you later!$"
+ 
++PalletTown_ProfessorOaksLab_Text_WorldLinkFirstAlert::
++	.string "WORLDLINK ALERT\p"
++	.string "RED logged fresh tracks\n"
++	.string "on ROUTE 1.\p"
++	.string "BLUE marked himself\n"
++	.string "first to VIRIDIAN.$"
++
+ PalletTown_ProfessorOaksLab_Text_RivalGramps::
+ 	.string "{RIVAL}: Gramps!$"
+ 

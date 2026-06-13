@@ -410,7 +410,7 @@ Expected:
 - Create: `patches/engine/0004-worldlink-route1-alert.patch`
 - Modify: `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`
 
-- [ ] **Step 1: Apply existing engine patches**
+- [x] **Step 1: Apply existing engine patches**
 
 Run from repo root:
 
@@ -422,7 +422,7 @@ git apply --directory=engine/pokeemerald-expansion patches/engine/0003-oak-lab-n
 
 Expected: no output.
 
-- [ ] **Step 2: Insert WorldLink alert after Blue's lab exit setup**
+- [x] **Step 2: Insert WorldLink alert after Blue's lab exit setup**
 
 In `engine/pokeemerald-expansion/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc`, find `PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattle` and add this call before the script releases control:
 
@@ -447,7 +447,7 @@ PalletTown_ProfessorOaksLab_Text_WorldLinkFirstAlert::
 	.string "\"first to VIRIDIAN.\"$"
 ```
 
-- [ ] **Step 3: Build**
+- [x] **Step 3: Build**
 
 Run:
 
@@ -465,7 +465,7 @@ Expected:
 pokenexusred.gba
 ```
 
-- [ ] **Step 4: Generate patch**
+- [x] **Step 4: Generate patch**
 
 Run from repo root:
 
@@ -476,7 +476,7 @@ test -s patches/engine/0004-worldlink-route1-alert.patch
 
 Expected: patch file exists and is non-empty.
 
-- [ ] **Step 5: Restore engine source**
+- [x] **Step 5: Restore engine source**
 
 Run:
 
@@ -492,7 +492,7 @@ git -C engine/pokeemerald-expansion status --short
 
 prints no modified tracked files.
 
-- [ ] **Step 6: Update smoke-test note**
+- [x] **Step 6: Update smoke-test note**
 
 Add this line under engine patches in `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`:
 
@@ -500,7 +500,7 @@ Add this line under engine patches in `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_
 - `patches/engine/0004-worldlink-route1-alert.patch` - first Pokédex-style WorldLink alert after Blue's lab battle.
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 Run:
 

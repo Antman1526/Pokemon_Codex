@@ -65,6 +65,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0001-pallet-bedroom-mom-intro.patch` - Pallet bedroom news and Mom intro text.
 - `patches/engine/0002-pallet-red-blue-scene.patch` - first outdoor Red/Blue Pallet scene.
 - `patches/engine/0003-oak-lab-nexus-intro.patch` - Oak lab Nexus Red framing.
+- `patches/engine/0004-worldlink-route1-alert.patch` - first Pokédex-style WorldLink alert after Blue's lab battle.
 
 ## Validation
 
