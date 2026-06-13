@@ -125,3 +125,33 @@ Implication: add `pokeemerald-expansion` as the engine source reference, verify 
 Decision: the first build should carry the Pokemon Nexus Red title identity.
 
 Implication: even if the first title screen is placeholder-quality, the project should stop presenting itself as generic Emerald as early as practical.
+
+### Custom Title-Screen Concept
+
+Decision: create a custom title-screen concept before implementation.
+
+Implication: the target concept is Red and Pikachu overlooking Pallet's dawn coastline/cliff while a red-gold Nexus rift forms a fractured world-map silhouette in the sky. Placeholder execution is allowed for first build, but the creative target is locked.
+
+### Opening Story Intro
+
+Decision: include a short bedroom, Mom, and Oak intro before the lab.
+
+Implication: the game opens with Antman at home, news of strange weather/migration/League outages, Mom grounding the moment emotionally, Red noticing impossible Pallet tracks, Blue applying pressure, and Oak introducing the World Pokedex Initiative.
+
+### Red AI Team Model
+
+Decision: Red remains AI-controlled and uses chapter-based teams with limited adaptive slots.
+
+Implication: Red's team should feel recognizable by chapter while one or two slots can adapt to Antman's starter, difficulty, and battle context for fun and support.
+
+### WorldLink Dungeon Pause
+
+Decision: WorldLink notifications pause during caves, dungeons, hideouts, ruins, towers, and other focus-heavy spaces.
+
+Implication: queued updates should be delivered through a compact "While You Were Away" digest when Antman returns to a safe area.
+
+### Mandatory Brock and Misty Companions
+
+Decision: Brock and Misty are mandatory recurring story companions after their gym arcs.
+
+Implication: they rotate in and out across the story as friends, mentors, and tag-battle allies, but they do not become permanent followers or fight Antman's gym battles.

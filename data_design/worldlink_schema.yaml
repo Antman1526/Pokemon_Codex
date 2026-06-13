@@ -75,6 +75,20 @@ delivery_rules:
     - boss_event
     - evolution
     - starter_selection
+  pause_and_digest:
+    - cave
+    - villain_hideout
+    - deep_forest
+    - ruins
+    - tower
+    - story_dungeon
+
+digest:
+  title: "While You Were Away"
+  trigger: "leaving_paused_area_for_safe_area"
+  max_items_mvp: 3
+  max_items_target: 5
+  priority_order: [villain_alert, rival_badge, companion_request, legendary_anomaly, rival_region_entry, rival_capture_common, flavor_note]
 
 save_fields:
   required:

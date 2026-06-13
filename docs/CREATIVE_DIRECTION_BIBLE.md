@@ -64,6 +64,14 @@ Custom identity:
 
 Do not make the whole game dark. The danger grows, but Pokemon should still feel adventurous and hopeful. If a technical tradeoff appears between FireRed look and pokeemerald-expansion internals, keep the engine path and recreate the FireRed feel through tiles, palettes, UI choices, and opening flow.
 
+### Title-Screen Concept
+
+The approved first title concept is Red and Pikachu overlooking Pallet Town's dawn coastline or cliff edge while a faint red-gold Nexus rift forms a fractured world-map silhouette in the sky. The `Pokemon Nexus Red` logo sits over the horizon with a subtle Nexus ring behind `Red`.
+
+Mood: hopeful, mysterious, and rooted in FireRed nostalgia.
+
+First build may use placeholder title text or rough graphics, but the concept should guide final title art.
+
 ## 4. Music Direction
 
 Goal: custom soundtrack where it matters, strong remixes elsewhere.
@@ -93,7 +101,7 @@ Red should not talk constantly. He is quiet, observant, and decisive. Early on, 
 
 Red functions:
 
-- optional early route travel companion,
+- early route travel companion,
 - tutorial partner without feeling like a tutorial,
 - tag battle ally against Rocket,
 - occasional WorldLink contact,

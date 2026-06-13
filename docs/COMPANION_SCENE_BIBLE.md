@@ -12,6 +12,7 @@ Rules:
 - Companions may follow Antman during routes, towns, dungeons, and side quests.
 - Companions may join tag battles, training battles, and villain skirmishes.
 - Companion tag partners are AI-controlled unless a later battle facility explicitly experiments with manual partner control.
+- Brock and Misty are mandatory recurring story companions after their gym arcs.
 - Companions may give advice before gyms.
 - Companions do not fight Antman's gym battles.
 - Companions do not solve major solo trials.
@@ -74,7 +75,7 @@ Key scenes:
 - Cinnabar: Brock comments on fossil revival ethics and Phoenix research.
 - World Championship: Brock runs a preparation room for long tournament battles.
 
-Brock should not follow constantly, but he should become the first adult-ish friend who checks in over the long journey.
+Brock is a mandatory recurring companion after Pewter. He should not follow constantly, but he should become the first adult-ish friend who checks in over the long journey.
 
 ## 4. Misty
 
@@ -100,7 +101,7 @@ Key scenes:
 - Hoenn: Misty appears during the Aqua/Kyogre arc as a visiting water specialist.
 - World Championship: Misty offers a high-tempo rematch and doubles prep.
 
-Misty should be a friend who makes the journey feel fun and competitive, not just a gym leader who disappears.
+Misty is a mandatory recurring companion after Cerulean. She should be a friend who makes the journey feel fun and competitive, not just a gym leader who disappears.
 
 ## 5. May
 

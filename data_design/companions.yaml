@@ -9,6 +9,8 @@ companions:
     tag_battle_control: ai_controlled
     can_train_player: true
     can_help_gym_battles: false
+    team_model: chapter_based_with_adaptive_slots
+    adaptive_slots: 2
     personality: quiet_warm_observant
     scene_focus: [route_observation, training, tag_battle, emotional_anchor, worldlink_notes]
     regional_presence:
@@ -25,7 +27,7 @@ companions:
 
   brock:
     role: early_mentor_survival_friend
-    frequency: recurring
+    frequency: mandatory_recurring
     can_follow: situational
     can_tag_battle: true
     can_train_player: true
@@ -38,7 +40,7 @@ companions:
 
   misty:
     role: confidence_water_route_friend
-    frequency: recurring
+    frequency: mandatory_recurring
     can_follow: situational
     can_tag_battle: true
     can_train_player: true
@@ -68,4 +70,5 @@ global_rules:
   - "Companions can join villain tag battles and route/dungeon skirmishes."
   - "Companion dialogue should be concise and useful."
   - "Red is the most frequent companion but should still leave space for Antman's agency."
+  - "Brock and Misty are mandatory recurring companions after their gym arcs."
   - "Rotate companion presence to avoid overcrowding."

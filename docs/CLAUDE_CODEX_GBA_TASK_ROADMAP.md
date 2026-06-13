@@ -54,8 +54,21 @@ Acceptance:
 
 - title/name placeholder no longer presents the project as generic Emerald,
 - ROM header/title-screen text strategy is documented before asset replacement,
+- custom title-screen concept follows the approved Red/Pikachu/Pallet dawn Nexus rift direction,
 - placeholder quality is acceptable for the first build,
 - no custom art requirement blocks engine proof.
+
+### Task 0.2c - Opening Story Intro
+
+Implement the first playable opening before Oak's Lab.
+
+Acceptance:
+
+- player starts in Antman's bedroom,
+- Mom mentions Oak's call and strange world news,
+- Red appears at the Pallet grass line with Pikachu,
+- Blue applies pressure before the lab,
+- Oak frames the World Pokedex Initiative before starter selection.
 
 ### Task 0.3 - Feature Flag Audit
 

@@ -23,6 +23,7 @@ The project goal is to create a legal, phased build framework that Claude Code a
 - `docs/RED_COMPANION_SYSTEM.md` - Red as friend/travel companion.
 - `docs/STARTER_SELECTION_SYSTEM.md` - 39-starter opening flow and rival assignment rules.
 - `docs/WORLDLINK_SYSTEM_SPEC.md` - WorldLink UI, notification, checklist, rival, companion, and transit system.
+- `docs/superpowers/specs/2026-06-13-title-opening-companion-design.md` - approved title-screen, opening, Red AI, WorldLink pause, and Brock/Misty companion direction.
 - `docs/REGION_CONTENT_BLUEPRINT.md` - full 9-region content plan.
 - `docs/GBA_OPENEMU_BUILD_STRATEGY.md` - how to keep the project on the `.gba` and OpenEmu path.
 - `docs/LONG_GAME_RETENTION_DESIGN.md` - pacing and replayability design for a very long game.

@@ -32,21 +32,23 @@ Optional if time allows:
 
 ## 3. Opening Flow
 
-1. Player wakes in Pallet Town.
-2. Mom mentions Oak called about the World Pokedex Initiative.
-3. Outside, Red is watching the Pallet grass line and quietly points out unfamiliar Pokemon tracks.
-4. Blue blocks the player and says Oak is waiting.
-5. Ava arrives with field notes about "wrong-region Pokemon" near Route 1.
-6. Dax arrives late, already talking about beating Brock first.
-7. Oak explains that Kanto's first routes are showing impossible migration.
-8. Player chooses starter from the full 39-choice system.
-9. Blue receives a counter-pick.
-10. Ava receives a research-oriented starter.
-11. Dax receives an offense-oriented starter.
-12. First rival battle occurs against Blue.
-13. Red briefly joins the walk to Route 1 or gives the player a quiet warning before leaving.
+1. Player wakes in Antman's Pallet Town bedroom.
+2. TV/radio news mentions strange weather, unusual Pokemon migration, and League communication outages.
+3. Mom says Professor Oak called for Antman by name and notes that Pallet has seen great trainers leave before, but this morning feels different.
+4. Outside, Red is watching the Pallet grass line with Pikachu and quietly points out unfamiliar Pokemon tracks.
+5. Blue blocks the player and resents that Red is taking Antman seriously.
+6. Ava arrives with field notes about "wrong-region Pokemon" near Route 1.
+7. Dax arrives late, already talking about beating Brock first.
+8. Oak explains that Kanto's first routes are showing impossible migration and introduces the World Pokedex Initiative.
+9. Player chooses starter from the full 39-choice system.
+10. Blue receives a counter-pick.
+11. Ava receives a research-oriented starter.
+12. Dax receives an offense-oriented starter.
+13. First rival battle occurs against Blue.
 14. Oak gives WorldLink.
 15. WorldLink immediately logs the first cohort status update.
+16. Red gives Antman a short line that frames this as Antman's road, not a replay of Red's.
+17. Red briefly joins the walk toward Route 1 or gives the player a quiet warning before leaving to investigate a parallel lead.
 
 ## 4. Starter Selection MVP
 

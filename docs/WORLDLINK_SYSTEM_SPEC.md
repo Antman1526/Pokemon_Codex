@@ -257,6 +257,17 @@ Never interrupt:
 - evolution,
 - starter selection.
 
+Pause and digest:
+
+- caves,
+- villain hideouts,
+- deep forests,
+- ruins,
+- towers,
+- story dungeons.
+
+When Antman returns to a safe area after a paused segment, WorldLink should present a compact "While You Were Away" digest instead of firing each queued update one by one.
+
 ## 14. Save Data Approach
 
 Do not store full rich messages if save space becomes tight.

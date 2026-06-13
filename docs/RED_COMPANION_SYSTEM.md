@@ -14,6 +14,7 @@ Design rules:
 - Red can follow Antman through routes, towns, and dungeons.
 - Red can join tag battles and training battles.
 - Red is AI-controlled in tag battles.
+- Red uses chapter-based teams with one or two adaptive slots based on Antman's starter, difficulty, and battle context.
 - Red can give tactical advice and route observations.
 - Red cannot fight Antman's gym battles.
 - Red cannot clear major solo trials for Antman.
@@ -25,8 +26,9 @@ Red appears before Oak's Lab or shortly after the starter scene.
 
 Opening idea:
 
-- Antman exits home.
-- Red is waiting near the Pallet grass line, watching unusual Pokemon movement.
+- Antman wakes at home after strange weather and migration news.
+- Mom says Oak called for Antman by name.
+- Red is waiting near the Pallet grass line with Pikachu, watching unusual Pokemon movement.
 - Red says little but confirms Oak is worried.
 - Blue is irritated because Red is paying attention to Antman.
 - Red does not take a starter from Oak; he already has Pikachu or a compact early team.
@@ -81,6 +83,12 @@ Red speaks more than usual about power, restraint, and why some Pokemon mysterie
 ## 5. Red Team Philosophy
 
 Red's team should grow slowly and be used sparingly.
+
+Team model:
+
+- Each chapter has a stable Red team identity.
+- One or two slots can adapt to Antman's starter family, current difficulty, and the battle's support needs.
+- Red should support Antman without sweeping scripted tag battles by himself.
 
 Early:
 

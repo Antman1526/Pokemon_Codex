@@ -821,14 +821,17 @@ Resolved decisions:
 - Starter scope: all 39 starter choices should be available in the first playable design.
 - First battle: Blue is mandatory.
 - Art direction: FireRed-first visual identity.
+- Title concept: Red and Pikachu at Pallet dawn with a red-gold Nexus rift over the horizon.
+- Opening: bedroom, Mom, Oak, Red, Blue, Ava, Dax, then 39-starter selection.
+- Red control: AI-controlled tag partner with chapter-based teams and limited adaptive slots.
+- WorldLink flow: notifications pause in caves/dungeons/hideouts and deliver a "While You Were Away" digest.
+- Companion density: Brock and Misty are mandatory recurring story companions after their gym arcs.
 
 Still-open design questions:
 
 1. Rival canon choices: should each rotating slot be player-selectable, or should the framework lock defaults like Marnie and Nemona?
-2. Companion density: should Brock and Misty remain mostly Kanto/selected-region friends, or should they join more regions like Red?
-3. May naming: should the Hoenn companion be locked as May, or should Brendan be selectable if the player prefers?
-4. First implementation priority after companion design: Full Kanto trainers, starter selection implementation plan, or WorldLink UI spec?
-5. Should Red be controllable as a tag partner's team in some battles, or always AI-controlled?
+2. May naming: should the Hoenn companion be locked as May, or should Brendan be selectable if the player prefers?
+3. After engine proof, should the first implemented feature be title identity, Pallet bedroom intro, or starter selection?
 
 ## 11. Proposed First Milestone for Claude Code and Codex
 
@@ -847,7 +850,7 @@ Playable scope:
 
 Required systems:
 
-- New title/name placeholder: Pokemon Nexus Red.
+- New title/name placeholder: Pokemon Nexus Red, following the approved custom title concept.
 - 39-choice starter selection using category pages, Special A-D pages, and deterministic Blue/Ava/Dax assignments.
 - Blue, Ava, and Dax start journey with player.
 - WorldLink item with at least three notification types.
