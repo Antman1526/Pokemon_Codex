@@ -497,6 +497,12 @@ patches/engine/0001-pallet-bedroom-mom-intro.patch exists and is non-empty.
 
 - [ ] **Step 6: Build**
 
+If the patch is not already applied to the submodule source, apply it from the parent repo root:
+
+```bash
+git apply --directory=engine/pokeemerald-expansion patches/engine/0001-pallet-bedroom-mom-intro.patch
+```
+
 Run:
 
 ```bash
@@ -518,7 +524,7 @@ pokenexusred.gba
 Append this to `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`:
 
 ```markdown
-## Applied Engine Patches
+## Engine Patches To Apply Before Build
 
 - `patches/engine/0001-pallet-bedroom-mom-intro.patch` - Pallet bedroom news and Mom intro text.
 ```

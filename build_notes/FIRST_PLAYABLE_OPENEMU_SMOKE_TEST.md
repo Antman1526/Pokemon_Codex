@@ -4,6 +4,13 @@ Date: 2026-06-13
 
 ## Build
 
+Apply project-owned engine patches from the parent repo root before building:
+
+```sh
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening
+git apply --directory=engine/pokeemerald-expansion patches/engine/0001-pallet-bedroom-mom-intro.patch
+```
+
 Command:
 
 ```sh
@@ -44,9 +51,9 @@ File exists and is 32M. This is build-artifact verification only; OpenEmu runtim
 
 ## Notes
 
-Baseline FireRed-target build before Pokemon Nexus Red content edits.
+This smoke-test note now describes the patched first-playable build path. OpenEmu runtime verification is still pending; only the local ROM artifact has been verified.
 
-## Applied Engine Patches
+## Engine Patches To Apply Before Build
 
 - `patches/engine/0001-pallet-bedroom-mom-intro.patch` - Pallet bedroom news and Mom intro text.
 
