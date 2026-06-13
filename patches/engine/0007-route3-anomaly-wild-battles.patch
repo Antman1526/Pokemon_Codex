@@ -1,0 +1,118 @@
+diff --git a/data/maps/Route3_Frlg/map.json b/data/maps/Route3_Frlg/map.json
+index 52531fd8e5..1cc2ee751f 100644
+--- a/data/maps/Route3_Frlg/map.json
++++ b/data/maps/Route3_Frlg/map.json
+@@ -152,6 +152,48 @@
+       "trainer_sight_or_berry_tree_id": "2",
+       "script": "Route3_EventScript_Ben",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_POKE_BALL",
++      "x": 54,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route3_EventScript_NexusAnomalyGalar",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_POKE_BALL",
++      "x": 58,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route3_EventScript_NexusAnomalyPaldea",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_POKE_BALL",
++      "x": 62,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route3_EventScript_NexusAnomalyRare",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/Route3_Frlg/scripts.inc b/data/maps/Route3_Frlg/scripts.inc
+index 18ad64f0d4..066be97545 100644
+--- a/data/maps/Route3_Frlg/scripts.inc
++++ b/data/maps/Route3_Frlg/scripts.inc
+@@ -9,6 +9,42 @@ Route3_EventScript_RouteSign::
+ 	msgbox Route3_Text_RouteSign, MSGBOX_SIGN
+ 	end
+ 
++Route3_EventScript_NexusAnomalyGalar::
++	lock
++	msgbox Route3_Text_NexusAnomalyGalar
++	setwildbattle SPECIES_GROOKEY, 7
++	dowildbattle
++	setwildbattle SPECIES_SCORBUNNY, 7
++	dowildbattle
++	setwildbattle SPECIES_SOBBLE, 7
++	dowildbattle
++	release
++	end
++
++Route3_EventScript_NexusAnomalyPaldea::
++	lock
++	msgbox Route3_Text_NexusAnomalyPaldea
++	setwildbattle SPECIES_SPRIGATITO, 7
++	dowildbattle
++	setwildbattle SPECIES_FUECOCO, 7
++	dowildbattle
++	setwildbattle SPECIES_QUAXLY, 7
++	dowildbattle
++	release
++	end
++
++Route3_EventScript_NexusAnomalyRare::
++	lock
++	msgbox Route3_Text_NexusAnomalyRare
++	setwildbattle SPECIES_DRATINI, 7
++	dowildbattle
++	setwildbattle SPECIES_LARVITAR, 7
++	dowildbattle
++	setwildbattle SPECIES_KUBFU, 7
++	dowildbattle
++	release
++	end
++
+ Route3_Text_TunnelFromCeruleanTiring::
+ 	.string "Whew… I better take a rest…\n"
+ 	.string "Groan…\p"
+@@ -113,3 +149,17 @@ Route3_Text_RouteSign::
+ 	.string "ROUTE 3\n"
+ 	.string "MT. MOON AHEAD$"
+ 
++Route3_Text_NexusAnomalyGalar::
++	.string "The POKéDEX pings softly.\p"
++	.string "WORLDLINK: Three GALAR signals\n"
++	.string "are moving through the grass.$"
++
++Route3_Text_NexusAnomalyPaldea::
++	.string "The POKéDEX screen glows warm.\p"
++	.string "WORLDLINK: PALDEA readings\n"
++	.string "are clustering nearby.$"
++
++Route3_Text_NexusAnomalyRare::
++	.string "The POKéDEX gives a sharp alert.\p"
++	.string "WORLDLINK: Rare migration\n"
++	.string "pressure detected.$"

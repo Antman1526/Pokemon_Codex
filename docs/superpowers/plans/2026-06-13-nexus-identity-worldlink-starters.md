@@ -963,7 +963,7 @@ git commit -m "Add badge-scaled Route 1-3 encounters"
 - Temporarily modify: `tools/validate_nexus_milestone.py`
 - Create: `patches/engine/0007-route3-anomaly-wild-battles.patch`
 
-- [ ] **Step 1: Add static anomaly species to validator**
+- [x] **Step 1: Add static anomaly species to validator**
 
 Update `STATIC_ANOMALIES` in `tools/validate_nexus_milestone.py` to include the Galar and Paldea starters:
 
@@ -981,7 +981,7 @@ STATIC_ANOMALIES = {
 }
 ```
 
-- [ ] **Step 2: Add Route 3 anomaly scripts**
+- [x] **Step 2: Add Route 3 anomaly scripts**
 
 Add to `Route3_Frlg/scripts.inc`:
 
@@ -1038,7 +1038,7 @@ Route3_Text_NexusAnomalyRare::
 	.string "pressure detected.$"
 ```
 
-- [ ] **Step 3: Add Route 3 anomaly objects**
+- [x] **Step 3: Add Route 3 anomaly objects**
 
 Add three object events to `Route3_Frlg/map.json`:
 
@@ -1066,7 +1066,7 @@ x=58 y=8 script=Route3_EventScript_NexusAnomalyPaldea
 x=62 y=8 script=Route3_EventScript_NexusAnomalyRare
 ```
 
-- [ ] **Step 4: Run validator**
+- [x] **Step 4: Run validator**
 
 Apply patches `0001` through `0007`, then run:
 
@@ -1080,7 +1080,7 @@ Expected:
 Nexus milestone validation passed.
 ```
 
-- [ ] **Step 5: Build and generate patch**
+- [x] **Step 5: Build and generate patch**
 
 Run the Nexus Red build command, then:
 
@@ -1092,7 +1092,7 @@ git -C engine/pokeemerald-expansion diff -- \
 test -s patches/engine/0007-route3-anomaly-wild-battles.patch
 ```
 
-- [ ] **Step 6: Restore source and commit**
+- [x] **Step 6: Restore source and commit**
 
 Run:
 
