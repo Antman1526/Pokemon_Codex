@@ -10,6 +10,7 @@ Apply project-owned engine patches from the parent repo root before building:
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening
 git apply --directory=engine/pokeemerald-expansion patches/engine/0001-pallet-bedroom-mom-intro.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0002-pallet-red-blue-scene.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0003-oak-lab-nexus-intro.patch
 ```
 
 Command:
@@ -58,6 +59,7 @@ This smoke-test note now describes the patched first-playable build path. OpenEm
 
 - `patches/engine/0001-pallet-bedroom-mom-intro.patch` - Pallet bedroom news and Mom intro text.
 - `patches/engine/0002-pallet-red-blue-scene.patch` - first outdoor Red/Blue Pallet scene.
+- `patches/engine/0003-oak-lab-nexus-intro.patch` - Oak lab Nexus Red framing.
 
 ## Validation
 

@@ -1,0 +1,54 @@
+diff --git a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+index 3efd13cd19..13d0962f3b 100644
+--- a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
++++ b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+@@ -1327,9 +1327,10 @@ PalletTown_ProfessorOaksLab_Text_RivalMyMonLooksTougher::
+ 	.string "tougher than yours.$"
+ 
+ PalletTown_ProfessorOaksLab_Text_RivalLetsCheckOutMons::
+-	.string "{RIVAL}: Wait, {PLAYER}!\n"
+-	.string "Let's check out our POKéMON!\p"
+-	.string "Come on, I'll take you on!$"
++	.string "BLUE: A world tour, huh?\p"
++	.string "Fine by me. Bigger road,\n"
++	.string "bigger stage.\p"
++	.string "And I still beat you first.$"
+ 
+ PalletTown_ProfessorOaksLab_Text_RivalDefeat::
+ 	.string "WHAT?\n"
+@@ -1369,21 +1370,15 @@ PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap::
+ 	.string "my place after this!$"
+ 
+ PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
+-	.string "OAK: {RIVAL}?\n"
+-	.string "Let me think…\p"
+-	.string "Oh, that's right, I told you to\n"
+-	.string "come! Just wait!\p"
+-	.string "Here, {PLAYER}.\p"
+-	.string "There are three POKéMON here.\p"
+-	.string "Haha!\p"
+-	.string "The POKéMON are held inside\n"
+-	.string "these POKé BALLS.\p"
+-	.string "When I was young, I was a serious\n"
+-	.string "POKéMON TRAINER.\p"
+-	.string "But now, in my old age, I have\n"
+-	.string "only these three left.\p"
+-	.string "You can have one.\n"
+-	.string "Go on, choose!$"
++	.string "OAK: I checked the tracks myself.\p"
++	.string "They match no KANTO pattern.\n"
++	.string "This is not rumor or panic.\p"
++	.string "It is field data.\n"
++	.string "But the pattern is spreading.\p"
++	.string "Routes, weather, even POKéMON\n"
++	.string "behavior are changing together.\p"
++	.string "{PLAYER}, I need calm eyes,\n"
++	.string "and a brave heart in the field.$"
+ 
+ PalletTown_ProfessorOaksLab_Text_OakBePatientRival::
+ 	.string "OAK: Be patient, {RIVAL}.\n"
+@@ -1654,4 +1649,3 @@ PalletTown_ProfessorOaksLab_Text_RivalIllCompleteThePokedex::
+ 	.string "I think I'll try looking around\n"
+ 	.string "ONE ISLAND first…\p"
+ 	.string "Anyways, I'm outta here!$"
+-
