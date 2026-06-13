@@ -156,3 +156,70 @@ After those commands resolve, rerun:
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
 make -j$(sysctl -n hw.ncpu)
 ```
+
+## FireRed Baseline Build - 2026-06-13
+
+Clean command:
+
+```sh
+git -C engine/pokeemerald-expansion clean -fdX
+```
+
+Clean result:
+
+```text
+Exit code 0. No ignored build output was printed for removal.
+```
+
+Build command:
+
+```sh
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
+make -j"$(sysctl -n hw.ncpu)" firered
+```
+
+Build result:
+
+```text
+Exit code 0.
+tools/gbafix/gbafix pokefirered.elf -t"POKEMON FIRE" -cBPRE -m01 -r0 --silent
+arm-none-eabi-objcopy -O binary pokefirered.elf pokefirered.gba
+tools/gbafix/gbafix pokefirered.gba -p --silent
+```
+
+Final linker memory usage:
+
+```text
+Memory region         Used Size  Region Size  %age Used
+           EWRAM:      226864 B       256 KB     86.54%
+           IWRAM:       28644 B        32 KB     87.41%
+             ROM:    27044024 B        32 MB     80.60%
+```
+
+Non-fatal build warnings observed:
+
+```text
+ld: warning: ignoring file '/usr/local/lib/libz.dylib': found architecture 'i386', required architecture 'arm64'
+arm-none-eabi-ld: warning: ../../pokefirered.elf has a LOAD segment with RWX permissions
+```
+
+ROM verification:
+
+```sh
+ls -lh /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokefirered.gba
+```
+
+Result:
+
+```text
+-rwxr-xr-x@ 1 Antman  staff    32M Jun 13 02:48 /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokefirered.gba
+```
+
+Interpretation:
+
+The clean FireRed target baseline builds successfully with explicit devkitPro
+shell exports. Generated engine build output and `pokefirered.gba` remain
+ignored build artifacts and should not be committed.
