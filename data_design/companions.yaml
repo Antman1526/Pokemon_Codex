@@ -11,7 +11,7 @@ companions:
     can_help_gym_battles: false
     team_model: chapter_based_with_adaptive_slots
     adaptive_slots: 2
-    personality: quiet_warm_observant
+    personality: warm_direct_observant
     scene_focus: [route_observation, training, tag_battle, emotional_anchor, worldlink_notes]
     regional_presence:
       kanto: [pallet_tracks, route_1_follow, pewter_backup, lavender_warning, cinnabar_restraint, indigo_observer]

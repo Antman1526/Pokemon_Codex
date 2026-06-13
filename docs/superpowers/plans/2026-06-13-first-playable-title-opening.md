@@ -515,10 +515,13 @@ Script text for first pass:
 
 ```asm
 PalletTown_Frlg_Text_RedTracks::
-	.string "RED: These tracks are wrong.\p"
-	.string "Not dangerous. Not yet.\p"
-	.string "But a POKéMON from far away\n"
-	.string "walked through PALLET last night.$"
+	.string "RED: Morning, {PLAYER}.\p"
+	.string "I was hoping you would see this\n"
+	.string "before the adults cleaned it up.\p"
+	.string "These tracks are wrong for PALLET,\n"
+	.string "but I do not think it is danger yet.\p"
+	.string "Stay close today. If OAK is right,\n"
+	.string "your road starts bigger than mine did.$"
 
 PalletTown_Frlg_Text_BluePressure::
 	.string "BLUE: So RED noticed you now?\p"

@@ -5,7 +5,7 @@ companion:
   display_name: Red
   role: full_game_friend_mentor_companion
   protagonist_relationship: "Antman is a new Pallet trainer following Red's path."
-  dialogue_style: sparse_direct_warm
+  dialogue_style: warm_direct_observant
   usage_rule: "Red appears frequently, follows during selected segments, helps train, joins tag battles, but does not fight Antman's gym battles."
 
 states:

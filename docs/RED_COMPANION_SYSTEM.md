@@ -6,7 +6,7 @@ Date: 2026-06-13
 
 Red is Antman's friend from Pallet Town and the living connection to the original Pokemon Red path. He is not the protagonist. He is the trainer Antman grew up hearing about, then actually gets to travel with across the full game.
 
-Red should feel special without stealing the game. He is present often enough to feel like a real travel companion, not a rare cameo.
+Red should feel special without stealing the game. He is present often enough to feel like a real travel companion, not a rare cameo. Early Red is warmer and more talkative than classic silent Red because he is Antman's full-game friend, while still staying calm, observant, and decisive.
 
 Design rules:
 
@@ -29,7 +29,7 @@ Opening idea:
 - Antman wakes at home after strange weather and migration news.
 - Mom says Oak called for Antman by name.
 - Red is waiting near the Pallet grass line with Pikachu, watching unusual Pokemon movement.
-- Red says little but confirms Oak is worried.
+- Red speaks warmly and directly, confirming Oak is worried and treating Antman like someone he trusts.
 - Blue is irritated because Red is paying attention to Antman.
 - Red does not take a starter from Oak; he already has Pikachu or a compact early team.
 

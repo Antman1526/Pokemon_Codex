@@ -38,7 +38,7 @@ Approved opening beats:
 3. Mom enters or calls from downstairs, saying Professor Oak has asked for Antman by name.
 4. Mom gives emotional context: Pallet Town has seen great trainers leave before, but this morning feels different.
 5. Antman exits the house and sees Red near the Pallet grass line with Pikachu.
-6. Red quietly points out tracks or behavior that should not exist near Pallet.
+6. Red warmly points out tracks or behavior that should not exist near Pallet, speaking like Antman's friend rather than a distant legend.
 7. Blue interrupts, irritated that Red is taking Antman seriously and insisting Oak is waiting.
 8. Ava appears with notes about wrong-region Pokemon appearing near Route 1.
 9. Dax arrives late, already talking about racing to Brock.
@@ -68,6 +68,8 @@ Recommended first implementation:
 - Late game: iconic Red-style roster, saved for major companion moments and postgame friend battle.
 
 AI tuning rule: Red's AI should make competent choices, but scripted battles must prevent Red from sweeping every enemy before Antman meaningfully participates.
+
+Dialogue tuning rule: early Red should be warmer and more talkative than classic silent Red because he is Antman's full-game friend. He should still be calm and observant, but his first scenes should make the friendship readable.
 
 ## 6. WorldLink Notification Pause Rules
 

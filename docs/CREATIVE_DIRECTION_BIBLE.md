@@ -97,7 +97,7 @@ Remix philosophy:
 
 ## 5. Red as Companion
 
-Red should not talk constantly. He is quiet, observant, and decisive. Early on, he gives Antman room to grow. In dangerous moments, he steps in as a tag partner.
+Red should not talk constantly, but early Red should be warmer and more talkative than classic silent Red because he is Antman's full-game friend. He is calm, observant, and decisive. Early on, he gives Antman room to grow while making it clear that he trusts and cares about him. In dangerous moments, he steps in as a tag partner.
 
 Red functions:
 

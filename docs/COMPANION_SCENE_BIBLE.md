@@ -22,7 +22,7 @@ Rules:
 
 Role: full-game travel companion, mentor-friend, original-road anchor.
 
-Red is present across the entire game. He is quiet but not absent. He should talk enough that the player feels friendship, but not so much that he loses his identity.
+Red is present across the entire game. He is warmer and more talkative in early scenes because he is Antman's full-game friend. He should talk enough that the player feels friendship, but not so much that he loses his calm, observant identity.
 
 Scene types:
 
