@@ -99,7 +99,7 @@ early_kanto_progression:
 - Create: `data_design/kanto_progression_scaling.yaml`
 - Modify: `build_notes/MAC_OPENEMU_BUILD_NOTES.md`
 
-- [ ] **Step 1: Create title asset directory**
+- [x] **Step 1: Create title asset directory**
 
 Run:
 
@@ -113,7 +113,7 @@ Expected:
 assets/title_screen exists.
 ```
 
-- [ ] **Step 2: Create title-screen brief**
+- [x] **Step 2: Create title-screen brief**
 
 Create `assets/title_screen/NEXUS_RED_TITLE_SCREEN_BRIEF.md` with:
 
@@ -156,7 +156,7 @@ engine/pokeemerald-expansion/graphics/title_screen_frlg/firered/
 - Verify in OpenEmu after every asset insertion.
 ```
 
-- [ ] **Step 3: Create progression scaling data**
+- [x] **Step 3: Create progression scaling data**
 
 Create `data_design/kanto_progression_scaling.yaml` with:
 
@@ -230,7 +230,7 @@ early_kanto_progression:
     rule: "Blue counters by broad starter type, not by harsh rare-pick punishment."
 ```
 
-- [ ] **Step 4: Update macOS build notes**
+- [x] **Step 4: Update macOS build notes**
 
 Append this section to `build_notes/MAC_OPENEMU_BUILD_NOTES.md`:
 
@@ -259,7 +259,7 @@ data_design/kanto_progression_scaling.yaml
 ```
 ```
 
-- [ ] **Step 5: Validate and commit**
+- [x] **Step 5: Validate and commit**
 
 Run:
 
@@ -282,7 +282,7 @@ Design data validation passed.
 **Files:**
 - Create: `tools/validate_nexus_milestone.py`
 
-- [ ] **Step 1: Create validator**
+- [x] **Step 1: Create validator**
 
 Create `tools/validate_nexus_milestone.py`:
 
@@ -372,7 +372,7 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 2: Run validator and verify it fails before route data patch**
+- [x] **Step 2: Run validator and verify it fails before route data patch**
 
 Run:
 
@@ -386,7 +386,7 @@ Expected before Task 6:
 Nexus milestone validation failed:
 ```
 
-- [ ] **Step 3: Commit failing validator**
+- [x] **Step 3: Commit failing validator**
 
 Run:
 
