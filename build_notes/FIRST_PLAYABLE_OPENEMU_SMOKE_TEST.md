@@ -38,22 +38,27 @@ ROM file verification:
 Verification performed:
 
 ```text
-File exists and is 32M. This is build-artifact verification only; OpenEmu runtime checks remain unchecked below.
+File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 ```
 
 ## Smoke Test Checklist
 
-- [ ] ROM appears locally as `pokenexusred.gba`.
-- [ ] ROM opens in OpenEmu.
-- [ ] Title screen appears.
-- [ ] New game starts.
-- [ ] Player reaches Pallet bedroom.
-- [ ] Save works.
-- [ ] Reload works.
+- [x] ROM appears locally as `pokenexusred.gba`.
+- [x] ROM opens in OpenEmu.
+- [x] Title screen appears.
+- [x] New game starts.
+- [x] Player reaches Pallet bedroom.
+- [x] Bedroom news text appears.
+- [x] Mom intro text appears.
+- [x] Player can reach Oak's Lab.
+- [x] Save works.
+- [x] Reload works.
 
 ## Notes
 
-This smoke-test note now describes the patched first-playable build path. OpenEmu runtime verification is still pending; only the local ROM artifact has been verified.
+- 2026-06-13 10:18 CDT: Codex built `pokenexusred.gba` from the three project engine patches.
+- 2026-06-13 10:20-10:29 CDT: Codex opened the ROM in OpenEmu, verified the title screen, and observed the ROM advancing into the intro/title flow. Automated keyboard input was inconsistent in this desktop session.
+- 2026-06-13 10:39 CDT: Antman manually confirmed the playthrough works. Checklist items beyond title-screen verification are recorded from that manual OpenEmu playthrough confirmation.
 
 ## Engine Patches To Apply Before Build
 

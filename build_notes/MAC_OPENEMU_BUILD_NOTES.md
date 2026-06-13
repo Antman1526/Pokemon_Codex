@@ -216,3 +216,27 @@ engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
 This changes ROM header identity and output filename before custom title art replacement.
+
+## 11. First Playable OpenEmu Smoke Test
+
+Checked on: 2026-06-13
+
+Verified local ROM:
+
+```text
+/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokenexusred.gba
+```
+
+Applied project patches before build:
+
+```text
+patches/engine/0001-pallet-bedroom-mom-intro.patch
+patches/engine/0002-pallet-red-blue-scene.patch
+patches/engine/0003-oak-lab-nexus-intro.patch
+```
+
+Result:
+
+```text
+OpenEmu opens the ROM, the title screen appears, and Antman confirmed the first playable playthrough works.
+```
