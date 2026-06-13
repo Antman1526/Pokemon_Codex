@@ -1,0 +1,36 @@
+diff --git a/data/maps/PalletTown_Frlg/scripts.inc b/data/maps/PalletTown_Frlg/scripts.inc
+index 47e6a2bcf0..7e16c0d1b8 100644
+--- a/data/maps/PalletTown_Frlg/scripts.inc
++++ b/data/maps/PalletTown_Frlg/scripts.inc
+@@ -200,6 +200,10 @@ PalletTown_EventScript_OakTrigger::
+ 	msgbox PalletTown_Text_OakGrassUnsafeNeedMon
+ 	closemessage
+ 	delay 30
++	msgbox PalletTown_Frlg_Text_RedTracks
++	msgbox PalletTown_Frlg_Text_BluePressure
++	closemessage
++	delay 30
+ 	call_if_eq VAR_TEMP_1, 0, PalletTown_EventScript_OakLeadPlayerToLabLeft
+ 	call_if_eq VAR_TEMP_1, 1, PalletTown_EventScript_OakLeadPlayerToLabRight
+ 	opendoor 16, 13
+@@ -460,6 +464,20 @@ PalletTown_Text_OakGrassUnsafeNeedMon::
+ 	.string "I know!\n"
+ 	.string "Here, come with me!$"
+ 
++PalletTown_Frlg_Text_RedTracks::
++	.string "RED: Morning, {PLAYER}.\p"
++	.string "I was hoping you would see this\n"
++	.string "before the adults cleaned it up.\p"
++	.string "These tracks are wrong for PALLET,\n"
++	.string "but I do not think it is danger yet.\p"
++	.string "Stay close today. If OAK is right,\n"
++	.string "your road starts bigger than mine did.$"
++
++PalletTown_Frlg_Text_BluePressure::
++	.string "BLUE: So RED noticed you now?\p"
++	.string "Great. Come on, {PLAYER}.\n"
++	.string "OAK is waiting at the LAB.$"
++
+ PalletTown_Text_RaisingMonsToo::
+ 	.string "I'm raising POKéMON, too.\p"
+ 	.string "When they get strong, they can\n"
