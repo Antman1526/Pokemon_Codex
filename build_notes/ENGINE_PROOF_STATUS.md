@@ -142,7 +142,7 @@ arm-none-eabi-gcc (devkitARM) 16.1.0
 This is no longer a toolchain installation blocker. devkitARM is installed and
 usable when the build command exports `DEVKITPRO`, `DEVKITARM`, and `PATH`.
 Permanent shell configuration is still recommended later for convenience, but
-it is not required to attempt the next baseline build.
+it was not required for the successful baseline build recorded below.
 
 ## Proven Build Command
 
