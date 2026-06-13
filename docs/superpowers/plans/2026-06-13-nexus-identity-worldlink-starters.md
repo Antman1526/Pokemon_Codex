@@ -1109,7 +1109,7 @@ git commit -m "Add Route 3 Nexus anomaly encounters"
 **Files:**
 - Modify: `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`
 
-- [ ] **Step 1: Apply all milestone patches in order**
+- [x] **Step 1: Apply all milestone patches in order**
 
 Run:
 
@@ -1123,7 +1123,7 @@ git apply --directory=engine/pokeemerald-expansion patches/engine/0006-route1-3-
 git apply --directory=engine/pokeemerald-expansion patches/engine/0007-route3-anomaly-wild-battles.patch
 ```
 
-- [ ] **Step 2: Run validations**
+- [x] **Step 2: Run validations**
 
 Run:
 
@@ -1139,7 +1139,7 @@ Design data validation passed.
 Nexus milestone validation passed.
 ```
 
-- [ ] **Step 3: Build ROM**
+- [x] **Step 3: Build ROM**
 
 Run:
 
@@ -1157,7 +1157,7 @@ Expected:
 pokenexusred.gba
 ```
 
-- [ ] **Step 4: Verify ROM header**
+- [x] **Step 4: Verify ROM header**
 
 Run:
 
@@ -1172,6 +1172,8 @@ Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
 - [ ] **Step 5: OpenEmu smoke test**
+
+OpenEmu launch command completed on 2026-06-13. Manual in-emulator gameplay verification is still pending.
 
 Open:
 
@@ -1198,7 +1200,7 @@ Verify:
 - [ ] Reload works.
 ```
 
-- [ ] **Step 6: Restore submodule source**
+- [x] **Step 6: Restore submodule source**
 
 Run:
 
@@ -1220,7 +1222,7 @@ git -C engine/pokeemerald-expansion status --short
 
 prints no modified tracked source files.
 
-- [ ] **Step 7: Update smoke-test note**
+- [x] **Step 7: Update smoke-test note**
 
 Update `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md` with actual Task 8 results. If a runtime check fails, leave it unchecked and add the exact failure under notes.
 

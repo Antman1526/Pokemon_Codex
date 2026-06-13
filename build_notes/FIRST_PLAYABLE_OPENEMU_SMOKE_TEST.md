@@ -59,6 +59,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 10:18 CDT: Codex built `pokenexusred.gba` from the three project engine patches.
 - 2026-06-13 10:20-10:29 CDT: Codex opened the ROM in OpenEmu, verified the title screen, and observed the ROM advancing into the intro/title flow. Automated keyboard input was inconsistent in this desktop session.
 - 2026-06-13 10:39 CDT: Antman manually confirmed the playthrough works. Checklist items beyond title-screen verification are recorded from that manual OpenEmu playthrough confirmation.
+- 2026-06-13 18:40 CDT: Codex built the Nexus starter milestone from patches `0001` through `0007`. Design validation and Nexus milestone validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). OpenEmu launch command completed; in-emulator gameplay checklist still needs a manual pass.
 
 ## Engine Patches To Apply Before Build
 
@@ -84,3 +85,34 @@ Result:
 ```text
 Design data validation passed.
 ```
+
+## Nexus Starter Milestone Automated Verification
+
+Commands:
+
+```sh
+python3 tools/validate_design_data.py
+python3 tools/validate_nexus_milestone.py
+file engine/pokeemerald-expansion/pokenexusred.gba
+```
+
+Results:
+
+```text
+Design data validation passed.
+Nexus milestone validation passed.
+Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
+```
+
+Manual OpenEmu checklist still needed:
+
+- [ ] Oak offers regional starter menus.
+- [ ] Selected starter is level 5.
+- [ ] Blue's lab battle completes.
+- [ ] First WorldLink alert appears.
+- [ ] Route 1 wild encounters work.
+- [ ] Route 2 wild encounters work.
+- [ ] Route 3 wild encounters work.
+- [ ] Route 3 anomaly encounters work.
+- [ ] Save works after this milestone.
+- [ ] Reload works after this milestone.
