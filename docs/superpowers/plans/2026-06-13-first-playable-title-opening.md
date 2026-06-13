@@ -174,7 +174,10 @@ If no build artifacts exist, the command may print nothing.
 Run:
 
 ```bash
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
 make -j"$(sysctl -n hw.ncpu)" firered
 ```
 
@@ -187,7 +190,7 @@ tools/gbafix/gbafix pokefirered.gba ...
 The exact build log is long. The required output file is:
 
 ```text
-/Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/pokefirered.gba
+/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokefirered.gba
 ```
 
 - [ ] **Step 3: Verify ROM file exists**
@@ -195,7 +198,7 @@ The exact build log is long. The required output file is:
 Run:
 
 ```bash
-ls -lh /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/pokefirered.gba
+ls -lh /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokefirered.gba
 ```
 
 Expected:
@@ -218,7 +221,7 @@ Date: 2026-06-13
 Command:
 
 ```sh
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
 make -j"$(sysctl -n hw.ncpu)" firered
 ```
 
@@ -270,14 +273,17 @@ Expected:
 Run:
 
 ```bash
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
 make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
 Expected output file:
 
 ```text
-/Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/pokenexusred.gba
+/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
 Reasoning:
@@ -291,7 +297,7 @@ Reasoning:
 Run:
 
 ```bash
-ls -lh /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/pokenexusred.gba
+ls -lh /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
 Expected:
@@ -310,7 +316,10 @@ Append this to `build_notes/MAC_OPENEMU_BUILD_NOTES.md`:
 Use this command for the first Pokemon Nexus Red identity build:
 
 ```sh
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
 make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
@@ -459,7 +468,10 @@ PalletTown_PlayersHouse_1F_Text_AllGirlsLeaveOakLookingForYou::
 Run:
 
 ```bash
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
 make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
@@ -497,8 +509,8 @@ Expected:
 Run:
 
 ```bash
-sed -n '1,220p' /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/map.json
-sed -n '1,220p' /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/scripts.inc
+sed -n '1,220p' /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/map.json
+sed -n '1,220p' /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/scripts.inc
 ```
 
 Expected:
@@ -534,7 +546,10 @@ PalletTown_Frlg_Text_BluePressure::
 Run:
 
 ```bash
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
 make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
@@ -549,7 +564,7 @@ pokenexusred.gba
 Open:
 
 ```text
-/Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/pokenexusred.gba
+/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
 Expected:
@@ -585,7 +600,7 @@ Expected:
 Run:
 
 ```bash
-rg -n "ChooseStarter|starter|POKéMON|RIVAL|OAK|Bulbasaur|Charmander|Squirtle|Pokedex|POKéDEX" /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+rg -n "ChooseStarter|starter|POKéMON|RIVAL|OAK|Bulbasaur|Charmander|Squirtle|Pokedex|POKéDEX" /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
 ```
 
 Expected:
@@ -625,7 +640,7 @@ Use this text for Blue's pre-battle pressure:
 Run:
 
 ```bash
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
 make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
@@ -683,7 +698,7 @@ If a checklist item fails, leave it unchecked and add a concrete note under `## 
 Run:
 
 ```bash
-cd /Users/Antman/Desktop/Pokemon_Codex
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening
 python3 tools/validate_design_data.py
 ```
 

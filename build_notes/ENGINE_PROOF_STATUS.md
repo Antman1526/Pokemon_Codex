@@ -21,15 +21,14 @@ https://github.com/rh-hideout/pokeemerald-expansion.git
 Command:
 
 ```sh
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
 make -j$(sysctl -n hw.ncpu)
 ```
 
 Result:
 
 ```text
-Blocked: devkitARM is installed on disk, but the current shell does not
-resolve arm-none-eabi tools because DEVKITPRO/DEVKITARM and PATH are not set.
+Ready with explicit devkitPro shell exports.
 ```
 
 Confirmed available:
@@ -47,7 +46,7 @@ Confirmed installed on disk:
 - arm-none-eabi-as
 - dkp-pacman
 
-Current shell resolution:
+Default shell resolution:
 
 ```sh
 command -v arm-none-eabi-gcc || true
@@ -110,16 +109,37 @@ No formulae or casks found.
 The official devkitPro macOS installer appears to have installed devkitARM,
 but the shell environment still needs to be configured.
 
+Explicit build-session verification:
+
+```sh
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
+command -v arm-none-eabi-gcc
+command -v arm-none-eabi-as
+command -v dkp-pacman
+arm-none-eabi-gcc --version | sed -n '1p'
+```
+
+Result:
+
+```text
+/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc
+/opt/devkitpro/devkitARM/bin/arm-none-eabi-as
+/usr/local/bin/dkp-pacman
+arm-none-eabi-gcc (devkitARM) 16.1.0
+```
+
 ## Interpretation
 
-This is a local shell configuration blocker, not a design blocker and not an
-engine selection failure. The next build step is configuring devkitPro in the
-shell so `arm-none-eabi-gcc` and `arm-none-eabi-as` resolve without absolute
-paths, then rerunning the baseline `make`.
+This is no longer a toolchain installation blocker. devkitARM is installed and
+usable when the build command exports `DEVKITPRO`, `DEVKITARM`, and `PATH`.
+Permanent shell configuration is still recommended later for convenience, but
+it is not required to attempt the next baseline build.
 
 ## Next Step
 
-Configure the shell environment, then verify:
+Use explicit devkitPro exports in build commands:
 
 ```sh
 export DEVKITPRO=/opt/devkitpro
@@ -133,6 +153,6 @@ command -v dkp-pacman
 After those commands resolve, rerun:
 
 ```sh
-cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
 make -j$(sysctl -n hw.ncpu)
 ```
