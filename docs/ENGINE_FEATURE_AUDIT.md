@@ -77,6 +77,7 @@ Status labels:
 | --- | --- | --- |
 | 39 starter selection | project_code_needed | Multi-page menu or staged lab selection. |
 | WorldLink notifications | project_code_needed | Core signature system. |
+| WorldLink UI pages | project_code_needed | MVP pages: Feed, Rivals, Alerts, Settings. Full pages add Companions, Pokedex, Rematches, Transit. |
 | 10 rival state model | project_code_needed | Store progress IDs, not full simulation. |
 | Rival dynamic city encounters | project_code_needed | Hybrid scripted/simulated map appearances. |
 | Region unlock table | project_code_needed | Controls World Circuit progression. |

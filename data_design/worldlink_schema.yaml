@@ -1,0 +1,99 @@
+# WorldLink data/state schema planning.
+
+worldlink:
+  unlock_timing: after_blue_lab_battle
+  default_notification_mode: major_only
+  mvp_recent_message_capacity: 16
+  target_recent_message_capacity: 32
+
+top_level_pages:
+  mvp: [feed, rivals, alerts, settings]
+  full: [feed, rivals, companions, alerts, pokedex, rematches, transit, settings]
+
+pages:
+  feed:
+    purpose: "Recent activity list."
+    mvp: true
+    fields: [message_id, priority, source, read_state]
+  rivals:
+    purpose: "Track rival progress."
+    mvp: true
+    fields: [rival_id, current_region, last_known_location, badge_count, latest_activity, relationship_tone]
+  companions:
+    purpose: "Track friend/companion status."
+    mvp: false
+    fields: [companion_id, current_status, next_meeting_hint, training_available, tag_battle_available]
+  alerts:
+    purpose: "Villain, anomaly, swarm, and story alerts."
+    mvp: true
+    fields: [alert_id, priority, region, location, resolved_state]
+  pokedex:
+    purpose: "Optional pull-based checklist."
+    mvp: false
+    fields: [caught_count, seen_count, missing_by_region, active_hints, readiness_status]
+  rematches:
+    purpose: "Gym, rival, companion, and trainer rematches."
+    mvp: false
+    fields: [opponent_id, region, tier, suggested_cap, availability]
+  transit:
+    purpose: "Unlocked travel routes."
+    mvp: false
+    fields: [region_id, method, unlock_flag, destination_hub]
+  settings:
+    purpose: "Notification and utility settings."
+    mvp: true
+    fields: [notification_mode, rival_capture_mode, companion_notes, pokedex_hint_mode, infinite_repel_state]
+
+notification_modes:
+  all:
+    description: "Show major and minor updates."
+  major_only:
+    description: "Default. Show major rival/world events and store minor updates."
+  rivals_only:
+    description: "Show rival progress without broader world alerts."
+  silent:
+    description: "Store updates silently."
+
+delivery_rules:
+  immediate_safe_pop:
+    - rival_badge
+    - rival_region_entry
+    - villain_alert
+    - legendary_anomaly
+    - companion_request
+    - story_unlock
+  batch_until_safe:
+    - rival_capture_common
+    - rival_minor_movement
+    - flavor_note
+    - swarm_hint
+    - daycare_update
+  never_interrupt:
+    - battle
+    - gym_battle
+    - cutscene
+    - boss_event
+    - evolution
+    - starter_selection
+
+save_fields:
+  required:
+    - FLAG_NEXUS_WORLDLINK_OBTAINED
+    - VAR_NEXUS_WORLDLINK_UNREAD_COUNT
+    - worldlink_recent_message_slots
+    - worldlink_read_bitset
+    - worldlink_notification_mode
+  optional:
+    - worldlink_last_opened_chapter
+    - worldlink_pokedex_checklist_stage
+    - worldlink_transit_page_unlocked
+
+unlock_stages:
+  after_blue_lab_battle: [feed, rivals, alerts, settings]
+  after_brock: [pokedex_beta]
+  after_misty_or_vermilion: [rematches]
+  after_first_daycare: [daycare_remote]
+  after_kanto_league: [transit, regional_pokedex_checklist]
+  after_hoenn_rayquaza: [anomaly_tracker]
+  pre_world_nexus_championship: [full_pokedex_readiness]
+

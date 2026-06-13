@@ -41,6 +41,7 @@ def validate_required_files() -> list[str]:
         "kanto_boss_teams.yaml",
         "starter_selection_flow.yaml",
         "starter_rival_assignment.yaml",
+        "worldlink_schema.yaml",
     ]
     for name in required:
         if not (DATA_DIR / name).exists():

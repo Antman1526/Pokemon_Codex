@@ -117,6 +117,8 @@ WorldLink must support:
 - display message list,
 - mark read,
 - trigger message by story flag.
+- MVP pages: Feed, Rivals, Alerts, Settings.
+- no message interruption during battles, cutscenes, starter selection, or boss scenes.
 
 Minimum messages:
 
@@ -242,6 +244,7 @@ The vertical slice is acceptable when:
 - starter selection works for at least one starter in each category,
 - Blue/Ava/Dax intro sequence completes,
 - WorldLink can show queued messages,
+- WorldLink preserves read/unread state after save/load,
 - Route 1 battle works,
 - Viridian/Pewter map transitions work,
 - Brock can be beaten,

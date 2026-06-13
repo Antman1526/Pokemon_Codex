@@ -140,8 +140,23 @@ Acceptance:
 
 - at least three messages can be queued,
 - player can open WorldLink and read them,
+- Feed, Rivals, Alerts, and Settings pages exist as MVP pages,
 - one rival capture notification triggers before Viridian,
 - one rival badge/race notification triggers around Brock.
+- read/unread state survives save/load.
+
+### Task 2.4b - WorldLink MVP UI
+
+Implement the WorldLink MVP shell using `docs/WORLDLINK_SYSTEM_SPEC.md` and `data_design/worldlink_schema.yaml`.
+
+Acceptance:
+
+- WorldLink opens from key item or menu.
+- top-level MVP pages are Feed, Rivals, Alerts, Settings.
+- Blue, Ava, and Dax display basic status.
+- notification mode setting displays current mode.
+- no messages interrupt battles, starter selection, or boss scenes.
+- message capacity supports at least 16 recent messages.
 
 ### Task 2.5 - Brock and Rocket Anomaly
 
