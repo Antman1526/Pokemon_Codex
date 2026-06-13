@@ -1,0 +1,156 @@
+# Full Kanto chapter planning data.
+
+chapter:
+  id: kanto
+  target_hours: [12, 15]
+  visual_style: FireRed_first
+  standard_difficulty: friendly_mainline_hard
+  next_region: johto
+
+acts:
+  - id: act_1_pallet_to_pewter
+    purpose: "Establish Antman, Red, rivals, starters, WorldLink, and first Rocket anomaly."
+    required_maps: [pallet_town, oak_lab, route_1, viridian_city, route_2, viridian_forest, pewter_city, pewter_gym, pewter_museum_service_tunnel]
+    required_events:
+      - red_tracks_intro
+      - oak_world_pokedex_initiative
+      - full_39_starter_selection
+      - blue_mandatory_lab_battle
+      - ava_dax_registration
+      - brock_battle
+      - pewter_rocket_fossil_scan_theft
+    unlocks: [worldlink, running, bike, infinite_repel, first_level_cap]
+
+  - id: act_2_pewter_to_cerulean
+    purpose: "Turn the anomaly into a route mystery and introduce Misty as an early skill check."
+    required_maps: [route_3, mt_moon, cerulean_city, nugget_bridge, cerulean_gym]
+    required_events:
+      - mt_moon_rocket_moon_stone_operation
+      - gold_dust_invoice_hint
+      - ava_clefairy_night_notes
+      - nugget_bridge_world_circuit_qualifier
+      - misty_battle
+    unlocks: [trail_cutter, old_rod, rematch_board_tier_1]
+
+  - id: act_3_cerulean_to_vermilion
+    purpose: "Classic travel adventure with wider World Circuit scale."
+    required_maps: [bills_house, route_5_6_connector, vermilion_city, ss_anne, vermilion_gym]
+    required_events:
+      - bill_storage_metadata_anomaly
+      - red_worldlink_mt_moon_note
+      - ss_anne_foreign_trainers
+      - blue_ss_anne_battle
+      - rocket_smuggling_manifest
+      - lt_surge_battle
+    unlocks: [vs_seeker, good_rod]
+
+  - id: act_4_rock_tunnel_celadon_lavender
+    purpose: "Split Kanto between bright city corruption and ghost/dream horror."
+    required_maps: [rock_tunnel, lavender_town, pokemon_tower, celadon_city, rocket_game_corner, celadon_gym]
+    required_events:
+      - cave_lantern_intro
+      - lavender_moonlight_dream_static
+      - red_lavender_warning
+      - rocket_game_corner_hideout
+      - gold_dust_celadon_buyer
+      - erika_battle
+    unlocks: [cave_lantern, dig_kit, ability_capsule_vendor_teaser]
+
+  - id: act_5_saffron_fuchsia
+    purpose: "Turn Rocket from local crime into global infrastructure."
+    required_maps: [saffron_city, silph_co, saffron_gym, fuchsia_city, safari_zone, fuchsia_gym]
+    required_events:
+      - silph_co_takeover
+      - giovanni_sponsor_hint
+      - sabrina_moonlight_interference
+      - safari_anomaly_preserve
+      - koga_battle
+    unlocks: [portable_pc_full, tide_rider, rock_gauntlet, stronger_mart_tiers]
+
+  - id: act_6_cinnabar_viridian
+    purpose: "Reveal Phoenix foreshadowing and bring Giovanni back."
+    required_maps: [cinnabar_island, pokemon_mansion, cinnabar_lab, cinnabar_gym, viridian_gym]
+    required_events:
+      - cinnabar_mewtwo_echoes
+      - phoenix_research_assistants
+      - blaine_revival_warning
+      - red_cinnabar_restraint_scene
+      - giovanni_viridian_battle
+    unlocks: [sky_pass_local, kanto_rematches_tier_1, high_tier_kanto_marts]
+
+  - id: act_7_indigo
+    purpose: "Close the Kanto journey and open the World Circuit."
+    required_maps: [victory_road, indigo_plateau, elite_four_rooms, champion_room]
+    required_events:
+      - victory_road_rival_standings
+      - blue_pre_league_or_champion_battle
+      - red_watches_league
+      - elite_four
+      - lance_legendary_energy_warning
+      - oak_world_circuit_passport
+    unlocks: [world_circuit_passport, johto_travel, pokedex_readiness_beta, kanto_rematches_tier_2]
+
+gym_leaders:
+  brock:
+    badge: Boulder Badge
+    standard_cap: 12
+    standard_feel: friendly_mainline_hard
+    teaches: [team_planning, rock_type_answers]
+  misty:
+    badge: Cascade Badge
+    standard_cap: 18
+    standard_feel: fair_pressure
+    teaches: [speed_control, water_answers, status]
+  lt_surge:
+    badge: Thunder Badge
+    standard_cap: 24
+    standard_feel: tactical_spike
+    teaches: [ground_immunity, paralysis_management]
+  erika:
+    badge: Rainbow Badge
+    standard_cap: 30
+    standard_feel: status_puzzle
+    teaches: [status_recovery, setup_prevention]
+  koga:
+    badge: Soul Badge
+    standard_cap: 36
+    standard_feel: attrition_pressure
+    teaches: [poison, hazards, antidote_preparation]
+  sabrina:
+    badge: Marsh Badge
+    standard_cap: 42
+    standard_feel: special_attack_wall
+    teaches: [special_bulk, priority, dark_ghost_bug_answers]
+  blaine:
+    badge: Volcano Badge
+    standard_cap: 48
+    standard_feel: weather_offense
+    teaches: [sun_pressure, water_ground_rock_planning]
+  giovanni:
+    badge: Earth Badge
+    standard_cap: 55
+    standard_feel: boss_mastery
+    teaches: [balanced_team_building, criminal_tech_gimmicks]
+
+red_appearances:
+  - { act: act_1_pallet_to_pewter, map: pallet_town, state: present_in_town, purpose: "Notices strange tracks." }
+  - { act: act_1_pallet_to_pewter, map: route_1, state: follows_temporarily, purpose: "Connects Antman to Red's road." }
+  - { act: act_1_pallet_to_pewter, map: pewter_museum_service_tunnel, state: tag_partner_backup, purpose: "Backup partner if Ava/Dax is not selected." }
+  - { act: act_4_rock_tunnel_celadon_lavender, map: pokemon_tower, state: present_in_town, purpose: "Warns about dream danger." }
+  - { act: act_6_cinnabar_viridian, map: cinnabar_island, state: present_in_town, purpose: "Power and restraint scene." }
+  - { act: act_7_indigo, map: indigo_plateau, state: observer, purpose: "Watches Antman claim his path." }
+
+villain_foreshadowing:
+  moonlight:
+    maps: [pokemon_tower, saffron_gym]
+    payoff_region: johto
+  phoenix:
+    maps: [pewter_museum_service_tunnel, cinnabar_lab, pokemon_mansion]
+    payoff_region: sinnoh_hisui
+  gold_dust:
+    maps: [mt_moon, celadon_city, saffron_city, safari_zone]
+    payoff_region: hoenn
+  nexus_order:
+    maps: [silph_co, viridian_gym, indigo_plateau]
+    reveal_timing: "Hints only in Kanto; no full name until later."
+

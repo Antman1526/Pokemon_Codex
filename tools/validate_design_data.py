@@ -35,6 +35,8 @@ def validate_required_files() -> list[str]:
         "red_companion.yaml",
         "availability_channels.yaml",
         "region_activity_rewards.yaml",
+        "kanto_chapter.yaml",
+        "kanto_worldlink_messages.yaml",
     ]
     for name in required:
         if not (DATA_DIR / name).exists():

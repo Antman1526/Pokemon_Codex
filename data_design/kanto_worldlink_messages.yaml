@@ -1,0 +1,58 @@
+# Kanto WorldLink message planning.
+
+messages:
+  - id: WL_KANTO_INIT_COHORT
+    trigger: FLAG_NEXUS_WORLDLINK_OBTAINED
+    priority: major
+    text: "WorldLink initialized. Cohort trainers registered: Blue, Ava, Dax."
+
+  - id: WL_KANTO_RED_ROUTE_NOTE
+    trigger: FLAG_NEXUS_RED_ROUTE1_COMPANION_DONE
+    priority: flavor
+    text: "Red marked unusual tracks near Route 1. Oak wants you to compare them with your Pokedex."
+
+  - id: WL_KANTO_AVA_ROUTE1_STARTER
+    trigger: FLAG_NEXUS_ROUTE1_AVA_NOTIFICATION
+    priority: minor
+    text: "Ava spotted a Johto starter near Route 1. Habitat notes updated."
+
+  - id: WL_KANTO_DAX_VIRIDIAN_FOREST
+    trigger: FLAG_NEXUS_VIRIDIAN_DAX_NOTIFICATION
+    priority: minor
+    text: "Dax beat a Bug Catcher and entered Viridian Forest. He says Brock is next."
+
+  - id: WL_KANTO_BLUE_ROUTE22
+    trigger: FLAG_NEXUS_BLUE_ROUTE22
+    priority: minor
+    text: "Blue was seen testing his starter near Route 22."
+
+  - id: WL_KANTO_PEWTER_ROCKET_ALERT
+    trigger: FLAG_NEXUS_PEWTER_ROCKET_ALERT
+    priority: major
+    text: "WorldLink Alert: Rocket activity detected near the Pewter Museum service tunnel."
+
+  - id: WL_KANTO_MT_MOON_GOLD_DUST_HINT
+    trigger: FLAG_NEXUS_MT_MOON_GOLD_DUST_INVOICE
+    priority: minor
+    text: "Ava found an invoice stamped with a gold lapel mark. Buyer unknown."
+
+  - id: WL_KANTO_RED_MT_MOON_NOTE
+    trigger: FLAG_NEXUS_RED_MT_MOON_NOTE
+    priority: flavor
+    text: "Red is checking a second trail near Mt. Moon. He says Rocket is moving faster than usual."
+
+  - id: WL_KANTO_SILPH_GLOBAL_MANIFEST
+    trigger: FLAG_NEXUS_SILPH_MANIFEST_FOUND
+    priority: major
+    text: "Silph manifest decoded: Slateport, Castelia, Lumiose, Wyndon, and Mesagoza are listed as transfer points."
+
+  - id: WL_KANTO_LEAGUE_INVITE
+    trigger: FLAG_NEXUS_EARTH_BADGE
+    priority: major
+    text: "All Kanto badges verified. Indigo Plateau registration is open."
+
+  - id: WL_KANTO_WORLD_CIRCUIT_UNLOCKED
+    trigger: FLAG_NEXUS_KANTO_LEAGUE_CLEARED
+    priority: major
+    text: "World Circuit Passport approved. Johto travel is now available."
+

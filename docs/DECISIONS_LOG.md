@@ -71,3 +71,27 @@ Implication: Standard Brock should be beatable by normal players who explore and
 Decision: use `https://github.com/Antman1526/Pokemon_Codex` as the GitHub repository target.
 
 Implication: local git should be initialized with this remote, but generated ROM/save/patch artifacts must remain ignored.
+
+### Red Frequency
+
+Decision: Red should appear at least once in every region, with heavier presence in Kanto and major crisis chapters.
+
+Implication: Red becomes a recurring friend/companion thread across the whole game without becoming a constant follower or extra rival feed.
+
+### Battle Gimmick Scope
+
+Decision: Mega Evolution, Z-Moves, Dynamax/Gigantamax, and Terastallization should remain region-limited until postgame.
+
+Implication: each region keeps a distinct mechanical identity. Postgame facilities can allow broader gimmick mixing after the player has learned each system.
+
+### National Dex Guidance
+
+Decision: WorldLink should actively guide players toward catching all Pokemon before the final boss, without making completion mandatory.
+
+Implication: add Pokedex Readiness, habitat hints, swarm reports, missing-species summaries, and rival tips before the World Nexus Championship.
+
+### Next Design Priority
+
+Decision: deepen Full Kanto first.
+
+Implication: Kanto must become the tone-setting 12-15 hour foundation with Red, Blue, Ava, Dax, Rocket, Moonlight, Phoenix, Gold Dust, early rare Pokemon, and a complete Indigo League arc.
