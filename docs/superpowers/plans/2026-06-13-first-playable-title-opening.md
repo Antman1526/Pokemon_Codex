@@ -59,6 +59,17 @@ Files to create during execution:
 - `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`  
   Human-readable smoke-test record for first boot, title identity, new game start, save, reload, and first Pallet scene.
 
+- `patches/engine/0001-pallet-bedroom-mom-intro.patch`  
+  Project-owned patch for the first Pallet bedroom and Mom text changes. Keep engine customizations in patch files until the project has a writable engine fork; do not commit parent gitlinks pointing at local-only submodule commits.
+
+Engine patch rule:
+
+- The `engine/pokeemerald-expansion` submodule tracks upstream engine source.
+- Local engine source edits may be applied in the worktree to build and test.
+- Committed project changes must be stored as patch files under `patches/engine/`.
+- Do not commit a submodule pointer to a local-only engine commit.
+- Before final merge, the submodule should be clean or intentionally documented as patched for local build testing.
+
 ---
 
 ## Task 1: Install and Verify GBA Toolchain
@@ -366,8 +377,10 @@ Expected:
 ## Task 4: Replace Pallet Bedroom and Mom Intro Text
 
 **Files:**
-- Modify: `engine/pokeemerald-expansion/data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc`
-- Modify: `engine/pokeemerald-expansion/data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc`
+- Temporarily modify for build: `engine/pokeemerald-expansion/data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc`
+- Temporarily modify for build: `engine/pokeemerald-expansion/data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc`
+- Create: `patches/engine/0001-pallet-bedroom-mom-intro.patch`
+- Modify: `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`
 
 - [ ] **Step 1: Update bedroom TV/NES text**
 
@@ -463,7 +476,26 @@ PalletTown_PlayersHouse_1F_Text_AllGirlsLeaveOakLookingForYou::
 	.string "But this morning feels different.$"
 ```
 
-- [ ] **Step 5: Build**
+- [ ] **Step 5: Generate project patch**
+
+Run from the parent repo root:
+
+```bash
+mkdir -p patches/engine
+git -C engine/pokeemerald-expansion diff -- \
+  data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc \
+  data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc \
+  > patches/engine/0001-pallet-bedroom-mom-intro.patch
+test -s patches/engine/0001-pallet-bedroom-mom-intro.patch
+```
+
+Expected:
+
+```text
+patches/engine/0001-pallet-bedroom-mom-intro.patch exists and is non-empty.
+```
+
+- [ ] **Step 6: Build**
 
 Run:
 
@@ -481,12 +513,40 @@ Expected:
 pokenexusred.gba
 ```
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Record patch application in smoke-test note**
+
+Append this to `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`:
+
+```markdown
+## Applied Engine Patches
+
+- `patches/engine/0001-pallet-bedroom-mom-intro.patch` - Pallet bedroom news and Mom intro text.
+```
+
+- [ ] **Step 8: Restore submodule source after build**
 
 Run:
 
 ```bash
-git add engine/pokeemerald-expansion build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md
+git -C engine/pokeemerald-expansion restore -- \
+  data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc \
+  data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc
+```
+
+Expected:
+
+```text
+git -C engine/pokeemerald-expansion status --short
+```
+
+shows only ignored build artifacts, not modified source files.
+
+- [ ] **Step 9: Commit**
+
+Run:
+
+```bash
+git add patches/engine/0001-pallet-bedroom-mom-intro.patch build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md
 git commit -m "Add Pallet bedroom and Mom intro text"
 ```
 
