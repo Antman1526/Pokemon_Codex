@@ -46,6 +46,10 @@ File exists and is 32M. This is build-artifact verification only; OpenEmu runtim
 
 Baseline FireRed-target build before Pokemon Nexus Red content edits.
 
+## Applied Engine Patches
+
+- `patches/engine/0001-pallet-bedroom-mom-intro.patch` - Pallet bedroom news and Mom intro text.
+
 ## Validation
 
 Command:

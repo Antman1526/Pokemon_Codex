@@ -1,0 +1,62 @@
+diff --git a/data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc b/data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc
+index d2e0959fb7..48eee67702 100644
+--- a/data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc
++++ b/data/maps/PalletTown_PlayersHouse_1F_Frlg/scripts.inc
+@@ -54,18 +54,22 @@ PalletTown_PlayersHouse_1F_EventScript_TVScreenFemale::
+ 	return
+ 
+ PalletTown_PlayersHouse_1F_Text_AllBoysLeaveOakLookingForYou::
+-	.string "MOM: …Right.\n"
+-	.string "All boys leave home someday.\l"
+-	.string "It said so on TV.\p"
+-	.string "Oh, yes. PROF. OAK, next door, was\n"
+-	.string "looking for you.$"
++	.string "MOM: PROF. OAK called before\n"
++	.string "sunrise. He sounded worried.\p"
++	.string "They say strange POKéMON tracks\n"
++	.string "appeared near ROUTE 1.\p"
++	.string "PALLET has seen great trainers\n"
++	.string "leave before, {PLAYER}.\p"
++	.string "But this morning feels different.$"
+ 
+ PalletTown_PlayersHouse_1F_Text_AllGirlsLeaveOakLookingForYou::
+-	.string "MOM: …Right.\n"
+-	.string "All girls dream of traveling.\l"
+-	.string "It said so on TV.\p"
+-	.string "Oh, yes. PROF. OAK, next door, was\n"
+-	.string "looking for you.$"
++	.string "MOM: PROF. OAK called before\n"
++	.string "sunrise. He sounded worried.\p"
++	.string "They say strange POKéMON tracks\n"
++	.string "appeared near ROUTE 1.\p"
++	.string "PALLET has seen great trainers\n"
++	.string "leave before, {PLAYER}.\p"
++	.string "But this morning feels different.$"
+ 
+ PalletTown_PlayersHouse_1F_Text_YouShouldTakeQuickRest::
+ 	.string "MOM: {PLAYER}!\n"
+diff --git a/data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc b/data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc
+index 152961253a..b7d54e9429 100644
+--- a/data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc
++++ b/data/maps/PalletTown_PlayersHouse_2F_Frlg/scripts.inc
+@@ -29,12 +29,13 @@ PalletTown_PlayersHouse_2F_EventScript_Sign::
+ 	end
+ 
+ PalletTown_PlayersHouse_2F_Text_PlayedWithNES::
+-	.string "{PLAYER} played with the NES.\p"
+-	.string "…Okay!\n"
+-	.string "It's time to go!$"
++	.string "{PLAYER} checked the news.\p"
++	.string "Strange weather is moving across\n"
++	.string "KANTO before sunrise.\p"
++	.string "PROF. OAK says unusual POKéMON\n"
++	.string "tracks were found near PALLET.$"
+ 
+ PalletTown_PlayersHouse_2F_Text_PressLRForHelp::
+-	.string "It's a posted notice…\p"
+-	.string "If you're confused, ask for HELP!\n"
+-	.string "Press the L or R Button!$"
+-
++	.string "A note from MOM is on the desk.\p"
++	.string "PROF. OAK called early.\n"
++	.string "He asked for you by name.$"
