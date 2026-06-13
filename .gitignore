@@ -1,0 +1,25 @@
+# Local build outputs and ROM artifacts
+*.gba
+*.gb
+*.gbc
+*.nds
+*.sav
+*.srm
+*.sa1
+*.fla
+*.ips
+*.bps
+*.ups
+
+# Build/cache folders
+build/
+dist/
+out/
+*.o
+*.elf
+*.map
+
+# macOS/editor noise
+.DS_Store
+.vscode/
+

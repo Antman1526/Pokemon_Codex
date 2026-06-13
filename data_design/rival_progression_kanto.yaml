@@ -1,0 +1,96 @@
+# Kanto rival progression planning data.
+
+chapter: kanto
+
+progression_bands:
+  kanto_start:
+    player_range: "Pallet through Route 1"
+    companions:
+      red:
+        location: Pallet Town / Route 1
+        event: notices_unfamiliar_tracks
+        notification: null
+    rivals:
+      blue:
+        location: Oak Lab
+        event: mandatory_first_battle
+        notification: null
+      ava:
+        location: Oak Lab / Route 1
+        event: registers_research_notes
+        notification: "Ava spotted a Johto starter near Route 1."
+      dax:
+        location: Oak Lab / Route 1
+        event: rushes_ahead
+        notification: "Dax is heading for Viridian and talking about Brock already."
+
+  viridian_arrival:
+    player_range: "First Viridian visit"
+    rivals:
+      blue:
+        location: Route 22
+        event: optional_battle_tease
+        notification: "Blue was seen testing his starter near Route 22."
+      ava:
+        location: Viridian Pokecenter
+        event: worldlink_tutorial
+        notification: "Ava uploaded early habitat notes to WorldLink."
+      dax:
+        location: Viridian Forest entrance
+        event: bug_catcher_battle_report
+        notification: "Dax beat a Bug Catcher and entered Viridian Forest."
+
+  pre_brock:
+    player_range: "Viridian Forest through Pewter"
+    rivals:
+      blue:
+        location: Pewter City
+        event: badge_race_dialogue
+        notification: "Blue reached Pewter and is studying Brock's team."
+      ava:
+        location: Pewter Museum
+        event: fossil_curiosity
+        notification: "Ava found unusual fossil scan requests at the museum."
+      dax:
+        location: Pewter Gym lobby
+        event: loses_or_wins_to_brock_based_on_flag
+        notification: "Dax challenged Brock before you. He will not say how it went."
+
+  post_brock:
+    player_range: "After Boulder Badge"
+    companions:
+      red:
+        location: Route 22 or Mt. Moon lead
+        event: leaves_to_investigate_parallel_route
+        notification: "Red is checking a second trail near Mt. Moon."
+    rivals:
+      blue:
+        location: Route 3 gate
+        event: rival_battle_or_warning
+        notification: "Blue earned the Boulder Badge and moved toward Mt. Moon."
+      ava:
+        location: Museum service tunnel
+        event: rocket_tag_support
+        notification: "Ava requested backup near the Pewter Museum service tunnel."
+      dax:
+        location: Museum service tunnel
+        event: rocket_double_battle_partner
+        notification: "Dax found Rocket grunts carrying fossil scan data."
+
+relationship_changes:
+  help_ava_at_museum:
+    ava:
+      trust: 5
+      team_up_readiness: 5
+  beat_dax_before_brock:
+    dax:
+      respect: 5
+      rivalry: 5
+  lose_to_blue_lab:
+    blue:
+      jealousy: -5
+      rivalry: 5
+  beat_blue_lab:
+    blue:
+      jealousy: 5
+      rivalry: 5

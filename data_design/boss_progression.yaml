@@ -1,0 +1,132 @@
+# Boss and level-cap planning data for Pokemon Nexus Red.
+# This is design data, not direct engine trainer data.
+
+difficulty_modes:
+  casual:
+    cap_type: soft
+    item_rules: normal
+    ai_profile: forgiving
+  standard:
+    cap_type: soft
+    item_rules: normal
+    ai_profile: smart
+  hard:
+    cap_type: hard
+    item_rules: limited
+    ai_profile: strong
+  expert:
+    cap_type: hard
+    item_rules: no_in_battle_items
+    ai_profile: competitive
+  nuzlocke:
+    cap_type: hard
+    item_rules: configurable_default_banned
+    ai_profile: strong
+
+kanto_vertical_slice:
+  blue_lab_battle:
+    level_cap: 5
+    story_role: "Classic first rival pressure."
+    standard_team:
+      - slot: starter_counter
+        level: 5
+    hard_team:
+      - slot: starter_counter
+        level: 5
+        notes: "Use better opening move if legal."
+
+  dax_route_1_battle:
+    level_cap: 7
+    story_role: "Introduces Dax as speed and offense rival."
+    standard_team:
+      - species_pool: [Cyndaquil, Torchic, Chimchar, Scorbunny, Fuecoco]
+        level: 6
+      - species: Rattata
+        level: 5
+    hard_team:
+      - species_pool: [Cyndaquil, Torchic, Chimchar, Scorbunny, Fuecoco]
+        level: 7
+      - species: Shroomish
+        level: 6
+        notes: "Coverage into Brock prep; avoid oppressive status on Standard."
+
+  ava_route_2_optional_battle:
+    level_cap: 9
+    story_role: "Shows Ava catches rare Pokemon and values research."
+    standard_team:
+      - species_pool: [Chikorita, Popplio, Sprigatito]
+        level: 7
+      - species: Ralts
+        level: 6
+    hard_team:
+      - species_pool: [Chikorita, Popplio, Sprigatito]
+        level: 8
+      - species: Ralts
+        level: 7
+      - species: Eevee
+        level: 7
+
+  brock_pewter_gym:
+    level_cap:
+      casual: 14
+      standard: 12
+      hard: 14
+      expert: 14
+      nuzlocke: 14
+    story_role: "First badge and first proof that starter freedom still needs team planning."
+    standard_tuning: friendly_mainline_hard
+    standard_team:
+      - species: Geodude
+        level: 10
+      - species: Onix
+        level: 12
+        notes: "Recognizable Brock ace; challenging but not a hard counter wall."
+    hard_team:
+      - species: Geodude
+        level: 12
+      - species: Nosepass
+        level: 12
+      - species: Onix
+        level: 14
+    expert_team:
+      - species: Geodude
+        level: 12
+        notes: "Sturdy/berry if supported."
+      - species: Roggenrola
+        level: 13
+      - species: Onix
+        level: 14
+        notes: "Coverage move allowed, but avoid hard countering every starter."
+
+  rocket_museum_double_battle:
+    level_cap: 15
+    story_role: "First Rocket/Nexus foreshadowing and first tag battle with Dax or Ava."
+    standard_team:
+      - trainer: rocket_grunt_a
+        pokemon:
+          - { species: Zubat, level: 11 }
+          - { species: Ekans, level: 12 }
+      - trainer: rocket_grunt_b
+        pokemon:
+          - { species: Koffing, level: 11 }
+          - { species: Sandile, level: 12, notes: "Foreign Pokemon hints at smuggling." }
+    hard_team:
+      - trainer: rocket_grunt_a
+        pokemon:
+          - { species: Zubat, level: 13 }
+          - { species: Ekans, level: 13 }
+      - trainer: rocket_grunt_b
+        pokemon:
+          - { species: Koffing, level: 13 }
+          - { species: Sandile, level: 14 }
+
+full_kanto_cap_curve:
+  brock: 12
+  misty: 18
+  lt_surge: 24
+  erika: 30
+  koga: 36
+  sabrina: 42
+  blaine: 48
+  giovanni: 55
+  elite_four: 60

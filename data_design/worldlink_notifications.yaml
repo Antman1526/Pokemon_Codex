@@ -1,0 +1,81 @@
+# WorldLink notification design templates.
+
+settings:
+  default_mode: major_only
+  modes:
+    all: "Show major and minor updates."
+    major_only: "Show badges, region entries, villain alerts, rival requests, and legendary anomalies."
+    rivals_only: "Show rival progress without broader world alerts."
+    off: "Store updates silently in the WorldLink feed."
+
+categories:
+  rival_badge:
+    priority: major
+    delivery: immediate
+    templates:
+      - "{rival} defeated {leader} and earned the {badge} Badge."
+      - "{rival} cleared {challenge}. Your World Circuit ranking changed."
+
+  rival_capture:
+    priority: minor
+    delivery: batch_on_town_entry
+    templates:
+      - "{rival} caught {species} near {location}."
+      - "{rival} added {species} to their team after training around {location}."
+
+  rival_rare_capture:
+    priority: major
+    delivery: town_entry_or_immediate
+    templates:
+      - "{rival} reported a rare {species} sighting near {location}."
+      - "{rival} caught a rare {species}. Check the Pokedex habitat notes."
+
+  rival_loss:
+    priority: flavor
+    delivery: batch_on_town_entry
+    templates:
+      - "{rival} lost to {opponent} and is training near {location}."
+      - "{rival} retreated from {dungeon}. They marked a safer route for you."
+
+  rival_request:
+    priority: major
+    delivery: immediate
+    templates:
+      - "{rival} wants a rematch in {location}."
+      - "{rival} requested backup for a tag battle near {location}."
+
+  rival_region_entry:
+    priority: major
+    delivery: immediate
+    templates:
+      - "{rival} has entered {region}."
+      - "{rival} checked in from {hub}. Their next target is {objective}."
+
+  villain_alert:
+    priority: major
+    delivery: immediate
+    templates:
+      - "WorldLink Alert: {team} activity reported near {location}."
+      - "{authority} issued a warning about {team} movement around {location}."
+
+  legendary_anomaly:
+    priority: major
+    delivery: immediate
+    templates:
+      - "Anomaly detected: {legendary_signal} energy spiked near {location}."
+      - "Professor Oak flagged unusual readings from {location}."
+
+  daycare_update:
+    priority: minor
+    delivery: silent_or_town_entry
+    templates:
+      - "Daycare update: an Egg is ready."
+      - "Daycare update: your Pokemon seem more compatible than before."
+
+  swarm_alert:
+    priority: minor
+    delivery: town_entry
+    templates:
+      - "Swarm alert: {species} are appearing near {location} during {time_or_weather}."
+      - "Pokedex habitat update: {species} outbreak reported at {location}."
+

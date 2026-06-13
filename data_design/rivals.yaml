@@ -1,0 +1,173 @@
+# Rival design data for Pokemon Nexus Red.
+
+rivals:
+  - rival_id: blue
+    display_name: Blue Oak
+    origin_region: Kanto
+    role: classic_badge_rival
+    starting_status: starts_with_player
+    starter_policy: counter_pick
+    personality: arrogant_gifted_insecure
+    team_archetype: balanced_competitive_coverage
+    relationship_defaults:
+      respect: 10
+      trust: 0
+      rivalry: 90
+      jealousy: 75
+      team_up_readiness: 0
+    chapter_appearances: [kanto, johto, world_nexus_championship]
+    notification_behavior: major_only
+
+  - rival_id: ava
+    display_name: Ava Pine
+    origin_region: Kanto
+    role: research_friend_rival
+    starting_status: starts_with_player
+    starter_policy: prefers_grass_or_support_starter
+    personality: friendly_brave_research_focused
+    team_archetype: bulky_support_status_rare_captures
+    relationship_defaults:
+      respect: 35
+      trust: 50
+      rivalry: 35
+      jealousy: 5
+      team_up_readiness: 60
+    chapter_appearances: [kanto, johto, hoenn, sinnoh_hisui, paldea, world_nexus_championship]
+    notification_behavior: captures_and_research
+
+  - rival_id: dax
+    display_name: Dax Vale
+    origin_region: Kanto
+    role: battle_pressure_rival
+    starting_status: starts_with_player
+    starter_policy: prefers_fire_or_offense_starter
+    personality: aggressive_proud_speedrunner
+    team_archetype: offense_hazards_priority_weather
+    relationship_defaults:
+      respect: 20
+      trust: 10
+      rivalry: 85
+      jealousy: 45
+      team_up_readiness: 20
+    chapter_appearances: [kanto, hoenn, galar, world_nexus_championship]
+    notification_behavior: battles_badges_losses
+
+  - rival_id: silver
+    display_name: Silver
+    origin_region: Johto
+    role: anti_rocket_redemption
+    starting_status: joins_in_johto
+    starter_policy: johto_edge_pick
+    personality: harsh_wounded_driven
+    team_archetype: fast_physical_dark_poison_balance
+    relationship_defaults:
+      respect: 5
+      trust: 0
+      rivalry: 70
+      jealousy: 30
+      team_up_readiness: 5
+    chapter_appearances: [johto, kanto, world_nexus_championship]
+    notification_behavior: rocket_activity
+
+  - rival_id: hoenn_researcher
+    display_name: May or Brendan
+    origin_region: Hoenn
+    role: ecology_weather_rival
+    starting_status: joins_in_hoenn
+    starter_policy: hoenn_remaining_pick
+    personality: upbeat_practical_field_researcher
+    team_archetype: weather_terrain_regional_balance
+    relationship_defaults:
+      respect: 30
+      trust: 45
+      rivalry: 35
+      jealousy: 5
+      team_up_readiness: 55
+    chapter_appearances: [hoenn, world_nexus_championship]
+    notification_behavior: weather_and_ecology
+
+  - rival_id: sinnoh_researcher
+    display_name: Dawn or Lucas
+    origin_region: Sinnoh
+    role: myth_research_rival
+    starting_status: joins_in_sinnoh
+    starter_policy: sinnoh_or_hisui_theme
+    personality: patient_scholarly_curious
+    team_archetype: psychic_steel_dragon_setup_balance
+    relationship_defaults:
+      respect: 30
+      trust: 40
+      rivalry: 30
+      jealousy: 0
+      team_up_readiness: 50
+    chapter_appearances: [sinnoh_hisui, world_nexus_championship]
+    notification_behavior: ruins_and_anomalies
+
+  - rival_id: n
+    display_name: N
+    origin_region: Unova
+    role: ethical_mirror
+    starting_status: joins_in_unova
+    starter_policy: no_fixed_starter_local_friendship_team
+    personality: compassionate_intense_philosophical
+    team_archetype: local_pokemon_rotating_natural_teams
+    relationship_defaults:
+      respect: 20
+      trust: 15
+      rivalry: 60
+      jealousy: 0
+      team_up_readiness: 20
+    chapter_appearances: [unova, world_nexus_championship]
+    notification_behavior: story_major_only
+
+  - rival_id: kalos_rival
+    display_name: Serena or Calem
+    origin_region: Kalos
+    role: mega_style_rival
+    starting_status: joins_in_kalos
+    starter_policy: kalos_remaining_pick
+    personality: composed_stylish_ambitious
+    team_archetype: mega_ace_elegant_coverage
+    relationship_defaults:
+      respect: 30
+      trust: 20
+      rivalry: 55
+      jealousy: 15
+      team_up_readiness: 30
+    chapter_appearances: [kalos, world_nexus_championship]
+    notification_behavior: mega_progress
+
+  - rival_id: marnie
+    display_name: Marnie
+    origin_region: Galar
+    role: spectacle_corruption_ally_rival
+    starting_status: joins_in_galar
+    starter_policy: morpeko_anchor_plus_galar_support
+    personality: grounded_dry_loyal
+    team_archetype: dark_fairy_pressure_anti_meta
+    relationship_defaults:
+      respect: 35
+      trust: 30
+      rivalry: 50
+      jealousy: 0
+      team_up_readiness: 50
+    chapter_appearances: [galar, world_nexus_championship]
+    notification_behavior: tournament_and_corruption
+
+  - rival_id: nemona
+    display_name: Nemona
+    origin_region: Paldea
+    role: final_battle_joy_rival
+    starting_status: joins_in_paldea
+    starter_policy: paldea_remaining_pick
+    personality: joyful_relentless_battle_genius
+    team_archetype: high_skill_offensive_balance_tera
+    relationship_defaults:
+      respect: 50
+      trust: 35
+      rivalry: 95
+      jealousy: 0
+      team_up_readiness: 40
+    chapter_appearances: [paldea, world_nexus_championship]
+    notification_behavior: battles_and_challenges
+

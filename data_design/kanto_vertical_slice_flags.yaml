@@ -1,0 +1,55 @@
+# Proposed story/event flags for the Kanto vertical slice.
+
+flags:
+  - id: FLAG_NEXUS_STARTER_CHOSEN
+    purpose: "Player has selected one of the 39 starters."
+  - id: FLAG_NEXUS_WORLDLINK_OBTAINED
+    purpose: "Player received WorldLink from Professor Oak."
+  - id: FLAG_NEXUS_RED_MET
+    purpose: "Player met Red in Pallet Town."
+  - id: FLAG_NEXUS_RED_ROUTE1_COMPANION_DONE
+    purpose: "Red's optional/brief Route 1 companion beat resolved."
+  - id: FLAG_NEXUS_BLUE_LAB_BATTLE_DONE
+    purpose: "Mandatory opening Blue battle resolved."
+  - id: FLAG_NEXUS_AVA_REGISTERED
+    purpose: "Ava registered as active rival."
+  - id: FLAG_NEXUS_DAX_REGISTERED
+    purpose: "Dax registered as active rival."
+  - id: FLAG_NEXUS_ROUTE1_AVA_NOTIFICATION
+    purpose: "Ava Route 1 rare starter notification sent."
+  - id: FLAG_NEXUS_VIRIDIAN_DAX_NOTIFICATION
+    purpose: "Dax Viridian Forest notification sent."
+  - id: FLAG_NEXUS_BROCK_LEVEL_CAP_ACTIVE
+    purpose: "Brock cap is active under selected difficulty."
+  - id: FLAG_NEXUS_BOULDER_BADGE
+    purpose: "Brock defeated in Nexus progression."
+  - id: FLAG_NEXUS_PEWTER_ROCKET_ALERT
+    purpose: "Post-Brock Rocket alert queued."
+  - id: FLAG_NEXUS_MUSEUM_ROCKET_EVENT_DONE
+    purpose: "Museum service tunnel Rocket anomaly cleared."
+
+vars:
+  - id: VAR_NEXUS_PLAYER_STARTER_SPECIES
+    purpose: "Species ID of player starter for rival logic and dialogue."
+  - id: VAR_NEXUS_PLAYER_STARTER_GROUP
+    purpose: "Kanto/Johto/etc/Special category selected."
+  - id: VAR_NEXUS_DIFFICULTY_MODE
+    purpose: "Casual/Standard/Hard/Expert/Nuzlocke/Custom."
+  - id: VAR_NEXUS_WORLDLINK_UNREAD_COUNT
+    purpose: "Number of unread WorldLink notifications."
+  - id: VAR_NEXUS_RIVAL_BLUE_STAGE
+    purpose: "Blue Kanto progression stage."
+  - id: VAR_NEXUS_RIVAL_AVA_STAGE
+    purpose: "Ava Kanto progression stage."
+  - id: VAR_NEXUS_RIVAL_DAX_STAGE
+    purpose: "Dax Kanto progression stage."
+  - id: VAR_NEXUS_RED_COMPANION_STAGE
+    purpose: "Red companion state for early Kanto."
+
+worldlink_message_ids:
+  - MSG_WL_INIT_COHORT
+  - MSG_WL_AVA_ROUTE1_STARTER
+  - MSG_WL_DAX_VIRIDIAN_FOREST
+  - MSG_WL_BLUE_ROUTE22
+  - MSG_WL_BROCK_RACE_UPDATE
+  - MSG_WL_PEWTER_ROCKET_ALERT

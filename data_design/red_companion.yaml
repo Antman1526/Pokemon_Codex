@@ -1,0 +1,55 @@
+# Red companion planning data.
+
+companion:
+  id: red
+  display_name: Red
+  role: friend_mentor_companion
+  protagonist_relationship: "Antman is a new Pallet trainer following Red's path."
+  dialogue_style: sparse_direct_warm
+  usage_rule: "Red helps at key moments but does not solve Antman's journey."
+
+states:
+  present_in_town:
+    description: "Appears for dialogue or a story scene."
+  follows_temporarily:
+    description: "Briefly follows Antman through a short route or dungeon beat."
+  tag_partner:
+    description: "Joins a scripted double battle."
+  worldlink_contact:
+    description: "Sends short notes without becoming another spam rival feed."
+  absent_investigating:
+    description: "Offscreen, following a parallel lead."
+  superboss_available:
+    description: "Postgame friend battle unlocked."
+
+kanto_beats:
+  pallet_town:
+    state: present_in_town
+    purpose: "Notice strange Pokemon tracks before Oak explains the anomaly."
+  route_1:
+    state: follows_temporarily
+    purpose: "Brief companion moment that connects Antman to Red's path."
+  viridian_forest:
+    state: present_in_town
+    purpose: "Optional clue or hidden item hint, not a solution."
+  pewter_museum:
+    state: tag_partner
+    purpose: "Backup partner if Ava/Dax is not selected for the Rocket double battle."
+  post_brock:
+    state: absent_investigating
+    purpose: "Leaves Antman room to lead while Red checks a parallel trail."
+
+team_policy:
+  early:
+    - Pikachu
+  midgame:
+    - Pikachu
+    - Kanto ace rotation
+    - Current-region guest Pokemon
+  late:
+    - iconic Red-style full team
+  restrictions:
+    - "Do not let Red constantly heal the player."
+    - "Do not let Red defeat major bosses for the player."
+    - "Do not use Red as an eleventh rival notification feed."
+

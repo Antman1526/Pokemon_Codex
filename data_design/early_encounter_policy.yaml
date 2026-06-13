@@ -1,0 +1,75 @@
+# Route 1-3 early encounter policy.
+# Percentages are design targets and should be converted into engine encounter slots later.
+
+routes:
+  route_1:
+    design_intent: "First surprise: global starters are appearing, but Kanto wildlife still dominates."
+    level_range: [2, 5]
+    encounter_groups:
+      common_native:
+        target_rate_percent: 55
+        examples: [Pidgey, Rattata, Sentret, Zigzagoon]
+      regional_starter_rare:
+        target_rate_percent: 24
+        rule: "Rotate official starters by time block so the table is not overloaded."
+      special_starter_rare:
+        target_rate_percent: 12
+        examples: [Eevee, Pikachu, Abra, Shroomish, Ralts]
+      ultra_rare:
+        target_rate_percent: 3
+        examples: [Dratini]
+      filler_or_engine_buffer:
+        target_rate_percent: 6
+        rule: "Reserve for engine slot constraints or local flavor."
+
+  route_2:
+    design_intent: "Forest edge and night encounters introduce unusual types."
+    level_range: [3, 7]
+    encounter_groups:
+      common_native:
+        target_rate_percent: 50
+        examples: [Pidgey, Rattata, Caterpie, Weedle]
+      regional_starter_rare:
+        target_rate_percent: 25
+        rule: "Bias toward Grass and Fire starters before Viridian Forest."
+      special_starter_rare:
+        target_rate_percent: 15
+        examples: [Gastly, Rockruff, Sandile, Staryu]
+      ultra_rare:
+        target_rate_percent: 2
+        examples: [Larvitar]
+      filler_or_engine_buffer:
+        target_rate_percent: 8
+        rule: "Reserve for day/night and forest table constraints."
+
+  route_3:
+    design_intent: "Post-Brock route widens the pool and introduces event-gated Kubfu."
+    level_range: [6, 11]
+    encounter_groups:
+      common_native:
+        target_rate_percent: 45
+        examples: [Spearow, Jigglypuff, Nidoran_M, Nidoran_F]
+      regional_starter_rare:
+        target_rate_percent: 25
+        rule: "All official starters can appear across time/weather rotations."
+      special_starter_rare:
+        target_rate_percent: 18
+        examples: [Eevee, Pikachu, Abra, Gastly, Staryu, Shroomish, Rockruff, Ralts]
+      ultra_rare:
+        target_rate_percent: 4
+        examples: [Dratini, Larvitar]
+      event_static:
+        target_rate_percent: 0
+        examples: [Kubfu]
+        rule: "Kubfu should be a one-time monastery/trainer event, not random grass."
+      filler_or_engine_buffer:
+        target_rate_percent: 8
+        rule: "Reserve for engine slot constraints."
+
+balancing_rules:
+  - "No single official starter should exceed 3 percent in an early table."
+  - "Dratini and Larvitar should not both be available at high frequency in the same time/weather slice."
+  - "Kubfu should require Brock badge or a special WorldLink anomaly flag."
+  - "Rare Candy access after Brock is acceptable only with level caps."
+  - "Early rare encounters should feel exciting but not mandatory for Brock."
+

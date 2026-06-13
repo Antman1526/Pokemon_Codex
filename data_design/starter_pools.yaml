@@ -1,0 +1,53 @@
+# Starter and special starter planning data.
+
+starter_pools:
+  kanto:
+    - { species: Bulbasaur, tags: [official_starter, safe_early] }
+    - { species: Charmander, tags: [official_starter, safe_early] }
+    - { species: Squirtle, tags: [official_starter, safe_early] }
+  johto:
+    - { species: Chikorita, tags: [official_starter, safe_early] }
+    - { species: Cyndaquil, tags: [official_starter, safe_early] }
+    - { species: Totodile, tags: [official_starter, safe_early] }
+  hoenn:
+    - { species: Treecko, tags: [official_starter, safe_early] }
+    - { species: Torchic, tags: [official_starter, safe_early] }
+    - { species: Mudkip, tags: [official_starter, safe_early] }
+  sinnoh:
+    - { species: Turtwig, tags: [official_starter, safe_early] }
+    - { species: Chimchar, tags: [official_starter, safe_early] }
+    - { species: Piplup, tags: [official_starter, safe_early] }
+  unova:
+    - { species: Snivy, tags: [official_starter, safe_early] }
+    - { species: Tepig, tags: [official_starter, safe_early] }
+    - { species: Oshawott, tags: [official_starter, safe_early] }
+  kalos:
+    - { species: Chespin, tags: [official_starter, safe_early] }
+    - { species: Fennekin, tags: [official_starter, safe_early] }
+    - { species: Froakie, tags: [official_starter, safe_early, high_value] }
+  alola:
+    - { species: Rowlet, tags: [official_starter, safe_early] }
+    - { species: Litten, tags: [official_starter, safe_early] }
+    - { species: Popplio, tags: [official_starter, safe_early] }
+  galar:
+    - { species: Grookey, tags: [official_starter, safe_early] }
+    - { species: Scorbunny, tags: [official_starter, safe_early, high_value] }
+    - { species: Sobble, tags: [official_starter, safe_early] }
+  paldea:
+    - { species: Sprigatito, tags: [official_starter, safe_early, high_value] }
+    - { species: Fuecoco, tags: [official_starter, safe_early, high_value] }
+    - { species: Quaxly, tags: [official_starter, safe_early] }
+  special:
+    - { species: Eevee, tags: [special_starter, safe_early, evolution_flexible] }
+    - { species: Pikachu, tags: [special_starter, safe_early, mascot] }
+    - { species: Dratini, tags: [special_starter, high_power, rare_early, evolves_late] }
+    - { species: Abra, tags: [special_starter, safe_early, high_escape_risk] }
+    - { species: Gastly, tags: [special_starter, night_encounter, trade_evolution_adjusted] }
+    - { species: Larvitar, tags: [special_starter, high_power, rare_early, evolves_late] }
+    - { species: Sandile, tags: [special_starter, safe_early] }
+    - { species: Kubfu, tags: [special_starter, legendary_like, event_recommended, high_power] }
+    - { species: Staryu, tags: [special_starter, water, stone_evolution] }
+    - { species: Shroomish, tags: [special_starter, safe_early, status] }
+    - { species: Rockruff, tags: [special_starter, time_sensitive_evolution] }
+    - { species: Ralts, tags: [special_starter, rare_early, high_value] }
+

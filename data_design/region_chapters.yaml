@@ -1,0 +1,175 @@
+# Pokemon Nexus Red region chapter planning data.
+# This is design data for future tooling/scripts, not engine-ready source yet.
+
+regions:
+  kanto:
+    order: 1
+    arrival_hub: Pallet Town
+    exit_destination: Johto
+    exit_method: World Circuit Passport via Magnet Train or ferry
+    theme: "The classic beginning becomes the first global distortion."
+    villain_focus: [team_rocket, team_moonlight_foreshadow, team_gold_dust_foreshadow, team_phoenix_foreshadow]
+    mechanic_focus: [starter_freedom, worldlink, level_caps, early_rare_encounters]
+    required_story_beats:
+      - Oak launches World Pokedex Initiative.
+      - Blue, Ava, and Dax begin alongside Antman.
+      - Rocket escalates beyond vanilla Kanto.
+      - Lavender Tower introduces dream static.
+      - Silph Co. reveals inter-region technology movement.
+      - Giovanni vanishes after discovering Nexus manipulation.
+    gym_structure: classic_8_gyms
+    compression_policy: "Most complete region; emotional home of the game."
+
+  johto:
+    order: 2
+    arrival_hub: New Bark Town or Goldenrod Station
+    exit_destination: Hoenn
+    exit_method: global ferry routes
+    theme: "Tradition and old legends warn against forced unity."
+    villain_focus: [team_rocket_remnants, team_moonlight]
+    mechanic_focus: [day_night, friendship, roaming_legends, rematches]
+    required_story_beats:
+      - Silver joins the rival network.
+      - Rocket Radio Tower signal amplifies Nexus frequencies.
+      - Moonlight attacks Ecruteak through dream loops.
+      - Ho-Oh and Lugia react to the Meridian disturbance.
+      - Lance confirms the crisis is international.
+    gym_structure: classic_8_gyms
+    compression_policy: "Focus on Goldenrod, Ecruteak, Mahogany, Blackthorn, towers, and Rocket arc."
+
+  hoenn:
+    order: 3
+    arrival_hub: Slateport or Littleroot
+    exit_destination: Sinnoh
+    exit_method: Devon/Steven research transit
+    theme: "Land and sea collapse when extremists receive outside technology."
+    villain_focus: [team_magma, team_aqua, team_rocket_smugglers, team_gold_dust]
+    mechanic_focus: [weather, diving, expanded_fishing, secret_areas]
+    required_story_beats:
+      - Brendan or May joins as weather research rival.
+      - Magma and Aqua use Nexus-amplified devices.
+      - Gold Dust buys meteorite and volcanic materials.
+      - Weather crisis spreads beyond Hoenn.
+      - Rayquaza marks WorldLink with anomaly tracking.
+    gym_structure: classic_8_gyms
+    compression_policy: "Prioritize Devon, Slateport, Mt. Chimney, Weather Institute, Seafloor Cavern, Sky Pillar."
+
+  sinnoh_hisui:
+    order: 4
+    arrival_hub: Jubilife City
+    exit_destination: Unova
+    exit_method: Looker investigation route
+    theme: "The world has a memory, and ancient space-time scars are reopening."
+    villain_focus: [team_galactic, team_phoenix, team_moonlight]
+    mechanic_focus: [space_time_anomalies, ancient_forms, ruins, lore_dungeons]
+    required_story_beats:
+      - Cynthia becomes lore mentor.
+      - Dawn or Lucas joins as ruins rival.
+      - Phoenix revives unstable ancient forms.
+      - Galactic prototypes Nexus-style space-time machinery.
+      - Giratina reveals the Meridian Engine tears false corridors.
+    gym_structure: classic_8_gyms_plus_distortion_climax
+    compression_policy: "Prioritize Jubilife, Eterna, Celestic, lakes, Mt. Coronet, Spear Pillar, Distortion World."
+
+  unova:
+    order: 5
+    arrival_hub: Castelia City
+    exit_destination: Kalos
+    exit_method: AZ energy document lead
+    theme: "Truth and ideals collide with the ethics of catching and controlling Pokemon."
+    villain_focus: [team_plasma, team_rocket_finance, team_gold_dust]
+    mechanic_focus: [reputation_choices, battle_subway, rotating_battle_formats]
+    required_story_beats:
+      - N challenges the World Pokedex morally.
+      - Plasma splits into liberation allies and Ghetsis loyalists.
+      - Rocket launders money through Castelia imports.
+      - Gold Dust runs rare Pokemon auctions.
+      - Truth, Ideals, or Balance choice affects final support.
+    gym_structure: classic_8_gyms_with_plasma_castle_interrupt
+    compression_policy: "Prioritize Castelia, Nimbasa, Driftveil, Opelucid, Dragonspiral, Plasma Castle."
+
+  kalos:
+    order: 6
+    arrival_hub: Lumiose City
+    exit_destination: Alola
+    exit_method: Sycamore/AZ Ultra energy lead
+    theme: "Beauty without compassion becomes destruction."
+    villain_focus: [team_flare, team_gold_dust, nexus_order_observers]
+    mechanic_focus: [mega_evolution, customization, style_rank]
+    required_story_beats:
+      - Serena or Calem joins as Mega/style rival.
+      - Gold Dust funds rare Mega Stone access.
+      - Lysandre reframes Nexus as selective survival.
+      - AZ recognizes the Meridian energy pattern.
+      - Keystone Resonator unlocks full Mega system.
+    gym_structure: classic_8_gyms
+    compression_policy: "Prioritize Lumiose, Shalour, Geosenge, Team Flare HQ, Pokemon League."
+
+  alola:
+    order: 7
+    arrival_hub: Hau'oli City
+    exit_destination: Galar
+    exit_method: Aether energy shipment data
+    theme: "Family, islands, and Ultra Space resist being controlled."
+    villain_focus: [aether_corruption, team_skull, nexus_wormhole_unit]
+    mechanic_focus: [z_moves, trials, regional_variants, ultra_beasts]
+    required_story_beats:
+      - Island trials replace the standard gym rhythm.
+      - Team Skull becomes an ally network.
+      - Lillie's family arc anchors the chapter.
+      - Ultra Beasts become boss encounters.
+      - Solgaleo or Lunala proves safe dimensional travel is possible.
+    gym_structure: island_trials_kahunas_league
+    compression_policy: "Represent all islands through selected trial zones, Aether Paradise, Vast Poni Canyon, and Ultra Space."
+
+  galar:
+    order: 8
+    arrival_hub: Wyndon or Motostoke
+    exit_destination: Paldea
+    exit_method: Sonia trace to Area Zero research network
+    theme: "Spectacle hides energy infrastructure."
+    villain_focus: [macro_cosmos, team_rocket_betting, team_gold_dust]
+    mechanic_focus: [dynamax_power_spots, raids, stadium_bosses]
+    required_story_beats:
+      - Marnie is primary Galar rival with Hop and Bede as recurring bosses.
+      - Rocket runs illegal stadium betting.
+      - Gold Dust monopolizes raid rewards.
+      - Rose sees Meridian energy as a solution.
+      - Eternatus energy is stolen during the climax.
+    gym_structure: stadium_gyms_champion_cup
+    compression_policy: "Prioritize Motostoke, Hammerlocke, Spikemuth, Wyndon, Rose Tower, Energy Plant."
+
+  paldea:
+    order: 9
+    arrival_hub: Mesagoza Academy
+    exit_destination: World Nexus Championship
+    exit_method: academy summit and Area Zero discovery
+    theme: "Treasure is purpose, not power."
+    villain_focus: [team_star_misunderstanding, team_phoenix, nexus_order]
+    mechanic_focus: [terastallization, open_objective_board, area_zero]
+    required_story_beats:
+      - Academy becomes global research hub.
+      - Nemona becomes final friendly rival.
+      - Penny exposes Nexus communications.
+      - Arven's Titan quest ties Herba Mystica to ecological repair.
+      - Area Zero reveals the Meridian Engine imitates natural convergence.
+    gym_structure: compressed_three_path_structure
+    compression_policy: "Use academy board to combine gyms, Titans, Team Star bases, and Area Zero."
+
+  world_nexus_championship:
+    order: 10
+    arrival_hub: World Nexus Stadium
+    exit_destination: Postgame World Roam
+    exit_method: Meridian Engine defeat
+    theme: "The entire world chooses connection without control."
+    villain_focus: [nexus_order, team_rocket_schism, all_villain_fallout]
+    mechanic_focus: [championship_ladder, rival_tournament, legendary_trials, final_dungeon]
+    required_story_beats:
+      - Ten-rival ladder resolves.
+      - Villain teams attack tournament districts.
+      - Giovanni chooses control, revenge, or retreat based on flags.
+      - Legendary guardians stabilize regional energy.
+      - Caelum Voss activates the Meridian Engine.
+    gym_structure: champion_ladder_and_final_boss
+    compression_policy: "Final chapter uses hubs, gauntlets, and set-piece dungeons instead of another full region."
+
