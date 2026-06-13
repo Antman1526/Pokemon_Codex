@@ -62,6 +62,12 @@ Files to create during execution:
 - `patches/engine/0001-pallet-bedroom-mom-intro.patch`  
   Project-owned patch for the first Pallet bedroom and Mom text changes. Keep engine customizations in patch files until the project has a writable engine fork; do not commit parent gitlinks pointing at local-only submodule commits.
 
+- `patches/engine/0002-pallet-red-blue-scene.patch`  
+  Project-owned patch for the first outdoor Red/Blue Pallet scene.
+
+- `patches/engine/0003-oak-lab-nexus-intro.patch`  
+  Project-owned patch for Oak's Nexus Red lab framing.
+
 Engine patch rule:
 
 - The `engine/pokeemerald-expansion` submodule tracks upstream engine source.
@@ -567,8 +573,10 @@ Expected:
 ## Task 5: Add First Pallet Outdoor Red and Blue Scene
 
 **Files:**
-- Modify: `engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/scripts.inc`
+- Temporarily modify for build: `engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/scripts.inc`
 - Inspect: `engine/pokeemerald-expansion/data/maps/PalletTown_Frlg/map.json`
+- Create: `patches/engine/0002-pallet-red-blue-scene.patch`
+- Modify: `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`
 
 - [ ] **Step 1: Inspect Pallet object IDs**
 
@@ -607,7 +615,32 @@ PalletTown_Frlg_Text_BluePressure::
 	.string "OAK is waiting at the LAB.$"
 ```
 
-- [ ] **Step 3: Build**
+- [ ] **Step 3: Generate project patch**
+
+Run from the parent repo root:
+
+```bash
+mkdir -p patches/engine
+git -C engine/pokeemerald-expansion diff -- \
+  data/maps/PalletTown_Frlg/scripts.inc \
+  > patches/engine/0002-pallet-red-blue-scene.patch
+test -s patches/engine/0002-pallet-red-blue-scene.patch
+```
+
+Expected:
+
+```text
+patches/engine/0002-pallet-red-blue-scene.patch exists and is non-empty.
+```
+
+- [ ] **Step 4: Build**
+
+Apply project patches in order from the parent repo root if not already applied:
+
+```bash
+git apply --directory=engine/pokeemerald-expansion patches/engine/0001-pallet-bedroom-mom-intro.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0002-pallet-red-blue-scene.patch
+```
 
 Run:
 
@@ -625,7 +658,7 @@ Expected:
 pokenexusred.gba
 ```
 
-- [ ] **Step 4: Manual OpenEmu check**
+- [ ] **Step 5: Manual OpenEmu check**
 
 Open:
 
@@ -639,12 +672,36 @@ Expected:
 Player can leave the house and see first Pallet outdoor story text without a crash.
 ```
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Record patch in smoke-test note**
+
+Add this line under `## Engine Patches To Apply Before Build` in `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`:
+
+```markdown
+- `patches/engine/0002-pallet-red-blue-scene.patch` - first outdoor Red/Blue Pallet scene.
+```
+
+- [ ] **Step 7: Restore submodule source after build**
 
 Run:
 
 ```bash
-git add engine/pokeemerald-expansion build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md
+git -C engine/pokeemerald-expansion restore -- data/maps/PalletTown_Frlg/scripts.inc
+```
+
+Expected:
+
+```text
+git -C engine/pokeemerald-expansion status --short
+```
+
+shows only ignored build artifacts, not modified source files.
+
+- [ ] **Step 8: Commit**
+
+Run:
+
+```bash
+git add patches/engine/0002-pallet-red-blue-scene.patch build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md
 git commit -m "Add first Red and Blue Pallet scene"
 ```
 
@@ -659,7 +716,9 @@ Expected:
 ## Task 6: Reframe Oak Lab Intro Text
 
 **Files:**
-- Modify: `engine/pokeemerald-expansion/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc`
+- Temporarily modify for build: `engine/pokeemerald-expansion/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc`
+- Create: `patches/engine/0003-oak-lab-nexus-intro.patch`
+- Modify: `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`
 
 - [ ] **Step 1: Find Oak starter-scene dialogue labels**
 
@@ -701,12 +760,41 @@ Use this text for Blue's pre-battle pressure:
 	.string "And I still beat you first.$"
 ```
 
-- [ ] **Step 4: Build**
+- [ ] **Step 4: Generate project patch**
+
+Run from the parent repo root:
+
+```bash
+mkdir -p patches/engine
+git -C engine/pokeemerald-expansion diff -- \
+  data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc \
+  > patches/engine/0003-oak-lab-nexus-intro.patch
+test -s patches/engine/0003-oak-lab-nexus-intro.patch
+```
+
+Expected:
+
+```text
+patches/engine/0003-oak-lab-nexus-intro.patch exists and is non-empty.
+```
+
+- [ ] **Step 5: Build**
+
+Apply project patches in order from the parent repo root if not already applied:
+
+```bash
+git apply --directory=engine/pokeemerald-expansion patches/engine/0001-pallet-bedroom-mom-intro.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0002-pallet-red-blue-scene.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0003-oak-lab-nexus-intro.patch
+```
 
 Run:
 
 ```bash
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
 make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
@@ -716,12 +804,36 @@ Expected:
 pokenexusred.gba
 ```
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Record patch in smoke-test note**
+
+Add this line under `## Engine Patches To Apply Before Build` in `build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md`:
+
+```markdown
+- `patches/engine/0003-oak-lab-nexus-intro.patch` - Oak lab Nexus Red framing.
+```
+
+- [ ] **Step 7: Restore submodule source after build**
 
 Run:
 
 ```bash
-git add engine/pokeemerald-expansion
+git -C engine/pokeemerald-expansion restore -- data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+```
+
+Expected:
+
+```text
+git -C engine/pokeemerald-expansion status --short
+```
+
+shows only ignored build artifacts, not modified source files.
+
+- [ ] **Step 8: Commit**
+
+Run:
+
+```bash
+git add patches/engine/0003-oak-lab-nexus-intro.patch build_notes/FIRST_PLAYABLE_OPENEMU_SMOKE_TEST.md
 git commit -m "Reframe Oak lab intro for Nexus Red"
 ```
 
