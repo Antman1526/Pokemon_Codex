@@ -607,7 +607,7 @@ PalletTown_Frlg_Text_RedTracks::
 	.string "These tracks are wrong for PALLET,\n"
 	.string "but I do not think danger is here.\p"
 	.string "Stay close today. If OAK is right,\n"
-	.string "your road may start wider than mine.$"
+	.string "your road may be bigger than mine.$"
 
 PalletTown_Frlg_Text_BluePressure::
 	.string "BLUE: So RED noticed you now?\p"
