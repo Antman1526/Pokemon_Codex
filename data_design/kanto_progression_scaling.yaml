@@ -35,7 +35,8 @@ early_kanto_progression:
     wild_level_min: 5
     wild_level_max: 8
     anomaly_static_level: 7
-    purpose: "pre-Brock global starter promise, rare catches remain controlled"
+    gate: after_pewter_badge
+    purpose: "early Kanto global starter promise, rare catches remain controlled"
     notable_species:
       - Snivy
       - Tepig
@@ -65,3 +66,16 @@ early_kanto_progression:
   blue_lab:
     level: 5
     rule: "Blue counters by broad starter type, not by harsh rare-pick punishment."
+  trainer_scaling:
+    rule: "Wild availability, rival teams, route trainers, and gym leaders must all track badge progression."
+    early_rivals:
+      blue_lab_max_level: 5
+      route_22_optional_max_level: 9
+    pre_brock_trainers:
+      viridian_forest_max_level: 9
+      pewter_gym_junior_max_level: 11
+      brock_ace_level: 14
+    post_brock_route_3_trainers:
+      min_level: 9
+      max_level: 14
+      rule: "Route 3 trainers may be tougher than new Route 3 catches because the route opens after Brock."
