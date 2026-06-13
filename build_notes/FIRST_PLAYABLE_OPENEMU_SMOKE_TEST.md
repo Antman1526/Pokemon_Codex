@@ -11,19 +11,19 @@ cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-titl
 export DEVKITPRO=/opt/devkitpro
 export DEVKITARM=/opt/devkitpro/devkitARM
 export PATH="$DEVKITARM/bin:$PATH"
-make -j"$(sysctl -n hw.ncpu)" firered
+make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
 ```
 
 Output ROM:
 
 ```text
-engine/pokeemerald-expansion/pokefirered.gba
+engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
 ROM file verification:
 
 ```text
-/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokefirered.gba
+/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
 Verification performed:
@@ -34,6 +34,7 @@ File exists and is 32M. This is build-artifact verification only; OpenEmu runtim
 
 ## Smoke Test Checklist
 
+- [ ] ROM appears locally as `pokenexusred.gba`.
 - [ ] ROM opens in OpenEmu.
 - [ ] Title screen appears.
 - [ ] New game starts.

@@ -185,3 +185,23 @@ Next required step:
 Install devkitPro/devkitARM, then rerun the baseline build.
 
 Homebrew does not provide a local formula/cask for `devkitpro`, `devkitarm`, or `gba-dev` on this machine, so use the official devkitPro package installer flow described above.
+
+## 10. First Nexus Red Header Build
+
+Use this command for the first Pokemon Nexus Red identity build:
+
+```sh
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
+export DEVKITPRO=/opt/devkitpro
+export DEVKITARM=/opt/devkitpro/devkitARM
+export PATH="$DEVKITARM/bin:$PATH"
+make -j"$(sysctl -n hw.ncpu)" firered TITLE="NEXUS RED" GAME_CODE=BNRE BUILD_NAME=nexusred
+```
+
+Expected local ROM:
+
+```text
+engine/pokeemerald-expansion/pokenexusred.gba
+```
+
+This changes ROM header identity and output filename before custom title art replacement.
