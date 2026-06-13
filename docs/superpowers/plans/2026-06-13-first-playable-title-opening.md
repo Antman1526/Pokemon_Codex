@@ -739,14 +739,15 @@ Labels for Oak starter selection and rival battle dialogue are printed.
 Use this text for Oak's first starter-scene explanation:
 
 ```asm
-	.string "OAK: KANTO's first routes are\n"
-	.string "showing impossible migration.\p"
-	.string "These POKéMON should not all be\n"
-	.string "near PALLET.\p"
-	.string "The LEAGUE calls it a survey.\n"
-	.string "I call it a warning.\p"
-	.string "{PLAYER}, I want you in the\n"
-	.string "WORLD POKéDEX INITIATIVE.$"
+	.string "OAK: I checked the tracks myself.\p"
+	.string "They match no KANTO pattern.\n"
+	.string "This is not rumor or panic.\p"
+	.string "It is field data.\n"
+	.string "But the pattern is spreading.\p"
+	.string "Routes, weather, even POKéMON\n"
+	.string "behavior are changing together.\p"
+	.string "{PLAYER}, I need calm eyes,\n"
+	.string "and a brave heart in the field.$"
 ```
 
 - [ ] **Step 3: Replace Blue pressure line**
