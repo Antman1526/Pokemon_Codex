@@ -38,3 +38,18 @@ Verified ROM:
 ## Notes
 
 Baseline FireRed-target build before Pokemon Nexus Red content edits.
+
+## Validation
+
+Command:
+
+```sh
+cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening
+python3 tools/validate_design_data.py
+```
+
+Result:
+
+```text
+Design data validation passed.
+```
