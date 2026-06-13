@@ -52,11 +52,11 @@ Optional if time allows:
 
 The perfect final UI can wait. The MVP must be reliable and must include all 39 choices.
 
-Acceptable first implementation:
+Required first implementation:
 
 - region category menu,
 - then starter choice menu,
-- separate "Special" category for the 12 extra starters.
+- four Special category pages for the 12 extra starters.
 
 Categories:
 
@@ -69,28 +69,24 @@ Categories:
 - Alola
 - Galar
 - Paldea
-- Special
+- Special A
+- Special B
+- Special C
+- Special D
 
 Special starters:
 
-- Eevee
-- Pikachu
-- Dratini
-- Abra
-- Gastly
-- Larvitar
-- Sandile
-- Kubfu
-- Staryu
-- Shroomish
-- Rockruff
-- Ralts
+- Special A: Eevee, Pikachu, Ralts
+- Special B: Abra, Gastly, Staryu
+- Special C: Shroomish, Rockruff, Sandile
+- Special D: Dratini, Larvitar, Kubfu
 
 Rules:
 
 - Starter must be level 5.
 - Starter must have legal early moves.
 - Starter should receive a project origin flag for later dialogue.
+- Blue, Ava, and Dax should receive non-duplicate starters through deterministic assignment rules.
 - Kubfu is allowed as a starter because the player explicitly requested it, but wild Kubfu should be event-gated.
 
 ## 5. Rival Opening Behavior

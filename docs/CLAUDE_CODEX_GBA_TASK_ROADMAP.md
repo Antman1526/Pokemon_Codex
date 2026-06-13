@@ -115,6 +115,7 @@ Implement a functional starter choice method.
 Acceptance:
 
 - player can choose any of the 39 starters,
+- starter UI uses category-then-species pages with Special A-D pages,
 - starter is added correctly,
 - rival starter logic avoids duplicate softlocks,
 - selected starter is recorded for later dialogue.

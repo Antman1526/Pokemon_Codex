@@ -33,6 +33,16 @@ vars:
     purpose: "Species ID of player starter for rival logic and dialogue."
   - id: VAR_NEXUS_PLAYER_STARTER_GROUP
     purpose: "Kanto/Johto/etc/Special category selected."
+  - id: VAR_NEXUS_PLAYER_STARTER_POWER_BAND
+    purpose: "Safe/high-value/advanced starter balancing category."
+  - id: VAR_NEXUS_PLAYER_STARTER_ORIGIN_REGION
+    purpose: "Original region or Special group for starter dialogue."
+  - id: VAR_NEXUS_BLUE_STARTER_SPECIES
+    purpose: "Blue's assigned opening starter."
+  - id: VAR_NEXUS_AVA_STARTER_SPECIES
+    purpose: "Ava's assigned opening starter."
+  - id: VAR_NEXUS_DAX_STARTER_SPECIES
+    purpose: "Dax's assigned opening starter."
   - id: VAR_NEXUS_DIFFICULTY_MODE
     purpose: "Casual/Standard/Hard/Expert/Nuzlocke/Custom."
   - id: VAR_NEXUS_WORLDLINK_UNREAD_COUNT

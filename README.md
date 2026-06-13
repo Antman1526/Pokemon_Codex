@@ -21,6 +21,7 @@ The project goal is to create a legal, phased build framework that Claude Code a
 - `docs/DECISIONS_LOG.md` - locked user decisions for future sessions.
 - `docs/CREATIVE_DIRECTION_BIBLE.md` - creative, visual, music, and tone direction.
 - `docs/RED_COMPANION_SYSTEM.md` - Red as friend/travel companion.
+- `docs/STARTER_SELECTION_SYSTEM.md` - 39-starter opening flow and rival assignment rules.
 - `docs/REGION_CONTENT_BLUEPRINT.md` - full 9-region content plan.
 - `docs/GBA_OPENEMU_BUILD_STRATEGY.md` - how to keep the project on the `.gba` and OpenEmu path.
 - `docs/LONG_GAME_RETENTION_DESIGN.md` - pacing and replayability design for a very long game.

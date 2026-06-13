@@ -1,0 +1,88 @@
+# 39 starter selection flow planning.
+
+ui:
+  style: FireRed_first_category_menu
+  flow: category_then_species
+  confirmation_required: true
+  advanced_warning_required: true
+
+categories:
+  kanto:
+    label: Kanto
+    choices: [Bulbasaur, Charmander, Squirtle]
+  johto:
+    label: Johto
+    choices: [Chikorita, Cyndaquil, Totodile]
+  hoenn:
+    label: Hoenn
+    choices: [Treecko, Torchic, Mudkip]
+  sinnoh:
+    label: Sinnoh
+    choices: [Turtwig, Chimchar, Piplup]
+  unova:
+    label: Unova
+    choices: [Snivy, Tepig, Oshawott]
+  kalos:
+    label: Kalos
+    choices: [Chespin, Fennekin, Froakie]
+  alola:
+    label: Alola
+    choices: [Rowlet, Litten, Popplio]
+  galar:
+    label: Galar
+    choices: [Grookey, Scorbunny, Sobble]
+  paldea:
+    label: Paldea
+    choices: [Sprigatito, Fuecoco, Quaxly]
+  special_a:
+    label: Special A
+    choices: [Eevee, Pikachu, Ralts]
+  special_b:
+    label: Special B
+    choices: [Abra, Gastly, Staryu]
+  special_c:
+    label: Special C
+    choices: [Shroomish, Rockruff, Sandile]
+  special_d:
+    label: Special D
+    choices: [Dratini, Larvitar, Kubfu]
+    advanced_warning: true
+
+starter_metadata:
+  store_vars:
+    - VAR_NEXUS_PLAYER_STARTER_SPECIES
+    - VAR_NEXUS_PLAYER_STARTER_GROUP
+    - VAR_NEXUS_PLAYER_STARTER_POWER_BAND
+    - VAR_NEXUS_PLAYER_STARTER_ORIGIN_REGION
+  store_flags:
+    - FLAG_NEXUS_STARTER_CHOSEN
+  power_bands:
+    safe: [official_default, most_special]
+    high_value: [Froakie, Scorbunny, Sprigatito, Fuecoco, Ralts, Dratini, Larvitar, Kubfu]
+    advanced: [Dratini, Larvitar, Kubfu]
+
+scene_order:
+  - oak_world_pokedex_explanation
+  - red_pick_the_one_you_trust
+  - category_menu
+  - species_menu
+  - confirmation_prompt
+  - advanced_warning_if_needed
+  - give_player_starter
+  - set_starter_metadata
+  - assign_blue_starter
+  - assign_ava_starter
+  - assign_dax_starter
+  - blue_lab_battle
+  - worldlink_obtained
+
+acceptance:
+  - all_39_selectable
+  - all_level_5
+  - all_have_damaging_move
+  - blue_non_duplicate_valid
+  - ava_non_duplicate_valid
+  - dax_non_duplicate_valid
+  - starter_metadata_persists_after_save_load
+  - blue_lab_battle_works_for_every_choice
+

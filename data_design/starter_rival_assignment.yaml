@@ -1,0 +1,93 @@
+# Rival starter assignment policy for the 39-starter opening.
+
+blue_counter_rules:
+  official_trios:
+    kanto:
+      Bulbasaur: Charmander
+      Charmander: Squirtle
+      Squirtle: Bulbasaur
+    johto:
+      Chikorita: Cyndaquil
+      Cyndaquil: Totodile
+      Totodile: Chikorita
+    hoenn:
+      Treecko: Torchic
+      Torchic: Mudkip
+      Mudkip: Treecko
+    sinnoh:
+      Turtwig: Chimchar
+      Chimchar: Piplup
+      Piplup: Turtwig
+    unova:
+      Snivy: Tepig
+      Tepig: Oshawott
+      Oshawott: Snivy
+    kalos:
+      Chespin: Fennekin
+      Fennekin: Froakie
+      Froakie: Chespin
+    alola:
+      Rowlet: Litten
+      Litten: Popplio
+      Popplio: Rowlet
+    galar:
+      Grookey: Scorbunny
+      Scorbunny: Sobble
+      Sobble: Grookey
+    paldea:
+      Sprigatito: Fuecoco
+      Fuecoco: Quaxly
+      Quaxly: Sprigatito
+
+  special_starters:
+    Eevee: Charmander
+    Pikachu: Bulbasaur
+    Dratini: Squirtle
+    Abra: Charmander
+    Gastly: Squirtle
+    Larvitar: Bulbasaur
+    Sandile: Squirtle
+    Kubfu: Charmander
+    Staryu: Bulbasaur
+    Shroomish: Charmander
+    Rockruff: Squirtle
+    Ralts: Charmander
+
+  fallback_priority: [Charmander, Squirtle, Bulbasaur]
+  opening_battle_rule: "Blue should counter thematically without hard-countering advanced/special starters in battle one."
+
+ava_assignment:
+  priority_pool: [Chikorita, Popplio, Sprigatito, Ralts, Eevee, Rowlet]
+  fallback: Chikorita
+  avoid_duplicates_with: [player, blue]
+  role: "research/support starter"
+
+dax_assignment:
+  priority_pool: [Cyndaquil, Torchic, Chimchar, Scorbunny, Fuecoco, Froakie]
+  fallback: Cyndaquil
+  avoid_duplicates_with: [player, blue, ava]
+  role: "offense/speed starter"
+
+red_policy:
+  starter_source: established_partner
+  default_partner: Pikachu
+  opening_rule: "Red does not take a lab starter from the player pool."
+
+test_matrix:
+  required_cases:
+    - player_official_grass
+    - player_official_fire
+    - player_official_water
+    - player_special_safe
+    - player_special_ghost
+    - player_special_psychic
+    - player_special_advanced_dragon
+    - player_special_advanced_pseudo
+    - player_special_legendary_like
+  must_verify:
+    - blue_valid_non_duplicate
+    - ava_valid_non_duplicate
+    - dax_valid_non_duplicate
+    - blue_lab_battle_starts
+    - no_duplicate_party_species_from_lab_assignments
+

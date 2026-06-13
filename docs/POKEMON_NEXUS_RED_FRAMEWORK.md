@@ -848,7 +848,7 @@ Playable scope:
 Required systems:
 
 - New title/name placeholder: Pokemon Nexus Red.
-- 39-choice starter selection prototype.
+- 39-choice starter selection using category pages, Special A-D pages, and deterministic Blue/Ava/Dax assignments.
 - Blue, Ava, and Dax start journey with player.
 - WorldLink item with at least three notification types.
 - Route 1-3 starter/special encounter policy.
