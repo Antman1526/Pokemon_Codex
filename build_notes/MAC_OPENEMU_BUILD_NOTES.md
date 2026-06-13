@@ -80,7 +80,7 @@ Pokemon_Codex/
 
 ## 5. First Engine Setup Flow
 
-Proposed local flow:
+Canonical main-checkout flow:
 
 ```sh
 cd /Users/Antman/Desktop/Pokemon_Codex/engine
@@ -96,6 +96,14 @@ pokeemerald.gba
 ```
 
 Then manually open the built `.gba` in OpenEmu for smoke testing.
+
+Current feature-branch implementation work is being performed in this isolated worktree:
+
+```text
+/Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening
+```
+
+Build artifacts documented below were verified in that worktree unless explicitly marked as canonical-main-checkout examples.
 
 ## 6. OpenEmu Smoke Test
 
@@ -136,7 +144,7 @@ Build order:
 - Dynamax and Tera should be restricted to specific battle contexts.
 - Day/night should prefer an in-game clock unless RTC support is confirmed stable.
 
-## 9. Local Engine Proof Status
+## 9. Historical Pre-Install Engine Proof Status
 
 Checked on: 2026-06-13
 
@@ -152,7 +160,7 @@ The engine is tracked as a git submodule:
 https://github.com/rh-hideout/pokeemerald-expansion.git
 ```
 
-Local dependency check:
+Historical local dependency check before devkitARM shell configuration was fixed:
 
 - `make`: available
 - `git`: available
@@ -164,14 +172,14 @@ Local dependency check:
 - `arm-none-eabi-as`: missing
 - `dkp-pacman`: missing
 
-Baseline build attempt:
+Historical baseline build attempt:
 
 ```sh
 cd /Users/Antman/Desktop/Pokemon_Codex/engine/pokeemerald-expansion
 make -j$(sysctl -n hw.ncpu)
 ```
 
-Result: failed before ROM output because the devkitARM toolchain is missing.
+Result at that time: failed before ROM output because the shell could not resolve the devkitARM tools.
 
 Representative errors:
 
@@ -180,15 +188,18 @@ arm-none-eabi-gcc: command not found
 arm-none-eabi-as: command not found
 ```
 
-Next required step:
+Current status:
 
-Install devkitPro/devkitARM, then rerun the baseline build.
+- devkitARM is installed under `/opt/devkitpro/devkitARM`.
+- `dkp-pacman` resolves at `/usr/local/bin/dkp-pacman`.
+- Build commands should export `DEVKITPRO`, `DEVKITARM`, and prepend `$DEVKITARM/bin` to `PATH`.
+- The FireRed baseline and Nexus Red header builds both succeeded in the feature worktree.
 
-Homebrew does not provide a local formula/cask for `devkitpro`, `devkitarm`, or `gba-dev` on this machine, so use the official devkitPro package installer flow described above.
+Homebrew did not provide a local formula/cask for `devkitpro`, `devkitarm`, or `gba-dev` on this machine; the installed toolchain came from the devkitPro path.
 
 ## 10. First Nexus Red Header Build
 
-Use this command for the first Pokemon Nexus Red identity build:
+Use this command for the first Pokemon Nexus Red identity build. This command was verified in the active feature worktree:
 
 ```sh
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening/engine/pokeemerald-expansion
