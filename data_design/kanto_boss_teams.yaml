@@ -1,0 +1,180 @@
+# Kanto boss team planning.
+# Species are design-level suggestions and should be converted to engine IDs later.
+
+kanto_bosses:
+  brock:
+    cap:
+      standard: 12
+      hard: 14
+      expert: 14
+    standard:
+      - { species: Geodude, level: 10, role: physical_intro }
+      - { species: Onix, level: 12, role: ace }
+    hard:
+      - { species: Geodude, level: 12, role: physical_intro, item: Oran_Berry_optional }
+      - { species: Nosepass, level: 12, role: regional_rock_wildcard }
+      - { species: Onix, level: 14, role: ace }
+    expert:
+      - { species: Geodude, level: 12, role: sturdy_intro }
+      - { species: Roggenrola, level: 13, role: alternate_sturdy_pressure }
+      - { species: Onix, level: 14, role: ace }
+
+  misty:
+    cap:
+      standard: 18
+      hard: 20
+      expert: 20
+    standard:
+      - { species: Staryu, level: 16, role: speed_intro }
+      - { species: Starmie, level: 18, role: ace }
+    hard:
+      - { species: Psyduck, level: 17, role: disruption }
+      - { species: Staryu, level: 18, role: speed_intro }
+      - { species: Starmie, level: 20, role: ace }
+    expert:
+      - { species: Psyduck, level: 18, role: disruption }
+      - { species: Buizel, level: 18, role: fast_physical_water }
+      - { species: Starmie, level: 20, role: ace }
+
+  lt_surge:
+    cap:
+      standard: 24
+      hard: 26
+      expert: 26
+    standard:
+      - { species: Voltorb, level: 21, role: speed_status }
+      - { species: Pikachu, level: 22, role: mascot_pressure }
+      - { species: Raichu, level: 24, role: ace }
+    hard:
+      - { species: Voltorb, level: 23, role: speed_status }
+      - { species: Magnemite, level: 23, role: steel_resist }
+      - { species: Raichu, level: 26, role: ace }
+    expert:
+      - { species: Voltorb, level: 23, role: speed_status }
+      - { species: Emolga, level: 24, role: ground_immunity_if_available }
+      - { species: Magneton, level: 24, role: steel_resist }
+      - { species: Raichu, level: 26, role: ace }
+
+  erika:
+    cap:
+      standard: 30
+      hard: 32
+      expert: 32
+    standard:
+      - { species: Tangela, level: 27, role: physical_wall }
+      - { species: Weepinbell, level: 28, role: status_offense }
+      - { species: Vileplume, level: 30, role: ace }
+    hard:
+      - { species: Tangela, level: 29, role: physical_wall }
+      - { species: Roselia, level: 29, role: status_special }
+      - { species: Vileplume, level: 32, role: ace }
+    expert:
+      - { species: Tangela, level: 29, role: physical_wall }
+      - { species: Roselia, level: 30, role: status_special }
+      - { species: Leafeon, level: 30, role: physical_pressure }
+      - { species: Vileplume, level: 32, role: ace }
+
+  koga:
+    cap:
+      standard: 36
+      hard: 38
+      expert: 38
+    standard:
+      - { species: Koffing, level: 33, role: poison_intro }
+      - { species: Muk, level: 34, role: bulky_poison }
+      - { species: Weezing, level: 36, role: ace }
+    hard:
+      - { species: Koffing, level: 35, role: poison_intro }
+      - { species: Muk, level: 36, role: bulky_poison }
+      - { species: Crobat, level: 36, role: speed_pressure }
+      - { species: Weezing, level: 38, role: ace }
+    expert:
+      - { species: Koffing, level: 35, role: poison_intro }
+      - { species: Toxicroak, level: 36, role: coverage_pressure }
+      - { species: Crobat, level: 37, role: speed_pressure }
+      - { species: Weezing, level: 38, role: ace }
+
+  sabrina:
+    cap:
+      standard: 42
+      hard: 44
+      expert: 44
+    standard:
+      - { species: Kadabra, level: 39, role: special_speed }
+      - { species: Mr_Mime, level: 40, role: screen_support }
+      - { species: Alakazam, level: 42, role: ace }
+    hard:
+      - { species: Kadabra, level: 41, role: special_speed }
+      - { species: Mr_Mime, level: 41, role: screen_support }
+      - { species: Espeon, level: 42, role: special_pressure }
+      - { species: Alakazam, level: 44, role: ace }
+    expert:
+      - { species: Kadabra, level: 41, role: special_speed }
+      - { species: Hatterene, level: 42, role: fairy_psychic_if_available }
+      - { species: Espeon, level: 42, role: special_pressure }
+      - { species: Alakazam, level: 44, role: ace }
+
+  blaine:
+    cap:
+      standard: 48
+      hard: 50
+      expert: 50
+    standard:
+      - { species: Growlithe, level: 45, role: fire_intro }
+      - { species: Rapidash, level: 46, role: speed_fire }
+      - { species: Magmar, level: 48, role: ace }
+    hard:
+      - { species: Ninetales, level: 47, role: sun_support }
+      - { species: Rapidash, level: 48, role: speed_fire }
+      - { species: Arcanine, level: 50, role: ace }
+    expert:
+      - { species: Torkoal, level: 47, role: sun_setter_if_available }
+      - { species: Ninetales, level: 48, role: sun_support }
+      - { species: Magmar, level: 49, role: special_fire }
+      - { species: Arcanine, level: 50, role: ace }
+
+  giovanni:
+    cap:
+      standard: 55
+      hard: 57
+      expert: 58
+    standard:
+      - { species: Persian, level: 51, role: signature_opener }
+      - { species: Nidoqueen, level: 52, role: bulky_coverage }
+      - { species: Nidoking, level: 53, role: offensive_coverage }
+      - { species: Rhydon, level: 55, role: ace }
+    hard:
+      - { species: Persian, level: 53, role: signature_opener }
+      - { species: Nidoqueen, level: 54, role: bulky_coverage }
+      - { species: Nidoking, level: 55, role: offensive_coverage }
+      - { species: Krookodile, level: 55, role: smuggled_foreign_ace }
+      - { species: Rhydon, level: 57, role: ace }
+    expert:
+      - { species: Persian, level: 54, role: signature_opener }
+      - { species: Nidoqueen, level: 55, role: bulky_coverage }
+      - { species: Nidoking, level: 56, role: offensive_coverage }
+      - { species: Excadrill, level: 56, role: smuggled_foreign_sweeper_if_available }
+      - { species: Rhydon, level: 58, role: ace }
+
+elite_four:
+  lorelei:
+    cap: 58
+    identity: ice_water_control
+    standard_core: [Dewgong, Cloyster, Slowbro, Lapras]
+  bruno:
+    cap: 59
+    identity: fighting_rock_physical_pressure
+    standard_core: [Onix, Hitmonlee, Hitmonchan, Machamp]
+  agatha:
+    cap: 60
+    identity: ghost_poison_disruption
+    standard_core: [Gengar, Golbat, Arbok, Gengar]
+  lance:
+    cap: 60
+    identity: dragon_flying_legendary_energy_warning
+    standard_core: [Gyarados, Dragonair, Aerodactyl, Dragonite]
+  blue_champion:
+    cap: 62
+    identity: adaptive_rival_champion
+    team_rule: "Starter-counter team plus Kanto classics and one WorldLink-informed wildcard."
+

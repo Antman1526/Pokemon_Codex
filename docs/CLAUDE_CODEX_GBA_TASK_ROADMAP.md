@@ -105,6 +105,7 @@ Acceptance:
 - player begins in Pallet Town,
 - Professor Oak introduces World Pokedex Initiative,
 - Blue, Ava, and Dax are present,
+- Red appears as an early companion/friend,
 - player receives WorldLink.
 
 ### Task 2.2 - 39 Starter Prototype
@@ -151,6 +152,7 @@ Acceptance:
 - level cap applies,
 - first Rocket anomaly event triggers after Brock,
 - event foreshadows Meridian Engine without naming Nexus Order.
+- Brock friendship/mentor scene is available after the badge.
 
 ## Phase 3 - Kanto Full Arc
 
@@ -165,6 +167,8 @@ Acceptance:
 - Cinnabar Phoenix event works,
 - Indigo League works,
 - Johto unlock flag is set.
+- Red has multiple Kanto companion scenes.
+- Brock and Misty have recurring friend scenes after their gyms.
 
 ## Phase 4 - Systems Before More Regions
 
@@ -206,4 +210,3 @@ Acceptance:
 - patch generation documented,
 - known issues listed,
 - at least one 30-minute no-crash route test passes.
-

@@ -86,7 +86,7 @@ Do not place too many rare Pokemon in one route table. If a route has more than 
 
 ## 7. Completion Before Final Boss
 
-Before the final dungeon opens, WorldLink should offer a "Pokedex Readiness" check:
+Before the final dungeon opens, WorldLink should offer an optional "Pokedex Readiness" checklist:
 
 - missing species by region,
 - known availability hints,
@@ -95,5 +95,4 @@ Before the final dungeon opens, WorldLink should offer a "Pokedex Readiness" che
 - remaining fossil/restoration targets,
 - remaining trade/evolution item needs.
 
-This should guide completion without forcing it.
-
+This should guide completion without forcing it. The game should not nag the player; the checklist should be opened deliberately from WorldLink, Pokecenters, or the Pokedex.

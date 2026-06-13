@@ -17,11 +17,19 @@ New Pallet Town trainer. The player character. Antman starts in Red's shadow, bu
 
 ### Red
 
-Friend and occasional companion. Red is calm, observant, and strongest when he says little. He appears in the opening, helps in a few short moments, then leaves space for Antman to lead.
+Frequent friend and travel companion. Red is calm, observant, and strongest when he says little. He appears in the opening, follows Antman in selected route/dungeon segments, helps train, joins tag battles, and leaves space for Antman to lead during gyms and major solo tests.
 
 ### Blue
 
 Mandatory first battle. Blue begins jealous of Red's attention and dismissive of Antman. By Indigo, Blue respects Antman but still wants to win.
+
+### Brock
+
+First gym leader and early mentor friend. After the Boulder Badge, Brock becomes a recurring support character for training, field preparation, fossils, breeding, and long-route survival.
+
+### Misty
+
+Second gym leader and confidence/water-route friend. After the Cascade Badge, Misty becomes a recurring friend who teaches tempo, water-route prep, fishing, and direct battle confidence.
 
 ### Ava Pine
 
@@ -50,6 +58,7 @@ Beats:
 - Ava and Dax register as active rivals.
 - Route 1-3 contain rare starter anomalies.
 - Brock is friendly-mainline hard on Standard.
+- Brock becomes a mentor friend after defeat.
 - Post-Brock Rocket museum event reveals fossil scan theft.
 
 Major unlocks:
@@ -72,6 +81,7 @@ Beats:
 - Dax races ahead and loses to a Rocket admin if player delays.
 - Cerulean introduces Nugget Bridge as a World Circuit qualifier test.
 - Misty's gym doubles as a water-system tutorial and early weather hint.
+- Misty becomes a recurring friend after defeat.
 
 Major unlocks:
 
@@ -242,7 +252,27 @@ Red appears:
 
 Red should never solve the main conflict for Antman.
 
-## 6. Kanto Replay Hooks
+## 6. Brock and Misty Friend Arcs
+
+Brock scenes:
+
+- post-gym respect and training advice,
+- Mt. Moon fossil theft check-in,
+- route camp before Cerulean,
+- Rock Tunnel preparation lesson,
+- Cinnabar fossil ethics scene,
+- World Championship prep room.
+
+Misty scenes:
+
+- post-gym respect and confidence scene,
+- water-route/fishing advice near Vermilion,
+- S.S. Anne cargo suspicion scene,
+- Safari water anomaly scene,
+- Hoenn Aqua/Kyogre specialist cameo,
+- World Championship doubles prep.
+
+## 7. Kanto Replay Hooks
 
 - Gym rematches after badges.
 - Rocket cleanup missions after Silph.
@@ -255,17 +285,17 @@ Red should never solve the main conflict for Antman.
 - fossil restoration side quests.
 - Celadon rare item economy.
 
-## 7. Kanto Success Criteria
+## 8. Kanto Success Criteria
 
 Full Kanto is complete when:
 
 - all 8 badges work,
 - all three starting rivals have meaningful arcs,
 - Red appears as friend/companion without stealing agency,
+- Brock and Misty become recurring friends after their gyms,
 - Rocket has a full Kanto arc,
 - Moonlight, Phoenix, and Gold Dust are foreshadowed,
 - Indigo League clears,
 - Johto unlocks,
 - Kanto remains fun for at least 12 hours without grind padding,
 - OpenEmu smoke test passes on the built `.gba`.
-

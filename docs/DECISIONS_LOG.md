@@ -74,21 +74,27 @@ Implication: local git should be initialized with this remote, but generated ROM
 
 ### Red Frequency
 
-Decision: Red should appear at least once in every region, with heavier presence in Kanto and major crisis chapters.
+Decision: Red should appear frequently across the entire game as a true travel companion.
 
-Implication: Red becomes a recurring friend/companion thread across the whole game without becoming a constant follower or extra rival feed.
+Implication: Red can follow Antman, talk during exploration, help train, and join tag battles. He should not participate in gym battles or other major solo tests where Antman needs to prove himself.
+
+### Brock, Misty, and May Friend Arcs
+
+Decision: Brock, Misty, and May become recurring friends with dedicated scenes.
+
+Implication: Brock becomes an early mentor for training, field survival, and Rock/Ground strategy. Misty becomes a water-route, confidence, and battle-tempo friend. May becomes the Hoenn field-research friend who connects ecology, weather, and the wider World Circuit.
 
 ### Battle Gimmick Scope
 
-Decision: Mega Evolution, Z-Moves, Dynamax/Gigantamax, and Terastallization should remain region-limited until postgame.
+Decision: Dynamax and Terastallization should not dominate the early game, but controlled usability can unlock after the third region.
 
-Implication: each region keeps a distinct mechanical identity. Postgame facilities can allow broader gimmick mixing after the player has learned each system.
+Implication: Kanto, Johto, and Hoenn should not use player-controlled Dynamax/Tera. After Hoenn, controlled facilities or limited story contexts can let players experiment. Galar and Paldea still remain the full story homes for Dynamax and Tera.
 
 ### National Dex Guidance
 
-Decision: WorldLink should actively guide players toward catching all Pokemon before the final boss, without making completion mandatory.
+Decision: WorldLink should provide an optional checklist/guide for catching all Pokemon before the final boss, without actively pushing the player.
 
-Implication: add Pokedex Readiness, habitat hints, swarm reports, missing-species summaries, and rival tips before the World Nexus Championship.
+Implication: add a Pokedex Readiness checklist with missing-species summaries, habitat hints, swarm reports, and remaining legendary/fossil/evolution needs. It should be pull-based: the player opens it when they want help.
 
 ### Next Design Priority
 

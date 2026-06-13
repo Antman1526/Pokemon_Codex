@@ -497,11 +497,11 @@ Required baseline:
 Proposed gimmick gating:
 
 - Mega Evolution: preview in Kanto postgame rematch, full unlock in Kalos.
-- Z-Moves: Alola only until postgame.
-- Dynamax/Gigantamax: Galar power spots and raids only.
-- Terastallization: Paldea and final championship.
+- Z-Moves: Alola only until postgame unless a special facility unlock is added.
+- Dynamax/Gigantamax: no early-game use; controlled usability can unlock after Hoenn, with Galar remaining the full story home.
+- Terastallization: no early-game use; controlled usability can unlock after Hoenn, with Paldea remaining the full story home.
 
-Reason: allowing every gimmick everywhere destroys balance and makes bosses incoherent.
+Reason: allowing every gimmick everywhere from the start destroys balance and makes bosses incoherent. After the third region, controlled access can work because the player has enough team depth and game knowledge.
 
 ### QoL and Progression
 
@@ -825,10 +825,10 @@ Resolved decisions:
 Still-open design questions:
 
 1. Rival canon choices: should each rotating slot be player-selectable, or should the framework lock defaults like Marnie and Nemona?
-2. Battle gimmicks: should Mega/Z/Dynamax/Tera stay region-limited until postgame, or should players eventually use all of them anywhere?
-3. Red companion frequency: should Red appear mostly in Kanto/major crises, or should every region include at least one Red scene?
-4. National Dex pressure: should the game actively guide players toward catching all Pokemon before the final boss, or simply make all Pokemon available?
-5. First implementation priority after Kanto slice: full Kanto, Red companion system, or WorldLink/rival system depth?
+2. Companion density: should Brock and Misty remain mostly Kanto/selected-region friends, or should they join more regions like Red?
+3. May naming: should the Hoenn companion be locked as May, or should Brendan be selectable if the player prefers?
+4. First implementation priority after companion design: Full Kanto trainers, starter selection implementation plan, or WorldLink UI spec?
+5. Should Red be controllable as a tag partner's team in some battles, or always AI-controlled?
 
 ## 11. Proposed First Milestone for Claude Code and Codex
 

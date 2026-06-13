@@ -3,18 +3,22 @@
 companion:
   id: red
   display_name: Red
-  role: friend_mentor_companion
+  role: full_game_friend_mentor_companion
   protagonist_relationship: "Antman is a new Pallet trainer following Red's path."
   dialogue_style: sparse_direct_warm
-  usage_rule: "Red helps at key moments but does not solve Antman's journey."
+  usage_rule: "Red appears frequently, follows during selected segments, helps train, joins tag battles, but does not fight Antman's gym battles."
 
 states:
   present_in_town:
     description: "Appears for dialogue or a story scene."
   follows_temporarily:
     description: "Briefly follows Antman through a short route or dungeon beat."
+  follows_region_segment:
+    description: "Travels with Antman through a larger region segment."
   tag_partner:
     description: "Joins a scripted double battle."
+  training_partner:
+    description: "Offers practice battles or tactical advice."
   worldlink_contact:
     description: "Sends short notes without becoming another spam rival feed."
   absent_investigating:
@@ -53,3 +57,14 @@ team_policy:
     - "Do not let Red defeat major bosses for the player."
     - "Do not use Red as an eleventh rival notification feed."
 
+regional_presence:
+  kanto: [pallet_tracks, route_1_follow, pewter_backup, lavender_warning, cinnabar_restraint, indigo_observer]
+  johto: [mt_silver_echo, rocket_moonlight_segment]
+  hoenn: [weather_route_assist]
+  sinnoh_hisui: [mt_coronet_training]
+  unova: [n_philosophy_counterpoint]
+  kalos: [mega_power_reflection]
+  alola: [ultra_beast_rescue]
+  galar: [stadium_exhibition_training]
+  paldea: [area_zero_threshold]
+  world_nexus_championship: [crisis_tag_battle, postgame_friend_battle]

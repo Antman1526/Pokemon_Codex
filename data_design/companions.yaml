@@ -1,0 +1,71 @@
+# Companion planning data for Pokemon Nexus Red.
+
+companions:
+  red:
+    role: full_game_travel_companion
+    frequency: frequent
+    can_follow: true
+    can_tag_battle: true
+    can_train_player: true
+    can_help_gym_battles: false
+    personality: quiet_warm_observant
+    scene_focus: [route_observation, training, tag_battle, emotional_anchor, worldlink_notes]
+    regional_presence:
+      kanto: [pallet_tracks, route_1_follow, pewter_backup, lavender_warning, cinnabar_restraint, indigo_observer]
+      johto: [mt_silver_echo, rocket_moonlight_segment]
+      hoenn: [weather_route_assist]
+      sinnoh_hisui: [mt_coronet_training]
+      unova: [n_philosophy_counterpoint]
+      kalos: [mega_power_reflection]
+      alola: [ultra_beast_rescue]
+      galar: [stadium_exhibition_training]
+      paldea: [area_zero_threshold]
+      world_nexus_championship: [crisis_tag_battle, postgame_friend_battle]
+
+  brock:
+    role: early_mentor_survival_friend
+    frequency: recurring
+    can_follow: situational
+    can_tag_battle: true
+    can_train_player: true
+    can_help_gym_battles: false
+    personality: practical_warm_prepared
+    scene_focus: [field_survival, training, breeding_advice, rock_ground_strategy, fossil_ethics]
+    regional_presence:
+      kanto: [post_gym_respect, mt_moon_check_in, cerulean_route_camp, rock_tunnel_guidance, cinnabar_fossil_ethics]
+      world_nexus_championship: [prep_room_long_battles]
+
+  misty:
+    role: confidence_water_route_friend
+    frequency: recurring
+    can_follow: situational
+    can_tag_battle: true
+    can_train_player: true
+    can_help_gym_battles: false
+    personality: energetic_direct_competitive
+    scene_focus: [tempo, water_routes, fishing, confidence, doubles_prep]
+    regional_presence:
+      kanto: [post_gym_respect, vermilion_water_hint, ss_anne_manifest, safari_water_anomaly]
+      hoenn: [aqua_kyogre_specialist_scene]
+      world_nexus_championship: [tempo_rematch_doubles_prep]
+
+  may:
+    role: hoenn_field_companion_ecology_friend
+    frequency: major_hoenn_then_recurring
+    can_follow: true
+    can_tag_battle: true
+    can_train_player: true
+    can_help_gym_battles: false
+    personality: upbeat_practical_curious
+    scene_focus: [field_research, weather, habitats, ecology, rare_pokemon_tips]
+    regional_presence:
+      hoenn: [arrival_intro, weather_institute_partner, mt_chimney_reaction, route_119_weather_tracking, sootopolis_evacuation, sky_pillar_aftermath]
+      world_nexus_championship: [research_support_with_ava]
+
+global_rules:
+  - "Companions cannot fight Antman's gym battles."
+  - "Companions can join villain tag battles and route/dungeon skirmishes."
+  - "Companion dialogue should be concise and useful."
+  - "Red is the most frequent companion but should still leave space for Antman's agency."
+  - "Rotate companion presence to avoid overcrowding."
+

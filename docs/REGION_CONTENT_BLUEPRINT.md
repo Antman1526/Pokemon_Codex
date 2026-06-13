@@ -50,6 +50,7 @@ Core dungeons:
 Main additions:
 
 - Red companion opening.
+- Brock and Misty become recurring friends after their gyms.
 - Blue/Ava/Dax triple rival start.
 - early cross-region starter anomalies.
 - Rocket uses Kanto as the first logistics hub.
@@ -123,6 +124,8 @@ Main additions:
 - Magma/Aqua receive Nexus-amplified tech.
 - Gold Dust buys meteorites and rare stones.
 - Rocket smuggles Pokemon through Slateport/Lilycove.
+- May becomes a major field companion and ecology/weather friend.
+- Misty can cameo during the Aqua/Kyogre arc as a water specialist.
 - Rayquaza stabilizes Hoenn and unlocks WorldLink anomaly tracking.
 
 ## 5. Sinnoh/Hisui
@@ -353,4 +356,3 @@ Because all Pokemon must be catchable before the final boss:
 - mythicals can use difficult pre-final quests,
 - legendaries can be guardian trials before the final dungeon,
 - postgame improves convenience and rematches, not base availability.
-

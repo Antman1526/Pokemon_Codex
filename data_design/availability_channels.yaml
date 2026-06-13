@@ -60,6 +60,7 @@ regional_distribution:
 pre_final_readiness_check:
   enabled: true
   surface: WorldLink
+  interaction_model: optional_pull_based_checklist
   shows:
     - missing_species_by_region
     - known_availability_hints
@@ -67,4 +68,3 @@ pre_final_readiness_check:
     - remaining_legendary_trials
     - remaining_fossil_restorations
     - remaining_evolution_item_needs
-

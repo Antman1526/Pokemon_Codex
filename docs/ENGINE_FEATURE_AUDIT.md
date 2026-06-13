@@ -25,8 +25,8 @@ Status labels:
 | Strong battle AI | configure_or_integrate | Boss tiers need AI profile rules. |
 | Mega Evolution | configure_or_integrate | Full unlock in Kalos; preview only before then. |
 | Z-Moves | configure_or_integrate | Restrict to Alola and postgame facilities. |
-| Dynamax/Gigantamax | configure_or_integrate | Restrict to Galar power spots/raids. |
-| Terastallization | configure_or_integrate | Restrict to Paldea and final championship. |
+| Dynamax/Gigantamax | configure_or_integrate | No player use in Kanto/Johto/Hoenn; controlled access can unlock after Hoenn, with Galar as full story home. |
+| Terastallization | configure_or_integrate | No player use in Kanto/Johto/Hoenn; controlled access can unlock after Hoenn, with Paldea as full story home. |
 
 ## 2. Player QoL
 
