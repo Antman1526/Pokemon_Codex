@@ -3,6 +3,12 @@ worldlink_region_progression:
   principle: "WorldLink unlocks regions through story progression one at a time; it is not a free fast-travel region selector during the main journey."
   current_main_story_rule: "Only the active region is open for main-story progression. Earlier regions can reopen later through explicit story systems, but new regions do not unlock until the current region's Nexus chapter is resolved."
   travel_feel: "Every region transition should feel like a committed departure with companions, rivals, villains, and Pokemon availability shifting around Antman's journey."
+  locked_preview_rule: "WorldLink may preview the next region through story evidence, but previews are not travel unlocks. Vermilion Harbor is the first Johto preview; Johto remains locked until Kanto's League and Rocket/Nexus arc are resolved."
+  first_locked_preview:
+    region: johto
+    location: vermilion_harbor
+    trigger: "After the S.S. Anne manifest crisis, the harbor WorldLink signal detects New Bark trade-route data and Bell Tower resonance."
+    player_message: "Johto signal detected. Region access locked until Kanto Nexus clearance."
   unlock_order:
     - order: 1
       region: kanto

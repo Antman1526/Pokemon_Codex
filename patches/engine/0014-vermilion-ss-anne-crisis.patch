@@ -1,0 +1,452 @@
+--- a/data/maps/VermilionCity_Frlg/map.json
++++ b/data/maps/VermilionCity_Frlg/map.json
+@@ -139,6 +139,48 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "VermilionCity_EventScript_OaksAide",
+       "flag": "FLAG_HIDE_VERMILION_CITY_OAKS_AIDE"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 20,
++      "y": 31,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VermilionCity_EventScript_RedHarbor",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BLUE",
++      "x": 22,
++      "y": 31,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VermilionCity_EventScript_BlueJealousy",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MISTY",
++      "x": 26,
++      "y": 31,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VermilionCity_EventScript_MistyHarbor",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+--- a/data/maps/VermilionCity_Frlg/scripts.inc
++++ b/data/maps/VermilionCity_Frlg/scripts.inc
+@@ -29,6 +29,45 @@
+ 	setflag FLAG_HIDE_VERMILION_CITY_OAKS_AIDE
+ 	return
+ 
++VermilionCity_EventScript_RedHarbor::
++	lock
++	faceplayer
++	goto_if_set FLAG_GOT_HM01, VermilionCity_EventScript_RedHarborPostCrisis
++	msgbox VermilionCity_Text_RedHarborPreCrisis, MSGBOX_NPC
++	release
++	end
++
++VermilionCity_EventScript_RedHarborPostCrisis::
++	msgbox VermilionCity_Text_RedHarborPostCrisis, MSGBOX_NPC
++	release
++	end
++
++VermilionCity_EventScript_BlueJealousy::
++	lock
++	faceplayer
++	goto_if_set FLAG_GOT_HM01, VermilionCity_EventScript_BlueJealousyPostCrisis
++	msgbox VermilionCity_Text_BlueJealousyPreCrisis, MSGBOX_NPC
++	release
++	end
++
++VermilionCity_EventScript_BlueJealousyPostCrisis::
++	msgbox VermilionCity_Text_BlueJealousyPostCrisis, MSGBOX_NPC
++	release
++	end
++
++VermilionCity_EventScript_MistyHarbor::
++	lock
++	faceplayer
++	goto_if_set FLAG_GOT_HM01, VermilionCity_EventScript_MistyHarborPostCrisis
++	msgbox VermilionCity_Text_MistyHarborPreCrisis, MSGBOX_NPC
++	release
++	end
++
++VermilionCity_EventScript_MistyHarborPostCrisis::
++	msgbox VermilionCity_Text_MistyHarborPostCrisis, MSGBOX_NPC
++	release
++	end
++
+ VermilionCity_EventScript_Woman::
+ 	msgbox VermilionCity_Text_GrimerMultipliesInSludge, MSGBOX_NPC
+ 	end
+@@ -260,9 +299,60 @@
+ 	end
+ 
+ VermilionCity_EventScript_HarborSign::
++	goto_if_set FLAG_GOT_HM01, VermilionCity_EventScript_HarborSignJohtoLock
+ 	msgbox VermilionCity_Text_VermilionHarbor, MSGBOX_SIGN
+ 	end
++
++VermilionCity_EventScript_HarborSignJohtoLock::
++	msgbox VermilionCity_Text_VermilionHarborJohtoLock, MSGBOX_SIGN
++	end
++
++VermilionCity_Text_RedHarborPreCrisis::
++	.string "RED: BLUE heard I was traveling\n"
++	.string "with you.\p"
++	.string "He's acting like I picked a side.\n"
++	.string "I didn't.\p"
++	.string "But the S.S. ANNE feels wrong.\n"
++	.string "Stay sharp once we're aboard.$"
+ 
++VermilionCity_Text_RedHarborPostCrisis::
++	.string "RED: That ship wasn't just a party.\p"
++	.string "ROCKET wants routes. GOLD DUST\n"
++	.string "wants anchors.\p"
++	.string "And JOHTO just appeared in the\n"
++	.string "signal without opening the road.$"
++
++VermilionCity_Text_BlueJealousyPreCrisis::
++	.string "{RIVAL}: So RED is waiting around\n"
++	.string "for you now?\p"
++	.string "That's rich. He barely talks, then\n"
++	.string "suddenly you're his big project?\p"
++	.string "Fine. Board the S.S. ANNE.\n"
++	.string "I'll show both of you who leads.$"
++
++VermilionCity_Text_BlueJealousyPostCrisis::
++	.string "{RIVAL}: Don't get comfortable.\p"
++	.string "RED helping you, MISTY following\n"
++	.string "you, weird alerts naming JOHTO...\p"
++	.string "I'll beat the League first and make\n"
++	.string "WorldLink remember my name.$"
++
++VermilionCity_Text_MistyHarborPreCrisis::
++	.string "MISTY: I followed the water pulse\n"
++	.string "from Cerulean.\p"
++	.string "The harbor current is tugging like\n"
++	.string "something huge is under the ship.\p"
++	.string "I'll watch the docks. You and RED\n"
++	.string "check inside.$"
++
++VermilionCity_Text_MistyHarborPostCrisis::
++	.string "MISTY: Okay, I'm in.\p"
++	.string "Not for your Gym battles--those are\n"
++	.string "yours to win.\p"
++	.string "But for ROCKET, GOLD DUST, and\n"
++	.string "whatever JOHTO signal woke up?\p"
++	.string "You, RED, and I are a team.$"
++
+ VermilionCity_Text_GrimerMultipliesInSludge::
+ 	.string "We're careful about pollution here.\p"
+ 	.string "We've heard GRIMER multiplies in\n"
+@@ -318,6 +408,13 @@
+ VermilionCity_Text_VermilionHarbor::
+ 	.string "VERMILION HARBOR$"
+ 
++VermilionCity_Text_VermilionHarborJohtoLock::
++	.string "VERMILION HARBOR\p"
++	.string "WorldLink Alert:\n"
++	.string "JOHTO signal detected.\p"
++	.string "Region access locked until KANTO\n"
++	.string "Nexus clearance.$"
++
+ VermilionCity_Text_WelcomeToTheSSAnne::
+ 	.string "Welcome to the S.S. ANNE!$"
+ 
+@@ -393,4 +490,3 @@
+ 	.string "ROUTE 2, {PLAYER}.\p"
+ 	.string "If you're in the ROUTE 2 area,\n"
+ 	.string "please look for him.$"
+-
+--- a/data/maps/SSAnne_2F_Corridor_Frlg/map.json
++++ b/data/maps/SSAnne_2F_Corridor_Frlg/map.json
+@@ -44,6 +44,48 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "SSAnne_2F_Corridor_EventScript_Sailor",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
++      "x": 24,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SSAnne_2F_Corridor_EventScript_ManifestCrisis",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN",
++      "x": 25,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SSAnne_2F_Corridor_EventScript_ManifestCrisis",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN",
++      "x": 26,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SSAnne_2F_Corridor_EventScript_ManifestCrisis",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+--- a/data/maps/SSAnne_2F_Corridor_Frlg/scripts.inc
++++ b/data/maps/SSAnne_2F_Corridor_Frlg/scripts.inc
+@@ -1,6 +1,25 @@
+ SSAnne_2F_Corridor_Frlg_MapScripts::
+ 	.byte 0
+ 
++SSAnne_2F_Corridor_EventScript_ManifestCrisis::
++	lock
++	faceplayer
++	checktrainerflag TRAINER_TEAM_ROCKET_GRUNT_SS_ANNE_MANIFEST
++	goto_if_eq VAR_RESULT, TRUE, SSAnne_2F_Corridor_EventScript_ManifestCrisisPostBattle
++	msgbox SSAnne_2F_Corridor_Text_ManifestCrisisIntro, MSGBOX_NPC
++	msgbox SSAnne_2F_Corridor_Text_ThreeWayManifestArgument
++	trainerbattle_two_trainers TRAINER_TEAM_ROCKET_GRUNT_SS_ANNE_MANIFEST, SSAnne_2F_Corridor_Text_RocketManifestDefeat, TRAINER_GOLD_DUST_BROKER_MIDAS, SSAnne_2F_Corridor_Text_GoldDustManifestDefeat
++	settrainerflag TRAINER_TEAM_ROCKET_GRUNT_SS_ANNE_MANIFEST
++	settrainerflag TRAINER_GOLD_DUST_BROKER_MIDAS
++	msgbox SSAnne_2F_Corridor_Text_ManifestCrisisVictory
++	release
++	end
++
++SSAnne_2F_Corridor_EventScript_ManifestCrisisPostBattle::
++	msgbox SSAnne_2F_Corridor_Text_ManifestCrisisPostBattle, MSGBOX_NPC
++	release
++	end
++
+ SSAnne_2F_Corridor_EventScript_RivalTriggerLeft::
+ 	lockall
+ 	setvar VAR_TEMP_1, 0
+@@ -174,16 +193,50 @@
+ 	.string "At every port, we hold parties with\n"
+ 	.string "invited TRAINERS.$"
+ 
++SSAnne_2F_Corridor_Text_ManifestCrisisIntro::
++	.string "BELL TOWER COURIER: Back away.\p"
++	.string "That manifest names more than\n"
++	.string "passengers.\p"
++	.string "It maps old sea routes, badge ports,\n"
++	.string "and a JOHTO bell resonance.$"
++
++SSAnne_2F_Corridor_Text_ThreeWayManifestArgument::
++	.string "ROCKET: The routes belong to us.\n"
++	.string "We pull regions into order.\p"
++	.string "GOLD DUST: You break what you touch.\n"
++	.string "We preserve anchors for buyers.\p"
++	.string "COURIER: Johto's towers are not for\n"
++	.string "thieves. Antman, stop them!$"
++
++SSAnne_2F_Corridor_Text_RocketManifestDefeat::
++	.string "The manifest was our map!$"
++
++SSAnne_2F_Corridor_Text_GoldDustManifestDefeat::
++	.string "The gold seal cracked!$"
++
++SSAnne_2F_Corridor_Text_ManifestCrisisVictory::
++	.string "BELL TOWER COURIER: Good.\p"
++	.string "I saved one copy, but the signal\n"
++	.string "already reached shore.\p"
++	.string "Tell MISTY the harbor current is\n"
++	.string "pointing at JOHTO.$"
++
++SSAnne_2F_Corridor_Text_ManifestCrisisPostBattle::
++	.string "BELL TOWER COURIER: WorldLink may\n"
++	.string "detect JOHTO now.\p"
++	.string "Detection is not permission.\n"
++	.string "Finish KANTO before crossing seas.$"
++
+ SSAnne_2F_Corridor_Text_RivalIntro::
+ 	.string "{RIVAL}: Bonjour!\n"
+ 	.string "{PLAYER}!\p"
+ 	.string "Imagine seeing you here!\n"
+-	.string "{PLAYER}, were you really invited?\p"
+-	.string "So how's your POKéDEX coming?\p"
+-	.string "I already caught 40 kinds, pal.\n"
+-	.string "Different kinds are everywhere.\p"
+-	.string "Crawl around in grassy areas, and\n"
+-	.string "look hard for them.$"
++	.string "{PLAYER}, were you really invited,\n"
++	.string "or did RED get you on the list?\p"
++	.string "WorldLink, foreign TRAINERS,\n"
++	.string "weird ship rumors...\p"
++	.string "Everybody keeps watching you.\n"
++	.string "So watch this: I'm still ahead.$"
+ 
+ SSAnne_2F_Corridor_Text_RivalDefeat::
+ 	.string "Humph!\p"
+@@ -199,9 +252,8 @@
+ SSAnne_2F_Corridor_Text_RivalPostBattle::
+ 	.string "{RIVAL}: I heard there was a CUT\n"
+ 	.string "master on board.\p"
+-	.string "But he was just a seasick old man!\p"
+-	.string "CUT itself is really useful.\n"
+-	.string "Yup, it'll be handy.\p"
+-	.string "You should go see him, too.\n"
++	.string "But he's mixed up with some golden\n"
++	.string "manifest panic now.\p"
++	.string "Go play hero with RED if you want.\n"
++	.string "I'm taking CUT and moving first.\p"
+ 	.string "Smell ya!$"
+-
+--- a/data/maps/SSAnne_CaptainsOffice_Frlg/scripts.inc
++++ b/data/maps/SSAnne_CaptainsOffice_Frlg/scripts.inc
+@@ -49,7 +49,9 @@
+ SSAnne_CaptainsOffice_Text_CaptainIFeelSeasick::
+ 	.string "CAPTAIN: Ooargh…\n"
+ 	.string "I feel hideous…\l"
+-	.string "Urrp! Seasick…$"
++	.string "Urrp! Seasick…\p"
++	.string "The manifest flashed gold, then the\n"
++	.string "compass pointed toward JOHTO.$"
+ 
+ SSAnne_CaptainsOffice_Text_RubbedCaptainsBack::
+ 	.string "{PLAYER} rubbed the CAPTAIN's\n"
+@@ -60,6 +62,10 @@
+ SSAnne_CaptainsOffice_Text_ThankYouHaveHMForCut::
+ 	.string "CAPTAIN: Whew! Thank you!\n"
+ 	.string "I'm feeling much better now.\p"
++	.string "So ROCKET and GOLD DUST both chased\n"
++	.string "my passenger manifest?\p"
++	.string "Then take this. If the road twists,\n"
++	.string "you'll need a field tool.\p"
+ 	.string "You want to see my hidden CUT\n"
+ 	.string "technique?\p"
+ 	.string "I could show you my prized CUT\n"
+@@ -76,6 +82,8 @@
+ SSAnne_CaptainsOffice_Text_ExplainCut::
+ 	.string "Using CUT, you can chop down\n"
+ 	.string "small trees.\p"
++	.string "WorldLink may call it a TRAIL\n"
++	.string "CUTTER upgrade someday.\p"
+ 	.string "Why not try it with the trees\n"
+ 	.string "around VERMILION CITY?$"
+ 
+@@ -83,6 +91,8 @@
+ 	.string "CAPTAIN: …Whew!\p"
+ 	.string "Now that I'm not sick anymore,\n"
+ 	.string "I guess it's time.\p"
++	.string "The JOHTO reading is locked in the\n"
++	.string "harbor office for now.\p"
+ 	.string "The S.S. ANNE will set sail soon!\p"
+ 	.string "Farewell, until our return to\n"
+ 	.string "VERMILION CITY!$"
+@@ -98,4 +108,3 @@
+ SSAnne_CaptainsOffice_Text_HowToConquerSeasickness::
+ 	.string "How to Conquer Seasickness…\n"
+ 	.string "The CAPTAIN's reading this!$"
+-
+--- a/include/constants/opponents_frlg.h
++++ b/include/constants/opponents_frlg.h
+@@ -629,12 +629,14 @@
+ #define TRAINER_CUE_BALL_PAXTON                    623
+ #define TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS    624
+ #define TRAINER_GOLD_DUST_BROKER_AUREL             625
++#define TRAINER_TEAM_ROCKET_GRUNT_SS_ANNE_MANIFEST 626
++#define TRAINER_GOLD_DUST_BROKER_MIDAS             627
+ 
+ // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
+ //       only space for 25 additional trainers before trainer flag space overflows.
+ //       MAX_TRAINERS_COUNT_FRLG can be increased but will take up additional saveblock space
+ 
+-#define TRAINERS_COUNT_FRLG                      626
++#define TRAINERS_COUNT_FRLG                      628
+ #define MAX_TRAINERS_COUNT_FRLG                  768
+ 
+ #endif  // GUARD_CONSTANTS_OPPONENTS_FRLG_H
+--- a/src/data/trainers_frlg.party
++++ b/src/data/trainers_frlg.party
+@@ -13826,5 +13826,55 @@
+ IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+ - Pay Day
+ - Bite
++- Fake Out
++- Sand Attack
++
++=== TRAINER_TEAM_ROCKET_GRUNT_SS_ANNE_MANIFEST ===
++Name: GRUNT
++Class: Team Rocket Frlg
++Pic: Rocket Grunt M Frlg
++Gender: Male
++Music: Aqua
++Double Battle: No
++AI: Check Bad Move
++
++Ekans
++Level: 22
++IVs: 8 HP / 8 Atk / 8 Def / 8 SpA / 8 SpD / 8 Spe
++- Bite
++- Glare
++- Poison Sting
++- Wrap
++
++Koffing
++Level: 22
++IVs: 8 HP / 8 Atk / 8 Def / 8 SpA / 8 SpD / 8 Spe
++- Smog
++- Assurance
++- Smokescreen
++- Tackle
++
++=== TRAINER_GOLD_DUST_BROKER_MIDAS ===
++Name: MIDAS
++Class: Burglar Frlg
++Pic: Burglar Frlg
++Gender: Male
++Music: Suspicious
++Double Battle: No
++AI: Check Bad Move
++
++Meowth
++Level: 22
++IVs: 8 HP / 8 Atk / 8 Def / 8 SpA / 8 SpD / 8 Spe
++- Pay Day
+ - Fake Out
++- Bite
++- Screech
++
++Sandshrew
++Level: 22
++IVs: 8 HP / 8 Atk / 8 Def / 8 SpA / 8 SpD / 8 Spe
++- Magnitude
++- Swift
+ - Sand Attack
++- Fury Cutter

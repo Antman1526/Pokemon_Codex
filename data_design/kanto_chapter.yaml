@@ -38,9 +38,13 @@ acts:
     required_events:
       - bill_storage_metadata_anomaly
       - red_worldlink_mt_moon_note
+      - blue_vermilion_jealousy_scene
       - ss_anne_foreign_trainers
       - blue_ss_anne_battle
+      - ss_anne_rocket_gold_dust_johto_manifest_crisis
       - rocket_smuggling_manifest
+      - vermilion_harbor_johto_locked_hint
+      - misty_post_ss_anne_join_scene
       - lt_surge_battle
     unlocks: [vs_seeker, good_rod]
 
@@ -153,4 +157,3 @@ villain_foreshadowing:
   nexus_order:
     maps: [silph_co, viridian_gym, indigo_plateau]
     reveal_timing: "Hints only in Kanto; no full name until later."
-

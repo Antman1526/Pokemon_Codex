@@ -21,6 +21,7 @@ git apply --directory=engine/pokeemerald-expansion patches/engine/0010-pewter-mu
 git apply --directory=engine/pokeemerald-expansion patches/engine/0011-mt-moon-nexus-break.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0012-cerulean-misty-bridge-setup.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0013-route25-red-gold-dust-tag.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0014-vermilion-ss-anne-crisis.patch
 ```
 
 Command:
@@ -74,6 +75,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 21:28 CDT: Codex built the Mt. Moon Nexus Break milestone from patches `0001` through `0011`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, and Mt. Moon Nexus Break validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
+- 2026-06-13 23:41 CDT: Codex built the Vermilion S.S. Anne crisis milestone from patches `0001` through `0014`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, and Vermilion S.S. Anne crisis validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.63%.
 
 ## Engine Patches To Apply Before Build
 
@@ -90,6 +92,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0011-mt-moon-nexus-break.patch` - Mt. Moon Red companion scene, Rocket Nexus fossil rewrite, and Dome/Helix artifact logging.
 - `patches/engine/0012-cerulean-misty-bridge-setup.patch` - Cerulean Red/Misty companion setup and Nugget Bridge Rocket WorldLink recruitment hook.
 - `patches/engine/0013-route25-red-gold-dust-tag.patch` - Route 25 first Red tag setup, Rocket/Team Gold Dust clash, and Bill WorldLink anomaly rewrite.
+- `patches/engine/0014-vermilion-ss-anne-crisis.patch` - Vermilion Blue jealousy scene, S.S. Anne Rocket/Gold Dust/Johto manifest crisis, Misty post-crisis joining, and Johto locked preview.
 
 ## Validation
 
@@ -117,6 +120,7 @@ python3 tools/validate_act1_brock_red_pewter.py
 python3 tools/validate_mt_moon_nexus_break.py
 python3 tools/validate_cerulean_misty_bridge.py
 python3 tools/validate_route25_red_gold_dust.py
+python3 tools/validate_vermilion_ss_anne_crisis.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -129,6 +133,7 @@ Act 1 Brock/Red/Pewter validation passed.
 Mt. Moon Nexus Break validation passed.
 Cerulean Misty Bridge validation passed.
 Route 25 Red Gold Dust validation passed.
+Vermilion S.S. Anne crisis validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -167,5 +172,14 @@ Manual OpenEmu checklist still needed:
 - [ ] Bill references the WorldLink pulse and gold fossil shard.
 - [ ] Bill's Cell Separation instructions reference WorldLink residue.
 - [ ] Blue jealousy is foreshadowed after the Route 25 battle.
+- [ ] Vermilion Harbor Red scene appears before boarding the S.S. Anne.
+- [ ] Vermilion Harbor Blue jealousy scene appears before boarding the S.S. Anne.
+- [ ] Vermilion Harbor Misty watch scene appears before boarding the S.S. Anne.
+- [ ] Blue's S.S. Anne battle text references Red and WorldLink pressure.
+- [ ] S.S. Anne manifest crisis shows Rocket, Team Gold Dust, and Bell Tower courier conflict.
+- [ ] S.S. Anne two-trainer battle starts against Rocket and Team Gold Dust.
+- [ ] Captain text references the gold manifest flash and Johto compass signal.
+- [ ] Misty post-crisis harbor scene says she is joining the recurring companion team.
+- [ ] Vermilion Harbor sign shows Johto detected but locked after the crisis.
 - [ ] Save works after this milestone.
 - [ ] Reload works after this milestone.

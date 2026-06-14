@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 try:
@@ -100,10 +101,14 @@ def validate_trainers() -> list[str]:
     for marker in (
         "#define TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS    624",
         "#define TRAINER_GOLD_DUST_BROKER_AUREL             625",
-        "#define TRAINERS_COUNT_FRLG                      626",
     ):
         if marker not in opponents:
             errors.append(f"Opponent constants missing marker: {marker}")
+    count_match = re.search(r"#define TRAINERS_COUNT_FRLG\s+(\d+)", opponents)
+    if not count_match:
+        errors.append("Opponent constants missing TRAINERS_COUNT_FRLG")
+    elif int(count_match.group(1)) < 626:
+        errors.append(f"TRAINERS_COUNT_FRLG must be at least 626, got {count_match.group(1)}")
     return errors
 
 

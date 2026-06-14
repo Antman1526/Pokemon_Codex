@@ -48,7 +48,7 @@ companions:
     personality: energetic_direct_competitive
     scene_focus: [tempo, water_routes, fishing, confidence, doubles_prep]
     regional_presence:
-      kanto: [post_gym_respect, vermilion_water_hint, ss_anne_manifest, safari_water_anomaly]
+      kanto: [post_gym_respect, route_25_watch, vermilion_water_hint, ss_anne_manifest, post_ss_anne_join, safari_water_anomaly]
       hoenn: [aqua_kyogre_specialist_scene]
       world_nexus_championship: [tempo_rematch_doubles_prep]
 
@@ -71,4 +71,5 @@ global_rules:
   - "Companion dialogue should be concise and useful."
   - "Red is the most frequent companion but should still leave space for Antman's agency."
   - "Brock and Misty are mandatory recurring companions after their gym arcs."
+  - "Misty watches the Route 25 and Vermilion signals first, then formally joins Antman's recurring companion circle after the S.S. Anne crisis."
   - "Rotate companion presence to avoid overcrowding."
