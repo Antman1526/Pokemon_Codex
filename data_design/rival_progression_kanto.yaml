@@ -106,6 +106,35 @@ progression_bands:
         event: first_locked_region_tease
         notification: "Locked profile detected: Lyra / Johto. Region access unavailable."
 
+  route11_diglett_bridge:
+    player_range: "After Thunder Badge before Rock Tunnel"
+    companions:
+      red:
+        location: Route 11 / Diglett's Cave approach
+        event: warm_route11_field_tool_guidance
+        notification: "Red says Trail Cutter is reading Diglett's Cave as a field-tool calibration route."
+      brock:
+        location: Pewter Gym / WorldLink call
+        event: rock_tunnel_field_advice
+        notification: "Brock sent cave-prep advice: bring Ground answers, repel control, and a light source for Rock Tunnel."
+    rivals:
+      blue:
+        location: Route 11
+        event: rival_race_pressure
+        notification: "Blue is pushing east on Route 11 and says Pokemon Tower will prove who is ahead."
+      ava:
+        location: Diglett's Cave survey note
+        event: ground_route_research
+        notification: "Ava logged Diglett's Cave as a natural tunnel that WorldLink can measure without unlocking Johto."
+      dax:
+        location: Route 11 engineer line
+        event: engineer_training_loss
+        notification: "Dax lost to an Engineer on Route 11, then called it 'data collection' and challenged him again."
+      lyra:
+        location: Johto locked profile
+        event: lyra_signal_remains_locked
+        notification: "Lyra's profile flickered again, but WorldLink still marks Johto travel as locked."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

@@ -23,6 +23,7 @@ git apply --directory=engine/pokeemerald-expansion patches/engine/0012-cerulean-
 git apply --directory=engine/pokeemerald-expansion patches/engine/0013-route25-red-gold-dust-tag.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0014-vermilion-ss-anne-crisis.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0015-surge-grid-worldlink.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0016-route11-diglett-bridge.patch
 ```
 
 Command:
@@ -78,6 +79,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 23:41 CDT: Codex built the Vermilion S.S. Anne crisis milestone from patches `0001` through `0014`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, and Vermilion S.S. Anne crisis validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.63%.
 - 2026-06-14 08:59 CDT: Codex built the Surge grid and WorldLink feed milestone from patches `0001` through `0015`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, and Surge grid WorldLink validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
+- 2026-06-14 09:37 CDT: Codex built the Route 11 Diglett bridge milestone from patches `0001` through `0016`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, and Route 11 Diglett bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
 
 ## Engine Patches To Apply Before Build
 
@@ -96,6 +98,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0013-route25-red-gold-dust-tag.patch` - Route 25 first Red tag setup, Rocket/Team Gold Dust clash, and Bill WorldLink anomaly rewrite.
 - `patches/engine/0014-vermilion-ss-anne-crisis.patch` - Vermilion Blue jealousy scene, S.S. Anne Rocket/Gold Dust/Johto manifest crisis, Misty post-crisis joining, and Johto locked preview.
 - `patches/engine/0015-surge-grid-worldlink.patch` - Rocket grid sabotage in Vermilion Gym, Surge cap tuning, Trail Cutter prototype text, Fan Club Gold Dust clue, and post-Surge WorldLink rival feed.
+- `patches/engine/0016-route11-diglett-bridge.patch` - Route 11 rival-race checkpoint, warm Red Trail Cutter guidance, Diglett's Cave Trail Cutter calibration, and Rock Tunnel checklist handoff.
 
 ## Validation
 
@@ -125,6 +128,7 @@ python3 tools/validate_cerulean_misty_bridge.py
 python3 tools/validate_route25_red_gold_dust.py
 python3 tools/validate_vermilion_ss_anne_crisis.py
 python3 tools/validate_surge_grid_worldlink.py
+python3 tools/validate_route11_diglett_bridge.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -139,6 +143,7 @@ Cerulean Misty Bridge validation passed.
 Route 25 Red Gold Dust validation passed.
 Vermilion S.S. Anne crisis validation passed.
 Surge grid WorldLink validation passed.
+Route 11 Diglett bridge validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -194,5 +199,9 @@ Manual OpenEmu checklist still needed:
 - [ ] Thunder Badge reward text mentions Trail Cutter prototype registration.
 - [ ] Post-Surge WorldLink rival feed mentions Blue, Ava, Dax, and locked Lyra / Johto.
 - [ ] Pokemon Fan Club worker mentions the Gold Dust collector and Celadon buyer.
+- [ ] Route 11 Blue rival-race checkpoint appears after Surge.
+- [ ] Route 11 Red scene explains Trail Cutter underground readings.
+- [ ] Diglett's Cave old man says the tunnel is not a region shortcut.
+- [ ] Route 11 East Entrance guard gives the Rock Tunnel checklist.
 - [ ] Save works after this milestone.
 - [ ] Reload works after this milestone.

@@ -61,6 +61,21 @@ messages:
     priority: major
     text: "WorldLink Field Tools: Trail Cutter prototype registered. Full HM replacement system pending."
 
+  - id: WL_KANTO_ROUTE11_RIVAL_RACE
+    trigger: FLAG_BADGE03_GET
+    priority: minor
+    text: "Blue is pressing east on Route 11. He wants the next Kanto mystery solved before Antman and Red reach it."
+
+  - id: WL_KANTO_DIGLETT_TRAIL_CUTTER_PING
+    trigger: FLAG_BADGE03_GET
+    priority: minor
+    text: "Trail Cutter registered underground movement near Diglett's Cave. WorldLink classifies this as a field-tool calibration route, not a region unlock."
+
+  - id: WL_KANTO_ROCK_TUNNEL_CHECKLIST
+    trigger: FLAG_BADGE03_GET
+    priority: major
+    text: "Rock Tunnel checklist: clear Route 11 pressure, inspect Diglett's Cave, return toward Cerulean, and prepare for low-light cave travel."
+
   - id: WL_KANTO_LEAGUE_INVITE
     trigger: FLAG_NEXUS_EARTH_BADGE
     priority: major

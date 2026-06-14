@@ -1,0 +1,122 @@
+diff --git a/data/maps/DiglettsCave_SouthEntrance_Frlg/scripts.inc b/data/maps/DiglettsCave_SouthEntrance_Frlg/scripts.inc
+index c7d7545da0..111e22e90b 100644
+--- a/data/maps/DiglettsCave_SouthEntrance_Frlg/scripts.inc
++++ b/data/maps/DiglettsCave_SouthEntrance_Frlg/scripts.inc
+@@ -9,5 +9,10 @@ DiglettsCave_SouthEntrance_Text_DiglettDugThisTunnel::
+ 	.string "Well, isn't this a surprise!\n"
+ 	.string "DIGLETT dug this long tunnel!\p"
+ 	.string "It goes right to VIRIDIAN CITY,\n"
+-	.string "they tell me.$"
+-
++	.string "they tell me.\p"
++	.string "That gadget of yours is humming?\n"
++	.string "Then listen close.\p"
++	.string "This is not a region shortcut.\n"
++	.string "It's a natural tunnel.\p"
++	.string "WorldLink can measure the ground\n"
++	.string "here without opening JOHTO.$"
+diff --git a/data/maps/Route11_EastEntrance_1F_Frlg/scripts.inc b/data/maps/Route11_EastEntrance_1F_Frlg/scripts.inc
+index b94be6931f..72627beeec 100644
+--- a/data/maps/Route11_EastEntrance_1F_Frlg/scripts.inc
++++ b/data/maps/Route11_EastEntrance_1F_Frlg/scripts.inc
+@@ -28,5 +28,9 @@ Route11_EastEntrance_1F_Text_RockTunnelToReachLavender::
+ 	.string "If you're aiming to reach LAVENDER\n"
+ 	.string "TOWN, take ROCK TUNNEL.\p"
+ 	.string "You can get to ROCK TUNNEL from\n"
+-	.string "CERULEAN CITY.$"
+-
++	.string "CERULEAN CITY.\p"
++	.string "Checklist before ROCK TUNNEL:\p"
++	.string "Clear ROUTE 11 pressure.\n"
++	.string "Inspect DIGLETT'S CAVE.\p"
++	.string "Then return toward CERULEAN with\n"
++	.string "repels, healing, and a light plan.$"
+diff --git a/data/maps/Route11_Frlg/map.json b/data/maps/Route11_Frlg/map.json
+index 92ffb436e9..a3d3b0bbf1 100644
+--- a/data/maps/Route11_Frlg/map.json
++++ b/data/maps/Route11_Frlg/map.json
+@@ -208,6 +208,34 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "Route11_EventScript_ItemAwakening",
+       "flag": "FLAG_HIDE_ROUTE11_AWAKENING"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 8,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route11_EventScript_RedTrailCutter",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BLUE",
++      "x": 11,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route11_EventScript_BlueRivalRace",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/Route11_Frlg/scripts.inc b/data/maps/Route11_Frlg/scripts.inc
+index 8ea9da93da..95522d4aee 100644
+--- a/data/maps/Route11_Frlg/scripts.inc
++++ b/data/maps/Route11_Frlg/scripts.inc
+@@ -5,6 +5,40 @@ Route11_EventScript_DiglettsCaveSign::
+ 	msgbox Route11_Text_DiglettsCave, MSGBOX_SIGN
+ 	end
+ 
++Route11_EventScript_RedTrailCutter::
++	lock
++	faceplayer
++	msgbox Route11_Text_RedTrailCutter, MSGBOX_NPC
++	release
++	end
++
++Route11_EventScript_BlueRivalRace::
++	lock
++	faceplayer
++	msgbox Route11_Text_BlueRivalRace, MSGBOX_NPC
++	release
++	end
++
++Route11_Text_RedTrailCutter::
++	.string "RED: Trail Cutter is awake again.\p"
++	.string "Hear that tremble under\n"
++	.string "DIGLETT'S CAVE?\p"
++	.string "WorldLink says the tunnel is a\n"
++	.string "field-tool calibration route.\p"
++	.string "Not JOHTO. Not yet.\n"
++	.string "Just KANTO teaching us the map.\p"
++	.string "Clear this route, check the cave,\n"
++	.string "then we turn toward ROCK TUNNEL.$"
++
++Route11_Text_BlueRivalRace::
++	.string "{RIVAL}: Took you long enough.\p"
++	.string "I'm using ROUTE 11 to pull ahead.\n"
++	.string "You, RED, MISTY--all of you.\p"
++	.string "WorldLink keeps flashing locked\n"
++	.string "names, but I don't need hints.\p"
++	.string "I'll reach POKéMON TOWER first\n"
++	.string "and make the next mystery mine.$"
++
+ Route11_Text_HugoIntro::
+ 	.string "Win, lose, or draw!$"
+ 
+@@ -117,4 +151,3 @@ Route11_Text_DavePostBattle::
+ 
+ Route11_Text_DiglettsCave::
+ 	.string "DIGLETT'S CAVE$"
+-

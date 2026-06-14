@@ -54,8 +54,12 @@ acts:
 
   - id: act_4_rock_tunnel_celadon_lavender
     purpose: "Split Kanto between bright city corruption and ghost/dream horror."
-    required_maps: [rock_tunnel, lavender_town, pokemon_tower, celadon_city, rocket_game_corner, celadon_gym]
+    required_maps: [route_11, digletts_cave, rock_tunnel, lavender_town, pokemon_tower, celadon_city, rocket_game_corner, celadon_gym]
     required_events:
+      - route11_rival_race_checkpoint
+      - diglett_cave_trail_cutter_ground_ping
+      - brock_rock_tunnel_field_advice
+      - rock_tunnel_checklist_handoff
       - cave_lantern_intro
       - lavender_moonlight_dream_static
       - red_lavender_warning
