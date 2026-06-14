@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_BUGSY_GYM_ARRIVAL
+    trigger: FLAG_BUGSY_GYM_REACHED
+    priority: major
+    text: "Bugsy Gym arrival confirmed. Azalea's emergency is over, but Bugsy is teaching Rocket's pressure as swarm behavior."
+
+  - id: WL_JOHTO_APRICORN_FIRST_BATCH
+    trigger: FLAG_APRICORN_FIRST_BATCH_RECEIVED
+    priority: major
+    text: "Kurt first-batch Apricorn reward logged. Full Apricorn crafting remains locked for a later Johto systems unlock."
+
+  - id: WL_JOHTO_HIVE_BADGE_REGISTERED
+    trigger: FLAG_HIVE_BADGE_REGISTERED
+    priority: major
+    text: "Hive Badge registered. Antman cleared Bugsy without companion help; Johto Rematch Board tier 1 is now live."
+
+  - id: WL_JOHTO_ILEX_FOREST_NEXT
+    trigger: FLAG_HIVE_BADGE_REGISTERED
+    priority: major
+    text: "WorldLink: Ilex Forest next. Silver moved ahead without battling, Field Tool static is rising, and Hoenn remains locked."
+
   - id: WL_JOHTO_SLOWPOKE_WELL_FIRST_ENTRY
     trigger: FLAG_SLOWPOKE_WELL_FIRST_ENTRY_REACHED
     priority: major

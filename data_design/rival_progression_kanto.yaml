@@ -3,6 +3,31 @@
 chapter: kanto
 
 progression_bands:
+  johto_bugsy_hive_gym:
+    player_range: "Bugsy Hive Gym after Slowpoke Well before Ilex Forest"
+    companions:
+      red:
+        location: Azalea Gym
+        event: bugsy_boundary_scene
+        notification: "Red watches the Hive Badge challenge warmly, then steps back because gym battles have to belong to Antman."
+      kurt:
+        location: Azalea Gym entrance
+        event: first_batch_apricorn_reward
+        notification: "Kurt gives Antman the first Apricorn batch as trust, not as a full shop system."
+      lyra:
+        location: Azalea Town
+        event: town_recovery_watch
+        notification: "Lyra reports that Azalea is calming down, but Ilex Forest is picking up strange WorldLink static."
+    rivals:
+      silver:
+        location: Ilex Forest edge
+        event: ilex_no_battle_confrontation
+        notification: "Silver refuses a post-Bugsy battle and moves toward Ilex, angry that Antman keeps protecting people before chasing strength."
+      ava:
+        location: WorldLink battle feed
+        event: hive_badge_rematch_board_live
+        notification: "Ava marks Hive Badge complete and turns on Johto Rematch Board tier 1 for controlled training."
+
   johto_slowpoke_well_first_entry:
     player_range: "Slowpoke Well first entry before Bugsy Gym"
     companions:

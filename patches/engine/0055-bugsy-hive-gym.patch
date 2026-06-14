@@ -1,0 +1,277 @@
+diff --git a/data/maps/AzaleaTown_Frlg/map.json b/data/maps/AzaleaTown_Frlg/map.json
+index 06764cb505..94d3b5c4a7 100644
+--- a/data/maps/AzaleaTown_Frlg/map.json
++++ b/data/maps/AzaleaTown_Frlg/map.json
+@@ -136,6 +136,13 @@
+       "elevation": 3,
+       "dest_map": "MAP_SLOWPOKE_WELL_B1F",
+       "dest_warp_id": "0"
++    },
++    {
++      "x": 15,
++      "y": 8,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_GYM",
++      "dest_warp_id": "0"
+     }
+   ],
+   "coord_events": [],
+diff --git a/data/maps/AzaleaTown_Gym_Frlg/map.json b/data/maps/AzaleaTown_Gym_Frlg/map.json
+new file mode 100644
+index 0000000000..34ac0c83b8
+--- /dev/null
++++ b/data/maps/AzaleaTown_Gym_Frlg/map.json
+@@ -0,0 +1,137 @@
++{
++  "id": "MAP_AZALEA_GYM",
++  "name": "AzaleaTown_Gym_Frlg",
++  "layout": "LAYOUT_PEWTER_CITY_GYM",
++  "music": "MUS_RG_GYM",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_INDOOR",
++  "allow_cycling": false,
++  "allow_escaping": false,
++  "allow_running": false,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_GYM",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_AZALEA_GYM_KURT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
++      "x": 4,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_KurtApricornReward",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_GYM_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 8,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_RedBoundary",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_GYM_BUGSY",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BUG_CATCHER_FRLG",
++      "x": 6,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_BugsyBattleScene",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_GYM_SILVER_TRACE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 3,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_SilverIlexTrace",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_GYM_ILEX_NEXT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GYM_GUY",
++      "x": 7,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_IlexNext",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 5,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_TOWN",
++      "dest_warp_id": "2"
++    },
++    {
++      "x": 6,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_TOWN",
++      "dest_warp_id": "2"
++    },
++    {
++      "x": 7,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_TOWN",
++      "dest_warp_id": "2"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 4,
++      "y": 12,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_GymStatue"
++    },
++    {
++      "type": "sign",
++      "x": 8,
++      "y": 12,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "AzaleaTown_Gym_Frlg_EventScript_GymStatue"
++    }
++  ]
++}
+diff --git a/data/maps/AzaleaTown_Gym_Frlg/scripts.inc b/data/maps/AzaleaTown_Gym_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..8715130826
+--- /dev/null
++++ b/data/maps/AzaleaTown_Gym_Frlg/scripts.inc
+@@ -0,0 +1,81 @@
++AzaleaTown_Gym_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, AzaleaTown_Gym_Frlg_OnTransition
++	.byte 0
++
++AzaleaTown_Gym_Frlg_OnTransition:
++	setflag FLAG_BUGSY_GYM_REACHED
++	end
++
++AzaleaTown_Gym_Frlg_EventScript_KurtApricornReward::
++	setflag FLAG_APRICORN_FIRST_BATCH_RECEIVED
++	msgbox AzaleaTown_Gym_Frlg_Text_KurtApricornReward, MSGBOX_NPC
++	end
++
++AzaleaTown_Gym_Frlg_EventScript_RedBoundary::
++	msgbox AzaleaTown_Gym_Frlg_Text_RedBoundary, MSGBOX_NPC
++	end
++
++AzaleaTown_Gym_Frlg_EventScript_BugsyBattleScene::
++	setflag FLAG_HIVE_BADGE_REGISTERED
++	msgbox AzaleaTown_Gym_Frlg_Text_BugsyBattleScene, MSGBOX_NPC
++	end
++
++AzaleaTown_Gym_Frlg_EventScript_SilverIlexTrace::
++	msgbox AzaleaTown_Gym_Frlg_Text_SilverIlexTrace, MSGBOX_NPC
++	end
++
++AzaleaTown_Gym_Frlg_EventScript_IlexNext::
++	msgbox AzaleaTown_Gym_Frlg_Text_IlexNext, MSGBOX_NPC
++	end
++
++AzaleaTown_Gym_Frlg_EventScript_GymStatue::
++	msgbox AzaleaTown_Gym_Frlg_Text_GymStatue, MSGBOX_SIGN
++	end
++
++AzaleaTown_Gym_Frlg_Text_KurtApricornReward::
++	.string "KURT: First batch only,\n"
++	.string "Antman.\p"
++	.string "Apricorn craft is not a shop\n"
++	.string "counter. It is trust shaped\n"
++	.string "into a tool.\p"
++	.string "Take these. We will build the\n"
++	.string "full system when Johto is not\n"
++	.string "bleeding from the Well.$"
++
++AzaleaTown_Gym_Frlg_Text_RedBoundary::
++	.string "RED: I am right here.\p"
++	.string "I will train with you after,\n"
++	.string "talk through teams, whatever\n"
++	.string "you need.\p"
++	.string "But this badge is yours.\n"
++	.string "No companion help in Gyms.$"
++
++AzaleaTown_Gym_Frlg_Text_BugsyBattleScene::
++	.string "BUGSY: A swarm is not chaos.\p"
++	.string "Rocket used fear like a bad\n"
++	.string "swarm--small moves, one ugly\n"
++	.string "purpose.\p"
++	.string "A good swarm protects what it\n"
++	.string "moves around.\p"
++	.string "Your rhythm held. HIVE BADGE registered.$"
++
++AzaleaTown_Gym_Frlg_Text_SilverIlexTrace::
++	.string "SILVER TRACE: Ilex side.\p"
++	.string "No battle. Not yet.\p"
++	.string "He saw you protect Slowpoke,\n"
++	.string "then earn a badge without Red.\p"
++	.string "That bothers him more than\n"
++	.string "losing would.$"
++
++AzaleaTown_Gym_Frlg_Text_IlexNext::
++	.string "WorldLink: Ilex Forest next.\p"
++	.string "Rematch Board tier 1 live.\n"
++	.string "Field Tool static detected\n"
++	.string "under the old trees.\p"
++	.string "Hoenn remains locked.$"
++
++AzaleaTown_Gym_Frlg_Text_GymStatue::
++	.string "AZALEA POKEMON GYM\p"
++	.string "LEADER: BUGSY\p"
++	.string "WINNING TRAINERS:\n"
++	.string "{PLAYER}$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index 48784b6437..8a49b1c7bc 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -868,6 +868,7 @@
+     "Route32_Frlg",
+     "UnionCave_1F_Frlg",
+     "AzaleaTown_Frlg",
++    "AzaleaTown_Gym_Frlg",
+     "SlowpokeWell_B1F_Frlg",
+     "SproutTower_1F_Frlg",
+     "SproutTower_Upper_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 5a0cf290af..c3171818c1 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -167,9 +167,9 @@
+ #define FLAG_SLOWPOKE_WELL_FIRST_ENTRY_REACHED   0x0BE
+ #define FLAG_SLOWPOKE_WELL_KURT_PARTNER_REACHED   0x0BF
+ #define FLAG_SLOWPOKE_WELL_ROCKET_EVIDENCE_REACHED   0x0C0
+-#define FLAG_0x0C1               0x0C1
+-#define FLAG_0x0C2               0x0C2
+-#define FLAG_0x0C3               0x0C3
++#define FLAG_BUGSY_GYM_REACHED   0x0C1
++#define FLAG_HIVE_BADGE_REGISTERED   0x0C2
++#define FLAG_APRICORN_FIRST_BATCH_RECEIVED   0x0C3
+ #define FLAG_0x0C4               0x0C4
+ #define FLAG_0x0C5               0x0C5
+ #define FLAG_0x0C6               0x0C6

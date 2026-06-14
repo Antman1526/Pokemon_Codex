@@ -185,12 +185,12 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("current_safe_hub") != "slowpoke_well":
-        errors.append("current transition state must record Slowpoke Well as current safe hub")
-    if transition.get("current_route") != "slowpoke_well":
-        errors.append("current transition state must keep current route as slowpoke_well")
-    if transition.get("next_required_story_node") != "bugsy_gym_challenge":
-        errors.append("current transition state must advance next node to bugsy_gym_challenge")
+    if transition.get("current_safe_hub") not in {"slowpoke_well", "azalea_gym"}:
+        errors.append("current transition state must record Slowpoke Well or Azalea Gym as current safe hub")
+    if transition.get("current_route") not in {"slowpoke_well", "bugsy_gym"}:
+        errors.append("current transition state must keep current route as slowpoke_well or bugsy_gym")
+    if transition.get("next_required_story_node") not in {"bugsy_gym_challenge", "ilex_forest_first_entry"}:
+        errors.append("current transition state must advance next node to bugsy_gym_challenge or ilex_forest_first_entry")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")
 
