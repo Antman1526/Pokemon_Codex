@@ -408,6 +408,35 @@ progression_bands:
         event: dax_koga_badge_race
         notification: "Dax claims he could beat Koga faster if poison did not keep interrupting the part where he wins loudly."
 
+  saffron_silph_lower_floors:
+    player_range: "Saffron arrival through Silph Co. 3F"
+    companions:
+      red:
+        location: Saffron Silph line
+        event: red_saffron_arrival_split
+        notification: "Red meets Antman at Saffron and splits off inside Silph to move civilians while Antman pushes upward."
+      misty:
+        location: Saffron waterline routes
+        event: misty_saffron_support
+        notification: "Misty watches Saffron's exits and says panic moves like water: block it badly and it floods the whole city."
+      brock:
+        location: WorldLink systems note
+        event: brock_silph_system_warning
+        notification: "Brock warns that Silph is a systems dungeon: elevators, teleporters, doors, and Portable PC access are all part of the same network."
+    rivals:
+      blue:
+        location: Silph Co. lower-floor trail
+        event: blue_silph_pressure_clue
+        notification: "Blue's trail appears in Silph's lower floors: fast entry, angry challenge, then a sharp turn toward the wrong warp route."
+      ava:
+        location: Saffron market trace
+        event: ava_gold_dust_silph_buyer
+        notification: "Ava traces Gold Dust's Safari-note buyer toward Silph, but the purchase order hides behind Rocket-controlled terminals."
+      dax:
+        location: Saffron city edge
+        event: dax_saffron_badge_race
+        notification: "Dax says if Silph has eleven floors, he only needs to be louder than Rocket on six of them to count it as winning."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

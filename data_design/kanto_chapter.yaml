@@ -118,6 +118,12 @@ acts:
       - warden_habitat_notes_stolen
       - saffron_lockdown_after_fuchsia
       - blue_saffron_security_loss
+      - saffron_arrival_companion_scene
+      - red_silph_split
+      - silph_lobby_lockdown
+      - silph_2f_rocket_logistics
+      - silph_3f_blue_pressure_clue
+      - portable_pc_full_teaser
       - silph_co_takeover
       - giovanni_sponsor_hint
       - sabrina_moonlight_interference

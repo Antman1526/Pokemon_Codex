@@ -206,6 +206,21 @@ messages:
     priority: major
     text: "Saffron lockdown updated. Rocket holds Silph, Blue hit the security line early, and WorldLink recommends entering only after Fuchsia is clear."
 
+  - id: WL_KANTO_SAFFRON_CITY_ARRIVAL
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Saffron arrival logged. Red is at the Silph line, Misty is watching escape routes, and Brock is tracking the building systems."
+
+  - id: WL_KANTO_SILPH_LOBBY_LOCKDOWN
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Silph lobby lockdown active. Rocket controls the elevators, Gold Dust wants buyer access, and Portable PC access remains limited until the system is secured."
+
+  - id: WL_KANTO_SILPH_LOWER_FLOORS
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Silph lower floors checklist: inspect teleport routing, break Rocket logistics, find Blue's trail, and keep this a Kanto-only rescue."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

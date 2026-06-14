@@ -90,6 +90,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-14 14:49 CDT: Codex built the Route 12 Snorlax and Fuchsia arrival milestone from patches `0001` through `0023`. Design validation, all prior milestone validators, and Route 12 Snorlax Fuchsia validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.67%. This milestone adds the Poke Flute field payoff, Red/Misty road support, Dax's Fuchsia arrival pressure, and the Safari/Koga hook.
 - 2026-06-14 15:31 CDT: Codex built the Safari Gold Dust Field Log milestone from patches `0001` through `0024`. Design validation, all prior milestone validators, and Safari Gold Dust Field Log validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.67%. This milestone adds Ava's Safari checklist, Gold Dust scout pressure, Warden prize route tease, and Koga status prep.
 - 2026-06-14 11:17 CDT: Codex built the Koga Warden Saffron milestone from patches `0001` through `0025`. Design validation, all prior milestone validators, and Koga Warden Saffron validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.67%. This milestone adds the Koga status trial, Warden notes theft, and Saffron lockdown handoff.
+- 2026-06-14 11:27 CDT: Codex built the Saffron Silph lower floors milestone from patches `0001` through `0026`. Design validation, all prior milestone validators, and Saffron Silph lower floors validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.68%. This milestone adds Saffron arrival, Red Silph split, Silph lower floors, and the first Portable PC full-access teaser.
 
 ## Engine Patches To Apply Before Build
 
@@ -118,6 +119,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0023-route12-snorlax-fuchsia.patch` - Route 12 Snorlax Poke Flute payoff, Red/Misty road support, Dax Fuchsia arrival, and Safari/Koga hook.
 - `patches/engine/0024-safari-gold-dust-field-log.patch` - Ava's Safari Field Log, Gold Dust scout pressure, Warden prize route tease, and Koga status prep.
 - `patches/engine/0025-koga-warden-saffron-lockdown.patch` - Koga status trial, Warden notes theft, and Saffron lockdown handoff.
+- `patches/engine/0026-saffron-silph-lower-floors.patch` - Saffron arrival, Red Silph split, Silph lower floors, and Portable PC full-access teaser.
 
 ## Validation
 
@@ -157,6 +159,7 @@ python3 tools/validate_silph_scope_return.py
 python3 tools/validate_route12_snorlax_fuchsia.py
 python3 tools/validate_safari_gold_dust_field_log.py
 python3 tools/validate_koga_warden_saffron_lockdown.py
+python3 tools/validate_saffron_silph_lower_floors.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -181,6 +184,7 @@ Silph Scope return validation passed.
 Route 12 Snorlax Fuchsia validation passed.
 Safari Gold Dust Field Log validation passed.
 Koga Warden Saffron validation passed.
+Saffron Silph lower floors validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -276,6 +280,10 @@ Manual OpenEmu checklist still needed:
 - [ ] Koga reward text registers the Soul Badge as WorldLink clearance for Silph pressure.
 - [ ] Warden post-teeth dialogue mentions stolen habitat notes and Gold Dust.
 - [ ] Saffron Rocket lockdown dialogue references Silph, Blue's failed push, and Gold Dust market pressure.
+- [ ] Saffron Red arrival scene appears near the Silph line and changes if Soul Badge is missing.
+- [ ] Silph 1F lobby text frames the building as a lockdown checkpoint.
+- [ ] Silph 2F Rocket/scientist text references Rocket logistics and teleport routing.
+- [ ] Silph 3F text references Blue's pressure trail and Portable PC system risk.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

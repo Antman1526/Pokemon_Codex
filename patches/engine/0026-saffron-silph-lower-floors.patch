@@ -1,0 +1,248 @@
+--- a/data/maps/SaffronCity_Frlg/map.json
++++ b/data/maps/SaffronCity_Frlg/map.json
+@@ -121,6 +121,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "SaffronCity_EventScript_DoorGuardGrunt",
+       "flag": "FLAG_HIDE_SAFFRON_ROCKETS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 31,
++      "y": 31,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SaffronCity_EventScript_RedSilphArrival",
++      "flag": "0"
+     },
+     {
+       "type": "object",
+--- a/data/maps/SaffronCity_Frlg/scripts.inc
++++ b/data/maps/SaffronCity_Frlg/scripts.inc
+@@ -54,6 +54,19 @@
+ 	release
+ 	end
+ 
++SaffronCity_EventScript_RedSilphArrival::
++	lock
++	faceplayer
++	goto_if_set FLAG_BADGE05_GET, SaffronCity_EventScript_RedSilphArrivalReady
++	msgbox SaffronCity_Text_RedSilphArrivalNeedSoulBadge, MSGBOX_NPC
++	release
++	end
++
++SaffronCity_EventScript_RedSilphArrivalReady::
++	msgbox SaffronCity_Text_RedSilphArrivalReady, MSGBOX_NPC
++	release
++	end
++
+ SaffronCity_EventScript_WorkerM::
+ 	msgbox SaffronCity_Text_YouBeatTeamRocket, MSGBOX_NPC
+ 	end
+@@ -200,7 +213,26 @@
+ 	.string "…\n"
+ 	.string "Snore…\p"
+ 	.string "Hah! He's taking a snooze!$"
++
++SaffronCity_Text_RedSilphArrivalNeedSoulBadge::
++	.string "Red: Antman, Saffron is not a\n"
++	.string "shortcut. It is a siege.\p"
++	.string "If KOGA has not tested your nerve\n"
++	.string "yet, go back to FUCHSIA first.\p"
++	.string "WorldLink is keeping every region\n"
++	.string "sealed until Kanto is earned.$"
+ 
++SaffronCity_Text_RedSilphArrivalReady::
++	.string "Red: Antman, you made it.\p"
++	.string "Silph lower floors are the first\n"
++	.string "line: lobby, routing, then doors.\p"
++	.string "I will split off and move people\n"
++	.string "quietly while you climb.\p"
++	.string "Blue rushed ahead. Misty is outside.\n"
++	.string "Brock is reading the systems.\p"
++	.string "Stay sharp. Rocket logistics are\n"
++	.string "using the whole building.$"
++
+ SaffronCity_Text_CitySign::
+ 	.string "SAFFRON CITY\n"
+ 	.string "Shining, Golden Land of Commerce$"
+@@ -231,7 +263,9 @@
+ SaffronCity_Text_SilphCoSign::
+ 	.string "SILPH CO. OFFICE BUILDING\p"
+ 	.string "WorldLink static detected.\n"
+-	.string "Rocket lockdown in progress.$"
++	.string "Rocket lockdown in progress.\p"
++	.string "Silph lower floors objective:\n"
++	.string "secure lobby and routing.$"
+ 
+ SaffronCity_Text_MrPsychicsHouse::
+ 	.string "MR. PSYCHIC'S HOUSE$"
+--- a/data/maps/SilphCo_1F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_1F_Frlg/scripts.inc
+@@ -15,11 +15,17 @@
+ 	end
+ 
+ SilphCo_1F_Text_WelcomePresidentInBoardroom::
+-	.string "Welcome.\p"
+-	.string "The PRESIDENT is in the boardroom\n"
+-	.string "on 11F.$"
++	.string "Receptionist: Please keep your\n"
++	.string "voice down. Rocket hears panic.\p"
++	.string "The PRESIDENT is trapped on 11F,\n"
++	.string "but the lobby is the first lock.\p"
++	.string "Gold Dust buyers keep calling for\n"
++	.string "rare-route access lists.\p"
++	.string "WorldLink says Portable PC access\n"
++	.string "cannot go full until SILPH is safe.$"
+ 
+ SilphCo_1F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "1F$"
+-
++	.string "1F\p"
++	.string "Lockdown floor: lobby control,\n"
++	.string "elevator watch, visitor silence.$"
+--- a/data/maps/SilphCo_2F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_2F_Frlg/scripts.inc
+@@ -37,7 +37,9 @@
+ 
+ SilphCo_2F_Text_ConnorIntro::
+ 	.string "Help!\n"
+-	.string "I'm a SILPH employee.$"
++	.string "I'm a SILPH employee.\p"
++	.string "No, wait--Rocket told me to say\n"
++	.string "that if a kid got this far.$"
+ 
+ SilphCo_2F_Text_ConnorDefeat::
+ 	.string "How did you know\n"
+@@ -45,21 +47,29 @@
+ 
+ SilphCo_2F_Text_ConnorPostBattle::
+ 	.string "I work for both SILPH and TEAM\n"
+-	.string "ROCKET.$"
++	.string "ROCKET.\p"
++	.string "Rocket logistics needed someone\n"
++	.string "who knew the teleporter labels.$"
+ 
+ SilphCo_2F_Text_JerryIntro::
+ 	.string "It's off-limits here!\n"
+-	.string "Go home!$"
++	.string "Go home!\p"
++	.string "The lower floors are routing stock,\n"
++	.string "hostages, and bad decisions now.$"
+ 
+ SilphCo_2F_Text_JerryDefeat::
+ 	.string "You're good.$"
+ 
+ SilphCo_2F_Text_JerryPostBattle::
+ 	.string "Can you solve the maze in here?\n"
+-	.string "It's not easy, I tell you!$"
++	.string "It's not easy, I tell you!\p"
++	.string "Blue tried speed. He hit the wrong\n"
++	.string "warp and started yelling upstairs.$"
+ 
+ SilphCo_2F_Text_Grunt1Intro::
+-	.string "No kids are allowed in here!$"
++	.string "No kids are allowed in here!\p"
++	.string "Especially not kids WorldLink keeps\n"
++	.string "flagging as route breakers.$"
+ 
+ SilphCo_2F_Text_Grunt1Defeat::
+ 	.string "Tough!$"
+@@ -68,7 +78,9 @@
+ 	.string "Diamond-shaped tiles are teleport\n"
+ 	.string "blocks.\p"
+ 	.string "They're transporters for this\n"
+-	.string "high-tech building.$"
++	.string "high-tech building.\p"
++	.string "We use them for Rocket logistics.\n"
++	.string "You use them if you like guessing.$"
+ 
+ SilphCo_2F_Text_Grunt2Intro::
+ 	.string "Hey, kid!\n"
+@@ -79,7 +91,9 @@
+ 
+ SilphCo_2F_Text_Grunt2PostBattle::
+ 	.string "SILPH CO. will be associated with\n"
+-	.string "TEAM ROCKET!$"
++	.string "TEAM ROCKET!\p"
++	.string "When systems obey us, whole regions\n"
++	.string "become supply lines.$"
+ 
+ Text_ThunderWaveTeach::
+ 	.string "Eeek!\n"
+@@ -107,5 +121,6 @@
+ 
+ SilphCo_2F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "2F$"
+-
++	.string "2F\p"
++	.string "WorldLink note: follow routing,\n"
++	.string "not noise.$"
+--- a/data/maps/SilphCo_3F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_3F_Frlg/scripts.inc
+@@ -36,25 +36,37 @@
+ 
+ SilphCo_3F_Text_WhatAmIToDo::
+ 	.string "I work for SILPH CO.\n"
+-	.string "What am I to do?$"
++	.string "What am I to do?\p"
++	.string "A boy in blue came through angry,\n"
++	.string "then a warp tile swallowed him.\p"
++	.string "If you see him, tell him yelling at\n"
++	.string "doors does not open them.$"
+ 
+ SilphCo_3F_Text_YouAndYourMonsSavedUs::
+ 	.string "{PLAYER}!\n"
+-	.string "You and your POKéMON saved us!$"
++	.string "You and your POKéMON saved us!\p"
++	.string "Tell Red the civilians he moved\n"
++	.string "made it back to the lobby.$"
+ 
+ SilphCo_3F_Text_GruntIntro::
+-	.string "Quit messing with us, kid!$"
++	.string "Quit messing with us, kid!\p"
++	.string "Blue already made enough noise\n"
++	.string "for three intruders.$"
+ 
+ SilphCo_3F_Text_GruntDefeat::
+ 	.string "I give up!$"
+ 
+ SilphCo_3F_Text_GruntPostBattle::
+ 	.string "A hint? You can open doors with\n"
+-	.string "a CARD KEY!$"
++	.string "a CARD KEY!\p"
++	.string "No, I do not know where your\n"
++	.string "Portable PC handshake went.$"
+ 
+ SilphCo_3F_Text_JoseIntro::
+ 	.string "I support TEAM ROCKET more than\n"
+-	.string "I support SILPH CO.!$"
++	.string "I support SILPH CO.!\p"
++	.string "Rocket funds results. Gold Dust\n"
++	.string "funds buyers. Science needs both.$"
+ 
+ SilphCo_3F_Text_JoseDefeat::
+ 	.string "You really got me!$"
+@@ -62,9 +74,13 @@
+ SilphCo_3F_Text_JosePostBattle::
+ 	.string "Humph…\p"
+ 	.string "TEAM ROCKET said that if I helped\n"
+-	.string "them, they'd let me study POKéMON.$"
++	.string "them, they'd let me study POKéMON.\p"
++	.string "Then Gold Dust asked for Safari\n"
++	.string "pedigrees, and I realized this was\l"
++	.string "not research anymore.$"
+ 
+ SilphCo_3F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "3F$"
+-
++	.string "3F\p"
++	.string "Lower-floor warning: Blue trail,\n"
++	.string "Card Key route, unstable systems.$"
