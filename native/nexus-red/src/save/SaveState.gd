@@ -37,11 +37,14 @@ func start_new_game(name: String) -> void:
 		"blue_battle_placeholder_seen": false,
 		"blue_route_1_battle_started": false,
 		"blue_route_1_battle_finished": false,
+		"route_1_rumors_unlocked": false,
+		"worldlink_route_1_rival_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
 		"blue_first_battle_pressure",
 		"oak_world_migration_alert",
+		"nexus_island_locked",
 	]
 
 
@@ -49,11 +52,20 @@ func set_flag(flag_name: String, value: bool) -> void:
 	story_flags[flag_name] = value
 
 
+func queue_worldlink_id(message_id: String) -> void:
+	if not worldlink_queue.has(message_id):
+		worldlink_queue.append(message_id)
+
+
+func queue_worldlink_ids(message_ids: Array[String]) -> void:
+	for message_id in message_ids:
+		queue_worldlink_id(message_id)
+
+
 func enter_route_1() -> void:
 	current_scene = "route_1"
 	set_flag("route_1_reached", true)
-	if not worldlink_queue.has("route_1_reached"):
-		worldlink_queue.append("route_1_reached")
+	queue_worldlink_id("route_1_reached")
 
 
 func choose_starter(selection: Dictionary) -> void:
@@ -65,21 +77,39 @@ func choose_starter(selection: Dictionary) -> void:
 	current_scene = "oak_lab"
 	set_flag("starter_chosen", true)
 	set_flag("blue_pressure_scene_seen", true)
-	worldlink_queue.append("starter_chosen_" + player_starter.to_lower())
-	worldlink_queue.append("blue_chose_" + blue_starter.to_lower())
+	queue_worldlink_id("starter_chosen_" + player_starter.to_lower())
+	queue_worldlink_id("blue_chose_" + blue_starter.to_lower())
 
 
 func record_red_route_1_scene() -> void:
 	active_companion = "red"
 	set_flag("red_route_1_companion_scene_seen", true)
-	if not worldlink_queue.has("red_route_1_companion"):
-		worldlink_queue.append("red_route_1_companion")
+	queue_worldlink_id("red_route_1_companion")
 
 
 func record_blue_battle_placeholder() -> void:
 	set_flag("blue_battle_placeholder_seen", true)
-	if not worldlink_queue.has("blue_route_1_battle_placeholder"):
-		worldlink_queue.append("blue_route_1_battle_placeholder")
+	queue_worldlink_id("blue_route_1_battle_placeholder")
+
+
+func unlock_route_1_rumors() -> void:
+	set_flag("route_1_rumors_unlocked", true)
+	queue_worldlink_ids([
+		"rumor_route_1_unusual_tracks",
+		"rumor_route_1_starter_migration",
+		"rumor_route_1_blue_shortcut",
+	])
+
+
+func queue_route_1_rival_batch() -> void:
+	set_flag("worldlink_route_1_rival_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_blue_route_1_battle_done",
+		"wl_ava_route_1_capture",
+		"wl_dax_route_1_training",
+		"wl_red_route_1_checkin",
+		"wl_silver_johto_tease",
+	])
 
 
 func start_battle_placeholder(battle_id: String) -> void:
@@ -93,6 +123,7 @@ func finish_battle_placeholder(result: String) -> void:
 	last_battle_result = result
 	if active_battle_id == "blue_route_1":
 		set_flag("blue_route_1_battle_finished", true)
-		if not worldlink_queue.has("blue_route_1_battle_finished"):
-			worldlink_queue.append("blue_route_1_battle_finished")
+		queue_worldlink_id("blue_route_1_battle_finished")
+		unlock_route_1_rumors()
+		queue_route_1_rival_batch()
 	active_battle_id = ""

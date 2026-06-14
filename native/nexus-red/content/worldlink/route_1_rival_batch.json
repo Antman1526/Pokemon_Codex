@@ -1,0 +1,37 @@
+{
+  "id": "route_1_rival_batch",
+  "name": "Route 1 Rival Batch",
+  "trigger": "after_blue_route_1_placeholder_battle",
+  "feed": [
+    {
+      "id": "wl_blue_route_1_battle_done",
+      "category": "rival",
+      "rival": "blue",
+      "text": "Blue logged the first Route 1 battle and marked Antman as his main target."
+    },
+    {
+      "id": "wl_ava_route_1_capture",
+      "category": "rival",
+      "rival": "ava",
+      "text": "Ava captured a quick early-route partner and sent Oak a clean field report."
+    },
+    {
+      "id": "wl_dax_route_1_training",
+      "category": "rival",
+      "rival": "dax",
+      "text": "Dax stayed near the lower grass line for extra training before pushing north."
+    },
+    {
+      "id": "wl_red_route_1_checkin",
+      "category": "companion",
+      "rival": "red",
+      "text": "Red checked the strange tracks again and promised to stay close through Viridian."
+    },
+    {
+      "id": "wl_silver_johto_tease",
+      "category": "rival",
+      "rival": "silver",
+      "text": "Unknown Johto trainer intercepted a WorldLink ping: 'Kanto rookies are loud.'"
+    }
+  ]
+}

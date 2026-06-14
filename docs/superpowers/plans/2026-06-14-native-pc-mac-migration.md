@@ -182,6 +182,22 @@ python3 tools/validate_native_battle_placeholder_slice.py
 godot --headless --path native/nexus-red --script tests/battle_placeholder_test.gd
 ```
 
+### Task 7.6: Add Route 1 WorldLink rumors
+
+Acceptance:
+
+- Blue's Route 1 placeholder battle unlocks the first encounter-rumor layer.
+- WorldLink queues Blue, Ava, Dax, Red, and a Johto rival tease after the battle.
+- WorldLink renders opening feed, rival batch data, and Route 1 rumors from JSON.
+- The feature remains a data/checklist slice until the real encounter engine exists.
+
+Verification:
+
+```sh
+python3 tools/validate_native_worldlink_route1_slice.py
+godot --headless --path native/nexus-red --script tests/worldlink_route1_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

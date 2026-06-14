@@ -93,4 +93,5 @@ func _toggle_worldlink() -> void:
 	worldlink_panel.anchor_top = 0.08
 	worldlink_panel.anchor_right = 0.96
 	worldlink_panel.anchor_bottom = 0.76
+	worldlink_panel.save_state = save_state
 	add_child(worldlink_panel)

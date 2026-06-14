@@ -1,0 +1,40 @@
+{
+  "route_id": "route_1",
+  "name": "Route 1 Rumors",
+  "status": "rumor_only",
+  "design_note": "Placeholder upgraded FireRed-style rumor layer. Real encounter tables arrive with the Route 1 wild encounter engine.",
+  "rumors": [
+    {
+      "id": "rumor_route_1_unusual_tracks",
+      "category": "encounter_rumor",
+      "text": "Red found unusual tracks cutting across the tall grass. They do not match the local daytime creatures.",
+      "unlock": "after_blue_route_1_placeholder_battle"
+    },
+    {
+      "id": "rumor_route_1_starter_migration",
+      "category": "encounter_rumor",
+      "text": "Oak's instruments picked up starter migration energy near the first grass line.",
+      "unlock": "after_blue_route_1_placeholder_battle"
+    },
+    {
+      "id": "rumor_route_1_blue_shortcut",
+      "category": "rival_rumor",
+      "text": "Blue found a shortcut north, but the grass shifted behind him like something was watching.",
+      "unlock": "after_blue_route_1_placeholder_battle"
+    }
+  ],
+  "future_encounter_groups": [
+    {
+      "id": "early_route_commons",
+      "status": "planned",
+      "level_band": "2-5",
+      "notes": "Keep wild levels aligned with Brock pacing and expanded starter access."
+    },
+    {
+      "id": "rare_starter_migration",
+      "status": "planned",
+      "level_band": "3-6",
+      "notes": "Low-rate starter sightings should track early progression without breaking the first gym curve."
+    }
+  ]
+}
