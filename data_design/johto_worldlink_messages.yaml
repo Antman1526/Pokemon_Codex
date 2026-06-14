@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_ROUTE30_FIRST_STEPS
+    trigger: FLAG_ROUTE30_FIRST_STEPS_REACHED
+    priority: major
+    text: "Route 30 first steps confirmed. Lyra is present as walking support; Red is checking in through WorldLink."
+
+  - id: WL_JOHTO_ROUTE30_TRAINER_ROAD
+    trigger: FLAG_ROUTE30_FIRST_STEPS_REACHED
+    priority: minor
+    text: "Route 30 is Johto's first trainer-road pressure test. Silver battle is intentionally held until Sprout Tower."
+
+  - id: WL_JOHTO_MR_POKEMON_NEXT
+    trigger: FLAG_ROUTE30_FIRST_STEPS_REACHED
+    priority: major
+    text: "WorldLink: Mr. Pokemon next. Original Johto errand path is active, with tower-record anomalies attached."
+
+  - id: WL_JOHTO_SPROUT_TOWER_SHADOW
+    trigger: FLAG_ROUTE30_FIRST_STEPS_REACHED
+    priority: minor
+    text: "Sprout Tower shadow note: Moonlight and Gold Dust both appear interested in bell records before Violet Gym."
+
   - id: WL_JOHTO_CHERRYGROVE_ARRIVAL
     trigger: FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED
     priority: major

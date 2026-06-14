@@ -1,0 +1,265 @@
+diff --git a/data/maps/CherrygroveCity_Frlg/map.json b/data/maps/CherrygroveCity_Frlg/map.json
+index 21d67cb28c..eb11115abc 100644
+--- a/data/maps/CherrygroveCity_Frlg/map.json
++++ b/data/maps/CherrygroveCity_Frlg/map.json
+@@ -15,6 +15,11 @@
+   "floor_number": 0,
+   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+   "connections": [
++    {
++      "map": "MAP_ROUTE30",
++      "offset": 0,
++      "direction": "right"
++    },
+     {
+       "map": "MAP_ROUTE29",
+       "offset": 0,
+diff --git a/data/maps/Route30_Frlg/map.json b/data/maps/Route30_Frlg/map.json
+new file mode 100644
+index 0000000000..aac117ae30
+--- /dev/null
++++ b/data/maps/Route30_Frlg/map.json
+@@ -0,0 +1,128 @@
++{
++  "id": "MAP_ROUTE30",
++  "name": "Route30_Frlg",
++  "layout": "LAYOUT_ROUTE3",
++  "music": "MUS_RG_ROUTE3",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SUNNY",
++  "map_type": "MAP_TYPE_ROUTE",
++  "allow_cycling": true,
++  "allow_escaping": false,
++  "allow_running": true,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": [
++    {
++      "map": "MAP_CHERRYGROVE_CITY",
++      "offset": 0,
++      "direction": "left"
++    }
++  ],
++  "object_events": [
++    {
++      "local_id": "LOCALID_ROUTE30_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 12,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route30_Frlg_EventScript_LyraRoadSupport",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE30_RED_WORLDLINK",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 20,
++      "y": 6,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route30_Frlg_EventScript_RedWorldLinkCall",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE30_TRAINER_ROAD",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER_FRLG",
++      "x": 29,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route30_Frlg_EventScript_TrainerRoadPressure",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE30_GOLD_DUST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 40,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_WANDER_UP_AND_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route30_Frlg_EventScript_GoldDustScout",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE30_MOONLIGHT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CHANNELER_FRLG",
++      "x": 54,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route30_Frlg_EventScript_MoonlightPilgrim",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE30_MR_POKEMON_NOTE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MAN_3",
++      "x": 70,
++      "y": 13,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route30_Frlg_EventScript_MrPokemonObjective",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 9,
++      "y": 12,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "Route30_Frlg_EventScript_RouteSign"
++    }
++  ]
++}
+diff --git a/data/maps/Route30_Frlg/scripts.inc b/data/maps/Route30_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..6ef3af9a1e
+--- /dev/null
++++ b/data/maps/Route30_Frlg/scripts.inc
+@@ -0,0 +1,84 @@
++Route30_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, Route30_Frlg_OnTransition
++	.byte 0
++
++Route30_Frlg_OnTransition:
++	setflag FLAG_ROUTE30_FIRST_STEPS_REACHED
++	end
++
++Route30_Frlg_EventScript_LyraRoadSupport::
++	msgbox Route30_Frlg_Text_LyraRoadSupport, MSGBOX_NPC
++	end
++
++Route30_Frlg_EventScript_RedWorldLinkCall::
++	msgbox Route30_Frlg_Text_RedWorldLinkCall, MSGBOX_NPC
++	end
++
++Route30_Frlg_EventScript_TrainerRoadPressure::
++	msgbox Route30_Frlg_Text_TrainerRoadPressure, MSGBOX_NPC
++	end
++
++Route30_Frlg_EventScript_GoldDustScout::
++	msgbox Route30_Frlg_Text_GoldDustScout, MSGBOX_NPC
++	end
++
++Route30_Frlg_EventScript_MoonlightPilgrim::
++	msgbox Route30_Frlg_Text_MoonlightPilgrim, MSGBOX_NPC
++	end
++
++Route30_Frlg_EventScript_MrPokemonObjective::
++	msgbox Route30_Frlg_Text_MrPokemonObjective, MSGBOX_NPC
++	end
++
++Route30_Frlg_EventScript_RouteSign::
++	msgbox Route30_Frlg_Text_RouteSign, MSGBOX_SIGN
++	end
++
++Route30_Frlg_Text_LyraRoadSupport::
++	.string "LYRA: This is Route 30.\p"
++	.string "It's Johto's first trainer road,\n"
++	.string "but don't let that rush you.\p"
++	.string "Read people, grass, and rumors.\n"
++	.string "That's how this region talks.$"
++
++Route30_Frlg_Text_RedWorldLinkCall::
++	.string "RED: WorldLink check-in.\p"
++	.string "I stayed behind to compare\n"
++	.string "Cherrygrove guide records.\p"
++	.string "Trust LYRA on this road.\n"
++	.string "Silver battle waits for a place\n"
++	.string "that means something.$"
++
++Route30_Frlg_Text_TrainerRoadPressure::
++	.string "A young trainer watches the path.\p"
++	.string "Route 30 is the first trainer road\n"
++	.string "where Johto tests patience.\p"
++	.string "Winning matters.\n"
++	.string "Knowing when to pause matters too.$"
++
++Route30_Frlg_Text_GoldDustScout::
++	.string "The man folds a gold-edged note.\p"
++	.string "Gold Dust doesn't buy POKEMON.\n"
++	.string "We buy proof of rare history.\p"
++	.string "SPROUT TOWER has records older\n"
++	.string "than badges.$"
++
++Route30_Frlg_Text_MoonlightPilgrim::
++	.string "MOONLIGHT PILGRIM: Bells dream\n"
++	.string "when nobody listens.\p"
++	.string "SPROUT TOWER is whispering in\n"
++	.string "the wrong hour.\p"
++	.string "Do not confuse silence with peace.$"
++
++Route30_Frlg_Text_MrPokemonObjective::
++	.string "Mr. Pokemon sent word from the\n"
++	.string "house ahead.\p"
++	.string "He has an egg, a visitor, and a\n"
++	.string "tower record that should not exist.\p"
++	.string "WorldLink: Mr. Pokemon next.$"
++
++Route30_Frlg_Text_RouteSign::
++	.string "ROUTE 30\p"
++	.string "CHERRYGROVE CITY - MR. POKEMON'S\n"
++	.string "HOUSE\p"
++	.string "No Hoenn route registered.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index 38ab57940a..03800bfc29 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -861,6 +861,7 @@
+     "NewBarkTown_Frlg",
+     "Route29_Frlg",
+     "CherrygroveCity_Frlg",
++    "Route30_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 02db33f691..01cb33cdf3 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -149,7 +149,7 @@
+ #define FLAG_HIDE_SAFFRON_CITY_POKECENTER_SABRINA_JOURNALS 0x0AE
+ 
+ // Unused?
+-#define FLAG_0x0AF               0x0AF
++#define FLAG_ROUTE30_FIRST_STEPS_REACHED   0x0AF
+ #define FLAG_0x0B0               0x0B0
+ #define FLAG_0x0B1               0x0B1
+ #define FLAG_0x0B2               0x0B2

@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_route30_first_steps:
+    player_range: "Route 30 first trainer-road pressure"
+    companions:
+      lyra:
+        location: Route 30
+        event: walks_first_trainer_road
+        notification: "Lyra is walking Route 30 with Antman and says Johto's first trainer road is about reading people, not rushing badges."
+      red:
+        location: WorldLink remote check-in
+        event: worldlink_check_in_not_physical
+        notification: "Red checked in through WorldLink from Cherrygrove and told Antman to trust Lyra's route sense."
+    rivals:
+      silver:
+        location: Sprout Tower shadow path
+        event: battle_waits_until_sprout_tower
+        notification: "Silver crossed out of Route 30 without battling. WorldLink predicts the first real clash near Sprout Tower."
+      ava:
+        location: Elm Lab remote feed
+        event: mr_pokemon_signal_research
+        notification: "Ava says Mr. Pokemon's house is broadcasting ordinary errand data with abnormal tower-record static."
+
   johto_cherrygrove_first_arrival:
     player_range: "Cherrygrove first arrival before Route 30"
     companions:

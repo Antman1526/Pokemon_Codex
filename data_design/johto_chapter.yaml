@@ -37,6 +37,14 @@ acts:
       - lyra_cherrygrove_checkpoint
       - silver_cherrygrove_first_warning
       - gold_dust_old_tower_receipt
+      - route_30_first_steps
+      - lyra_route30_walk_support
+      - red_route30_worldlink_check_in
+      - route30_first_trainer_road_pressure
+      - mr_pokemon_house_objective
+      - gold_dust_route30_scouter
+      - moonlight_sprout_tower_whisper
+      - silver_battle_waits_until_sprout_tower
       - elm_lab_receiving_signal
       - lyra_friendly_rival_join
       - silver_profile_detected_no_theft_yet
@@ -44,7 +52,7 @@ acts:
       - gold_dust_tower_records_tease
       - sprout_tower_moonlight_whisper
       - falkner_battle
-    unlocks: [new_bark_town_live_map, elm_lab_live_map, route_29_story_gate, route_29_live_map, route29_day_night_tracking, cherrygrove_story_gate, cherrygrove_live_map, johto_map_card, apricorn_case_tease, guide_watch_network, route_30_story_gate, johto_habitat_checklist, johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
+    unlocks: [new_bark_town_live_map, elm_lab_live_map, route_29_story_gate, route_29_live_map, route29_day_night_tracking, cherrygrove_story_gate, cherrygrove_live_map, johto_map_card, apricorn_case_tease, guide_watch_network, route_30_story_gate, route_30_live_map, route30_trainer_road, mr_pokemon_story_gate, sprout_tower_shadow_tease, johto_habitat_checklist, johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
 
   - id: act_2_azalea_goldenrod
     purpose: "Rebuild Johto's slow tradition arc around Rocket remnants becoming organized again."
