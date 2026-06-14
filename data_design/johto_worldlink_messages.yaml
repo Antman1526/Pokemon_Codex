@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_VIOLET_CITY_ARRIVAL
+    trigger: FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "Violet City arrival confirmed. Falkner's Gym is visible, but Sprout Tower records must be checked first."
+
+  - id: WL_JOHTO_SPROUT_TOWER_REQUIRED
+    trigger: FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "WorldLink: Sprout Tower next. Zephyr Gym challenge remains locked until tower bells and edited records stabilize."
+
+  - id: WL_JOHTO_RED_LYRA_VIOLET_SUPPORT
+    trigger: FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED
+    priority: minor
+    text: "Red physically returned in Violet City. Lyra is handling local guide support while Antman remains lead trainer."
+
+  - id: WL_JOHTO_SILVER_TOWER_GATE
+    trigger: FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED
+    priority: minor
+    text: "Silver is waiting near Sprout Tower and refuses a meaningless road battle. First clash likely inside the tower."
+
   - id: WL_JOHTO_MR_POKEMON_HOUSE_ARRIVAL
     trigger: FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED
     priority: major

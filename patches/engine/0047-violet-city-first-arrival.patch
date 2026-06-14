@@ -1,0 +1,262 @@
+diff --git a/data/maps/Route30_Frlg/map.json b/data/maps/Route30_Frlg/map.json
+index 69671779ab..0632d37425 100644
+--- a/data/maps/Route30_Frlg/map.json
++++ b/data/maps/Route30_Frlg/map.json
+@@ -19,6 +19,11 @@
+       "map": "MAP_CHERRYGROVE_CITY",
+       "offset": 0,
+       "direction": "left"
++    },
++    {
++      "map": "MAP_VIOLET_CITY",
++      "offset": 0,
++      "direction": "right"
+     }
+   ],
+   "object_events": [
+diff --git a/data/maps/VioletCity_Frlg/map.json b/data/maps/VioletCity_Frlg/map.json
+new file mode 100644
+index 0000000000..c44c9cf8e1
+--- /dev/null
++++ b/data/maps/VioletCity_Frlg/map.json
+@@ -0,0 +1,128 @@
++{
++  "id": "MAP_VIOLET_CITY",
++  "name": "VioletCity_Frlg",
++  "layout": "LAYOUT_PEWTER_CITY",
++  "music": "MUS_RG_PEWTER",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SUNNY",
++  "map_type": "MAP_TYPE_TOWN",
++  "allow_cycling": true,
++  "allow_escaping": false,
++  "allow_running": true,
++  "show_map_name": true,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": [
++    {
++      "map": "MAP_ROUTE30",
++      "offset": 0,
++      "direction": "left"
++    }
++  ],
++  "object_events": [
++    {
++      "local_id": "LOCALID_VIOLET_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 12,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Frlg_EventScript_RedVioletReturn",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 15,
++      "y": 18,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Frlg_EventScript_LyraLocalGuide",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_FALKNER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MAN_3",
++      "x": 28,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Frlg_EventScript_FalknerTowerGate",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_SILVER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 35,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Frlg_EventScript_SilverTowerWarning",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_MOONLIGHT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CHANNELER",
++      "x": 32,
++      "y": 21,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Frlg_EventScript_MoonlightBellRecord",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_GOLD_DUST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 20,
++      "y": 24,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Frlg_EventScript_GoldDustArchiveBuyer",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 18,
++      "y": 16,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "VioletCity_Frlg_EventScript_CitySign"
++    }
++  ]
++}
+diff --git a/data/maps/VioletCity_Frlg/scripts.inc b/data/maps/VioletCity_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..fb3b7760a4
+--- /dev/null
++++ b/data/maps/VioletCity_Frlg/scripts.inc
+@@ -0,0 +1,81 @@
++VioletCity_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, VioletCity_Frlg_OnTransition
++	.byte 0
++
++VioletCity_Frlg_OnTransition:
++	setflag FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED
++	end
++
++VioletCity_Frlg_EventScript_RedVioletReturn::
++	msgbox VioletCity_Frlg_Text_RedVioletReturn, MSGBOX_NPC
++	end
++
++VioletCity_Frlg_EventScript_LyraLocalGuide::
++	msgbox VioletCity_Frlg_Text_LyraLocalGuide, MSGBOX_NPC
++	end
++
++VioletCity_Frlg_EventScript_FalknerTowerGate::
++	msgbox VioletCity_Frlg_Text_FalknerTowerGate, MSGBOX_NPC
++	end
++
++VioletCity_Frlg_EventScript_SilverTowerWarning::
++	msgbox VioletCity_Frlg_Text_SilverTowerWarning, MSGBOX_NPC
++	end
++
++VioletCity_Frlg_EventScript_MoonlightBellRecord::
++	msgbox VioletCity_Frlg_Text_MoonlightBellRecord, MSGBOX_NPC
++	end
++
++VioletCity_Frlg_EventScript_GoldDustArchiveBuyer::
++	msgbox VioletCity_Frlg_Text_GoldDustArchiveBuyer, MSGBOX_NPC
++	end
++
++VioletCity_Frlg_EventScript_CitySign::
++	msgbox VioletCity_Frlg_Text_CitySign, MSGBOX_SIGN
++	end
++
++VioletCity_Frlg_Text_RedVioletReturn::
++	.string "RED: I caught up.\p"
++	.string "Cherrygrove's guide records match\n"
++	.string "the Nexus Egg rhythm.\p"
++	.string "This city is quiet, but it is not\n"
++	.string "simple. I am with you.$"
++
++VioletCity_Frlg_Text_LyraLocalGuide::
++	.string "LYRA: Violet City lives by bells,\n"
++	.string "school, and sky discipline.\p"
++	.string "Around here, you do not just walk\n"
++	.string "into a Gym and demand a badge.\p"
++	.string "You listen first.$"
++
++VioletCity_Frlg_Text_FalknerTowerGate::
++	.string "FALKNER: Sprout Tower before Falkner.\p"
++	.string "That is not a delay. It is respect.\p"
++	.string "If the tower records were edited,\n"
++	.string "my Gym cannot certify the wind yet.$"
++
++VioletCity_Frlg_Text_SilverTowerWarning::
++	.string "SILVER: The tower first.\p"
++	.string "I am not wasting our first battle\n"
++	.string "on a road or a crowd.\p"
++	.string "If Johto remembers weakness there,\n"
++	.string "then that is where I will test you.$"
++
++VioletCity_Frlg_Text_MoonlightBellRecord::
++	.string "MOONLIGHT PILGRIM: Bell records\n"
++	.string "should not dream in ink.\p"
++	.string "Someone wrote over an old silence,\n"
++	.string "and now the tower hears it.$"
++
++VioletCity_Frlg_Text_GoldDustArchiveBuyer::
++	.string "GOLD DUST BUYER: Tower archives\n"
++	.string "prove lineage, ownership, and myth.\p"
++	.string "We only buy what history is ready\n"
++	.string "to sell.$"
++
++VioletCity_Frlg_Text_CitySign::
++	.string "VIOLET CITY\p"
++	.string "The old tower watches the first\n"
++	.string "Johto badge.\p"
++	.string "WorldLink: Sprout Tower next.\n"
++	.string "Hoenn remains locked.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index f9b9ffd354..5427a0c91e 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -863,6 +863,7 @@
+     "CherrygroveCity_Frlg",
+     "Route30_Frlg",
+     "MrPokemonsHouse_Frlg",
++    "VioletCity_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 6daef70f6c..42bfc970b5 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -151,7 +151,7 @@
+ // Unused?
+ #define FLAG_ROUTE30_FIRST_STEPS_REACHED   0x0AF
+ #define FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED   0x0B0
+-#define FLAG_0x0B1               0x0B1
++#define FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED   0x0B1
+ #define FLAG_0x0B2               0x0B2
+ #define FLAG_0x0B3               0x0B3
+ #define FLAG_0x0B4               0x0B4

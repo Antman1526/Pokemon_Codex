@@ -167,9 +167,9 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("current_safe_hub") != "mr_pokemon_house":
+    if transition.get("current_safe_hub") not in {"mr_pokemon_house", "violet_city"}:
         errors.append("current transition state must record Mr. Pokemon house as current safe hub")
-    if transition.get("next_required_story_node") != "violet_city_first_arrival":
+    if transition.get("next_required_story_node") not in {"violet_city_first_arrival", "sprout_tower_first_floor"}:
         errors.append("current transition state must advance next node to violet_city_first_arrival")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")

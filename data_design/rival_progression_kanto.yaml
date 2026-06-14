@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_violet_city_first_arrival:
+    player_range: "Violet City first arrival before Sprout Tower"
+    companions:
+      red:
+        location: Violet City
+        event: physically_returns_in_violet
+        notification: "Red caught up in Violet City and says Johto's first badge has to be earned through its old stories first."
+      lyra:
+        location: Violet City
+        event: local_history_guide
+        notification: "Lyra is guiding Antman through Violet's bells, school, and flight traditions before Falkner."
+    rivals:
+      silver:
+        location: Sprout Tower gate
+        event: sprout_tower_gate_warning
+        notification: "Silver is waiting at Sprout Tower and says the first real battle should happen where Johto remembers weakness."
+      ava:
+        location: Elm Lab remote feed
+        event: violet_tower_record_sync
+        notification: "Ava matched the Nexus Egg shell rhythm to edited Violet tower records."
+
   johto_mr_pokemon_house_first_visit:
     player_range: "Mr. Pokemon house first visit before Violet"
     companions:
