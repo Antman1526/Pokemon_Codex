@@ -1,0 +1,204 @@
+--- a/data/maps/FuchsiaCity_Gym_Frlg/scripts.inc
++++ b/data/maps/FuchsiaCity_Gym_Frlg/scripts.inc
+@@ -97,6 +97,8 @@
+ 	.string "with mirth!\p"
+ 	.string "Very well, I shall show you true\n"
+ 	.string "terror as a ninja master.\p"
++	.string "This is your status trial before\n"
++	.string "SAFFRON. Hold steady, or fall.\p"
+ 	.string "Poison brings steady doom.\n"
+ 	.string "Sleep renders foes helpless.\p"
+ 	.string "Despair to the creeping horror of\n"
+@@ -105,6 +107,8 @@
+ FuchsiaCity_Gym_Text_KogaDefeat::
+ 	.string "Humph!\n"
+ 	.string "You have proven your worth!\p"
++	.string "You did not panic when the field\n"
++	.string "turned against you.\p"
+ 	.string "Here!\n"
+ 	.string "Take the SOULBADGE!$"
+ 
+@@ -113,11 +117,16 @@
+ 	.string "suffers more and more.\p"
+ 	.string "It suffers worsening damage as the\n"
+ 	.string "battle wears on!\p"
+-	.string "It will surely terrorize foes!$"
++	.string "Gold Dust stole fear from the\n"
++	.string "WARDEN's habitat notes.\p"
++	.string "Rocket will try the same at SILPH.\n"
++	.string "Do not let SAFFRON panic you.$"
+ 
+ FuchsiaCity_Gym_Text_KogaExplainSoulBadge::
+ 	.string "Now that you have the SOULBADGE,\n"
+ 	.string "the DEFENSE of your POKéMON rises.\p"
++	.string "WorldLink also marks your Soul Badge\n"
++	.string "as clearance for the SILPH crisis.\p"
+ 	.string "It also lets you SURF outside of\n"
+ 	.string "battle.\p"
+ 	.string "Ah!\n"
+@@ -131,7 +140,9 @@
+ 	.string "Sealed within that TM06 lies\n"
+ 	.string "TOXIC!\p"
+ 	.string "It is a secret technique dating\n"
+-	.string "back some four hundred years.$"
++	.string "back some four hundred years.\p"
++	.string "Use it wisely. Attrition is a tool,\n"
++	.string "not an excuse to be cruel.$"
+ 
+ FuchsiaCity_Gym_Text_MakeSpaceForThis::
+ 	.string "Make space for this, child!$"
+@@ -226,12 +237,15 @@
+ 	.string "It's riddled with invisible walls!\p"
+ 	.string "KOGA might appear close, but he's\n"
+ 	.string "blocked off.\p"
++	.string "Bring FULL HEALS. This Gym teaches\n"
++	.string "status control, not brute force.\p"
+ 	.string "You have to find gaps in the walls\n"
+ 	.string "to reach him.$"
+ 
+ FuchsiaCity_Gym_Text_GymGuyPostVictory::
+-	.string "It's amazing how ninja can terrify,\n"
+-	.string "even now!$"
++	.string "You handled KOGA's poison calmly.\p"
++	.string "That is the kind of nerve SAFFRON\n"
++	.string "will ask from you next.$"
+ 
+ FuchsiaCity_Gym_Text_GymStatue::
+ 	.string "FUCHSIA POKéMON GYM\n"
+@@ -244,4 +258,3 @@
+ 	.string "LEADER: KOGA\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}, {PLAYER}$"
+-
+--- a/data/maps/FuchsiaCity_WardensHouse_Frlg/scripts.inc
++++ b/data/maps/FuchsiaCity_WardensHouse_Frlg/scripts.inc
+@@ -85,6 +85,10 @@
+ 	.string "that I said, not a one!\p"
+ 	.string "I was too ashamed to show my face\n"
+ 	.string "around the OFFICE, even.\p"
++	.string "And while I hid, Gold Dust copied\n"
++	.string "my old habitat notes.\p"
++	.string "Those routes protect rare Pokemon.\n"
++	.string "They were never price lists.\p"
+ 	.string "Let me give you something for your\n"
+ 	.string "trouble.$"
+ 
+@@ -95,6 +99,10 @@
+ 	.string "that I said, not a one!\p"
+ 	.string "I was too ashamed to show my face\n"
+ 	.string "around the OFFICE, even.\p"
++	.string "And while I hid, Gold Dust copied\n"
++	.string "my old habitat notes.\p"
++	.string "Those routes protect rare Pokemon.\n"
++	.string "They were never price lists.\p"
+ 	.string "Let me give you something for your\n"
+ 	.string "trouble.$"
+ 
+@@ -107,6 +115,8 @@
+ 	.string "STRENGTH.\p"
+ 	.string "It lets POKéMON move boulders when\n"
+ 	.string "you're outside of battle.\p"
++	.string "WorldLink says those habitat notes\n"
++	.string "point toward SAFFRON buyers.\p"
+ 	.string "Oh yes, did you find the SECRET\n"
+ 	.string "HOUSE in the SAFARI ZONE?$"
+ 
+@@ -117,9 +127,12 @@
+ 
+ FuchsiaCity_WardensHouse_Text_MonPhotosFossilsOnDisplay::
+ 	.string "POKéMON photos and fossils are on\n"
+-	.string "display.$"
++	.string "display.\p"
++	.string "A missing notebook label reads:\n"
++	.string "habitat notes, not for sale.$"
+ 
+ FuchsiaCity_WardensHouse_Text_OldMonMerchandiseOnDisplay::
+ 	.string "Old POKéMON merchandise is on\n"
+-	.string "display.$"
+-
++	.string "display.\p"
++	.string "One empty shelf is dusted with\n"
++	.string "gold powder.$"
+--- a/data/maps/SaffronCity_Frlg/scripts.inc
++++ b/data/maps/SaffronCity_Frlg/scripts.inc
+@@ -124,32 +124,44 @@
+ 	end
+ 
+ SaffronCity_Text_WhatDoYouWantGetLost::
+-	.string "What do you want?\n"
+-	.string "Get lost!$"
++	.string "What do you want?\p"
++	.string "Blue already tried forcing this\n"
++	.string "line. He left quieter than he came.$"
+ 
+ SaffronCity_Text_BossTakeTownForTeamRocket::
+ 	.string "BOSS said he'll take this town\n"
+-	.string "in the name of TEAM ROCKET!$"
++	.string "in the name of TEAM ROCKET!\p"
++	.string "SILPH controls the machines.\n"
++	.string "We control SILPH.$"
+ 
+ SaffronCity_Text_DontGetDefiantOrIllHurtYou::
+ 	.string "Don't get defiant!\n"
+-	.string "Or I'll have to hurt you!$"
++	.string "Or I'll have to hurt you!\p"
++	.string "Gold Dust collectors paid for rare\n"
++	.string "routes. We paid for power.$"
+ 
+ SaffronCity_Text_SaffronBelongsToTeamRocket::
+-	.string "SAFFRON belongs to TEAM ROCKET!$"
++	.string "SAFFRON belongs to TEAM ROCKET!\p"
++	.string "No badges, no clearance, no heroes\n"
++	.string "wandering into SILPH.$"
+ 
+ SaffronCity_Text_CriminalLifeMakesMeFeelAlive::
+ 	.string "My life as a criminal makes me feel\n"
+-	.string "so alive!$"
++	.string "so alive!\p"
++	.string "The WARDEN's habitat notes were\n"
++	.string "only the appetizer.$"
+ 
+ SaffronCity_Text_WatchWhereYoureWalking::
+ 	.string "Ow!\n"
+-	.string "Watch where you're walking!$"
++	.string "Watch where you're walking!\p"
++	.string "WorldLink interference is all over\n"
++	.string "this street. Keep moving.$"
+ 
+ SaffronCity_Text_WeCanExploitMonsAroundWorld::
+ 	.string "With SILPH under control, we can\n"
+-	.string "exploit POKéMON around the world!\p"
+-	.string "We'll get stinking rich, yeahah!$"
++	.string "exploit Pokemon around the world!\p"
++	.string "Rocket wants systems. Gold Dust\n"
++	.string "wants markets. Same locked door.$"
+ 
+ SaffronCity_Text_YouBeatTeamRocket::
+ 	.string "You beat TEAM ROCKET all alone?\n"
+@@ -180,7 +192,9 @@
+ 
+ SaffronCity_Text_ImASecurityGuard::
+ 	.string "I'm a security guard.\p"
+-	.string "Suspicious kids I don't allow in!$"
++	.string "Suspicious kids I don't allow in!\p"
++	.string "Soul Badge trainers still get\n"
++	.string "checked. SILPH is under lockdown.$"
+ 
+ SaffronCity_Text_HesTakingASnooze::
+ 	.string "…\n"
+@@ -215,7 +229,9 @@
+ 	.string "POKéMON.$"
+ 
+ SaffronCity_Text_SilphCoSign::
+-	.string "SILPH CO. OFFICE BUILDING$"
++	.string "SILPH CO. OFFICE BUILDING\p"
++	.string "WorldLink static detected.\n"
++	.string "Rocket lockdown in progress.$"
+ 
+ SaffronCity_Text_MrPsychicsHouse::
+ 	.string "MR. PSYCHIC'S HOUSE$"
+@@ -237,4 +253,3 @@
+ 	.string "He stands for justice!\n"
+ 	.string "He's cool, and yet passionate!\l"
+ 	.string "He's the greatest, LANCE!$"
+-

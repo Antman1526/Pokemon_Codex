@@ -113,6 +113,11 @@ acts:
       - warden_prize_route_tease
       - koga_status_preparation
       - saffron_after_safari_pressure
+      - koga_status_trial
+      - soul_badge_worldlink_handoff
+      - warden_habitat_notes_stolen
+      - saffron_lockdown_after_fuchsia
+      - blue_saffron_security_loss
       - silph_co_takeover
       - giovanni_sponsor_hint
       - sabrina_moonlight_interference

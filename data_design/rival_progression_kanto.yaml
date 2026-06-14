@@ -379,6 +379,35 @@ progression_bands:
         event: blue_saffron_loss_rumor
         notification: "Blue tried pressing Saffron early and went quiet after a Rocket security line turned him back."
 
+  koga_warden_saffron_lockdown:
+    player_range: "Koga battle through first Saffron lockdown entry"
+    companions:
+      red:
+        location: Fuchsia Gym exit
+        event: red_soul_badge_debrief
+        notification: "Red says the Soul Badge proves Antman can stay calm when a fight turns ugly, which is exactly what Saffron will demand."
+      misty:
+        location: Fuchsia Center
+        event: misty_status_recovery_check
+        notification: "Misty checked Antman's bag for Full Heals and says Saffron will punish anyone who ignores recovery planning."
+      brock:
+        location: WorldLink field note
+        event: brock_full_heal_advice
+        notification: "Brock logged a Koga lesson: attrition is beatable if the team carries cures, pivots carefully, and refuses to panic."
+    rivals:
+      blue:
+        location: Saffron security line
+        event: blue_saffron_security_loss
+        notification: "Blue forced the Saffron line too early and had to retreat, angry that Rocket knew his badge count before he spoke."
+      ava:
+        location: Warden's House
+        event: ava_warden_notes_theft
+        notification: "Ava confirmed Gold Dust copied the Warden's habitat notes and sold a route index toward Silph-linked buyers."
+      dax:
+        location: Fuchsia Gym lobby
+        event: dax_koga_badge_race
+        notification: "Dax claims he could beat Koga faster if poison did not keep interrupting the part where he wins loudly."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

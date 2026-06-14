@@ -191,6 +191,21 @@ messages:
     priority: major
     text: "Koga prep checklist: Antidotes, Full Heals, grounded team plan, and status answers before entering Fuchsia Gym."
 
+  - id: WL_KANTO_KOGA_SOUL_BADGE_CLEAR
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Soul Badge registered. Koga confirms Antman can handle status pressure, long fights, and the discipline needed before Silph."
+
+  - id: WL_KANTO_WARDEN_NOTES_STOLEN
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Warden alert: Gold Dust copied Safari habitat notes and rare route records. Ava is tracing who bought the preserve data."
+
+  - id: WL_KANTO_SAFFRON_LOCKDOWN_HANDOFF
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Saffron lockdown updated. Rocket holds Silph, Blue hit the security line early, and WorldLink recommends entering only after Fuchsia is clear."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
