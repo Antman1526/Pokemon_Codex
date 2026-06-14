@@ -1,0 +1,256 @@
+diff --git a/data/maps/CeruleanCity_Frlg/map.json b/data/maps/CeruleanCity_Frlg/map.json
+index a18a7e3c47..69e5d92840 100644
+--- a/data/maps/CeruleanCity_Frlg/map.json
++++ b/data/maps/CeruleanCity_Frlg/map.json
+@@ -139,6 +139,34 @@
+       "script": "CeruleanCity_EventScript_Youngster",
+       "flag": "0"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 24,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CeruleanCity_EventScript_RedBridgeSetup",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MISTY",
++      "x": 34,
++      "y": 19,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CeruleanCity_EventScript_MistyCompanion",
++      "flag": "0"
++    },
+     {
+       "local_id": "LOCALID_CERULEAN_RIVAL",
+       "type": "object",
+diff --git a/data/maps/CeruleanCity_Frlg/scripts.inc b/data/maps/CeruleanCity_Frlg/scripts.inc
+index dae271fa54..18e2ed5a53 100644
+--- a/data/maps/CeruleanCity_Frlg/scripts.inc
++++ b/data/maps/CeruleanCity_Frlg/scripts.inc
+@@ -258,6 +258,32 @@ CeruleanCity_EventScript_CeruleanCaveGuard::
+ 	msgbox CeruleanCity_Text_ThisIsCeruleanCave, MSGBOX_NPC
+ 	end
+ 
++CeruleanCity_EventScript_RedBridgeSetup::
++	lock
++	faceplayer
++	goto_if_set FLAG_BADGE02_GET, CeruleanCity_EventScript_RedBridgeSetupPostMisty
++	msgbox CeruleanCity_Text_RedBridgeSetup, MSGBOX_NPC
++	release
++	end
++
++CeruleanCity_EventScript_RedBridgeSetupPostMisty::
++	msgbox CeruleanCity_Text_RedBridgeSetupPostMisty, MSGBOX_NPC
++	release
++	end
++
++CeruleanCity_EventScript_MistyCompanion::
++	lock
++	faceplayer
++	goto_if_set FLAG_BADGE02_GET, CeruleanCity_EventScript_MistyCompanionPostBadge
++	msgbox CeruleanCity_Text_MistyCompanionPreBadge, MSGBOX_NPC
++	release
++	end
++
++CeruleanCity_EventScript_MistyCompanionPostBadge::
++	msgbox CeruleanCity_Text_MistyCompanionPostBadge, MSGBOX_NPC
++	release
++	end
++
+ CeruleanCity_EventScript_Woman::
+ 	lock
+ 	faceplayer
+@@ -513,6 +539,44 @@ CeruleanCity_Text_ThisIsCeruleanCave::
+ 	.string "And, you would have to have\n"
+ 	.string "made a great achievement.$"
+ 
++CeruleanCity_Text_RedBridgeSetup::
++	.string "RED: The water here is too calm.\p"
++	.string "WorldLink picked up the same pulse\n"
++	.string "from your fossil, then it jumped\l"
++	.string "toward NUGGET BRIDGE.\p"
++	.string "Challenge MISTY first if you want\n"
++	.string "a clean badge test. I won't fight\l"
++	.string "that battle for you.\p"
++	.string "Afterward, we follow the bridge\n"
++	.string "signal together.$"
++
++CeruleanCity_Text_RedBridgeSetupPostMisty::
++	.string "RED: MISTY saw it too.\p"
++	.string "ROCKET is using the bridge like a\n"
++	.string "filter, watching which trainers\l"
++	.string "can wake Nexus readings.\p"
++	.string "This is where our first real tag\n"
++	.string "battle should happen once we can\l"
++	.string "force their whole cell into view.$"
++
++CeruleanCity_Text_MistyCompanionPreBadge::
++	.string "MISTY: You're Antman, right?\p"
++	.string "The MT. MOON tremor rippled\n"
++	.string "through my pool before you reached\l"
++	.string "town.\p"
++	.string "Beat me in the GYM first.\n"
++	.string "Then we talk as friends.$"
++
++CeruleanCity_Text_MistyCompanionPostBadge::
++	.string "MISTY: All right, friend talk.\p"
++	.string "Your fossil left a wake in the\n"
++	.string "CASCADEBADGE network. That's not\l"
++	.string "normal League tech.\p"
++	.string "I'll be your CERULEAN contact.\n"
++	.string "RED can handle the bridge with you;\l"
++	.string "I'll trace where the water signal\l"
++	.string "runs next.$"
++
+ CeruleanCity_Text_CitySign::
+ 	.string "CERULEAN CITY\n"
+ 	.string "A Mysterious, Blue Aura Surrounds\l"
+@@ -533,4 +597,3 @@ CeruleanCity_Text_GymSign::
+ 	.string "CERULEAN CITY POKéMON GYM\n"
+ 	.string "LEADER: MISTY\l"
+ 	.string "The Tomboyish Mermaid!$"
+-
+diff --git a/data/maps/CeruleanCity_Gym_Frlg/scripts.inc b/data/maps/CeruleanCity_Gym_Frlg/scripts.inc
+index ee8079f85e..d50bdf6281 100644
+--- a/data/maps/CeruleanCity_Gym_Frlg/scripts.inc
++++ b/data/maps/CeruleanCity_Gym_Frlg/scripts.inc
+@@ -25,6 +25,7 @@ CeruleanCity_Gym_EventScript_GiveTM03::
+ 	giveitem_msg CeruleanCity_Gym_Text_ReceivedTM03FromMisty, ITEM_TM03
+ 	setflag FLAG_GOT_TM03_FROM_MISTY
+ 	msgbox CeruleanCity_Gym_Text_ExplainTM03
++	msgbox CeruleanCity_Gym_Text_MistyMeetOutside
+ 	release
+ 	end
+ 
+@@ -82,6 +83,14 @@ CeruleanCity_Gym_Text_ExplainTM03::
+ 	.string "TM03 teaches WATER PULSE.\p"
+ 	.string "Use it on an aquatic POKéMON!$"
+ 
++CeruleanCity_Gym_Text_MistyMeetOutside::
++	.string "MISTY: One more thing.\p"
++	.string "The water here reacted when your\n"
++	.string "fossil crossed into CERULEAN.\p"
++	.string "Meet me outside the GYM. I want to\n"
++	.string "help, but your badge battle had to\l"
++	.string "stay yours.$"
++
+ CeruleanCity_Gym_Text_ExplainCascadeBadge::
+ 	.string "The CASCADEBADGE makes all\n"
+ 	.string "POKéMON up to Lv. 30 obey.\p"
+@@ -160,4 +169,3 @@ CeruleanCity_Gym_Text_GymStatuePlayerWon::
+ 	.string "LEADER: MISTY\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}, {PLAYER}$"
+-
+diff --git a/data/maps/Route24_Frlg/map.json b/data/maps/Route24_Frlg/map.json
+index 99e76d6493..976b2e9038 100644
+--- a/data/maps/Route24_Frlg/map.json
++++ b/data/maps/Route24_Frlg/map.json
+@@ -42,6 +42,20 @@
+       "script": "Route24_EventScript_Rocket",
+       "flag": "FLAG_HIDE_NUGGET_BRIDGE_ROCKET"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 15,
++      "y": 17,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route24_EventScript_RedTagSetup",
++      "flag": "0"
++    },
+     {
+       "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_CAMPER_FRLG",
+diff --git a/data/maps/Route24_Frlg/scripts.inc b/data/maps/Route24_Frlg/scripts.inc
+index 75686a2a7f..e851c86140 100644
+--- a/data/maps/Route24_Frlg/scripts.inc
++++ b/data/maps/Route24_Frlg/scripts.inc
+@@ -22,6 +22,19 @@ Route24_EventScript_RocketPostBattle::
+ 	release
+ 	end
+ 
++Route24_EventScript_RedTagSetup::
++	lock
++	faceplayer
++	goto_if_eq VAR_MAP_SCENE_ROUTE24, 1, Route24_EventScript_RedTagSetupPostRocket
++	msgbox Route24_Text_RedTagSetup, MSGBOX_NPC
++	release
++	end
++
++Route24_EventScript_RedTagSetupPostRocket::
++	msgbox Route24_Text_RedTagSetupPostRocket, MSGBOX_NPC
++	release
++	end
++
+ Route24_EventScript_RocketTriggerLeft::
+ 	lockall
+ 	setvar VAR_TEMP_1, 0
+@@ -111,13 +124,15 @@ Route24_Text_YouDontHaveAnyRoom::
+ Route24_Text_JoinTeamRocket::
+ 	.string "By the way, how would you like to\n"
+ 	.string "join TEAM ROCKET?\p"
+-	.string "We're a group of professional\n"
+-	.string "criminals specializing in POKéMON!\p"
++	.string "We're not just watching badges.\n"
++	.string "We're watching WorldLink readings.\p"
++	.string "A fossil woke up MT. MOON.\n"
++	.string "Your CASCADEBADGE woke CERULEAN.\p"
+ 	.string "Want to join?\p"
+ 	.string "Are you sure?\p"
+ 	.string "Come on, join us!\p"
+ 	.string "I'm telling you to join!\p"
+-	.string "…Okay, you need convincing!\p"
++	.string "...Okay, you need convincing!\p"
+ 	.string "I'll make you an offer you can't\n"
+ 	.string "refuse!$"
+ 
+@@ -128,9 +143,28 @@ Route24_Text_RocketDefeat::
+ Route24_Text_YoudBecomeTopRocketLeader::
+ 	.string "With your ability, you'd become\n"
+ 	.string "a top leader in TEAM ROCKET.\p"
+-	.string "Come on, think of the opportunity!\n"
++	.string "But that Nexus response was too\n"
++	.string "strong. The boss will hear about it.\p"
++	.string "RED won't always reach you in time.\n"
+ 	.string "Don't let this chance go to waste.$"
+ 
++Route24_Text_RedTagSetup::
++	.string "RED: This bridge feels staged.\p"
++	.string "Five TRAINERS, then one ROCKET\n"
++	.string "standing where the signal peaks.\p"
++	.string "Go ahead and take the challenge.\n"
++	.string "I'll shadow the side path and keep\l"
++	.string "their backup from boxing you in.$"
++
++Route24_Text_RedTagSetupPostRocket::
++	.string "RED: There it is.\p"
++	.string "ROCKET wasn't recruiting talent.\n"
++	.string "They were measuring which trainers\l"
++	.string "could wake a region node.\p"
++	.string "Next time they bring partners, we\n"
++	.string "answer as partners. First real tag\l"
++	.string "battle: you and me.$"
++
+ Route24_Text_ShaneIntro::
+ 	.string "I saw your feat from the grass!$"
+ 

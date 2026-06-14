@@ -70,6 +70,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 18:40 CDT: Codex built the Nexus starter milestone from patches `0001` through `0007`. Design validation and Nexus milestone validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). OpenEmu launch command completed; in-emulator gameplay checklist still needs a manual pass.
 - 2026-06-13 21:08 CDT: Codex built the Act 1 Brock/Red/Pewter milestone from patches `0001` through `0010`. Design validation, Nexus milestone validation, and Act 1 Brock/Red/Pewter validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.61%.
 - 2026-06-13 21:28 CDT: Codex built the Mt. Moon Nexus Break milestone from patches `0001` through `0011`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, and Mt. Moon Nexus Break validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
+- 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 
 ## Engine Patches To Apply Before Build
 
@@ -84,6 +85,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0009-brock-expanded-starter-pool-balance.patch` - Brock rebalance for the expanded starter pool and post-badge WorldLink museum alert.
 - `patches/engine/0010-pewter-museum-rocket-anomaly-hook.patch` - Pewter Museum fossil scan anomaly hook tied to Rocket/Nexus activity.
 - `patches/engine/0011-mt-moon-nexus-break.patch` - Mt. Moon Red companion scene, Rocket Nexus fossil rewrite, and Dome/Helix artifact logging.
+- `patches/engine/0012-cerulean-misty-bridge-setup.patch` - Cerulean Red/Misty companion setup and Nugget Bridge Rocket WorldLink recruitment hook.
 
 ## Validation
 
@@ -109,6 +111,7 @@ python3 tools/validate_design_data.py
 python3 tools/validate_nexus_milestone.py
 python3 tools/validate_act1_brock_red_pewter.py
 python3 tools/validate_mt_moon_nexus_break.py
+python3 tools/validate_cerulean_misty_bridge.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -119,6 +122,7 @@ Design data validation passed.
 Nexus milestone validation passed.
 Act 1 Brock/Red/Pewter validation passed.
 Mt. Moon Nexus Break validation passed.
+Cerulean Misty Bridge validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -143,5 +147,11 @@ Manual OpenEmu checklist still needed:
 - [ ] Dome Fossil logs as Antman's first Nexus artifact.
 - [ ] Helix Fossil logs as Antman's first Nexus artifact.
 - [ ] Miguel points toward Cinnabar/Cerulean signal path.
+- [ ] Red Cerulean City bridge setup scene appears before Cascade Badge.
+- [ ] Misty Cerulean City companion scene appears before Cascade Badge.
+- [ ] Misty's gym reward points Antman to the outside follow-up scene.
+- [ ] Misty Cerulean City companion scene changes after Cascade Badge.
+- [ ] Nugget Bridge Rocket dialogue references WorldLink readings.
+- [ ] Red Route 24 tag-battle setup scene changes after the Rocket recruiter.
 - [ ] Save works after this milestone.
 - [ ] Reload works after this milestone.

@@ -1,0 +1,49 @@
+world_map_guide_sources:
+  - id: all_regions_how_to_visit_pdf_2026_06_13
+    title: "Pokemon World Map Guide: All Regions & How to Visit Them"
+    local_source_path: "/Users/Antman/Downloads/Pokémon World Map Guide_ All Regions & How to Visit Them.pdf"
+    source_url_in_pdf: "https://www.aiseesoft.com/resource/pokemon-world-map.html"
+    ingested_on: "2026-06-13"
+    pages: 9
+    usage: "Visual and textual reference for region order, broad regional identity, and major landmark emphasis."
+    limitations:
+      - "Guide is high-level and not detailed enough for route-by-route implementation."
+      - "Use as a world-map identity reference, not as the sole map source for tiles, warps, or exact traversal."
+      - "Detailed per-city layouts should come from canonical game maps and the decomp engine data."
+    region_order:
+      - region: kanto
+        guide_summary: "Original Red/Blue/Yellow region with Pallet Town, Cerulean City, and Indigo Plateau."
+        nexus_role: "Foundation chapter; Antman starts from New Pallet and follows the classic Red path into the wider Nexus plot."
+        anchor_landmarks: ["Pallet Town", "Viridian City", "Pewter City", "Cerulean City", "Indigo Plateau"]
+      - region: johto
+        guide_summary: "Gold/Silver region bordering Kanto, with Ecruteak City and Ruins of Alph; historic and mystical tone."
+        nexus_role: "First inter-region continuation; tradition, towers, alph ruins, and Rocket resurgence prove the crisis extends beyond Kanto."
+        anchor_landmarks: ["New Bark Town", "Violet City", "Ecruteak City", "Ruins of Alph", "Goldenrod City"]
+      - region: hoenn
+        guide_summary: "Tropical region with abundant water routes, Slateport City, and Mt. Chimney."
+        nexus_role: "Land/sea balance chapter where Magma and Aqua compete with Rocket's region-pull research."
+        anchor_landmarks: ["Littleroot Town", "Slateport City", "Mt. Chimney", "Sootopolis City", "Ever Grande City"]
+      - region: sinnoh_hisui
+        guide_summary: "Mountainous region with Mt. Coronet and Spear Pillar tied to Pokemon mythology."
+        nexus_role: "Mythology chapter; Hisui echoes and Spear Pillar expose the ancient origin of Nexus anchors."
+        anchor_landmarks: ["Twinleaf Town", "Mt. Coronet", "Spear Pillar", "Canalave City", "Snowpoint City"]
+      - region: unova
+        guide_summary: "New York-inspired urban region with Castelia City and Nimbasa City."
+        nexus_role: "Ideology and city-scale systems chapter; Plasma and Rocket manipulate public trust and live network feeds."
+        anchor_landmarks: ["Nuvema Town", "Castelia City", "Nimbasa City", "Nacrene City", "Pokemon League"]
+      - region: kalos
+        guide_summary: "France-influenced region focused on fashion, beauty, and central Lumiose City."
+        nexus_role: "Beauty versus control chapter; Flare technology reframes the Nexus as an aesthetic weapon."
+        anchor_landmarks: ["Vaniville Town", "Lumiose City", "Glittering Cave", "Geosenge Town", "Pokemon League"]
+      - region: alola
+        guide_summary: "Hawaii-inspired island archipelago with Island Challenge and regional forms."
+        nexus_role: "Island challenge chapter; Ultra Wormhole logic explains how regions can overlap without simple teleportation."
+        anchor_landmarks: ["Iki Town", "Melemele Island", "Akala Island", "Aether Paradise", "Poni Island"]
+      - region: galar
+        guide_summary: "UK-inspired region with stadium battles, Motostoke, and Wyndon."
+        nexus_role: "Spectacle and energy chapter; Dynamax power becomes a controlled public-facing version of dangerous region-pull energy."
+        anchor_landmarks: ["Postwick", "Motostoke", "Hammerlocke", "Wyndon", "Energy Plant"]
+      - region: paldea
+        guide_summary: "Iberian open-world region from Scarlet/Violet focused on open exploration."
+        nexus_role: "Final convergence chapter; academy research, Titans, and Area Zero reveal the full multi-region Nexus architecture."
+        anchor_landmarks: ["Cabo Poco", "Mesagoza", "Naranja/Uva Academy", "Titan routes", "Area Zero"]

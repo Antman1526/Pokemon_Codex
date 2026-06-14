@@ -5,7 +5,7 @@ red_tag_battle_policy:
   region_cadence:
     kanto:
       early_seed: "Mt. Moon establishes that Red is scouting parallel routes and preparing to fight beside Antman."
-      first_true_tag_battle_candidate: "Rocket operation between Mt. Moon and Cerulean, or the S.S. Anne Rocket interruption if the engine support is not ready earlier."
+      first_true_tag_battle_candidate: "Cerulean bridge/Rocket arc after the classic Nugget Bridge challenge; Red and Antman should fight together once reusable partner-battle support is ready."
       late_tag_battle_candidate: "Silph Co. or Pokemon Tower Rocket escalation."
     johto:
       early_tag_battle_candidate: "Slowpoke Well Rocket rescue."
