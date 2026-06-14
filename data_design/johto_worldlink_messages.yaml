@@ -1,6 +1,31 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_SLOWPOKE_WELL_FIRST_ENTRY
+    trigger: FLAG_SLOWPOKE_WELL_FIRST_ENTRY_REACHED
+    priority: major
+    text: "Slowpoke Well first entry confirmed. Kurt is inside with Antman while Red keeps Azalea's cave road clear."
+
+  - id: WL_JOHTO_KURT_WELL_PARTNER
+    trigger: FLAG_SLOWPOKE_WELL_KURT_PARTNER_REACHED
+    priority: major
+    text: "Kurt partner scene logged. This crisis is about protecting Slowpoke, not proving strength."
+
+  - id: WL_JOHTO_GOLD_DUST_BETRAYS_ROCKET
+    trigger: FLAG_SLOWPOKE_WELL_ROCKET_EVIDENCE_REACHED
+    priority: major
+    text: "Gold Dust is documenting Rocket's tail operation and preparing to sell cleanup after Rocket takes the blame."
+
+  - id: WL_JOHTO_SLOWPOKE_RESCUE
+    trigger: FLAG_SLOWPOKE_WELL_ROCKET_EVIDENCE_REACHED
+    priority: major
+    text: "Slowpoke rescue logged. Azalea can breathe again, but Rocket's Johto return is no longer just a rumor."
+
+  - id: WL_JOHTO_BUGSY_GYM_NEXT
+    trigger: FLAG_SLOWPOKE_WELL_ROCKET_EVIDENCE_REACHED
+    priority: major
+    text: "WorldLink: Bugsy Gym next. Apricorn first-batch reward pending; Hoenn remains locked."
+
   - id: WL_JOHTO_AZALEA_FIRST_ARRIVAL
     trigger: FLAG_AZALEA_FIRST_ARRIVAL_REACHED
     priority: major

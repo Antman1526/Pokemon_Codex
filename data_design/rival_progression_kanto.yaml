@@ -3,6 +3,31 @@
 chapter: kanto
 
 progression_bands:
+  johto_slowpoke_well_first_entry:
+    player_range: "Slowpoke Well first entry before Bugsy Gym"
+    companions:
+      kurt:
+        location: Slowpoke Well
+        event: slowpoke_well_partner
+        notification: "Kurt enters the Well with Antman and makes the crisis about protecting Slowpoke, not showing off."
+      red:
+        location: Azalea Town cave road
+        event: outside_well_watch
+        notification: "Red stays outside the Well and keeps the Union Cave road clear while Antman leads the rescue."
+      lyra:
+        location: Azalea Town
+        event: town_support_during_well
+        notification: "Lyra keeps Azalea calm and watches for Rocket movement while Antman and Kurt go below."
+    rivals:
+      silver:
+        location: Slowpoke Well shadow
+        event: well_shadow_no_battle
+        notification: "Silver watches the Well crisis without battling. He seems angry at theft more than he wants to admit."
+      ava:
+        location: WorldLink incident feed
+        event: rocket_gold_dust_evidence_sync
+        notification: "Ava flags Gold Dust's evidence trail: they are betraying Rocket by making Rocket's crime sellable."
+
   johto_azalea_first_arrival:
     player_range: "Azalea Town first arrival before Slowpoke Well"
     companions:

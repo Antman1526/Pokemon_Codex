@@ -113,12 +113,21 @@ acts:
       - bugsy_gym_locked_until_well
       - apricorn_balls_tease
       - worldlink_slowpoke_well_next
+      - slowpoke_well_first_entry
+      - kurt_slowpoke_well_partner
+      - rocket_slowpoke_tail_operation
+      - gold_dust_betrays_rocket_evidence
+      - red_outside_well_watch
+      - silver_well_shadow_no_battle
+      - slowpoke_rescue_logged
+      - bugsy_gym_unlocked_after_well
+      - apricorn_first_batch_tease
       - slowpoke_well_rocket_return
       - kurt_apricorn_tools
       - ilex_forest_worldlink_static
       - whitney_battle
       - radio_tower_frequency_warning
-    unlocks: [route_32_live_map, field_checklist_route32_page, union_cave_story_gate, azalea_road_pressure, union_cave_live_map, field_checklist_union_cave_page, rocket_gold_dust_cave_conflict, azalea_story_gate, azalea_town_live_map, azalea_town_checklist_page, slowpoke_well_story_gate, bugsy_gym_story_gate_locked, apricorn_balls_tease, apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
+    unlocks: [route_32_live_map, field_checklist_route32_page, union_cave_story_gate, azalea_road_pressure, union_cave_live_map, field_checklist_union_cave_page, rocket_gold_dust_cave_conflict, azalea_story_gate, azalea_town_live_map, azalea_town_checklist_page, slowpoke_well_story_gate, bugsy_gym_story_gate_locked, apricorn_balls_tease, slowpoke_well_live_map, slowpoke_well_story_clear, bugsy_gym_story_gate_open, apricorn_balls_first_batch_tease, johto_rematch_board_tier_1_tease, apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
 
   - id: act_3_ecruteak_mahogany
     purpose: "Bring Johto's towers, beasts, and Rocket broadcast pressure into the Nexus plot."

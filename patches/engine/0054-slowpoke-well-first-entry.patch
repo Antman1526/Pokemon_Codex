@@ -1,0 +1,299 @@
+diff --git a/data/maps/AzaleaTown_Frlg/map.json b/data/maps/AzaleaTown_Frlg/map.json
+index 726931f26f..06764cb505 100644
+--- a/data/maps/AzaleaTown_Frlg/map.json
++++ b/data/maps/AzaleaTown_Frlg/map.json
+@@ -129,6 +129,13 @@
+       "elevation": 3,
+       "dest_map": "MAP_UNION_CAVE_1F",
+       "dest_warp_id": "1"
++    },
++    {
++      "x": 18,
++      "y": 16,
++      "elevation": 3,
++      "dest_map": "MAP_SLOWPOKE_WELL_B1F",
++      "dest_warp_id": "0"
+     }
+   ],
+   "coord_events": [],
+diff --git a/data/maps/SlowpokeWell_B1F_Frlg/map.json b/data/maps/SlowpokeWell_B1F_Frlg/map.json
+new file mode 100644
+index 0000000000..ffd4f2ffc6
+--- /dev/null
++++ b/data/maps/SlowpokeWell_B1F_Frlg/map.json
+@@ -0,0 +1,145 @@
++{
++  "id": "MAP_SLOWPOKE_WELL_B1F",
++  "name": "SlowpokeWell_B1F_Frlg",
++  "layout": "LAYOUT_ROCKET_HIDEOUT_B1F",
++  "music": "MUS_RG_ROCKET_HIDEOUT",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_UNDERGROUND",
++  "allow_cycling": false,
++  "allow_escaping": true,
++  "allow_running": true,
++  "show_map_name": true,
++  "floor_number": -1,
++  "battle_scene": "MAP_BATTLE_SCENE_INDOOR_2",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_KURT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
++      "x": 5,
++      "y": 9,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_KurtPartner",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_ROCKET",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
++      "x": 10,
++      "y": 22,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_RocketReturn",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_GOLD_DUST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 12,
++      "y": 22,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_GoldDustEvidence",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_SLOWPOKE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SLOWPOKE",
++      "x": 21,
++      "y": 27,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_SlowpokeRescue",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_RED_RELAY",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 4,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_RedOutsideWatch",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_SILVER_TRACE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 24,
++      "y": 12,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_SilverTrace",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SLOWPOKE_WELL_BUGSY_NOTE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BUG_CATCHER_FRLG",
++      "x": 21,
++      "y": 29,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_BugsyUnlock",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 4,
++      "y": 9,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_TOWN",
++      "dest_warp_id": "1"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 7,
++      "y": 9,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "SlowpokeWell_B1F_Frlg_EventScript_WellSign"
++    }
++  ]
++}
+diff --git a/data/maps/SlowpokeWell_B1F_Frlg/scripts.inc b/data/maps/SlowpokeWell_B1F_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..6cedf5f8a9
+--- /dev/null
++++ b/data/maps/SlowpokeWell_B1F_Frlg/scripts.inc
+@@ -0,0 +1,95 @@
++SlowpokeWell_B1F_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, SlowpokeWell_B1F_Frlg_OnTransition
++	.byte 0
++
++SlowpokeWell_B1F_Frlg_OnTransition:
++	setflag FLAG_SLOWPOKE_WELL_FIRST_ENTRY_REACHED
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_KurtPartner::
++	setflag FLAG_SLOWPOKE_WELL_KURT_PARTNER_REACHED
++	msgbox SlowpokeWell_B1F_Frlg_Text_KurtPartner, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_RocketReturn::
++	msgbox SlowpokeWell_B1F_Frlg_Text_RocketReturn, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_GoldDustEvidence::
++	setflag FLAG_SLOWPOKE_WELL_ROCKET_EVIDENCE_REACHED
++	msgbox SlowpokeWell_B1F_Frlg_Text_GoldDustEvidence, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_SlowpokeRescue::
++	msgbox SlowpokeWell_B1F_Frlg_Text_SlowpokeRescue, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_RedOutsideWatch::
++	msgbox SlowpokeWell_B1F_Frlg_Text_RedOutsideWatch, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_SilverTrace::
++	msgbox SlowpokeWell_B1F_Frlg_Text_SilverTrace, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_BugsyUnlock::
++	msgbox SlowpokeWell_B1F_Frlg_Text_BugsyUnlock, MSGBOX_NPC
++	end
++
++SlowpokeWell_B1F_Frlg_EventScript_WellSign::
++	msgbox SlowpokeWell_B1F_Frlg_Text_WellSign, MSGBOX_SIGN
++	end
++
++SlowpokeWell_B1F_Frlg_Text_KurtPartner::
++	.string "KURT: This is not a market.\p"
++	.string "Slowpoke trusted this town\n"
++	.string "before any of us had badges.\p"
++	.string "Walk with me, Antman. We fix\n"
++	.string "this without turning kindness\n"
++	.string "into a trophy.$"
++
++SlowpokeWell_B1F_Frlg_Text_RocketReturn::
++	.string "ROCKET: The tails are proof\n"
++	.string "that Johto still pays.\p"
++	.string "Kanto broke our sign, not our\n"
++	.string "routes. The Boss would know\n"
++	.string "what to do with this well.$"
++
++SlowpokeWell_B1F_Frlg_Text_GoldDustEvidence::
++	.string "GOLD DUST: Rocket makes\n"
++	.string "excellent evidence.\p"
++	.string "Let them look cruel. We will\n"
++	.string "sell the cleanup, the permits,\n"
++	.string "and the new rules afterward.$"
++
++SlowpokeWell_B1F_Frlg_Text_SlowpokeRescue::
++	.string "SLOWPOKE: ...Yawn...\p"
++	.string "The Slowpoke looks tired,\n"
++	.string "but safe enough to stand.\p"
++	.string "WorldLink logs the rescue.$"
++
++SlowpokeWell_B1F_Frlg_Text_RedOutsideWatch::
++	.string "RED: I am outside.\p"
++	.string "No one leaves through Union\n"
++	.string "Cave without you knowing.\p"
++	.string "Kurt is with you. Listen to\n"
++	.string "him down there.$"
++
++SlowpokeWell_B1F_Frlg_Text_SilverTrace::
++	.string "SILVER TRACE: He saw Rocket\n"
++	.string "stealing strength and stayed\n"
++	.string "angry instead of loud.\p"
++	.string "No battle yet. Not because he\n"
++	.string "is calm.$"
++
++SlowpokeWell_B1F_Frlg_Text_BugsyUnlock::
++	.string "WorldLink: Bugsy Gym next.\p"
++	.string "Azalea emergency stabilizing.\n"
++	.string "Apricorn first-batch reward\n"
++	.string "pending with Kurt.\p"
++	.string "Hoenn remains locked.$"
++
++SlowpokeWell_B1F_Frlg_Text_WellSign::
++	.string "SLOWPOKE WELL\p"
++	.string "Protected town waterway.\n"
++	.string "Do not disturb Slowpoke.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index e7ca2bdab5..48784b6437 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -868,6 +868,7 @@
+     "Route32_Frlg",
+     "UnionCave_1F_Frlg",
+     "AzaleaTown_Frlg",
++    "SlowpokeWell_B1F_Frlg",
+     "SproutTower_1F_Frlg",
+     "SproutTower_Upper_Frlg",
+     "ViridianCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index ef4037fa64..5a0cf290af 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -164,9 +164,9 @@
+ #define FLAG_AZALEA_FIRST_ARRIVAL_REACHED   0x0BB
+ #define FLAG_AZALEA_KURT_WARNING_REACHED   0x0BC
+ #define FLAG_AZALEA_SLOWPOKE_WELL_GATE_CHECKED   0x0BD
+-#define FLAG_0x0BE               0x0BE
+-#define FLAG_0x0BF               0x0BF
+-#define FLAG_0x0C0               0x0C0
++#define FLAG_SLOWPOKE_WELL_FIRST_ENTRY_REACHED   0x0BE
++#define FLAG_SLOWPOKE_WELL_KURT_PARTNER_REACHED   0x0BF
++#define FLAG_SLOWPOKE_WELL_ROCKET_EVIDENCE_REACHED   0x0C0
+ #define FLAG_0x0C1               0x0C1
+ #define FLAG_0x0C2               0x0C2
+ #define FLAG_0x0C3               0x0C3
