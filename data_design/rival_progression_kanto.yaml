@@ -300,6 +300,39 @@ progression_bands:
         event: lyra_meridian_locked_profile
         notification: "Lyra's locked profile flashed when Giovanni said Meridian, then WorldLink marked Johto still unavailable."
 
+  silph_scope_lavender_return:
+    player_range: "Silph Scope return through Poke Flute reward"
+    companions:
+      red:
+        location: Pokemon Tower 6F
+        event: red_marowak_grief_support
+        notification: "Red stood with Antman when the Silph Scope revealed Marowak and says some battles are won by letting grief stop fighting."
+      misty:
+        location: WorldLink call from Cerulean
+        event: misty_tower_aftercare_call
+        notification: "Misty says Lavender's current finally moved after Marowak calmed, but something deeper is still pulling at Saffron."
+      brock:
+        location: WorldLink call from Pewter
+        event: brock_fuji_route_call
+        notification: "Brock says Fuji's Poke Flute should open the Snorlax roads, but the team should decide carefully between Fuchsia and Saffron pressure."
+    rivals:
+      blue:
+        location: Lavender exit road
+        event: blue_tower_pressure_reconsidered
+        notification: "Blue left Lavender quieter than usual and says he is heading for the next badge before anyone calls him sentimental."
+      ava:
+        location: Lavender survey notes
+        event: ava_marowak_signal_research
+        notification: "Ava logged the Marowak reading as a clean grief signal and separated it from Rocket traffic and Moonlight whispers."
+      dax:
+        location: Route 12 Snorlax road
+        event: dax_snorlax_training_report
+        notification: "Dax found a sleeping Snorlax blocking the road and says waking it up counts as training if it swings first."
+      lyra:
+        location: Johto locked profile
+        event: lyra_poke_flute_locked_profile
+        notification: "Lyra's locked profile hummed along with the Poke Flute tone, then WorldLink kept Johto travel sealed."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

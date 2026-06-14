@@ -88,6 +88,12 @@ acts:
       - red_giovanni_preboss_check
       - giovanni_meridian_prototype_hint
       - silph_scope_worldlink_return
+      - silph_scope_tower_return
+      - red_marowak_grief_support
+      - marowak_spirit_calmed
+      - fuji_poke_flute_route_open
+      - snorlax_path_objective
+      - saffron_fuchsia_branch_warning
       - portable_pc_beta_storage_handshake
       - erika_battle
     unlocks: [cave_lantern, dig_kit, ability_capsule_vendor_teaser, portable_pc_beta_terminal, silph_scope_return_objective]

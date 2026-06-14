@@ -1,0 +1,185 @@
+--- a/data/maps/PokemonTower_6F_Frlg/map.json
++++ b/data/maps/PokemonTower_6F_Frlg/map.json
+@@ -85,6 +85,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "PokemonTower_6F_EventScript_ItemXAccuracy",
+       "flag": "FLAG_HIDE_POKEMON_TOWER_6F_X_ACCURACY"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 9,
++      "y": 15,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PokemonTower_6F_EventScript_RedMarowakSupport",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+--- a/data/maps/PokemonTower_6F_Frlg/scripts.inc
++++ b/data/maps/PokemonTower_6F_Frlg/scripts.inc
+@@ -5,6 +5,8 @@
+ 	lockall
+ 	textcolor NPC_TEXT_COLOR_MON
+ 	msgbox PokemonTower_6F_Text_BeGoneIntruders
++	textcolor NPC_TEXT_COLOR_MALE
++	msgbox PokemonTower_6F_Text_RedMarowakSupport
+ 	setwildbattle SPECIES_MAROWAK, 30
+ 	special StartMarowakBattle
+ 	waitstate
+@@ -30,6 +32,19 @@
+ 	walk_up
+ 	step_end
+ 
++PokemonTower_6F_EventScript_RedMarowakSupport::
++	lock
++	faceplayer
++	goto_if_eq VAR_MAP_SCENE_POKEMON_TOWER_6F, 1, PokemonTower_6F_EventScript_RedMarowakSupportAfter
++	msgbox PokemonTower_6F_Text_RedMarowakSupport, MSGBOX_NPC
++	release
++	end
++
++PokemonTower_6F_EventScript_RedMarowakSupportAfter::
++	msgbox PokemonTower_6F_Text_RedMarowakSupportAfter, MSGBOX_NPC
++	release
++	end
++
+ PokemonTower_6F_EventScript_Angelica::
+ 	trainerbattle_single TRAINER_CHANNELER_ANGELICA, PokemonTower_6F_Text_AngelicaIntro, PokemonTower_6F_Text_AngelicaDefeat
+ 	msgbox PokemonTower_6F_Text_AngelicaPostBattle, MSGBOX_AUTOCLOSE
+@@ -82,12 +97,30 @@
+ 	.string "Do not let them count my\n"
+ 	.string "child's dream…$"
+ 
++PokemonTower_6F_Text_RedMarowakSupport::
++	.string "RED: Antman, wait.\p"
++	.string "The Silph Scope is showing a\n"
++	.string "mother, not a monster.\p"
++	.string "Keep your team steady. We are\n"
++	.string "not here to beat her anger.\p"
++	.string "We are here to let MAROWAK stop\n"
++	.string "fighting alone.$"
++
++PokemonTower_6F_Text_RedMarowakSupportAfter::
++	.string "RED: You did right by her.\p"
++	.string "Team Moonlight may listen to\n"
++	.string "grief, but you answered it.\p"
++	.string "Fuji is upstairs. Rocket will\n"
++	.string "not like that we got this far.$"
++
+ PokemonTower_6F_Text_GhostWasCubonesMother::
+ 	.string "The ghost was Cubone's mother,\n"
+ 	.string "the restless spirit of MAROWAK!$"
+ 
+ PokemonTower_6F_Text_MothersSpiritWasCalmed::
+ 	.string "The mother's spirit was calmed.\p"
++	.string "The Silph Scope revealed grief,\n"
++	.string "not a monster.\p"
+ 	.string "It departed to the afterlife…\p"
+-	.string "The dream static faded, but it\n"
+-	.string "did not disappear.$"
++	.string "WorldLink registered the dream\n"
++	.string "static fading, but not gone.$"
+--- a/data/maps/PokemonTower_7F_Frlg/scripts.inc
++++ b/data/maps/PokemonTower_7F_Frlg/scripts.inc
+@@ -231,18 +231,19 @@
+ 	step_end
+ 
+ PokemonTower_7F_Text_Grunt1Intro::
+-	.string "What do you want?\n"
+-	.string "Why are you here?\p"
+-	.string "Rocket owns this floor, not those\n"
+-	.string "Team Moonlight whisperers!$"
++	.string "You brought the Silph Scope\n"
++	.string "back here?\p"
++	.string "Rocket owns proof. Moonlight can\n"
++	.string "keep the whispers.$"
+ 
+ PokemonTower_7F_Text_Grunt1Defeat::
+ 	.string "I give up!$"
+ 
+ PokemonTower_7F_Text_Grunt1PostBattle::
+ 	.string "I'm not going to forget this!\p"
+-	.string "Tell Moonlight that Rocket does\n"
+-	.string "not share old men or old ghosts!$"
++	.string "Tell Team Moonlight that Rocket\n"
++	.string "does not share old men, ghosts,\l"
++	.string "or anything a Scope can prove!$"
+ 
+ PokemonTower_7F_Text_Grunt2Intro::
+ 	.string "This old guy marched right up to\n"
+@@ -251,6 +252,8 @@
+ 	.string "TEAM ROCKET's abusing POKéMON.\p"
+ 	.string "Then Team Moonlight starts\n"
+ 	.string "calling it dream static.\p"
++	.string "Now you show up with the Scope\n"
++	.string "that makes our leverage visible.\p"
+ 	.string "So, we're just talking it over as\n"
+ 	.string "adults.$"
+ 
+@@ -266,8 +269,10 @@
+ 
+ PokemonTower_7F_Text_Grunt3Intro::
+ 	.string "You're not saving anyone, kid!\p"
+-	.string "Rocket took Fuji. Moonlight just\n"
+-	.string "keeps whispering through static.$"
++	.string "Rocket took Fuji because he knows\n"
++	.string "what the POKé FLUTE can wake.\p"
++	.string "Moonlight just keeps whispering\n"
++	.string "through static.$"
+ 
+ PokemonTower_7F_Text_Grunt3Defeat::
+ 	.string "Don't fight us ROCKETS!$"
+@@ -291,6 +296,8 @@
+ 	.string "grief leaves behind.\p"
+ 	.string "Do not mistake one danger for\n"
+ 	.string "the other.\p"
++	.string "You and Red brought the Silph\n"
++	.string "Scope back when it mattered.\p"
+ 	.string "I must thank you for your kind\n"
+ 	.string "concern.\p"
+ 	.string "Follow me to my home, POKéMON\n"
+--- a/data/maps/LavenderTown_VolunteerPokemonHouse_Frlg/scripts.inc
++++ b/data/maps/LavenderTown_VolunteerPokemonHouse_Frlg/scripts.inc
+@@ -116,6 +116,8 @@
+ 	.string "Rocket wanted silence.\n"
+ 	.string "Team Moonlight wanted the dream\l"
+ 	.string "static inside that silence.\p"
++	.string "Red stood with you when MAROWAK\n"
++	.string "needed peace more than victory.\p"
+ 	.string "Without deep love for POKéMON,\n"
+ 	.string "your quest may fail.\p"
+ 	.string "I'm not sure if this will help you,\n"
+@@ -130,17 +132,22 @@
+ 	.string "sleeping POKéMON will spring awake.\p"
+ 	.string "Try using it on POKéMON that are\n"
+ 	.string "sleeping obstacles.\p"
+-	.string "The Poke Flute wakes sleeping\n"
+-	.string "POKéMON, not dreams.\p"
+-	.string "If WorldLink hears Moonlight\n"
+-	.string "again, find the living cause first.$"
++	.string "A SNORLAX blocks roads toward\n"
++	.string "FUCHSIA. This flute can open them.\p"
++	.string "But SAFFRON is tightening around\n"
++	.string "SILPH CO., too.\p"
++	.string "WorldLink will list both paths.\n"
++	.string "Choose one, but stay in Kanto.$"
+ 
+ LavenderTown_VolunteerPokemonHouse_Text_MustMakeRoomForThis::
+ 	.string "You must make room for this!$"
+ 
+ LavenderTown_VolunteerPokemonHouse_Text_HasPokeFluteHelpedYou::
+ 	.string "MR. FUJI: Has my POKé FLUTE\n"
+-	.string "helped you?$"
++	.string "helped you?\p"
++	.string "If SNORLAX wakes, the FUCHSIA\n"
++	.string "road opens. If SAFFRON darkens,\l"
++	.string "SILPH CO. will need courage.$"
+ 
+ LavenderTown_VolunteerPokemonHouse_Text_GrandPrizeDrawingClipped::
+ 	.string "POKéMON FAN MAGAZINE\n"

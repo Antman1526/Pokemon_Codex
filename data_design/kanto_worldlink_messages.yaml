@@ -146,6 +146,21 @@ messages:
     priority: major
     text: "Silph Scope registered. Return to Lavender Tower. Portable PC beta storage confidence improved, but full field access remains locked."
 
+  - id: WL_KANTO_MAROWAK_CALMED
+    trigger: VAR_MAP_SCENE_POKEMON_TOWER_6F
+    priority: major
+    text: "Marowak's spirit calmed. Red reports the Silph Scope revealed grief, not a monster. Team Moonlight signal remains unexplained."
+
+  - id: WL_KANTO_POKE_FLUTE_ROUTE_OPEN
+    trigger: FLAG_GOT_POKE_FLUTE
+    priority: major
+    text: "Poke Flute registered. Snorlax routes can now open the long road toward Fuchsia and the Safari Zone."
+
+  - id: WL_KANTO_SAFFRON_FUCHSIA_BRANCH
+    trigger: FLAG_GOT_POKE_FLUTE
+    priority: major
+    text: "Route branch updated: Fuchsia is reachable through Snorlax roads, while Saffron pressure is rising around Silph Co. Choose the path, but stay in Kanto."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
