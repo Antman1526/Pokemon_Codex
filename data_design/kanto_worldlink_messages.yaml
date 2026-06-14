@@ -221,6 +221,21 @@ messages:
     priority: major
     text: "Silph lower floors checklist: inspect teleport routing, break Rocket logistics, find Blue's trail, and keep this a Kanto-only rescue."
 
+  - id: WL_KANTO_SILPH_MID_FLOORS
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Silph 4F-7F checklist: read the Gold Dust terminal trace, stabilize the field PC network, follow Red's civilian route, and reach Blue before Giovanni does."
+
+  - id: WL_KANTO_PORTABLE_PC_FULL_UNLOCK
+    trigger: FLAG_BADGE05_GET
+    priority: major
+    text: "Portable PC full access restored at Silph 5F. WorldLink can now reach trainer storage through stable Silph field terminals."
+
+  - id: WL_KANTO_BLUE_SILPH_RIVAL_PRESSURE
+    trigger: VAR_MAP_SCENE_SILPH_CO_7F
+    priority: major
+    text: "Blue's Silph pressure spiked near Lapras. This is rivalry, fear, and pride mixed together, not a normal badge-race update."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

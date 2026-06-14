@@ -437,6 +437,35 @@ progression_bands:
         event: dax_saffron_badge_race
         notification: "Dax says if Silph has eleven floors, he only needs to be louder than Rocket on six of them to count it as winning."
 
+  silph_mid_floors_portable_pc:
+    player_range: "Silph Co. 4F through 7F Blue battle"
+    companions:
+      red:
+        location: Silph Co. 6F stair route
+        event: red_civilian_route_update
+        notification: "Red is moving civilians through Silph's lower stairs and trusts Antman to keep climbing toward Giovanni."
+      misty:
+        location: Saffron escape routes
+        event: misty_saffron_exit_watch
+        notification: "Misty is holding Saffron's exits calm and says panic is easiest to beat before it starts moving."
+      brock:
+        location: WorldLink systems note
+        event: brock_portable_pc_systems
+        notification: "Brock confirms Silph 5F stabilized Portable PC full access, but recommends terminal-based use until the key item is engineered."
+    rivals:
+      blue:
+        location: Silph Co. 7F
+        event: blue_emotional_silph_rival
+        notification: "Blue challenged Antman on Silph 7F, angry that Red, Misty, and Brock all seem to have roles in a story he refuses to be left out of."
+      ava:
+        location: WorldLink research note
+        event: ava_gold_dust_terminal_trace
+        notification: "Ava traced a Gold Dust terminal cache on Silph 4F: the buyers want Master Ball specs, Safari logs, and Rocket to take the blame."
+      dax:
+        location: Saffron outer stairwell
+        event: dax_silph_floor_count
+        notification: "Dax is counting Silph floors like gym rounds and says he is absolutely helping, even if nobody gave him a floor assignment."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

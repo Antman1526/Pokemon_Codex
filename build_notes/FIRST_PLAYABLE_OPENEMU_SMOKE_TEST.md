@@ -8,23 +8,10 @@ Apply project-owned engine patches from the parent repo root before building:
 
 ```sh
 cd /Users/Antman/.config/superpowers/worktrees/Pokemon_Codex/first-playable-title-opening
-git apply --directory=engine/pokeemerald-expansion patches/engine/0001-pallet-bedroom-mom-intro.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0002-pallet-red-blue-scene.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0003-oak-lab-nexus-intro.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0004-worldlink-route1-alert.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0005-oak-27-starter-menu.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0006-route1-3-badge-scaled-encounters.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0007-route3-anomaly-wild-battles.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0008-red-route1-viridian-pewter-training.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0009-brock-expanded-starter-pool-balance.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0010-pewter-museum-rocket-anomaly-hook.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0011-mt-moon-nexus-break.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0012-cerulean-misty-bridge-setup.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0013-route25-red-gold-dust-tag.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0014-vermilion-ss-anne-crisis.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0015-surge-grid-worldlink.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0016-route11-diglett-bridge.patch
-git apply --directory=engine/pokeemerald-expansion patches/engine/0017-rock-tunnel-cave-lantern.patch
+git -C engine/pokeemerald-expansion restore .
+for patch in $(find patches/engine -name '*.patch' | sort); do
+  git -C engine/pokeemerald-expansion apply ../../${patch}
+done
 ```
 
 Command:
@@ -78,6 +65,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 21:28 CDT: Codex built the Mt. Moon Nexus Break milestone from patches `0001` through `0011`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, and Mt. Moon Nexus Break validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
+- 2026-06-14 19:20 CDT: Codex built the Silph mid-floors Portable PC milestone from patches `0001` through `0027`. Full validator suite passed, including `validate_silph_mid_floors_portable_pc.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.69%.
 - 2026-06-13 23:41 CDT: Codex built the Vermilion S.S. Anne crisis milestone from patches `0001` through `0014`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, and Vermilion S.S. Anne crisis validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.63%.
 - 2026-06-14 08:59 CDT: Codex built the Surge grid and WorldLink feed milestone from patches `0001` through `0015`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, and Surge grid WorldLink validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
 - 2026-06-14 09:37 CDT: Codex built the Route 11 Diglett bridge milestone from patches `0001` through `0016`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, and Route 11 Diglett bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
@@ -284,6 +272,11 @@ Manual OpenEmu checklist still needed:
 - [ ] Silph 1F lobby text frames the building as a lockdown checkpoint.
 - [ ] Silph 2F Rocket/scientist text references Rocket logistics and teleport routing.
 - [ ] Silph 3F text references Blue's pressure trail and Portable PC system risk.
+- [ ] Silph 4F Gold Dust terminal evidence appears through worker/scientist/floor-sign text.
+- [ ] Silph 5F Portable PC full access terminal opens the PC menu.
+- [ ] Silph 6F text references Red's civilian route through the building.
+- [ ] Silph 7F Blue emotional pressure scene appears before the classic rival battle.
+- [ ] `0027-silph-mid-floors-portable-pc.patch` applies cleanly and `validate_silph_mid_floors_portable_pc.py` passes.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

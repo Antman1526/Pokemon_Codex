@@ -1,0 +1,477 @@
+diff --git a/data/maps/SilphCo_4F_Frlg/scripts.inc b/data/maps/SilphCo_4F_Frlg/scripts.inc
+index 98cb0c4d1b..11ae091c05 100644
+--- a/data/maps/SilphCo_4F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_4F_Frlg/scripts.inc
+@@ -41,11 +41,15 @@ SilphCo_4F_EventScript_Grunt2::
+ 
+ SilphCo_4F_Text_CantYouSeeImHiding::
+ 	.string "Sssh!\n"
+-	.string "Can't you see I'm hiding?$"
++	.string "Can't you see I'm hiding?\p"
++	.string "Rocket made us leave the system\n"
++	.string "terminals unlocked. Bad idea.$"
+ 
+ SilphCo_4F_Text_TeamRocketIsGone::
+ 	.string "Huh?\n"
+-	.string "TEAM ROCKET is gone?$"
++	.string "Team Rocket is gone?\p"
++	.string "Then check every terminal. Gold\n"
++	.string "Dust copied more than emails.$"
+ 
+ SilphCo_4F_Text_Grunt1Intro::
+ 	.string "TEAM ROCKET has taken control\n"
+@@ -56,7 +60,9 @@ SilphCo_4F_Text_Grunt1Defeat::
+ 
+ SilphCo_4F_Text_Grunt1PostBattle::
+ 	.string "Fwahahaha!\n"
+-	.string "My BOSS has been after this place!$"
++	.string "My boss has been after this place!\p"
++	.string "Silph's system routes tell Rocket\n"
++	.string "where every rare shipment goes.$"
+ 
+ SilphCo_4F_Text_RodneyIntro::
+ 	.string "My POKéMON is my loyal servant.$"
+@@ -68,8 +74,10 @@ SilphCo_4F_Text_RodneyDefeat::
+ SilphCo_4F_Text_RodneyPostBattle::
+ 	.string "The doors are electronically\n"
+ 	.string "locked.\p"
+-	.string "It takes a CARD KEY to open the\n"
+-	.string "doors here.$"
++	.string "It takes a Card Key to open the\n"
++	.string "doors here.\p"
++	.string "A Gold Dust terminal trace hit\n"
++	.string "4F before Rocket cut the logs.$"
+ 
+ SilphCo_4F_Text_Grunt2Intro::
+ 	.string "Intruder spotted!$"
+@@ -78,9 +86,12 @@ SilphCo_4F_Text_Grunt2Defeat::
+ 	.string "Who are you?$"
+ 
+ SilphCo_4F_Text_Grunt2PostBattle::
+-	.string "I better tell the BOSS on 11F!$"
++	.string "I better tell the boss on 11F!\p"
++	.string "WorldLink keeps flagging our\n"
++	.string "Rocket logistics routes. Stop it!$"
+ 
+ SilphCo_4F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "4F$"
+-
++	.string "4F\p"
++	.string "Gold Dust terminal traffic:\n"
++	.string "buyer pings only, no uniforms.$"
+diff --git a/data/maps/SilphCo_5F_Frlg/map.json b/data/maps/SilphCo_5F_Frlg/map.json
+index 5a4396fad4..a1d87d3f0c 100644
+--- a/data/maps/SilphCo_5F_Frlg/map.json
++++ b/data/maps/SilphCo_5F_Frlg/map.json
+@@ -141,6 +141,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "SilphCo_5F_EventScript_Scientist",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CLIPBOARD",
++      "x": 31,
++      "y": 12,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SilphCo_5F_EventScript_PortablePcFullAccess",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/SilphCo_5F_Frlg/scripts.inc b/data/maps/SilphCo_5F_Frlg/scripts.inc
+index 69441dadee..bed23d8a92 100644
+--- a/data/maps/SilphCo_5F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_5F_Frlg/scripts.inc
+@@ -33,6 +33,10 @@ SilphCo_5F_EventScript_PokemonReport3::
+ 	msgbox SilphCo_5F_Text_SomeMonsEvolveWhenTraded, MSGBOX_SIGN
+ 	end
+ 
++SilphCo_5F_EventScript_PortablePcFullAccess::
++	msgbox SilphCo_5F_Text_PortablePcFullAccess, MSGBOX_DEFAULT
++	goto EventScript_PC
++
+ SilphCo_5F_EventScript_FloorSign::
+ 	msgbox SilphCo_5F_Text_FloorSign, MSGBOX_SIGN
+ 	end
+@@ -58,13 +62,16 @@ SilphCo_5F_EventScript_Dalton::
+ 	end
+ 
+ SilphCo_5F_Text_RocketsInUproarAboutIntruder::
+-	.string "TEAM ROCKET is in an uproar over\n"
++	.string "Team Rocket is in an uproar over\n"
+ 	.string "some intruder.\p"
+-	.string "That's you, right?$"
++	.string "Red moved three workers through\n"
++	.string "the stairwell. That's you, right?$"
+ 
+ SilphCo_5F_Text_YoureOurHeroThankYou::
+-	.string "TEAM ROCKET took off!\n"
+-	.string "You're our hero! Thank you!$"
++	.string "Team Rocket took off!\n"
++	.string "You're our hero! Thank you!\p"
++	.string "The Portable PC full access\n"
++	.string "terminal is stable now.$"
+ 
+ SilphCo_5F_Text_Grunt1Intro::
+ 	.string "I heard a kid was wandering\n"
+@@ -75,7 +82,9 @@ SilphCo_5F_Text_Grunt1Defeat::
+ 
+ SilphCo_5F_Text_Grunt1PostBattle::
+ 	.string "It's not smart to pick a fight with\n"
+-	.string "TEAM ROCKET!$"
++	.string "Team Rocket!\p"
++	.string "Portable PC full access was for\n"
++	.string "us, not every badge kid.$"
+ 
+ SilphCo_5F_Text_BeauIntro::
+ 	.string "We study POKé BALL technology on\n"
+@@ -87,7 +96,9 @@ SilphCo_5F_Text_BeauDefeat::
+ 
+ SilphCo_5F_Text_BeauPostBattle::
+ 	.string "We worked on the ultimate POKé\n"
+-	.string "BALL which would catch anything.$"
++	.string "Ball which would catch anything.\p"
++	.string "But Rocket wanted our field PC\n"
++	.string "network first. That scared me.$"
+ 
+ SilphCo_5F_Text_DaltonIntro::
+ 	.string "Whaaat?\p"
+@@ -99,7 +110,9 @@ SilphCo_5F_Text_DaltonDefeat::
+ 
+ SilphCo_5F_Text_DaltonPostBattle::
+ 	.string "You're only on 5F.\n"
+-	.string "It's a long way to my BOSS!$"
++	.string "It's a long way to my boss!\p"
++	.string "Red is clearing civilians below,\n"
++	.string "so you are alone up here.$"
+ 
+ SilphCo_5F_Text_Grunt2Intro::
+ 	.string "Show TEAM ROCKET a little respect!$"
+@@ -110,26 +123,44 @@ SilphCo_5F_Text_Grunt2Defeat::
+ 
+ SilphCo_5F_Text_Grunt2PostBattle::
+ 	.string "Which reminds me.\p"
+-	.string "KOFFING evolves into WEEZING!$"
++	.string "Koffing evolves into Weezing!\p"
++	.string "And beta terminals evolve into\n"
++	.string "WorldLink problems for Rocket.$"
+ 
+ SilphCo_5F_Text_PorygonFirstVRMon::
+ 	.string "It's a POKéMON REPORT!\p"
+-	.string "POKéMON LAB created PORYGON,\n"
+-	.string "the first virtual-reality POKéMON.$"
++	.string "Pokemon Lab created Porygon,\n"
++	.string "the first virtual-reality Pokemon.\p"
++	.string "WorldLink classifies Porygon as\n"
++	.string "safe digital life, not an anchor.$"
+ 
+ SilphCo_5F_Text_Over350TechniquesConfirmed::
+ 	.string "It's a POKéMON REPORT!\p"
+-	.string "Over 350 POKéMON techniques have\n"
+-	.string "been confirmed.$"
++	.string "Over 350 Pokemon techniques have\n"
++	.string "been confirmed.\p"
++	.string "Expanded TM planning is marked\n"
++	.string "legal for WorldLink trainers.$"
+ 
+ SilphCo_5F_Text_SomeMonsEvolveWhenTraded::
+ 	.string "It's a POKéMON REPORT!\p"
+-	.string "Some POKéMON have been confirmed\n"
+-	.string "to evolve when they are traded.$"
++	.string "Some Pokemon once evolved only\n"
++	.string "when traded.\p"
++	.string "WorldLink recommends adjusted\n"
++	.string "evolution methods for long routes.$"
+ 
+ SilphCo_5F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "5F$"
++	.string "5F\p"
++	.string "Portable PC full access lab.\n"
++	.string "WorldLink security restored.$"
++
++SilphCo_5F_Text_PortablePcFullAccess::
++	.string "WorldLink trainer support:\n"
++	.string "Portable PC full access.\p"
++	.string "Silph's field network is stable\n"
++	.string "enough to reach your PC boxes.\p"
++	.string "Oak, Bill, and Brock all signed\n"
++	.string "the emergency trainer protocol.$"
+ 
+ SilphCo_5F_Text_RocketBossLookingForStrongMons::
+ 	.string "Those thugs that took over our\n"
+diff --git a/data/maps/SilphCo_6F_Frlg/scripts.inc b/data/maps/SilphCo_6F_Frlg/scripts.inc
+index 3363e8e815..ea5bfcbe59 100644
+--- a/data/maps/SilphCo_6F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_6F_Frlg/scripts.inc
+@@ -91,19 +91,27 @@ SilphCo_6F_EventScript_Grunt2::
+ 	end
+ 
+ SilphCo_6F_Text_RocketsTookOverBuilding::
+-	.string "The ROCKETS came and took over\n"
+-	.string "the building!$"
++	.string "The Rockets came and took over\n"
++	.string "the building!\p"
++	.string "Red told us to stay low and wait\n"
++	.string "for Antman to reach the top.$"
+ 
+ SilphCo_6F_Text_BetterGetBackToWork::
+-	.string "Well, better get back to work.$"
++	.string "Well, better get back to work.\p"
++	.string "Tell Red his civilian route\n"
++	.string "worked. We all heard him.$"
+ 
+ SilphCo_6F_Text_HelpMePlease::
+ 	.string "Oh dear, oh dear.\n"
+-	.string "Help me, please!$"
++	.string "Help me, please!\p"
++	.string "Red passed by and said help was\n"
++	.string "coming. Please be that help.$"
+ 
+ SilphCo_6F_Text_WeGotEngaged::
+ 	.string "We got engaged.\n"
+-	.string "Heheh!$"
++	.string "Heheh!\p"
++	.string "Crisis makes people honest. Red\n"
++	.string "said you would understand.$"
+ 
+ SilphCo_6F_Text_ThatManIsSuchACoward::
+ 	.string "That man next to me…\n"
+@@ -114,16 +122,20 @@ SilphCo_6F_Text_NeedsMeToLookAfterHim::
+ 	.string "someone like me to look after him.$"
+ 
+ SilphCo_6F_Text_RocketsTryingToConquerWorld::
+-	.string "TEAM ROCKET is trying to conquer\n"
+-	.string "the world with POKéMON.$"
++	.string "Team Rocket is trying to conquer\n"
++	.string "the world with Pokemon.\p"
++	.string "But this feels bigger than one\n"
++	.string "world. The terminals keep pulsing.$"
+ 
+ SilphCo_6F_Text_RocketsRanAwayBecauseOfYou::
+ 	.string "TEAM ROCKET ran away, and it's all\n"
+ 	.string "because of you!$"
+ 
+ SilphCo_6F_Text_TargetedSilphForOurMonProducts::
+-	.string "They must have targeted SILPH for\n"
+-	.string "our POKéMON products.$"
++	.string "They targeted Silph for our\n"
++	.string "Pokemon products.\p"
++	.string "Rocket logistics, Gold Dust\n"
++	.string "buyers, and WorldLink all connect.$"
+ 
+ SilphCo_6F_Text_ComeWorkForSilphWhenYoureOlder::
+ 	.string "Come work for SILPH when you\n"
+@@ -138,7 +150,9 @@ SilphCo_6F_Text_Grunt1Defeat::
+ 
+ SilphCo_6F_Text_Grunt1PostBattle::
+ 	.string "No matter!\n"
+-	.string "My brothers will avenge me!$"
++	.string "My brothers will avenge me!\p"
++	.string "Red can hide workers, but he\n"
++	.string "cannot hide you from Giovanni.$"
+ 
+ SilphCo_6F_Text_TaylorIntro::
+ 	.string "That rotten PRESIDENT!\p"
+@@ -151,8 +165,10 @@ SilphCo_6F_Text_TaylorDefeat::
+ 	.string "Shoot!$"
+ 
+ SilphCo_6F_Text_TaylorPostBattle::
+-	.string "TIKSI BRANCH?\n"
+-	.string "It's in Russian no-man's-land!$"
++	.string "Tiksi Branch?\n"
++	.string "It's in Russian no-man's-land!\p"
++	.string "Now even that remote office is\n"
++	.string "showing on the region-map Nexus.$"
+ 
+ SilphCo_6F_Text_Grunt2Intro::
+ 	.string "You dare betray TEAM ROCKET?$"
+@@ -162,9 +178,12 @@ SilphCo_6F_Text_Grunt2Defeat::
+ 
+ SilphCo_6F_Text_Grunt2PostBattle::
+ 	.string "If you stand for justice, you\n"
+-	.string "betray us bad guys!$"
++	.string "betray us bad guys!\p"
++	.string "Blue already rushed upward. He\n"
++	.string "looked angry enough to break.$"
+ 
+ SilphCo_6F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "6F$"
+-
++	.string "6F\p"
++	.string "Red civilian route update:\n"
++	.string "lower stairs clearing slowly.$"
+diff --git a/data/maps/SilphCo_7F_Frlg/scripts.inc b/data/maps/SilphCo_7F_Frlg/scripts.inc
+index 6fd7c1a81d..f36bbc0f3b 100644
+--- a/data/maps/SilphCo_7F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_7F_Frlg/scripts.inc
+@@ -237,7 +237,9 @@ SilphCo_7F_Text_HaveMonForSavingUs::
+ 	.string "You came to save us?\l"
+ 	.string "Why, thank you!\p"
+ 	.string "I want you to have this POKéMON\n"
+-	.string "for saving us.$"
++	.string "for saving us.\p"
++	.string "Red moved the scared workers. Blue\n"
++	.string "stayed here, pretending not to be.$"
+ 
+ SilphCo_7F_Text_ObtainedLaprasFromEmployee::
+ 	.string "{PLAYER} obtained a LAPRAS from\n"
+@@ -245,11 +247,13 @@ SilphCo_7F_Text_ObtainedLaprasFromEmployee::
+ 
+ SilphCo_7F_Text_ExplainLapras::
+ 	.string "It's a LAPRAS.\n"
+-	.string "It's a very intelligent POKéMON.\p"
++	.string "It's a very intelligent Pokemon.\p"
+ 	.string "We kept it in our lab, but it will\n"
+ 	.string "be much better off with you.\p"
+-	.string "I think you will be a good TRAINER\n"
+-	.string "for LAPRAS!\p"
++	.string "I think you will be a good Trainer\n"
++	.string "for Lapras.\p"
++	.string "For the long road, tide travel\n"
++	.string "matters as much as badges.\p"
+ 	.string "It's a good swimmer.\n"
+ 	.string "It'll give you a lift across water!$"
+ 
+@@ -260,16 +264,20 @@ SilphCo_7F_Text_RocketBossWentToBoardroom::
+ 	.string "I'm worried.$"
+ 
+ SilphCo_7F_Text_RocketsAfterMasterBall::
+-	.string "TEAM ROCKET was after the MASTER\n"
+-	.string "BALL, which catches any POKéMON.$"
++	.string "Team Rocket was after the Master\n"
++	.string "Ball, which catches any Pokemon.\p"
++	.string "Gold Dust would never steal it\n"
++	.string "first. They would buy the thief.$"
+ 
+ SilphCo_7F_Text_CanceledMasterBallProject::
+ 	.string "We canceled the MASTER BALL\n"
+ 	.string "project because of TEAM ROCKET.$"
+ 
+ SilphCo_7F_Text_BadIfTeamRocketTookOver::
+-	.string "It would be bad if TEAM ROCKET\n"
+-	.string "took over SILPH or our POKéMON.$"
++	.string "It would be bad if Team Rocket\n"
++	.string "took over Silph or our Pokemon.\p"
++	.string "It would be worse if every region\n"
++	.string "copied this network at once.$"
+ 
+ SilphCo_7F_Text_WowYouChasedOffTeamRocket::
+ 	.string "Wow!\p"
+@@ -279,8 +287,8 @@ SilphCo_7F_Text_WowYouChasedOffTeamRocket::
+ SilphCo_7F_Text_ReallyDangerousHere::
+ 	.string "You!\n"
+ 	.string "It's really dangerous here!\p"
+-	.string "You came to save me?\n"
+-	.string "You can't!$"
++	.string "Red said Antman would come anyway.\n"
++	.string "I wanted him to be wrong.$"
+ 
+ SilphCo_7F_Text_ThankYouSoMuch::
+ 	.string "Thank you so much!$"
+@@ -305,7 +313,9 @@ SilphCo_7F_Text_JoshuaDefeat::
+ 
+ SilphCo_7F_Text_JoshuaPostBattle::
+ 	.string "Despite your age, you are a\n"
+-	.string "skilled TRAINER!$"
++	.string "skilled Trainer!\p"
++	.string "Blue fought like he was trying to\n"
++	.string "outrun fear, not you.$"
+ 
+ SilphCo_7F_Text_Grunt1Intro::
+ 	.string "I am one of the four ROCKET\n"
+@@ -317,7 +327,9 @@ SilphCo_7F_Text_Grunt1Defeat::
+ 
+ SilphCo_7F_Text_Grunt1PostBattle::
+ 	.string "Doesn't matter.\n"
+-	.string "My brothers will repay the favor!$"
++	.string "My brothers will repay the favor!\p"
++	.string "Blue barked at us. You listen.\n"
++	.string "That makes you more dangerous.$"
+ 
+ SilphCo_7F_Text_Grunt2Intro::
+ 	.string "A child intruder?\n"
+@@ -328,41 +340,49 @@ SilphCo_7F_Text_Grunt2Defeat::
+ 	.string "I lost!$"
+ 
+ SilphCo_7F_Text_Grunt2PostBattle::
+-	.string "Go on home before my BOSS gets\n"
+-	.string "ticked off!$"
++	.string "Go on home before my boss gets\n"
++	.string "ticked off!\p"
++	.string "Or chase Blue into the warp maze.\n"
++	.string "He looked ready to snap.$"
+ 
+ SilphCo_7F_Text_RivalWhatKeptYou::
+-	.string "{RIVAL}: What kept you, {PLAYER}?$"
++	.string "Blue: What kept you, {PLAYER}?\p"
++	.string "Don't say Red sent you. I already\n"
++	.string "know he trusts you more.$"
+ 
+ SilphCo_7F_Text_RivalIntro::
+-	.string "{RIVAL}: Hahaha! I thought you'd\n"
+-	.string "turn up if I waited here!\p"
+-	.string "I guess TEAM ROCKET slowed you\n"
+-	.string "down! Not that I care!\p"
+-	.string "I saw you in SAFFRON, so I decided\n"
+-	.string "to see if you got better!$"
++	.string "Blue: Hahaha... I thought you'd\n"
++	.string "turn up if I waited here.\p"
++	.string "Team Rocket slowed me down, so\n"
++	.string "what? I am still ahead.\p"
++	.string "Red is saving workers. Misty is\n"
++	.string "guarding exits. Brock is reading\l"
++	.string "systems. Everyone has a part.\p"
++	.string "I will not be the extra kid in\n"
++	.string "your big WorldLink story!$"
+ 
+ SilphCo_7F_Text_RivalDefeat::
+ 	.string "Oh, man!\n"
+-	.string "So, you are ready for BOSS\l"
+-	.string "ROCKET!$"
++	.string "So, you are ready for Boss\l"
++	.string "Rocket... and I am not?$"
+ 
+ SilphCo_7F_Text_RivalPostBattle::
+-	.string "Well, {PLAYER}!\n"
+-	.string "I'm moving on up and ahead!\p"
+-	.string "By checking my POKéDEX, I'm\n"
+-	.string "starting to see what's strong and\l"
+-	.string "how they evolve!\p"
+-	.string "Am I a genius or what?\p"
+-	.string "I'm going to the POKéMON LEAGUE to\n"
+-	.string "boot out the ELITE FOUR.\p"
+-	.string "I'll become the world's most\n"
+-	.string "powerful TRAINER!\p"
+-	.string "{PLAYER}, well, good luck to you!\n"
+-	.string "Don't sweat it!\l"
+-	.string "Smell ya!$"
++	.string "Blue: Well, {PLAYER}...\n"
++	.string "I'm moving on up and ahead.\p"
++	.string "By checking my Pokedex, I'm\n"
++	.string "starting to see what is strong\l"
++	.string "and how they evolve.\p"
++	.string "Blue is not comic relief here.\n"
++	.string "Remember that.\p"
++	.string "I am going to the Pokemon League\n"
++	.string "to boot out the Elite Four.\p"
++	.string "I will become the world's most\n"
++	.string "powerful Trainer.\p"
++	.string "You beat Giovanni. I will beat\n"
++	.string "the road after him. Smell ya.$"
+ 
+ SilphCo_7F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "7F$"
+-
++	.string "7F\p"
++	.string "WorldLink note: Blue's rival\n"
++	.string "pressure is spiking near Lapras.$"

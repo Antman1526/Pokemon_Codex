@@ -124,6 +124,11 @@ acts:
       - silph_2f_rocket_logistics
       - silph_3f_blue_pressure_clue
       - portable_pc_full_teaser
+      - silph_mid_floor_systems
+      - silph_4f_gold_dust_terminal
+      - silph_5f_portable_pc_full_unlock
+      - silph_6f_red_civilian_route
+      - silph_7f_blue_emotional_pressure
       - silph_co_takeover
       - giovanni_sponsor_hint
       - sabrina_moonlight_interference
