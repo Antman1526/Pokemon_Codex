@@ -261,6 +261,21 @@ messages:
     priority: major
     text: "Silph network restored, but Sabrina's Gym is pulsing with Moonlight interference. Next Kanto objective: stabilize Saffron's psychic signal."
 
+  - id: WL_KANTO_SABRINA_GYM_DISTORTION
+    trigger: FLAG_GOT_MASTER_BALL_FROM_SILPH
+    priority: major
+    text: "Saffron Gym registered a Moonlight Veil. Sabrina is not hostile; her Gym is amplifying grief static through the restored Silph network."
+
+  - id: WL_KANTO_RED_MISTY_SABRINA_GATE
+    trigger: FLAG_GOT_MASTER_BALL_FROM_SILPH
+    priority: flavor
+    text: "Red cannot cross Sabrina's threshold without worsening the echo. Misty is holding the city current steady while Antman enters alone."
+
+  - id: WL_KANTO_MARSH_BADGE_STABILIZED
+    trigger: FLAG_BADGE06_GET
+    priority: major
+    text: "Marsh Badge verified. WorldLink marks Saffron's psychic signal stabilized and flags a sea route toward old fire and Phoenix research."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

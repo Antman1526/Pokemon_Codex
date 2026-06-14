@@ -495,6 +495,35 @@ progression_bands:
         event: dax_rocket_floor_count_finale
         notification: "Dax says eleven floors is too many for one villain team and insists he was distracting Rocket somewhere important."
 
+  sabrina_moonlight_gym:
+    player_range: "Post-Silph Saffron through Marsh Badge"
+    companions:
+      red:
+        location: Saffron Gym gate
+        event: red_sabrina_gate_separation
+        notification: "Red stayed outside Sabrina's Gym after the Moonlight Veil rejected his companion signal. He says Antman has to steady this one alone."
+      misty:
+        location: Saffron Gym gate
+        event: misty_saffron_current_support
+        notification: "Misty is keeping Saffron's streets calm and says psychic pressure moves like water: fight the current too hard and it pulls you under."
+      brock:
+        location: WorldLink mentor note
+        event: brock_psychic_grounding_note
+        notification: "Brock says Sabrina is not the enemy; grounded trainers can tell the difference between a Gym Leader's test and an outside signal."
+    rivals:
+      blue:
+        location: Saffron side street
+        event: blue_post_silph_sabrina_silence
+        notification: "Blue watched the Gym lights pulse and went quiet again. WorldLink marks the silence as focus, not fear."
+      ava:
+        location: Saffron signal log
+        event: ava_moonlight_veil_analysis
+        notification: "Ava classified the Gym pulse as Moonlight Veil interference amplified by Silph's restored network, not Rocket tech."
+      dax:
+        location: Saffron Gym approach
+        event: dax_psychic_gym_warning
+        notification: "Dax says he is brave enough for any Gym, then admits psychic mazes are worse than stairs because you cannot yell at them."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

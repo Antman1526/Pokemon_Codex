@@ -1,0 +1,411 @@
+diff --git a/data/maps/SaffronCity_Frlg/map.json b/data/maps/SaffronCity_Frlg/map.json
+index 2804a403a3..1aa14eddd4 100644
+--- a/data/maps/SaffronCity_Frlg/map.json
++++ b/data/maps/SaffronCity_Frlg/map.json
+@@ -261,6 +261,34 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "SaffronCity_EventScript_BattleGirl",
+       "flag": "FLAG_HIDE_POSTGAME_GOSSIPERS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 48,
++      "y": 14,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SaffronCity_EventScript_RedSabrinaGate",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MISTY",
++      "x": 49,
++      "y": 15,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SaffronCity_EventScript_MistySabrinaGate",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/SaffronCity_Frlg/scripts.inc b/data/maps/SaffronCity_Frlg/scripts.inc
+index 5789974965..a5070ea4ad 100644
+--- a/data/maps/SaffronCity_Frlg/scripts.inc
++++ b/data/maps/SaffronCity_Frlg/scripts.inc
+@@ -136,6 +136,44 @@ SaffronCity_EventScript_TrainerFanClubSign::
+ 	msgbox SaffronCity_Text_TrainerFanClubSign, MSGBOX_SIGN
+ 	end
+ 
++SaffronCity_EventScript_RedSabrinaGate::
++	lock
++	faceplayer
++	goto_if_unset FLAG_GOT_MASTER_BALL_FROM_SILPH, SaffronCity_EventScript_RedSabrinaGateBeforeSilph
++	goto_if_set FLAG_BADGE06_GET, SaffronCity_EventScript_RedSabrinaGateAfterBadge
++	msgbox SaffronCity_Text_RedSabrinaGate, MSGBOX_NPC
++	release
++	end
++
++SaffronCity_EventScript_RedSabrinaGateBeforeSilph::
++	msgbox SaffronCity_Text_RedSabrinaGateBeforeSilph, MSGBOX_NPC
++	release
++	end
++
++SaffronCity_EventScript_RedSabrinaGateAfterBadge::
++	msgbox SaffronCity_Text_RedSabrinaGateAfterBadge, MSGBOX_NPC
++	release
++	end
++
++SaffronCity_EventScript_MistySabrinaGate::
++	lock
++	faceplayer
++	goto_if_unset FLAG_GOT_MASTER_BALL_FROM_SILPH, SaffronCity_EventScript_MistySabrinaGateBeforeSilph
++	goto_if_set FLAG_BADGE06_GET, SaffronCity_EventScript_MistySabrinaGateAfterBadge
++	msgbox SaffronCity_Text_MistySabrinaGate, MSGBOX_NPC
++	release
++	end
++
++SaffronCity_EventScript_MistySabrinaGateBeforeSilph::
++	msgbox SaffronCity_Text_MistySabrinaGateBeforeSilph, MSGBOX_NPC
++	release
++	end
++
++SaffronCity_EventScript_MistySabrinaGateAfterBadge::
++	msgbox SaffronCity_Text_MistySabrinaGateAfterBadge, MSGBOX_NPC
++	release
++	end
++
+ SaffronCity_Text_WhatDoYouWantGetLost::
+ 	.string "What do you want?\p"
+ 	.string "Blue already tried forcing this\n"
+@@ -177,18 +215,22 @@ SaffronCity_Text_WeCanExploitMonsAroundWorld::
+ 	.string "wants markets. Same locked door.$"
+ 
+ SaffronCity_Text_YouBeatTeamRocket::
+-	.string "You beat TEAM ROCKET all alone?\n"
+-	.string "That's amazing!$"
++	.string "You beat TEAM ROCKET?\n"
++	.string "That's amazing!\p"
++	.string "RED and MISTY are by the GYM.\n"
++	.string "They said the city still feels off.$"
+ 
+ SaffronCity_Text_SafeToGoOutAgain::
+ 	.string "Yeah! TEAM ROCKET is gone!\n"
+-	.string "It's safe to go out again!$"
++	.string "It's safe to go out again!\p"
++	.string "But the GYM lights flicker at night.\n"
++	.string "Even SABRINA looks worried.$"
+ 
+ SaffronCity_Text_PeopleComingBackToSaffron::
+ 	.string "People fled from here in droves\n"
+ 	.string "when those ROCKETS came.\p"
+-	.string "They should be flocking back to\n"
+-	.string "SAFFRON now.$"
++	.string "SABRINA says some dreams followed\n"
++	.string "them home from LAVENDER.$"
+ 
+ SaffronCity_Text_FlewHereOnPidgeot::
+ 	.string "I flew here on my PIDGEOT when\n"
+@@ -201,7 +243,9 @@ SaffronCity_Text_Pidgeot::
+ 
+ SaffronCity_Text_SawRocketBossEscaping::
+ 	.string "I saw the ROCKET BOSS escaping\n"
+-	.string "SILPH's building.$"
++	.string "SILPH's building.\p"
++	.string "The GYM windows glowed like\n"
++	.string "moonlight right after he left.$"
+ 
+ SaffronCity_Text_ImASecurityGuard::
+ 	.string "I'm a security guard.\p"
+@@ -233,6 +277,49 @@ SaffronCity_Text_RedSilphArrivalReady::
+ 	.string "Stay sharp. Rocket logistics are\n"
+ 	.string "using the whole building.$"
+ 
++SaffronCity_Text_RedSabrinaGateBeforeSilph::
++	.string "Red: Antman, the GYM can wait.\p"
++	.string "SILPH is still locked down, and\n"
++	.string "SABRINA's signal is tangled in it.\p"
++	.string "We free the city first.\n"
++	.string "Then we face what is left.$"
++
++SaffronCity_Text_RedSabrinaGate::
++	.string "Red: I tried to step inside with\n"
++	.string "you, but the whole room pushed back.\p"
++	.string "SABRINA called it companion\n"
++	.string "resonance. Too many strong signals.\p"
++	.string "This is your badge fight, Antman.\n"
++	.string "I'll be right here when you exit.$"
++
++SaffronCity_Text_RedSabrinaGateAfterBadge::
++	.string "Red: You did it.\p"
++	.string "The air around the GYM feels like\n"
++	.string "SAFFRON finally exhaled.\p"
++	.string "WorldLink is pointing toward the\n"
++	.string "sea now. Old fire. Old science.$"
++
++SaffronCity_Text_MistySabrinaGateBeforeSilph::
++	.string "Misty: Rocket is still making waves\n"
++	.string "inside SILPH.\p"
++	.string "Beat them there first. The GYM\n"
++	.string "current can wait a little longer.$"
++
++SaffronCity_Text_MistySabrinaGate::
++	.string "Misty: Psychic pressure moves like\n"
++	.string "water, Antman.\p"
++	.string "If you fight the current too hard,\n"
++	.string "it pulls you under.\p"
++	.string "Breathe, pick your line, and make\n"
++	.string "SABRINA see you clearly.$"
++
++SaffronCity_Text_MistySabrinaGateAfterBadge::
++	.string "Misty: That was better.\p"
++	.string "Whatever Team Moonlight touched in\n"
++	.string "there is calmer now.\p"
++	.string "Red is trying not to look proud.\n"
++	.string "He is failing.$"
++
+ SaffronCity_Text_CitySign::
+ 	.string "SAFFRON CITY\n"
+ 	.string "Shining, Golden Land of Commerce$"
+@@ -242,8 +329,9 @@ SaffronCity_Text_FightingDojo::
+ 
+ SaffronCity_Text_GymSign::
+ 	.string "SAFFRON CITY POKéMON GYM\n"
+-	.string "LEADER: SABRINA\l"
+-	.string "The Master of PSYCHIC POKéMON!$"
++	.string "LEADER: SABRINA\p"
++	.string "WorldLink warning: Moonlight Veil\n"
++	.string "interference detected inside.$"
+ 
+ SaffronCity_Text_FullHealCuresStatus::
+ 	.string "TRAINER TIPS\p"
+@@ -271,8 +359,11 @@ SaffronCity_Text_MrPsychicsHouse::
+ 	.string "MR. PSYCHIC'S HOUSE$"
+ 
+ SaffronCity_Text_SilphsLatestProduct::
+-	.string "SILPH's latest product!\n"
+-	.string "Release to be determined…$"
++	.string "SILPH's latest product!\p"
++	.string "Portable PC field terminals are\n"
++	.string "stable inside SILPH.\p"
++	.string "Key item release pending after\n"
++	.string "network safety review.$"
+ 
+ SaffronCity_Text_TrainerFanClubSign::
+ 	.string "POKéMON TRAINER FAN CLUB\p"
+diff --git a/data/maps/SaffronCity_Gym_Frlg/map.json b/data/maps/SaffronCity_Gym_Frlg/map.json
+index bac0e7ae0e..26a7071545 100644
+--- a/data/maps/SaffronCity_Gym_Frlg/map.json
++++ b/data/maps/SaffronCity_Gym_Frlg/map.json
+@@ -393,6 +393,14 @@
+       "elevation": 0,
+       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+       "script": "SaffronCity_Gym_EventScript_GymStatue"
++    },
++    {
++      "type": "sign",
++      "x": 14,
++      "y": 20,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "SaffronCity_Gym_EventScript_MoonlightVeil"
+     }
+   ]
+ }
+diff --git a/data/maps/SaffronCity_Gym_Frlg/scripts.inc b/data/maps/SaffronCity_Gym_Frlg/scripts.inc
+index 64e3cb330c..14a9a76771 100644
+--- a/data/maps/SaffronCity_Gym_Frlg/scripts.inc
++++ b/data/maps/SaffronCity_Gym_Frlg/scripts.inc
+@@ -95,36 +95,42 @@ SaffronCity_Gym_EventScript_GymStatuePostVictory::
+ 	releaseall
+ 	end
+ 
++SaffronCity_Gym_EventScript_MoonlightVeil::
++	msgbox SaffronCity_Gym_Text_MoonlightVeil, MSGBOX_SIGN
++	end
++
+ SaffronCity_Gym_Text_SabrinaIntro::
+ 	.string "I had a vision of your arrival.\p"
+-	.string "I have had psychic powers since\n"
+-	.string "I was a child.\p"
+-	.string "It started when a spoon I\n"
+-	.string "carelessly tossed, bent.\p"
+-	.string "I dislike battling, but if you wish,\n"
+-	.string "I will show you my powers!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
++	.string "Moonlight touched the dream static\n"
++	.string "left behind in LAVENDER.\p"
++	.string "SILPH's restored network made that\n"
++	.string "whisper loud enough to find me.\p"
++	.string "I am still SABRINA. This is still\n"
++	.string "my GYM.\p"
++	.string "Show me your mind is your own!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
+ 
+ SaffronCity_Gym_Text_SabrinaDefeat::
+-	.string "This loss shocks me!\n"
+-	.string "But, a loss is a loss.\p"
+-	.string "I admit, I didn't work hard enough\n"
+-	.string "to win.\p"
++	.string "The Moonlight Veil broke when your\n"
++	.string "will refused to bend.\p"
++	.string "This loss shocks me...\n"
++	.string "but it also frees the room.\p"
+ 	.string "Your victory has earned you the\n"
+ 	.string "MARSHBADGE.$"
+ 
+ SaffronCity_Gym_Text_SabrinaPostBattle::
+-	.string "Psychic power isn't something that\n"
+-	.string "only a few people have.\p"
+-	.string "Everyone has psychic power.\n"
+-	.string "People just don't realize it.$"
++	.string "Psychic power is not rare.\n"
++	.string "Control is rare.\p"
++	.string "Moonlight listens for wounded ones.\p"
++	.string "The next echo I see is over water,\n"
++	.string "near old fire and older science.$"
+ 
+ SaffronCity_Gym_Text_ExplainMarshBadgeTakeThis::
+-	.string "The MARSHBADGE makes POKéMON up\n"
++	.string "The Marsh Badge makes POKéMON up\n"
+ 	.string "to Lv. 70 obey you.\p"
+-	.string "Stronger POKéMON will become wild,\n"
+-	.string "ignoring your orders in battle.\p"
+-	.string "Just don't raise your POKéMON too\n"
+-	.string "much to avoid that problem.\p"
++	.string "WorldLink also marks SAFFRON's\n"
++	.string "psychic signal stabilized.\p"
++	.string "That will matter when the sea route\n"
++	.string "opens and old fire calls.\p"
+ 	.string "Wait, please take this TM with you.$"
+ 
+ SaffronCity_Gym_Text_ReceivedTM04FromSabrina::
+@@ -134,7 +140,9 @@ SaffronCity_Gym_Text_ReceivedTM04FromSabrina::
+ SaffronCity_Gym_Text_ExplainTM04::
+ 	.string "TM04 is CALM MIND.\p"
+ 	.string "It makes the POKéMON concentrate\n"
+-	.string "to raise both SP. ATK and SP. DEF.$"
++	.string "to raise both SP. ATK and SP. DEF.\p"
++	.string "A calm mind is not quiet.\n"
++	.string "It is yours.$"
+ 
+ SaffronCity_Gym_Text_BagFullOfOtherItems::
+ 	.string "Your BAG is full of other items.$"
+@@ -149,8 +157,8 @@ SaffronCity_Gym_Text_AmandaDefeat::
+ SaffronCity_Gym_Text_AmandaPostBattle::
+ 	.string "In a battle of equals, the one\n"
+ 	.string "with the stronger will wins.\p"
+-	.string "If you wish to beat SABRINA, focus\n"
+-	.string "and will yourself to victory.$"
++	.string "But even she says the Moonlight\n"
++	.string "static is not from this GYM.$"
+ 
+ SaffronCity_Gym_Text_JohanIntro::
+ 	.string "Does our unseen power scare you?$"
+@@ -160,7 +168,9 @@ SaffronCity_Gym_Text_JohanDefeat::
+ 
+ SaffronCity_Gym_Text_JohanPostBattle::
+ 	.string "PSYCHIC POKéMON fear only ghosts\n"
+-	.string "and bugs!$"
++	.string "and bugs!\p"
++	.string "Moonlight fears something simpler:\n"
++	.string "a person who will not be led.$"
+ 
+ SaffronCity_Gym_Text_StacyIntro::
+ 	.string "POKéMON take on the appearance of\n"
+@@ -171,9 +181,9 @@ SaffronCity_Gym_Text_StacyDefeat::
+ 	.string "I knew it!$"
+ 
+ SaffronCity_Gym_Text_StacyPostBattle::
+-	.string "I have much to learn still…\p"
+-	.string "I must master PSYCHIC and teach it\n"
+-	.string "to my POKéMON…$"
++	.string "I have much to learn still...\p"
++	.string "Today the walls felt like they were\n"
++	.string "listening back.$"
+ 
+ SaffronCity_Gym_Text_TyronIntro::
+ 	.string "You understand, don't you?\p"
+@@ -185,7 +195,9 @@ SaffronCity_Gym_Text_TyronDefeat::
+ 
+ SaffronCity_Gym_Text_TyronPostBattle::
+ 	.string "SABRINA just wiped out the KARATE\n"
+-	.string "MASTER next door.$"
++	.string "MASTER next door.\p"
++	.string "Team Moonlight does not read minds\n"
++	.string "like she does. It reads hurt.$"
+ 
+ SaffronCity_Gym_Text_TashaIntro::
+ 	.string "You and I, our POKéMON shall\n"
+@@ -210,10 +222,10 @@ SaffronCity_Gym_Text_CameronDefeat::
+ SaffronCity_Gym_Text_CameronPostBattle::
+ 	.string "There used to be two POKéMON GYMS\n"
+ 	.string "in SAFFRON.\p"
+-	.string "The FIGHTING DOJO next door lost\n"
+-	.string "its GYM status, though.\p"
+-	.string "We simply creamed them when we\n"
+-	.string "decided to have just one GYM.$"
++	.string "Today the teleporter route felt\n"
++	.string "like Moonlight folded it twice.\p"
++	.string "Trust the path you choose, not the\n"
++	.string "room trying to scare you.$"
+ 
+ SaffronCity_Gym_Text_PrestonIntro::
+ 	.string "SAFFRON POKéMON GYM is famous for\n"
+@@ -226,32 +238,43 @@ SaffronCity_Gym_Text_PrestonDefeat::
+ 
+ SaffronCity_Gym_Text_PrestonPostBattle::
+ 	.string "That's right! I used telepathy to\n"
+-	.string "read your mind!$"
++	.string "read your mind!\p"
++	.string "You made it through Moonlight\n"
++	.string "static. That is harder.$"
+ 
+ SaffronCity_Gym_Text_GymGuyAdvice::
+ 	.string "Yo!\n"
+ 	.string "Champ in the making!\p"
+ 	.string "SABRINA's POKéMON use psychic\n"
+ 	.string "power instead of force.\p"
+-	.string "FIGHTING POKéMON are especially\n"
+-	.string "weak against PSYCHIC POKéMON.\p"
+-	.string "They'll get destroyed before they\n"
+-	.string "can even aim a punch!$"
++	.string "The teleporters feel wrong today,\n"
++	.string "like someone added a bad dream.\p"
++	.string "Keep your head clear. DARK, GHOST,\n"
++	.string "and BUG pressure help here.$"
+ 
+ SaffronCity_Gym_Text_GymGuyPostVictory::
+ 	.string "Psychic power, huh?\p"
+-	.string "If I had that, I'd make a bundle\n"
+-	.string "at the slots!$"
++	.string "The whole GYM feels calmer now.\n"
++	.string "WorldLink agrees with you.$"
+ 
+ SaffronCity_Gym_Text_GymStatue::
+ 	.string "SAFFRON POKéMON GYM\n"
+ 	.string "LEADER: SABRINA\p"
++	.string "WorldLink: Moonlight Veil active\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}$"
+ 
+ SaffronCity_Gym_Text_GymStatuePlayerWon::
+ 	.string "SAFFRON POKéMON GYM\n"
+ 	.string "LEADER: SABRINA\p"
++	.string "WorldLink: psychic signal stable\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}, {PLAYER}$"
+ 
++SaffronCity_Gym_Text_MoonlightVeil::
++	.string "WorldLink reads a Moonlight Veil\n"
++	.string "over SABRINA's teleporter maze.\p"
++	.string "Companion signal rejected.\n"
++	.string "Badge challenger must enter alone.\p"
++	.string "Threat type: grief resonance.\n"
++	.string "Rocket signature not detected.$"
