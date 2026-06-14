@@ -3,6 +3,31 @@
 chapter: kanto
 
 progression_bands:
+  johto_ilex_forest_first_entry:
+    player_range: "Ilex Forest after Hive Badge before Goldenrod City"
+    companions:
+      red:
+        location: Ilex Forest edge
+        event: ilex_edge_support
+        notification: "Red waits at the forest edge and reminds Antman that old forests need quiet more than orders."
+      lyra:
+        location: Ilex Forest
+        event: farfetchd_route_memory
+        notification: "Lyra reads the old Farfetch'd route memory and connects it to the new Field Tool static."
+    rivals:
+      silver:
+        location: Ilex Forest hidden path
+        event: secret_path_assist_no_battle
+        notification: "Silver clears a branch and leaves before Antman can thank him. He still refuses a real talk."
+      ava:
+        location: WorldLink systems feed
+        event: field_tool_static_analysis
+        notification: "Ava marks Field Tool static as a prototype and recommends saving the full tool suite for Goldenrod."
+      moonlight:
+        location: Ilex shrine
+        event: shrine_memory_pressure
+        notification: "Moonlight is using the shrine to test whether memory can become a controllable route."
+
   johto_bugsy_hive_gym:
     player_range: "Bugsy Hive Gym after Slowpoke Well before Ilex Forest"
     companions:

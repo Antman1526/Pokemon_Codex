@@ -1,0 +1,309 @@
+diff --git a/data/maps/AzaleaTown_Frlg/map.json b/data/maps/AzaleaTown_Frlg/map.json
+index 94d3b5c4a7..08e7db20f0 100644
+--- a/data/maps/AzaleaTown_Frlg/map.json
++++ b/data/maps/AzaleaTown_Frlg/map.json
+@@ -143,6 +143,13 @@
+       "elevation": 3,
+       "dest_map": "MAP_AZALEA_GYM",
+       "dest_warp_id": "0"
++    },
++    {
++      "x": 22,
++      "y": 10,
++      "elevation": 3,
++      "dest_map": "MAP_ILEX_FOREST",
++      "dest_warp_id": "0"
+     }
+   ],
+   "coord_events": [],
+diff --git a/data/maps/IlexForest_Frlg/map.json b/data/maps/IlexForest_Frlg/map.json
+new file mode 100644
+index 0000000000..d0859321d6
+--- /dev/null
++++ b/data/maps/IlexForest_Frlg/map.json
+@@ -0,0 +1,153 @@
++{
++  "id": "MAP_ILEX_FOREST",
++  "name": "IlexForest_Frlg",
++  "layout": "LAYOUT_VIRIDIAN_FOREST",
++  "music": "MUS_RG_VIRIDIAN_FOREST",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SHADE",
++  "map_type": "MAP_TYPE_ROUTE",
++  "allow_cycling": false,
++  "allow_escaping": true,
++  "allow_running": true,
++  "show_map_name": true,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_ILEX_RED_EDGE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 5,
++      "y": 43,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_RedEdgeSupport",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ILEX_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 7,
++      "y": 41,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_LyraFarfetchdMemory",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ILEX_FIELD_TOOL",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BUG_CATCHER_FRLG",
++      "x": 11,
++      "y": 35,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_FieldToolStatic",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ILEX_MOONLIGHT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CHANNELER",
++      "x": 14,
++      "y": 25,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_MoonlightShrine",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ILEX_SILVER_TRACE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 18,
++      "y": 22,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_SilverSecretAssist",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ILEX_CELEBI",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CELEBI",
++      "x": 15,
++      "y": 20,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_CelebiWhisper",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ILEX_GOLDENROD_NEXT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GYM_GUY",
++      "x": 25,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "IlexForest_Frlg_EventScript_GoldenrodNext",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 5,
++      "y": 44,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_TOWN",
++      "dest_warp_id": "3"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 15,
++      "y": 21,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "IlexForest_Frlg_EventScript_CelebiWhisper"
++    },
++    {
++      "type": "sign",
++      "x": 5,
++      "y": 44,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "IlexForest_Frlg_EventScript_ForestSign"
++    }
++  ]
++}
+diff --git a/data/maps/IlexForest_Frlg/scripts.inc b/data/maps/IlexForest_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..4ab511d504
+--- /dev/null
++++ b/data/maps/IlexForest_Frlg/scripts.inc
+@@ -0,0 +1,97 @@
++IlexForest_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, IlexForest_Frlg_OnTransition
++	.byte 0
++
++IlexForest_Frlg_OnTransition:
++	setflag FLAG_ILEX_FOREST_FIRST_ENTRY_REACHED
++	end
++
++IlexForest_Frlg_EventScript_RedEdgeSupport::
++	msgbox IlexForest_Frlg_Text_RedEdgeSupport, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_LyraFarfetchdMemory::
++	msgbox IlexForest_Frlg_Text_LyraFarfetchdMemory, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_FieldToolStatic::
++	setflag FLAG_ILEX_FIELD_TOOL_STATIC_REACHED
++	msgbox IlexForest_Frlg_Text_FieldToolStatic, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_MoonlightShrine::
++	msgbox IlexForest_Frlg_Text_MoonlightShrine, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_SilverSecretAssist::
++	setflag FLAG_ILEX_SILVER_SECRET_ASSIST_REACHED
++	msgbox IlexForest_Frlg_Text_SilverSecretAssist, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_CelebiWhisper::
++	msgbox IlexForest_Frlg_Text_CelebiWhisper, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_GoldenrodNext::
++	msgbox IlexForest_Frlg_Text_GoldenrodNext, MSGBOX_NPC
++	end
++
++IlexForest_Frlg_EventScript_ForestSign::
++	msgbox IlexForest_Frlg_Text_ForestSign, MSGBOX_SIGN
++	end
++
++IlexForest_Frlg_Text_RedEdgeSupport::
++	.string "RED: Old forests do not like\n"
++	.string "orders.\p"
++	.string "They like quiet, patience,\n"
++	.string "and people who notice when a\n"
++	.string "path is asking a question.$"
++
++IlexForest_Frlg_Text_LyraFarfetchdMemory::
++	.string "LYRA: This is the old Farfetch'd\n"
++	.string "route memory.\p"
++	.string "Johto used to teach CUT here.\n"
++	.string "Now your Field Tools are\n"
++	.string "hearing the same lesson wrong.$"
++
++IlexForest_Frlg_Text_FieldToolStatic::
++	.string "FIELD TOOL STATIC detected.\p"
++	.string "Trail Cutter responds, then\n"
++	.string "folds back like the forest is\n"
++	.string "remembering an older command.\p"
++	.string "Prototype logged. Full Field\n"
++	.string "Tool expansion waits for Goldenrod.$"
++
++IlexForest_Frlg_Text_MoonlightShrine::
++	.string "MOONLIGHT: Memory is a path.\p"
++	.string "If a shrine remembers enough,\n"
++	.string "the road can be tuned before\n"
++	.string "any trainer steps on it.\p"
++	.string "Rocket steals bodies. Gold Dust\n"
++	.string "prices fear. We edit return.$"
++
++IlexForest_Frlg_Text_SilverSecretAssist::
++	.string "SILVER TRACE: Cut branch.\p"
++	.string "No speech. No battle.\p"
++	.string "Someone cleared this before\n"
++	.string "you reached it, then left like\n"
++	.string "helping was an accident.$"
++
++IlexForest_Frlg_Text_CelebiWhisper::
++	.string "CELEBI SHRINE: Time remembers\n"
++	.string "a trainer from Pallet.\p"
++	.string "Your lead Pokemon reacts, but\n"
++	.string "Following Pokemon remains locked\n"
++	.string "until Goldenrod can stabilize it.$"
++
++IlexForest_Frlg_Text_GoldenrodNext::
++	.string "WorldLink: Goldenrod City next.\p"
++	.string "Full Field Tool support,\n"
++	.string "Following Pokemon tease, and\n"
++	.string "Radio Tower pressure logged.\p"
++	.string "Hoenn remains locked.$"
++
++IlexForest_Frlg_Text_ForestSign::
++	.string "ILEX FOREST\p"
++	.string "A quiet shrine, an old CUT\n"
++	.string "lesson, and paths that remember.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index 8a49b1c7bc..549ce66505 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -869,6 +869,7 @@
+     "UnionCave_1F_Frlg",
+     "AzaleaTown_Frlg",
+     "AzaleaTown_Gym_Frlg",
++    "IlexForest_Frlg",
+     "SlowpokeWell_B1F_Frlg",
+     "SproutTower_1F_Frlg",
+     "SproutTower_Upper_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index c3171818c1..aeb14efcbe 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -170,9 +170,9 @@
+ #define FLAG_BUGSY_GYM_REACHED   0x0C1
+ #define FLAG_HIVE_BADGE_REGISTERED   0x0C2
+ #define FLAG_APRICORN_FIRST_BATCH_RECEIVED   0x0C3
+-#define FLAG_0x0C4               0x0C4
+-#define FLAG_0x0C5               0x0C5
+-#define FLAG_0x0C6               0x0C6
++#define FLAG_ILEX_FOREST_FIRST_ENTRY_REACHED   0x0C4
++#define FLAG_ILEX_FIELD_TOOL_STATIC_REACHED   0x0C5
++#define FLAG_ILEX_SILVER_SECRET_ASSIST_REACHED   0x0C6
+ #define FLAG_0x0C7               0x0C7
+ #define FLAG_0x0C8               0x0C8
+ #define FLAG_0x0C9               0x0C9

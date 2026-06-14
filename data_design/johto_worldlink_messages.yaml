@@ -1,6 +1,31 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_ILEX_FOREST_FIRST_ENTRY
+    trigger: FLAG_ILEX_FOREST_FIRST_ENTRY_REACHED
+    priority: major
+    text: "Ilex Forest first entry confirmed. Red stays at the edge while Lyra reads the old Farfetch'd route memory."
+
+  - id: WL_JOHTO_FIELD_TOOL_STATIC
+    trigger: FLAG_ILEX_FIELD_TOOL_STATIC_REACHED
+    priority: major
+    text: "Field Tool static prototype logged. Full Field Tool expansion remains a Goldenrod systems unlock."
+
+  - id: WL_JOHTO_SILVER_SECRET_ASSIST
+    trigger: FLAG_ILEX_SILVER_SECRET_ASSIST_REACHED
+    priority: major
+    text: "Silver secretly cleared part of the Ilex path and refused credit. No battle, but his motive is shifting."
+
+  - id: WL_JOHTO_CELEBI_SHRINE_WHISPER
+    trigger: FLAG_ILEX_FIELD_TOOL_STATIC_REACHED
+    priority: minor
+    text: "Celebi shrine whisper detected. Time is reacting to Antman, but the forest is not ready to explain why."
+
+  - id: WL_JOHTO_GOLDENROD_NEXT
+    trigger: FLAG_ILEX_SILVER_SECRET_ASSIST_REACHED
+    priority: major
+    text: "WorldLink: Goldenrod City next. Following Pokemon and full Field Tool support are teased, and Hoenn remains locked."
+
   - id: WL_JOHTO_BUGSY_GYM_ARRIVAL
     trigger: FLAG_BUGSY_GYM_REACHED
     priority: major

@@ -183,11 +183,11 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("current_safe_hub") not in {"route_32", "union_cave", "azalea_town", "slowpoke_well", "azalea_gym", "bugsy_gym"}:
+    if transition.get("current_safe_hub") not in {"route_32", "union_cave", "azalea_town", "slowpoke_well", "azalea_gym", "bugsy_gym", "ilex_forest"}:
         errors.append("current transition state must record Route 32 or Union Cave as current safe hub")
-    if transition.get("current_route") not in {"route_32", "union_cave", "azalea_town", "slowpoke_well", "azalea_gym", "bugsy_gym"}:
+    if transition.get("current_route") not in {"route_32", "union_cave", "azalea_town", "slowpoke_well", "azalea_gym", "bugsy_gym", "ilex_forest"}:
         errors.append("current transition state must keep current route as route_32 or union_cave")
-    if transition.get("next_required_story_node") not in {"union_cave_first_entry", "azalea_first_arrival", "slowpoke_well_first_entry", "bugsy_gym_challenge", "ilex_forest_first_entry"}:
+    if transition.get("next_required_story_node") not in {"union_cave_first_entry", "azalea_first_arrival", "slowpoke_well_first_entry", "bugsy_gym_challenge", "ilex_forest_first_entry", "goldenrod_city_first_arrival"}:
         errors.append("current transition state must advance next node to union_cave_first_entry or azalea_first_arrival")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")
