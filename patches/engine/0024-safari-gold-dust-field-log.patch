@@ -1,0 +1,155 @@
+--- a/data/maps/FuchsiaCity_SafariZone_Entrance_Frlg/map.json
++++ b/data/maps/FuchsiaCity_SafariZone_Entrance_Frlg/map.json
+@@ -43,6 +43,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "FuchsiaCity_SafariZone_Entrance_EventScript_InfoAttendant",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 6,
++      "y": 6,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "FuchsiaCity_SafariZone_Entrance_EventScript_AvaFieldLog",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+--- a/data/maps/FuchsiaCity_SafariZone_Entrance_Frlg/scripts.inc
++++ b/data/maps/FuchsiaCity_SafariZone_Entrance_Frlg/scripts.inc
+@@ -205,14 +205,25 @@
+ 	release
+ 	end
+ 
++FuchsiaCity_SafariZone_Entrance_EventScript_AvaFieldLog::
++	lock
++	faceplayer
++	msgbox FuchsiaCity_SafariZone_Entrance_Text_AvaFieldLog, MSGBOX_NPC
++	release
++	end
++
+ FuchsiaCity_SafariZone_Entrance_Text_WelcomeToSafariZone::
+-	.string "Welcome to the SAFARI ZONE!$"
++	.string "Welcome to the SAFARI ZONE!\p"
++	.string "WorldLink habitat logging is\n"
++	.string "active for registered trainers.$"
+ 
+ FuchsiaCity_SafariZone_Entrance_Text_PlaySafariGameFor500::
+ 	.string "For just ¥500, you can play the\n"
+ 	.string "SAFARI GAME.\p"
+ 	.string "You can roam the wide-open safari\n"
+ 	.string "and catch what you like.\p"
++	.string "Ava's Safari Field Log can help\n"
++	.string "you track the important goals.\p"
+ 	.string "Would you like to play?$"
+ 
+ FuchsiaCity_SafariZone_Entrance_Text_ThatllBe500WeOnlyUseSpecialBalls::
+@@ -227,6 +238,8 @@
+ FuchsiaCity_SafariZone_Entrance_Text_CallYouOnPAWhenYouRunOut::
+ 	.string "We'll call you on the PA when you\n"
+ 	.string "run out of time or SAFARI BALLS.\p"
++	.string "WorldLink will keep your field\n"
++	.string "notes after you leave.\p"
+ 	.string "Well, I'll wish you the best of\n"
+ 	.string "luck!$"
+ 
+@@ -273,8 +286,22 @@
+ 	.string "becomes more likely to flee, but\l"
+ 	.string "easier to catch.\p"
+ 	.string "When you run out of time or SAFARI\n"
+-	.string "BALLS, it's game over for you!$"
++	.string "BALLS, it's game over for you!\p"
++	.string "This preserve is not a trophy\n"
++	.string "case. Protect what you record.$"
+ 
++FuchsiaCity_SafariZone_Entrance_Text_AvaFieldLog::
++	.string "AVA: Antman, perfect timing.\p"
++	.string "I opened a Safari Field Log in\n"
++	.string "WorldLink. Use it like a checklist:\p"
++	.string "Map rare habitats. Find the\n"
++	.string "WARDEN's prize route.\p"
++	.string "Watch for Gold Dust collectors.\n"
++	.string "Then prep for KOGA's status traps.\p"
++	.string "SAFFRON waits until we know what\n"
++	.string "Rocket wants from SILPH.\p"
++	.string "No region unlocks. Just real\n"
++	.string "Kanto fieldwork.$"
++
+ FuchsiaCity_SafariZone_Entrance_Text_SorryYoureARegularHere::
+ 	.string "Sorry, you're a regular here!$"
+-
+--- a/data/maps/FuchsiaCity_SafariZone_Office_Frlg/map.json
++++ b/data/maps/FuchsiaCity_SafariZone_Office_Frlg/map.json
+@@ -71,6 +71,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "FuchsiaCity_SafariZone_Office_EventScript_Worker4",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 3,
++      "y": 7,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "FuchsiaCity_SafariZone_Office_EventScript_GoldDustScout",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+--- a/data/maps/FuchsiaCity_SafariZone_Office_Frlg/scripts.inc
++++ b/data/maps/FuchsiaCity_SafariZone_Office_Frlg/scripts.inc
+@@ -17,6 +17,13 @@
+ 	msgbox FuchsiaCity_SafariZone_Office_Text_PrizeInSafariZone, MSGBOX_NPC
+ 	end
+ 
++FuchsiaCity_SafariZone_Office_EventScript_GoldDustScout::
++	lock
++	faceplayer
++	msgbox FuchsiaCity_SafariZone_Office_Text_GoldDustScout, MSGBOX_NPC
++	release
++	end
++
+ FuchsiaCity_SafariZone_Office_Text_NicknamedWardenSlowpoke::
+ 	.string "We nicknamed the WARDEN\n"
+ 	.string "“SLOWPOKE.”\p"
+@@ -27,7 +34,9 @@
+ 	.string "WARDEN SLOWPOKE is very\n"
+ 	.string "knowledgeable about POKéMON.\p"
+ 	.string "He even has some fossils of rare,\n"
+-	.string "extinct POKéMON.$"
++	.string "extinct POKéMON.\p"
++	.string "He also keeps habitat notes that\n"
++	.string "collectors would love to steal.$"
+ 
+ FuchsiaCity_SafariZone_Office_Text_CouldntUnderstandWarden::
+ 	.string "WARDEN SLOWPOKE came in, but\n"
+@@ -40,5 +49,17 @@
+ 	.string "Try to get to the farthest corner\n"
+ 	.string "of the SAFARI ZONE.\p"
+ 	.string "If you can make it, you'll win a\n"
+-	.string "very convenient prize.$"
++	.string "very convenient prize.\p"
++	.string "WorldLink marks that route as\n"
++	.string "useful for KOGA prep and beyond.$"
+ 
++FuchsiaCity_SafariZone_Office_Text_GoldDustScout::
++	.string "GENTLEMAN: Such a charming\n"
++	.string "preserve. So many irreplaceable\l"
++	.string "specimens in one place.\p"
++	.string "A map of rare habitats would be\n"
++	.string "worth more than a Nugget.\p"
++	.string "Gold Dust? No, no. I am merely\n"
++	.string "an appreciative collector.\p"
++	.string "Do enjoy KOGA's little poison\n"
++	.string "maze after your field trip.$"

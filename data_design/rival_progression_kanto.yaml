@@ -358,6 +358,27 @@ progression_bands:
         event: ava_safari_rare_habitat_research
         notification: "Ava flagged the Safari Zone as a rare-habitat preserve and warned that Gold Dust will care about anything that can only be caught there."
 
+  safari_gold_dust_field_log:
+    player_range: "First Safari Zone entrance through Koga preparation"
+    companions:
+      red_misty:
+        location: Fuchsia route check
+        event: red_misty_fuchsia_check
+        notification: "Red and Misty agree Fuchsia is the right route before Saffron: catch patiently, protect rare habitats, then train for Koga."
+    rivals:
+      ava:
+        location: Safari Zone entrance
+        event: ava_safari_field_log
+        notification: "Ava opened a Safari Field Log and marked rare habitats, Warden prize routes, and suspicious collector behavior."
+      dax:
+        location: Safari Zone gate
+        event: dax_safari_competition
+        notification: "Dax says Safari is still a competition if he catches something bigger, rarer, or louder than yours."
+      blue:
+        location: Saffron gate rumor
+        event: blue_saffron_loss_rumor
+        notification: "Blue tried pressing Saffron early and went quiet after a Rocket security line turned him back."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

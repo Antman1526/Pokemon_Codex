@@ -176,6 +176,21 @@ messages:
     priority: major
     text: "Saffron pressure rising around Silph Co., but WorldLink recommends Fuchsia first: catch, train, and learn status control before Rocket's tower war."
 
+  - id: WL_KANTO_SAFARI_FIELD_LOG
+    trigger: FLAG_WOKE_UP_ROUTE_12_SNORLAX
+    priority: major
+    text: "Safari Field Log active: map rare habitats, find the Warden's prize route, and keep Safari catches protected from collectors."
+
+  - id: WL_KANTO_GOLD_DUST_SAFARI_SCOUT
+    trigger: FLAG_WOKE_UP_ROUTE_12_SNORLAX
+    priority: major
+    text: "Gold Dust scout detected near the Safari office. They are pricing preserve maps, rare Pokemon records, and pedigree routes."
+
+  - id: WL_KANTO_KOGA_STATUS_PREP
+    trigger: FLAG_WOKE_UP_ROUTE_12_SNORLAX
+    priority: major
+    text: "Koga prep checklist: Antidotes, Full Heals, grounded team plan, and status answers before entering Fuchsia Gym."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
