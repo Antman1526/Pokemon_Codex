@@ -326,6 +326,21 @@ messages:
     priority: major
     text: "Volcano Badge verified. Viridian's door is moving again; Giovanni's final Kanto route is opening under Rocket and Phoenix pressure."
 
+  - id: WL_KANTO_VIRIDIAN_SPONSOR_PRESSURE
+    trigger: FLAG_BADGE07_GET
+    priority: major
+    text: "Viridian Gym pressure rising. Giovanni has returned, but the sponsor behind Rocket's Meridian work is pulling harder than Rocket expected."
+
+  - id: WL_KANTO_GIOVANNI_SPONSOR_CRACK
+    trigger: FLAG_BADGE08_GET
+    priority: major
+    text: "Giovanni confirmed the sponsor used Rocket as a lever. Identity withheld; Kanto evidence points to a region-control network beyond Rocket."
+
+  - id: WL_KANTO_EARTH_BADGE_VICTORY_ROAD
+    trigger: FLAG_BADGE08_GET
+    priority: major
+    text: "Earth Badge verified. Kanto badge circuit complete; Victory Road is active. Johto remains locked until Indigo clearance."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

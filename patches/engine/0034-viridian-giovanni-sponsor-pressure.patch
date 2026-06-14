@@ -1,0 +1,124 @@
+diff --git a/data/maps/ViridianCity_Gym_Frlg/scripts.inc b/data/maps/ViridianCity_Gym_Frlg/scripts.inc
+index 7cbe9a6800..a789433941 100644
+--- a/data/maps/ViridianCity_Gym_Frlg/scripts.inc
++++ b/data/maps/ViridianCity_Gym_Frlg/scripts.inc
+@@ -20,6 +20,7 @@ ViridianCity_Gym_EventScript_DefeatedGiovanni::
+ 	setflag FLAG_BADGE08_GET
+ 	setvar VAR_MAP_SCENE_ROUTE22, 3
+ 	set_gym_trainers_frlg 8
++	msgbox ViridianCity_Gym_Text_WorldLinkEarthBadge
+ 	goto ViridianCity_Gym_EventScript_GiveTM26
+ 	end
+ 
+@@ -106,14 +107,15 @@ ViridianCity_Gym_EventScript_GymStatuePostVictory::
+ 
+ ViridianCity_Gym_Text_GiovanniIntro::
+ 	.string "Fwahahaha!\n"
+-	.string "Welcome to my hideout!\p"
+-	.string "It shall be so until I can restore\n"
+-	.string "TEAM ROCKET to its former glory.\p"
+-	.string "But, you have found me again.\n"
+-	.string "So be it.\l"
+-	.string "This time, I'm not holding back!\p"
+-	.string "Once more, you shall face\n"
+-	.string "GIOVANNI, the greatest TRAINER!{PLAY_BGM}{MUS_RG_ENCOUNTER_ROCKET}$"
++	.string "So you reached VIRIDIAN at last.\p"
++	.string "This Gym is not a hideout anymore.\n"
++	.string "It is the final KANTO gate.\p"
++	.string "My sponsor mistook Rocket for a lever.\n"
++	.string "They pulled. I watched the world move.\p"
++	.string "The Meridian Gate was never mine alone.\n"
++	.string "That insult will be answered later.\p"
++	.string "For now, face GIOVANNI:\n"
++	.string "GYM LEADER and Rocket kingpin!{PLAY_BGM}{MUS_RG_ENCOUNTER_ROCKET}$"
+ 
+ ViridianCity_Gym_Text_GiovanniDefeat::
+ 	.string "Ha!\n"
+@@ -123,19 +125,22 @@ ViridianCity_Gym_Text_GiovanniDefeat::
+ 	.string "{PAUSE_MUSIC}{PLAY_BGM}{MUS_OBTAIN_BADGE}{PAUSE 0xFE}{PAUSE 0x56}{RESUME_MUSIC}$"
+ 
+ ViridianCity_Gym_Text_GiovanniPostBattle::
+-	.string "Having lost in this fashion, \n"
+-	.string "I can't face my followers.\l"
+-	.string "I have betrayed their trust.\p"
++	.string "The sponsor used my ambition.\n"
++	.string "I mistook control for command.\p"
+ 	.string "As of today, TEAM ROCKET is\n"
+-	.string "finished forever!\p"
+-	.string "As for myself, I shall dedicate\n"
+-	.string "my life to training again.\p"
+-	.string "Let us meet again someday!\n"
+-	.string "Farewell!$"
++	.string "finished in KANTO.\p"
++	.string "I will not let another hand steer\n"
++	.string "Rocket from the shadows.\p"
++	.string "The next road is yours:\n"
++	.string "VICTORY ROAD.\p"
++	.string "Go, before I remember why I hate\n"
++	.string "losing to children.$"
+ 
+ ViridianCity_Gym_Text_ExplainEarthBadgeTakeThis::
+ 	.string "The EARTHBADGE makes POKéMON of\n"
+ 	.string "any level obey without question.\p"
++	.string "Do not mistake obedience for trust.\n"
++	.string "A ruler who forgets that falls.\p"
+ 	.string "It is evidence of your mastery as\n"
+ 	.string "a POKéMON TRAINER.\p"
+ 	.string "With it, you can challenge the\n"
+@@ -152,8 +157,15 @@ ViridianCity_Gym_Text_ExplainTM26::
+ 	.string "TM26 contains EARTHQUAKE.\p"
+ 	.string "It is a powerful attack that causes\n"
+ 	.string "a massive tremor.\p"
+-	.string "I made it when I ran the GYM here,\n"
+-	.string "far too long ago… $"
++	.string "Earthquake breaks false foundations.\n"
++	.string "Use it when the floor lies to you.$"
++
++ViridianCity_Gym_Text_WorldLinkEarthBadge::
++	.string "WorldLink: Earth Badge verified.\p"
++	.string "Kanto badge circuit complete.\n"
++	.string "Victory Road route active.\p"
++	.string "Johto remains locked until\n"
++	.string "Indigo clearance.$"
+ 
+ ViridianCity_Gym_Text_YouDoNotHaveSpace::
+ 	.string "You do not have space for this!$"
+@@ -209,8 +221,9 @@ ViridianCity_Gym_Text_WarrenDefeat::
+ 	.string "I lost my grip!$"
+ 
+ ViridianCity_Gym_Text_WarrenPostBattle::
+-	.string "The LEADER will scold me for\n"
+-	.string "losing this way…$"
++	.string "Those were sponsor orders, not\n"
++	.string "Rocket orders.\p"
++	.string "That is all I know.$"
+ 
+ ViridianCity_Gym_Text_TakashiIntro::
+ 	.string "I'm the KARATE KING!\n"
+@@ -244,15 +257,17 @@ ViridianCity_Gym_Text_SamuelDefeat::
+ 	.string "I was beaten?$"
+ 
+ ViridianCity_Gym_Text_SamuelPostBattle::
+-	.string "You can go on to the POKéMON\n"
+-	.string "LEAGUE only by defeating our GYM\l"
+-	.string "LEADER!$"
++	.string "The Leader came back with Rocket\n"
++	.string "shadows behind him.\p"
++	.string "Now those shadows look afraid.$"
+ 
+ ViridianCity_Gym_Text_GymGuyAdvice::
+ 	.string "Yo!\n"
+ 	.string "Champ in the making!\p"
++	.string "Viridian is not just a Gym today.\n"
++	.string "It feels like a verdict.\p"
+ 	.string "Even I don't know the VIRIDIAN\n"
+-	.string "LEADER's identity.\p"
++	.string "LEADER's full story.\p"
+ 	.string "But one thing's certain.\n"
+ 	.string "This will be the toughest of all\l"
+ 	.string "the GYM LEADERS.\p"
+@@ -274,4 +289,3 @@ ViridianCity_Gym_Text_GymStatuePlayerWon::
+ 	.string "LEADER: GIOVANNI\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}, {PLAYER}$"
+-

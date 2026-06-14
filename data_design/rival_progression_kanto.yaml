@@ -603,6 +603,39 @@ progression_bands:
         event: dax_blaine_quiz_heat_report
         notification: "Dax says Blaine's quiz machines hit harder than expected because every answer sounded like a warning."
 
+  viridian_giovanni_sponsor_pressure:
+    player_range: "Post-Volcano Badge through Earth Badge"
+    companions:
+      red:
+        location: Viridian Gym exit
+        event: red_viridian_giovanni_sponsor_reflection
+        notification: "Red says Giovanni sounded less like a boss and more like someone who finally noticed a hand on his shoulder."
+      misty:
+        location: Viridian City route board
+        event: misty_victory_road_current_warning
+        notification: "Misty says the next current runs uphill: Victory Road is open, but it will punish rushed teams."
+      brock:
+        location: WorldLink mentor note
+        event: brock_earth_badge_grounding_note
+        notification: "Brock says Earth Badge proves command, but Giovanni's warning proves trust matters more than obedience."
+    rivals:
+      blue:
+        location: Route 22
+        event: blue_route22_league_pressure
+        notification: "Blue was seen on Route 22, training like he already hears the League crowd. WorldLink marks pride, fear, and focus together."
+      ava:
+        location: Viridian Gym data note
+        event: ava_sponsor_language_analysis
+        notification: "Ava logged Giovanni's sponsor language beside the Meridian Gate files and says the pattern is too clean to be only Rocket."
+      dax:
+        location: Viridian Gym lobby
+        event: dax_giovanni_verdict_report
+        notification: "Dax says Giovanni's Gym felt less like training and more like a verdict, which still counts as training if you win."
+      lyra:
+        location: Johto locked profile
+        event: lyra_johto_still_locked_tease
+        notification: "Lyra's locked Johto profile flickered after the Earth Badge, but WorldLink keeps Johto sealed until Indigo clearance."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

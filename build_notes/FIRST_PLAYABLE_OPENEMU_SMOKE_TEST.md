@@ -311,6 +311,10 @@ Manual OpenEmu checklist still needed:
 - [ ] Volcano Badge reward logs Phoenix ethics and points toward Viridian.
 - [ ] Cinnabar Gym support text references quiz pressure, consent before revival, and life not being a trophy.
 - [ ] `0033-blaine-phoenix-ethics.patch` applies cleanly and `validate_blaine_phoenix_ethics.py` passes.
+- [ ] Viridian Giovanni sponsor pressure frames the Gym as Kanto's final gate under sponsor pressure.
+- [ ] Earth Badge WorldLink handoff opens Victory Road and explicitly keeps Johto locked until Indigo clearance.
+- [ ] Viridian Gym support text references Rocket shadows, sponsor orders, and the Gym feeling like a verdict.
+- [ ] `0034-viridian-giovanni-sponsor-pressure.patch` applies cleanly and `validate_viridian_giovanni_sponsor_pressure.py` passes.
 - [ ] Vermilion Misty-led Surge prep explains grounding the Gym's storm-current pressure.
 - [ ] Vermilion Gym sabotage payoff credits Misty's advice and Trail Cutter remains a prototype.
 - [ ] Fan Club clue uses the gold lapel pin, blank auction card, Celadon stamp, and dust mark.

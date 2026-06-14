@@ -167,6 +167,9 @@ acts:
       - blaine_revival_warning
       - volcano_badge_worldlink_viridian_handoff
       - red_cinnabar_restraint_scene
+      - viridian_gym_sponsor_pressure
+      - giovanni_rocket_kanto_retreat
+      - earth_badge_worldlink_victory_road_handoff
       - giovanni_viridian_battle
     unlocks: [sky_pass_local, kanto_rematches_tier_1, high_tier_kanto_marts]
 
