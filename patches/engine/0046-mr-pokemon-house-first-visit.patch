@@ -1,0 +1,234 @@
+diff --git a/data/maps/MrPokemonsHouse_Frlg/map.json b/data/maps/MrPokemonsHouse_Frlg/map.json
+new file mode 100644
+index 0000000000..ccf348262f
+--- /dev/null
++++ b/data/maps/MrPokemonsHouse_Frlg/map.json
+@@ -0,0 +1,114 @@
++{
++  "id": "MAP_MR_POKEMONS_HOUSE",
++  "name": "MrPokemonsHouse_Frlg",
++  "layout": "LAYOUT_ROUTE25_SEA_COTTAGE",
++  "music": "MUS_RG_FUCHSIA",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_INDOOR",
++  "allow_cycling": false,
++  "allow_escaping": false,
++  "allow_running": false,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_MR_POKEMON",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 7,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "MrPokemonsHouse_Frlg_EventScript_MrPokemonNexusEgg",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_MR_POKEMON_OAK",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_PROF_OAK",
++      "x": 10,
++      "y": 6,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "MrPokemonsHouse_Frlg_EventScript_OakOldStoryNewMap",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_MR_POKEMON_AVA_FEED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 4,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "MrPokemonsHouse_Frlg_EventScript_AvaResearchFeed",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_MR_POKEMON_ELM_HANDOFF",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MAN_3",
++      "x": 7,
++      "y": 7,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "MrPokemonsHouse_Frlg_EventScript_ElmVioletHandoff",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 6,
++      "y": 9,
++      "elevation": 3,
++      "dest_map": "MAP_ROUTE30",
++      "dest_warp_id": "0"
++    },
++    {
++      "x": 7,
++      "y": 9,
++      "elevation": 3,
++      "dest_map": "MAP_ROUTE30",
++      "dest_warp_id": "0"
++    },
++    {
++      "x": 8,
++      "y": 9,
++      "elevation": 3,
++      "dest_map": "MAP_ROUTE30",
++      "dest_warp_id": "0"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 4,
++      "y": 5,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
++      "script": "MrPokemonsHouse_Frlg_EventScript_ResearchConsole"
++    }
++  ]
++}
+diff --git a/data/maps/MrPokemonsHouse_Frlg/scripts.inc b/data/maps/MrPokemonsHouse_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..af158700c8
+--- /dev/null
++++ b/data/maps/MrPokemonsHouse_Frlg/scripts.inc
+@@ -0,0 +1,62 @@
++MrPokemonsHouse_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, MrPokemonsHouse_Frlg_OnTransition
++	.byte 0
++
++MrPokemonsHouse_Frlg_OnTransition:
++	setflag FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED
++	end
++
++MrPokemonsHouse_Frlg_EventScript_MrPokemonNexusEgg::
++	msgbox MrPokemonsHouse_Frlg_Text_MrPokemonNexusEgg, MSGBOX_NPC
++	end
++
++MrPokemonsHouse_Frlg_EventScript_OakOldStoryNewMap::
++	msgbox MrPokemonsHouse_Frlg_Text_OakOldStoryNewMap, MSGBOX_NPC
++	end
++
++MrPokemonsHouse_Frlg_EventScript_AvaResearchFeed::
++	msgbox MrPokemonsHouse_Frlg_Text_AvaResearchFeed, MSGBOX_NPC
++	end
++
++MrPokemonsHouse_Frlg_EventScript_ElmVioletHandoff::
++	msgbox MrPokemonsHouse_Frlg_Text_ElmVioletHandoff, MSGBOX_NPC
++	end
++
++MrPokemonsHouse_Frlg_EventScript_ResearchConsole::
++	msgbox MrPokemonsHouse_Frlg_Text_ResearchConsole, MSGBOX_SIGN
++	end
++
++MrPokemonsHouse_Frlg_Text_MrPokemonNexusEgg::
++	.string "MR. POKEMON: This is not a normal egg.\p"
++	.string "I found it beside records that\n"
++	.string "should only exist in SPROUT TOWER.\p"
++	.string "Call it the Nexus Egg until ELM\n"
++	.string "proves otherwise.$"
++
++MrPokemonsHouse_Frlg_Text_OakOldStoryNewMap::
++	.string "OAK: The old story is still true,\n"
++	.string "Antman.\p"
++	.string "A trainer comes here, receives an\n"
++	.string "egg, and Johto opens wider.\p"
++	.string "But your map is larger now.\n"
++	.string "Protect the Nexus Egg.$"
++
++MrPokemonsHouse_Frlg_Text_AvaResearchFeed::
++	.string "AVA: Remote feed stable.\p"
++	.string "The shell is giving route data,\n"
++	.string "not just life signs.\p"
++	.string "I am logging this as a living\n"
++	.string "WorldLink signal.$"
++
++MrPokemonsHouse_Frlg_Text_ElmVioletHandoff::
++	.string "ELM: Violet City next.\p"
++	.string "FALKNER can wait until SPROUT\n"
++	.string "TOWER records are checked.\p"
++	.string "WorldLink: Violet City next.\n"
++	.string "Hoenn remains locked.$"
++
++MrPokemonsHouse_Frlg_Text_ResearchConsole::
++	.string "A small console displays egg shell\n"
++	.string "resonance and tower bell timing.\p"
++	.string "One record was edited before\n"
++	.string "Antman entered Johto.$"
+diff --git a/data/maps/Route30_Frlg/map.json b/data/maps/Route30_Frlg/map.json
+index aac117ae30..69671779ab 100644
+--- a/data/maps/Route30_Frlg/map.json
++++ b/data/maps/Route30_Frlg/map.json
+@@ -113,7 +113,15 @@
+       "flag": "0"
+     }
+   ],
+-  "warp_events": [],
++  "warp_events": [
++    {
++      "x": 72,
++      "y": 12,
++      "elevation": 3,
++      "dest_map": "MAP_MR_POKEMONS_HOUSE",
++      "dest_warp_id": "0"
++    }
++  ],
+   "coord_events": [],
+   "bg_events": [
+     {
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index 03800bfc29..f9b9ffd354 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -862,6 +862,7 @@
+     "Route29_Frlg",
+     "CherrygroveCity_Frlg",
+     "Route30_Frlg",
++    "MrPokemonsHouse_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 01cb33cdf3..6daef70f6c 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -150,7 +150,7 @@
+ 
+ // Unused?
+ #define FLAG_ROUTE30_FIRST_STEPS_REACHED   0x0AF
+-#define FLAG_0x0B0               0x0B0
++#define FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED   0x0B0
+ #define FLAG_0x0B1               0x0B1
+ #define FLAG_0x0B2               0x0B2
+ #define FLAG_0x0B3               0x0B3

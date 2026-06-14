@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_MR_POKEMON_HOUSE_ARRIVAL
+    trigger: FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED
+    priority: major
+    text: "Mr. Pokemon house arrival confirmed. Original Johto egg errand has become a Nexus Egg investigation."
+
+  - id: WL_JOHTO_NEXUS_EGG_REVEAL
+    trigger: FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED
+    priority: major
+    text: "Nexus Egg logged. Shell resonance matches Johto tower records and Kanto Champion clearance."
+
+  - id: WL_JOHTO_OAK_AVA_RESEARCH_SYNC
+    trigger: FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED
+    priority: minor
+    text: "Oak is physically present; Ava is remote on research feed. Both confirm the egg is not a normal regional specimen."
+
+  - id: WL_JOHTO_VIOLET_CITY_NEXT
+    trigger: FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED
+    priority: major
+    text: "WorldLink: Violet City next. Sprout Tower records were edited before Antman arrived in Johto."
+
   - id: WL_JOHTO_ROUTE30_FIRST_STEPS
     trigger: FLAG_ROUTE30_FIRST_STEPS_REACHED
     priority: major

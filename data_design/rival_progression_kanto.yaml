@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_mr_pokemon_house_first_visit:
+    player_range: "Mr. Pokemon house first visit before Violet"
+    companions:
+      oak:
+        location: Mr. Pokemon's house
+        event: old_story_new_map
+        notification: "Oak met Antman at Mr. Pokemon's house and says Johto's old egg story is now part of the Nexus map."
+      lyra:
+        location: Route 30 / Mr. Pokemon approach
+        event: waits_on_violet_route
+        notification: "Lyra is holding the road toward Violet while Antman checks the Nexus Egg."
+    rivals:
+      ava:
+        location: Remote research feed
+        event: remote_nexus_egg_research
+        notification: "Ava joined the Mr. Pokemon feed and flagged the Nexus Egg as a living route signal."
+      silver:
+        location: Sprout Tower shadow path
+        event: violet_route_pressure
+        notification: "Silver is moving toward Violet without a battle. WorldLink marks Sprout Tower as the likely first clash."
+
   johto_route30_first_steps:
     player_range: "Route 30 first trainer-road pressure"
     companions:

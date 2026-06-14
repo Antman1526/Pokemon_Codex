@@ -11,7 +11,7 @@ chapter:
 acts:
   - id: act_1_new_bark_to_violet
     purpose: "Make Johto feel like a living second region, not a menu destination."
-    required_maps: [new_bark_town, elm_lab, route_29, cherrygrove_city, route_30, violet_city, sprout_tower, violet_gym]
+    required_maps: [new_bark_town, elm_lab, route_29, cherrygrove_city, route_30, mr_pokemon_house, violet_city, sprout_tower, violet_gym]
     required_events:
       - new_bark_worldlink_arrival
       - new_bark_arrival_map_live
@@ -45,6 +45,12 @@ acts:
       - gold_dust_route30_scouter
       - moonlight_sprout_tower_whisper
       - silver_battle_waits_until_sprout_tower
+      - mr_pokemon_house_first_visit
+      - mr_pokemon_nexus_egg_reveal
+      - oak_old_story_new_map
+      - ava_remote_egg_research_feed
+      - elm_violet_city_handoff
+      - sprout_tower_records_edited
       - elm_lab_receiving_signal
       - lyra_friendly_rival_join
       - silver_profile_detected_no_theft_yet
@@ -52,7 +58,7 @@ acts:
       - gold_dust_tower_records_tease
       - sprout_tower_moonlight_whisper
       - falkner_battle
-    unlocks: [new_bark_town_live_map, elm_lab_live_map, route_29_story_gate, route_29_live_map, route29_day_night_tracking, cherrygrove_story_gate, cherrygrove_live_map, johto_map_card, apricorn_case_tease, guide_watch_network, route_30_story_gate, route_30_live_map, route30_trainer_road, mr_pokemon_story_gate, sprout_tower_shadow_tease, johto_habitat_checklist, johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
+    unlocks: [new_bark_town_live_map, elm_lab_live_map, route_29_story_gate, route_29_live_map, route29_day_night_tracking, cherrygrove_story_gate, cherrygrove_live_map, johto_map_card, apricorn_case_tease, guide_watch_network, route_30_story_gate, route_30_live_map, route30_trainer_road, mr_pokemon_story_gate, mr_pokemon_house_live_map, nexus_egg_story_key_item, violet_city_story_gate, sprout_tower_records_warning, sprout_tower_shadow_tease, johto_habitat_checklist, johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
 
   - id: act_2_azalea_goldenrod
     purpose: "Rebuild Johto's slow tradition arc around Rocket remnants becoming organized again."
