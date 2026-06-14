@@ -1,0 +1,261 @@
+diff --git a/data/maps/CherrygroveCity_Frlg/map.json b/data/maps/CherrygroveCity_Frlg/map.json
+new file mode 100644
+index 0000000000..21d67cb28c
+--- /dev/null
++++ b/data/maps/CherrygroveCity_Frlg/map.json
+@@ -0,0 +1,121 @@
++{
++  "id": "MAP_CHERRYGROVE_CITY",
++  "name": "CherrygroveCity_Frlg",
++  "layout": "LAYOUT_VIRIDIAN_CITY",
++  "music": "MUS_RG_PEWTER",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SUNNY",
++  "map_type": "MAP_TYPE_TOWN",
++  "allow_cycling": true,
++  "allow_escaping": false,
++  "allow_running": true,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": [
++    {
++      "map": "MAP_ROUTE29",
++      "offset": 0,
++      "direction": "down"
++    }
++  ],
++  "object_events": [
++    {
++      "local_id": "LOCALID_CHERRYGROVE_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 24,
++      "y": 24,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CherrygroveCity_Frlg_EventScript_RedCheckIn",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_CHERRYGROVE_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 20,
++      "y": 12,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 2,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CherrygroveCity_Frlg_EventScript_LyraCheckpoint",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_CHERRYGROVE_GUIDE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
++      "x": 21,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
++      "movement_range_x": 2,
++      "movement_range_y": 2,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CherrygroveCity_Frlg_EventScript_GuideWatchNetwork",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_CHERRYGROVE_SILVER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BLUE",
++      "x": 33,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CherrygroveCity_Frlg_EventScript_SilverWarning",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_CHERRYGROVE_GOLD_DUST_RECEIPT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 16,
++      "y": 22,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CherrygroveCity_Frlg_EventScript_GoldDustReceipt",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 19,
++      "y": 26,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "CherrygroveCity_Frlg_EventScript_CitySign"
++    },
++    {
++      "type": "sign",
++      "x": 36,
++      "y": 19,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "CherrygroveCity_Frlg_EventScript_Route30Sign"
++    }
++  ]
++}
+diff --git a/data/maps/CherrygroveCity_Frlg/scripts.inc b/data/maps/CherrygroveCity_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..c336e8c9c0
+--- /dev/null
++++ b/data/maps/CherrygroveCity_Frlg/scripts.inc
+@@ -0,0 +1,87 @@
++CherrygroveCity_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, CherrygroveCity_Frlg_OnTransition
++	.byte 0
++
++CherrygroveCity_Frlg_OnTransition:
++	setflag FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED
++	end
++
++CherrygroveCity_Frlg_EventScript_RedCheckIn::
++	msgbox CherrygroveCity_Frlg_Text_RedCheckIn, MSGBOX_NPC
++	end
++
++CherrygroveCity_Frlg_EventScript_LyraCheckpoint::
++	msgbox CherrygroveCity_Frlg_Text_LyraCheckpoint, MSGBOX_NPC
++	end
++
++CherrygroveCity_Frlg_EventScript_GuideWatchNetwork::
++	msgbox CherrygroveCity_Frlg_Text_GuideWatchNetwork, MSGBOX_NPC
++	end
++
++CherrygroveCity_Frlg_EventScript_SilverWarning::
++	msgbox CherrygroveCity_Frlg_Text_SilverWarning, MSGBOX_NPC
++	end
++
++CherrygroveCity_Frlg_EventScript_GoldDustReceipt::
++	msgbox CherrygroveCity_Frlg_Text_GoldDustReceipt, MSGBOX_NPC
++	end
++
++CherrygroveCity_Frlg_EventScript_CitySign::
++	msgbox CherrygroveCity_Frlg_Text_CitySign, MSGBOX_SIGN
++	end
++
++CherrygroveCity_Frlg_EventScript_Route30Sign::
++	msgbox CherrygroveCity_Frlg_Text_Route30Sign, MSGBOX_SIGN
++	end
++
++CherrygroveCity_Frlg_Text_RedCheckIn::
++	.string "RED: Cherrygrove feels quiet,\n"
++	.string "but not empty.\p"
++	.string "Rest here, talk to people, and let\n"
++	.string "Johto show its pace.\p"
++	.string "I'll stay close.\n"
++	.string "This is still your road.$"
++
++CherrygroveCity_Frlg_Text_LyraCheckpoint::
++	.string "LYRA: This is where Johto starts\n"
++	.string "watching back.\p"
++	.string "Not in a scary way.\n"
++	.string "Mostly.\p"
++	.string "Our towns keep stories like KANTO\n"
++	.string "keeps badges.$"
++
++CherrygroveCity_Frlg_Text_GuideWatchNetwork::
++	.string "GUIDE: New face from NEW BARK!\p"
++	.string "Take the Map Card.\n"
++	.string "It marks safe roads and odd signals.\p"
++	.string "Take this Apricorn Case note too.\n"
++	.string "Kurt will know what to do later.\p"
++	.string "The guide network helps travelers,\n"
++	.string "but it also remembers unusual routes.$"
++
++CherrygroveCity_Frlg_Text_SilverWarning::
++	.string "SILVER: You keep following the map.\p"
++	.string "Maps are made by people who want\n"
++	.string "you to walk where they can see you.\p"
++	.string "Tell RED that shadows move faster\n"
++	.string "when nobody names them.$"
++
++CherrygroveCity_Frlg_Text_GoldDustReceipt::
++	.string "A folded receipt is tucked under\n"
++	.string "the travel board.\p"
++	.string "Gold Dust purchase inquiry:\n"
++	.string "old tower records, bell patterns,\n"
++	.string "rare lineage papers.\p"
++	.string "Delivery held until SPROUT TOWER\n"
++	.string "custodian confirms the buyer.$"
++
++CherrygroveCity_Frlg_Text_CitySign::
++	.string "CHERRYGROVE CITY\p"
++	.string "The town where old roads learn\n"
++	.string "new names.\p"
++	.string "No Hoenn route registered.$"
++
++CherrygroveCity_Frlg_Text_Route30Sign::
++	.string "WorldLink: Route 30 next.\p"
++	.string "Mr. Pokemon's road, trainer reports,\n"
++	.string "and Sprout Tower records ahead.$"
+diff --git a/data/maps/Route29_Frlg/map.json b/data/maps/Route29_Frlg/map.json
+index bb542bf49e..b853830b5b 100644
+--- a/data/maps/Route29_Frlg/map.json
++++ b/data/maps/Route29_Frlg/map.json
+@@ -15,6 +15,11 @@
+   "floor_number": 0,
+   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+   "connections": [
++    {
++      "map": "MAP_CHERRYGROVE_CITY",
++      "offset": 0,
++      "direction": "up"
++    },
+     {
+       "map": "MAP_NEW_BARK_TOWN",
+       "offset": 0,
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index a1090c493b..38ab57940a 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -860,6 +860,7 @@
+     "PalletTown_Frlg",
+     "NewBarkTown_Frlg",
+     "Route29_Frlg",
++    "CherrygroveCity_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index d8c2dad0f5..02db33f691 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -9,7 +9,7 @@
+ #define FLAG_NEW_BARK_ARRIVAL_REACHED       0x024
+ #define FLAG_ELM_LAB_FIRST_VISIT_REACHED   0x025
+ #define FLAG_ROUTE29_FIRST_STEPS_REACHED   0x026
+-#define FLAG_0x027               0x027
++#define FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED   0x027
+ 
+ // Hide/show flags
+ #define FLAG_HIDE_BULBASAUR_BALL                           0x028

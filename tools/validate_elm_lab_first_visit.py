@@ -160,10 +160,10 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("next_required_story_node") not in {"route_29_first_steps", "cherrygrove_first_arrival"}:
+    if transition.get("next_required_story_node") not in {"route_29_first_steps", "cherrygrove_first_arrival", "route_30_first_steps"}:
         errors.append("current transition state must advance next node to Route 29 or later Cherrygrove follow-up")
-    if transition.get("current_safe_hub") != "elm_lab":
-        errors.append("current transition state must record Elm Lab as current_safe_hub")
+    if transition.get("current_safe_hub") not in {"elm_lab", "cherrygrove_city"}:
+        errors.append("current transition state must record Elm Lab or a later Johto safe hub")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")
 

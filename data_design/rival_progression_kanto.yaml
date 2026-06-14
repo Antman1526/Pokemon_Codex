@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_cherrygrove_first_arrival:
+    player_range: "Cherrygrove first arrival before Route 30"
+    companions:
+      red:
+        location: Cherrygrove City
+        event: quiet_town_check_in
+        notification: "Red checked in at Cherrygrove and says Johto's quiet towns can still hide pressure."
+      lyra:
+        location: Cherrygrove City guide route
+        event: guide_network_reveal
+        notification: "Lyra says Cherrygrove's guide network remembers every traveler, including people trying not to be seen."
+    rivals:
+      silver:
+        location: Cherrygrove City north edge
+        event: first_warning_no_battle
+        notification: "Silver warned Antman not to trust maps, guides, or companions to choose his path."
+      ava:
+        location: Elm Lab remote feed
+        event: map_card_research_sync
+        notification: "Ava synced Cherrygrove's Map Card data and flagged old tower records as unusually protected."
+
   johto_route29_first_steps:
     player_range: "Route 29 first outdoor Johto steps"
     companions:

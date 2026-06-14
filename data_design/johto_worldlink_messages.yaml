@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_CHERRYGROVE_ARRIVAL
+    trigger: FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "Cherrygrove arrival confirmed. Map Card guidance is live; Johto's guide network has noticed Antman's route."
+
+  - id: WL_JOHTO_GUIDE_WATCH_NETWORK
+    trigger: FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED
+    priority: minor
+    text: "Guide network note: friendly town guides can provide route help, but their records may also reveal who is tracking Antman."
+
+  - id: WL_JOHTO_SILVER_CHERRYGROVE_WARNING
+    trigger: FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED
+    priority: minor
+    text: "Silver made first direct contact in Cherrygrove and refused battle. Warning logged; intent still unstable."
+
+  - id: WL_JOHTO_ROUTE30_NEXT
+    trigger: FLAG_CHERRYGROVE_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "WorldLink: Route 30 next. Mr. Pokemon's route, trainer pressure, and Sprout Tower records are now the active Johto path."
+
   - id: WL_JOHTO_ROUTE29_FIRST_STEPS
     trigger: FLAG_ROUTE29_FIRST_STEPS_REACHED
     priority: major
