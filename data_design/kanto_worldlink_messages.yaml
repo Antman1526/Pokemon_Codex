@@ -381,6 +381,16 @@ messages:
     priority: major
     text: "Lance warning logged: dragons remember Blackthorn and old maps. The World Circuit opens only after Champion Blue is defeated."
 
+  - id: WL_KANTO_CHAMPION_BLUE_FINALE
+    trigger: FLAG_DEFEATED_CHAMP
+    priority: major
+    text: "Champion Blue defeated. Blue reached the top first, but Antman proved companionship and trust can carry pressure without becoming dependence."
+
+  - id: WL_KANTO_HALL_OF_FAME_BEFORE_PASSPORT
+    trigger: FLAG_DEFEATED_CHAMP
+    priority: major
+    text: "Hall of Fame record required before Oak issues the World Circuit Passport. Johto remains locked until proof is recorded."
+
   - id: WL_KANTO_WORLD_CIRCUIT_UNLOCKED
     trigger: FLAG_NEXUS_KANTO_LEAGUE_CLEARED
     priority: major

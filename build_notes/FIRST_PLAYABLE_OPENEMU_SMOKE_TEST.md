@@ -321,6 +321,9 @@ Manual OpenEmu checklist still needed:
 - [ ] Elite Four region foreshadowing rewrites Lorelei, Bruno, Agatha, and Lance without changing battle flow.
 - [ ] Lance warns that the World Circuit opens only after Champion Blue is defeated.
 - [ ] `0036-elite-four-region-foreshadowing.patch` applies cleanly and `validate_elite_four_region_foreshadowing.py` passes.
+- [ ] Champion Blue emotional finale frames Blue's solo road against Antman's trust-supported road.
+- [ ] Oak confirms Hall of Fame proof comes before the World Circuit Passport.
+- [ ] `0037-champion-blue-emotional-finale.patch` applies cleanly and `validate_champion_blue_emotional_finale.py` passes.
 - [ ] Vermilion Misty-led Surge prep explains grounding the Gym's storm-current pressure.
 - [ ] Vermilion Gym sabotage payoff credits Misty's advice and Trail Cutter remains a prototype.
 - [ ] Fan Club clue uses the gold lapel pin, blank auction card, Celadon stamp, and dust mark.

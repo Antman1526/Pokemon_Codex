@@ -702,6 +702,39 @@ progression_bands:
         event: lyra_lance_blackthorn_tease
         notification: "Lyra's locked profile flickers when Lance says Blackthorn. Johto remains sealed until Blue is defeated."
 
+  champion_blue_emotional_finale:
+    player_range: "Champion Blue battle through Oak Hall of Fame handoff"
+    companions:
+      red:
+        location: Indigo Hall of Fame approach
+        event: red_hall_of_fame_wait
+        notification: "Red waits outside the Champion room. He does not interrupt Blue's loss or Antman's proof."
+      misty:
+        location: Indigo exterior
+        event: misty_champion_current_calm
+        notification: "Misty says the current finally settled after Champion Blue fell, but Johto is still behind Oak's final lock."
+      brock:
+        location: Indigo exterior
+        event: brock_champion_trust_note
+        notification: "Brock marks the Champion lesson: trust is not weakness, and going alone is not the same as being strong."
+    rivals:
+      blue:
+        location: Champion room
+        event: blue_champion_loss_trust_breakthrough
+        notification: "Blue lost as Champion and finally admits Antman's road was not easier just because people stood beside him."
+      ava:
+        location: Hall of Fame signal log
+        event: ava_hall_of_fame_record_wait
+        notification: "Ava holds the WorldLink region unlock until Oak records the Hall of Fame proof."
+      dax:
+        location: Indigo spectator line
+        event: dax_champion_result_shock
+        notification: "Dax goes quiet after Blue's loss, then says a Champion battle counts as ten training arcs."
+      lyra:
+        location: Johto locked profile
+        event: lyra_johto_locked_after_champion_tease
+        notification: "Lyra's profile flashes after Blue falls, but Johto remains locked until Oak issues the World Circuit Passport."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

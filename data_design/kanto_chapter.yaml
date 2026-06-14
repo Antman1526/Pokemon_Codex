@@ -189,6 +189,8 @@ acts:
       - elite_four
       - lance_legendary_energy_warning
       - lance_world_circuit_dragon_warning
+      - champion_blue_emotional_finale
+      - oak_hall_of_fame_before_passport
       - oak_world_circuit_passport
     unlocks: [world_circuit_passport, johto_travel, pokedex_readiness_beta, kanto_rematches_tier_2]
 
