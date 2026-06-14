@@ -73,6 +73,10 @@ acts:
       - team_moonlight_name_reveal
       - marowak_dream_static_layer
       - fuji_rocket_moonlight_warning
+      - celadon_gold_dust_buyer
+      - rocket_game_corner_worldlink_pulse
+      - ability_capsule_vendor_field_trial
+      - erika_market_warning
       - rocket_game_corner_hideout
       - gold_dust_celadon_buyer
       - erika_battle

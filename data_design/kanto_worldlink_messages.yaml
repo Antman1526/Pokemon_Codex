@@ -106,6 +106,26 @@ messages:
     priority: major
     text: "Fuji warns that Rocket hurts living Pokemon, while Team Moonlight listens to dream static left behind by grief."
 
+  - id: WL_KANTO_CELADON_MARKET_SIGNAL
+    trigger: FLAG_RESCUED_MR_FUJI
+    priority: major
+    text: "Gold Dust market signal found in Celadon. A Celadon buyer is pricing rare Pokemon, coins, and relic anchors near Rocket Game Corner."
+
+  - id: WL_KANTO_GAME_CORNER_HIDEOUT
+    trigger: FLAG_OPENED_ROCKET_HIDEOUT
+    priority: major
+    text: "Rocket Game Corner basement opened. WorldLink confirms coin traffic is masking Silph Scope and rare-item transfers."
+
+  - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
+    trigger: FLAG_RESCUED_MR_FUJI
+    priority: major
+    text: "Celadon Department Store registered an Ability Capsule field trial for trainers ready to tune legal battle abilities."
+
+  - id: WL_KANTO_ERIKA_MARKET_WARNING
+    trigger: FLAG_BADGE04_GET
+    priority: flavor
+    text: "Erika warns that beautiful markets can hide ugly trades. Gold Dust is tracking rare growth, not just rare stones."
+
   - id: WL_KANTO_LEAGUE_INVITE
     trigger: FLAG_NEXUS_EARTH_BADGE
     priority: major

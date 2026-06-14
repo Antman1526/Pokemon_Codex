@@ -1,0 +1,263 @@
+diff --git a/data/maps/CeladonCity_DepartmentStore_2F_Frlg/map.json b/data/maps/CeladonCity_DepartmentStore_2F_Frlg/map.json
+index 566ac9f203..e2812f181e 100644
+--- a/data/maps/CeladonCity_DepartmentStore_2F_Frlg/map.json
++++ b/data/maps/CeladonCity_DepartmentStore_2F_Frlg/map.json
+@@ -71,6 +71,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "CeladonCity_DepartmentStore_2F_EventScript_Woman",
+       "flag": "FLAG_HIDE_POSTGAME_GOSSIPERS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 11,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CeladonCity_DepartmentStore_2F_EventScript_AbilityCapsuleVendor",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/CeladonCity_DepartmentStore_2F_Frlg/scripts.inc b/data/maps/CeladonCity_DepartmentStore_2F_Frlg/scripts.inc
+index 0565711135..9b17a30e00 100644
+--- a/data/maps/CeladonCity_DepartmentStore_2F_Frlg/scripts.inc
++++ b/data/maps/CeladonCity_DepartmentStore_2F_Frlg/scripts.inc
+@@ -9,6 +9,17 @@ CeladonCity_DepartmentStore_2F_EventScript_Lass::
+ 	msgbox CeladonCity_DepartmentStore_2F_Text_BuyReviveForLongOutings, MSGBOX_NPC
+ 	end
+ 
++CeladonCity_DepartmentStore_2F_EventScript_AbilityCapsuleVendor::
++	lock
++	faceplayer
++	msgbox CeladonCity_DepartmentStore_2F_Text_AbilityCapsuleTrial
++	message gText_HowMayIServeYou
++	waitmessage
++	pokemart CeladonCity_DepartmentStore_2F_AbilityCapsules
++	msgbox gText_PleaseComeAgain
++	release
++	end
++
+ CeladonCity_DepartmentStore_2F_EventScript_FloorSign::
+ 	msgbox CeladonCity_DepartmentStore_2F_Text_FloorSign, MSGBOX_SIGN
+ 	end
+@@ -60,11 +71,26 @@ CeladonCity_DepartmentStore_2F_TMs::
+ 	release
+ 	end
+ 
++	.align 2
++CeladonCity_DepartmentStore_2F_AbilityCapsules::
++	.2byte ITEM_ABILITY_CAPSULE
++	.2byte ITEM_NONE
++	release
++	end
++
+ CeladonCity_DepartmentStore_2F_Text_SuperRepelMorePowerfulRepel::
+ 	.string "SUPER REPEL keeps weak POKéMON at\n"
+ 	.string "bay…\p"
+ 	.string "Hmm, it's a more powerful REPEL.$"
+ 
++CeladonCity_DepartmentStore_2F_Text_AbilityCapsuleTrial::
++	.string "WorldLink trainer support trial:\n"
++	.string "Ability Capsule access is live.\p"
++	.string "It can switch many POKéMON between\n"
++	.string "their standard Abilities.\p"
++	.string "Use it to tune a team, not to\n"
++	.string "erase a challenge.$"
++
+ CeladonCity_DepartmentStore_2F_Text_BuyReviveForLongOutings::
+ 	.string "For long outings, you should buy\n"
+ 	.string "REVIVE.$"
+diff --git a/data/maps/CeladonCity_GameCorner_Frlg/scripts.inc b/data/maps/CeladonCity_GameCorner_Frlg/scripts.inc
+index 738d037d93..73bb8e9ef5 100644
+--- a/data/maps/CeladonCity_GameCorner_Frlg/scripts.inc
++++ b/data/maps/CeladonCity_GameCorner_Frlg/scripts.inc
+@@ -495,12 +495,16 @@ CeladonCity_GameCorner_Text_HereAreYourCoins::
+ 
+ CeladonCity_GameCorner_Text_RumoredTeamRocketRunsThisPlace::
+ 	.string "Keep this quiet.\p"
+-	.string "It's rumored that this place is run\n"
+-	.string "by TEAM ROCKET.$"
++	.string "It's rumored that Rocket Game\n"
++	.string "Corner is run by TEAM ROCKET.\p"
++	.string "A Team Gold Dust buyer was asking\n"
++	.string "which prizes are truly rare.$"
+ 
+ CeladonCity_GameCorner_Text_ThinkMachinesHaveDifferentOdds::
+ 	.string "I think these machines have\n"
+-	.string "different odds.$"
++	.string "different odds.\p"
++	.string "WorldLink says the coin flow is\n"
++	.string "too steady to be luck.$"
+ 
+ CeladonCity_GameCorner_Text_DoYouWantToPlay::
+ 	.string "Kid, do you want to play?$"
+@@ -535,7 +539,9 @@ CeladonCity_GameCorner_Text_GymGuyAdvice::
+ CeladonCity_GameCorner_Text_RareMonsForCoins::
+ 	.string "They offer rare POKéMON that can\n"
+ 	.string "be exchanged for your COINS.\p"
+-	.string "But, I just can't seem to win!$"
++	.string "But, I just can't seem to win!\p"
++	.string "Gold Dust collectors love prizes\n"
++	.string "that ordinary trainers cannot get.$"
+ 
+ CeladonCity_GameCorner_Text_SoEasyToGetHooked::
+ 	.string "Games are scary!\n"
+@@ -554,7 +560,9 @@ CeladonCity_GameCorner_Text_YouHaveLotsOfCoins::
+ 
+ CeladonCity_GameCorner_Text_NeedMoreCoinsForMonIWant::
+ 	.string "Darn! I need more COINS for the\n"
+-	.string "POKéMON I want!$"
++	.string "POKéMON I want!\p"
++	.string "The rare ones vanish whenever men\n"
++	.string "in gold visit the counter.$"
+ 
+ CeladonCity_GameCorner_Text_HereAreSomeCoinsShoo::
+ 	.string "Hey, what? You're throwing me off!\n"
+@@ -574,7 +582,9 @@ CeladonCity_GameCorner_Text_WatchReelsClosely::
+ 
+ CeladonCity_GameCorner_Text_GruntIntro::
+ 	.string "I'm guarding this poster!\n"
+-	.string "Go away, or else!$"
++	.string "Go away, or else!\p"
++	.string "Rocket is tired of Gold Dust\n"
++	.string "buyers sniffing around our stairs!$"
+ 
+ CeladonCity_GameCorner_Text_GruntDefeat::
+ 	.string "Dang!$"
+@@ -582,11 +592,14 @@ CeladonCity_GameCorner_Text_GruntDefeat::
+ CeladonCity_GameCorner_Text_GruntPostBattle::
+ 	.string "The TEAM ROCKET HIDEOUT might\n"
+ 	.string "be discovered!\p"
+-	.string "I better tell BOSS!$"
++	.string "If the Celadon buyer hears about\n"
++	.string "this, BOSS will blame me first!$"
+ 
+ CeladonCity_GameCorner_Text_SwitchBehindPosterPushIt::
+ 	.string "Hey!\p"
+ 	.string "A switch behind the poster!?\n"
++	.string "WorldLink is pulsing under the\n"
++	.string "Rocket Game Corner.\p"
+ 	.string "Let's push it!$"
+ 
+ CeladonCity_GameCorner_Text_CoinCaseIsRequired::
+@@ -611,4 +624,3 @@ CeladonCity_GameCorner_Text_OutToLunch::
+ CeladonCity_GameCorner_Text_SomeonesKeys::
+ 	.string "Someone's keys!\n"
+ 	.string "They'll be back.$"
+-
+diff --git a/data/maps/CeladonCity_Gym_Frlg/scripts.inc b/data/maps/CeladonCity_Gym_Frlg/scripts.inc
+index 79e8a5d1a3..5fcf752df8 100644
+--- a/data/maps/CeladonCity_Gym_Frlg/scripts.inc
++++ b/data/maps/CeladonCity_Gym_Frlg/scripts.inc
+@@ -95,6 +95,8 @@ CeladonCity_Gym_Text_ErikaIntro::
+ 	.string "flower arranging.\p"
+ 	.string "My POKéMON are solely of the\n"
+ 	.string "GRASS type.\p"
++	.string "Celadon is beautiful, but even\n"
++	.string "gardens can hide greedy roots.\p"
+ 	.string "…Oh, I'm sorry, I had no idea that\n"
+ 	.string "you wished to challenge me.\p"
+ 	.string "Very well, but I shall not lose.{PLAY_BGM MUS_RG_ENCOUNTER_GYM_LEADER}$"
+@@ -109,8 +111,10 @@ CeladonCity_Gym_Text_ErikaDefeat::
+ CeladonCity_Gym_Text_ErikaPostBattle::
+ 	.string "You are cataloging POKéMON?\n"
+ 	.string "I must say I'm impressed.\p"
+-	.string "I would never collect POKéMON if\n"
+-	.string "they were unattractive.$"
++	.string "I would never collect POKéMON as\n"
++	.string "prizes or rare market trophies.\p"
++	.string "If Rocket and Gold Dust are using\n"
++	.string "Celadon that way, please stop them.$"
+ 
+ CeladonCity_Gym_Text_ExplainRainbowBadgeTakeThis::
+ 	.string "The RAINBOWBADGE will make\n"
+@@ -127,6 +131,8 @@ CeladonCity_Gym_Text_ExplainTM19::
+ 	.string "TM19 contains GIGA DRAIN.\p"
+ 	.string "Half the damage it inflicts is\n"
+ 	.string "drained to heal your POKéMON.\p"
++	.string "Patience, status control, and\n"
++	.string "renewal are Celadon's real lessons.\p"
+ 	.string "Wouldn't you agree that it's a\n"
+ 	.string "wonderful move?$"
+ 
+@@ -234,4 +240,3 @@ CeladonCity_Gym_Text_GymStatuePlayerWon::
+ 	.string "LEADER: ERIKA\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}, {PLAYER}$"
+-
+diff --git a/data/maps/CeladonCity_Restaurant_Frlg/map.json b/data/maps/CeladonCity_Restaurant_Frlg/map.json
+index 3add733111..ceb7f30b6b 100644
+--- a/data/maps/CeladonCity_Restaurant_Frlg/map.json
++++ b/data/maps/CeladonCity_Restaurant_Frlg/map.json
+@@ -85,6 +85,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "CeladonCity_Restaurant_EventScript_WorkerM",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 13,
++      "y": 4,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CeladonCity_Restaurant_EventScript_GoldDustBuyer",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/CeladonCity_Restaurant_Frlg/scripts.inc b/data/maps/CeladonCity_Restaurant_Frlg/scripts.inc
+index 976645cbc9..99a4d8fc92 100644
+--- a/data/maps/CeladonCity_Restaurant_Frlg/scripts.inc
++++ b/data/maps/CeladonCity_Restaurant_Frlg/scripts.inc
+@@ -35,6 +35,10 @@ CeladonCity_Restaurant_EventScript_WorkerM::
+ 	msgbox CeladonCity_Restaurant_Text_PsstBasementUnderGameCorner, MSGBOX_NPC
+ 	end
+ 
++CeladonCity_Restaurant_EventScript_GoldDustBuyer::
++	msgbox CeladonCity_Restaurant_Text_GoldDustBuyer, MSGBOX_NPC
++	end
++
+ CeladonCity_Restaurant_EventScript_FatMan::
+ 	msgbox CeladonCity_Restaurant_Text_ManLostItAllAtSlots, MSGBOX_NPC
+ 	end
+@@ -50,13 +54,24 @@ CeladonCity_Restaurant_Text_OftenGoToDrugstore::
+ 
+ CeladonCity_Restaurant_Text_PsstBasementUnderGameCorner::
+ 	.string "Psst! There's a basement under the\n"
+-	.string "GAME CORNER, I hear.$"
++	.string "Rocket Game Corner, I hear.\p"
++	.string "A Celadon buyer in gold keeps\n"
++	.string "asking what Rocket stores below.$"
+ 
+ CeladonCity_Restaurant_Text_ManLostItAllAtSlots::
+ 	.string "Munch…\p"
+ 	.string "The man at that table lost it all\n"
+ 	.string "at the slots.$"
+ 
++CeladonCity_Restaurant_Text_GoldDustBuyer::
++	.string "Team Gold Dust values patience.\p"
++	.string "Coins, fossils, rare POKéMON,\n"
++	.string "shiny rumors… They are anchors.\p"
++	.string "Rocket steals loudly. A Celadon\n"
++	.string "buyer pays quietly.\p"
++	.string "Tell WorldLink not every thief\n"
++	.string "wears a uniform.$"
++
+ CeladonCity_Restaurant_Text_TakeThisImBusted::
+ 	.string "Go ahead! Laugh!\n"
+ 	.string "I'm flat-out busted!\p"
+@@ -75,4 +90,3 @@ CeladonCity_Restaurant_Text_MakeRoomForThis::
+ CeladonCity_Restaurant_Text_ThoughtIdWinItBack::
+ 	.string "I always thought I was going to\n"
+ 	.string "win it back…$"
+-

@@ -201,6 +201,39 @@ progression_bands:
         event: lyra_moonlight_locked_profile
         notification: "Lyra's locked Johto profile flashed when Team Moonlight named itself, then vanished again."
 
+  celadon_market_hideout:
+    player_range: "Celadon arrival through Rocket Game Corner discovery"
+    companions:
+      red:
+        location: Celadon market streets
+        event: red_celadon_market_watch
+        notification: "Red is watching the Celadon crowds and says Rocket feels too comfortable here."
+      misty:
+        location: WorldLink call from Cerulean
+        event: misty_celadon_current_call
+        notification: "Misty says money moves like water in Celadon: follow the current, not the noise."
+      brock:
+        location: WorldLink call from Pewter
+        event: brock_celadon_patience_call
+        notification: "Brock says Erika's Gym will reward patience before the Game Corner punishes impatience."
+    rivals:
+      blue:
+        location: Game Corner sidewalk
+        event: blue_game_corner_race
+        notification: "Blue says he heard about the Rocket Game Corner first and claims Antman is late again."
+      ava:
+        location: Celadon Restaurant notes
+        event: ava_gold_dust_buyer_research
+        notification: "Ava tagged the Celadon buyer as Gold Dust and flagged rare Pokemon pedigree records."
+      dax:
+        location: Celadon arcade row
+        event: dax_celadon_arcade_report
+        notification: "Dax lost coins at the arcade, then called it tactical research into Rocket's economy."
+      lyra:
+        location: Johto locked profile
+        event: lyra_celadon_locked_profile
+        notification: "Lyra's locked profile pulsed when WorldLink scanned Celadon coins stamped with a bell pattern."
+
 relationship_changes:
   help_ava_at_museum:
     ava:
