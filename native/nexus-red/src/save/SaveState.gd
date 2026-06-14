@@ -11,6 +11,11 @@ var ava_starter := ""
 var dax_starter := ""
 var active_battle_id := ""
 var last_battle_result := ""
+var active_encounter_id := ""
+var active_encounter_data: Dictionary = {}
+var last_encounter_result := ""
+var party_roster: Array[String] = []
+var captured_creatures: Array[String] = []
 var story_flags: Dictionary = {}
 var worldlink_queue: Array[String] = []
 
@@ -27,6 +32,11 @@ func start_new_game(name: String) -> void:
 	dax_starter = ""
 	active_battle_id = ""
 	last_battle_result = ""
+	active_encounter_id = ""
+	active_encounter_data = {}
+	last_encounter_result = ""
+	party_roster = []
+	captured_creatures = []
 	story_flags = {
 		"started_native_shell": true,
 		"mom_opening_scene_seen": false,
@@ -39,6 +49,8 @@ func start_new_game(name: String) -> void:
 		"blue_route_1_battle_finished": false,
 		"route_1_rumors_unlocked": false,
 		"worldlink_route_1_rival_batch_queued": false,
+		"route_1_first_wild_seen": false,
+		"route_1_first_wild_caught": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -77,6 +89,7 @@ func choose_starter(selection: Dictionary) -> void:
 	current_scene = "oak_lab"
 	set_flag("starter_chosen", true)
 	set_flag("blue_pressure_scene_seen", true)
+	_add_to_party(player_starter)
 	queue_worldlink_id("starter_chosen_" + player_starter.to_lower())
 	queue_worldlink_id("blue_chose_" + blue_starter.to_lower())
 
@@ -127,3 +140,40 @@ func finish_battle_placeholder(result: String) -> void:
 		unlock_route_1_rumors()
 		queue_route_1_rival_batch()
 	active_battle_id = ""
+
+
+func start_wild_encounter(encounter: Dictionary) -> void:
+	active_encounter_data = encounter.duplicate(true)
+	active_encounter_id = str(active_encounter_data.get("id", ""))
+	last_encounter_result = ""
+	if active_encounter_id == "route_1_first_wild":
+		set_flag("route_1_first_wild_seen", true)
+	queue_worldlink_id(active_encounter_id + "_seen")
+
+
+func finish_wild_encounter(result: String) -> void:
+	last_encounter_result = result
+	if result == "placeholder_catch" and not active_encounter_data.is_empty():
+		var species := str(active_encounter_data.get("species", ""))
+		if species != "":
+			_add_capture(species)
+		if active_encounter_id == "route_1_first_wild":
+			set_flag("route_1_first_wild_caught", true)
+			queue_worldlink_id("route_1_first_wild_caught")
+	active_encounter_id = ""
+	active_encounter_data = {}
+
+
+func _add_capture(species: String) -> void:
+	if not captured_creatures.has(species):
+		captured_creatures.append(species)
+	_add_to_party(species)
+
+
+func _add_to_party(species: String) -> void:
+	if species == "":
+		return
+	if party_roster.has(species):
+		return
+	if party_roster.size() < 6:
+		party_roster.append(species)

@@ -1,0 +1,49 @@
+{
+  "route_id": "route_1",
+  "name": "Route 1 Wild Encounters",
+  "status": "placeholder_playable",
+  "level_cap_context": "pre_brock",
+  "design_note": "First playable native wild encounter shell. Tables are intentionally conservative so wild levels track early-game progression before Brock.",
+  "encounters": [
+    {
+      "id": "route_1_first_wild",
+      "species": "Rattata",
+      "level": 3,
+      "weight": 100,
+      "time": "any",
+      "tags": ["deterministic_first_encounter", "safe_early", "catch_tutorial"]
+    },
+    {
+      "id": "route_1_common_rattata",
+      "species": "Rattata",
+      "level": 2,
+      "weight": 35,
+      "time": "any",
+      "tags": ["common", "safe_early"]
+    },
+    {
+      "id": "route_1_common_pidgey",
+      "species": "Pidgey",
+      "level": 3,
+      "weight": 30,
+      "time": "day",
+      "tags": ["common", "safe_early"]
+    },
+    {
+      "id": "route_1_common_caterpie",
+      "species": "Caterpie",
+      "level": 3,
+      "weight": 20,
+      "time": "day",
+      "tags": ["common", "safe_early"]
+    },
+    {
+      "id": "route_1_starter_migration_bulbasaur",
+      "species": "Bulbasaur",
+      "level": 4,
+      "weight": 5,
+      "time": "morning",
+      "tags": ["rare_starter_migration", "route_1_to_3_starter_pool", "pre_brock_balanced"]
+    }
+  ]
+}

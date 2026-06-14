@@ -198,6 +198,22 @@ python3 tools/validate_native_worldlink_route1_slice.py
 godot --headless --path native/nexus-red --script tests/worldlink_route1_test.gd
 ```
 
+### Task 7.7: Add Route 1 wild encounter shell
+
+Acceptance:
+
+- Route 1 can request a deterministic first wild encounter from JSON data.
+- A reusable wild encounter placeholder screen can show the wild creature and player starter.
+- Save state records encounter start, result, first-wild seen/caught flags, party roster, and captured creatures.
+- The first playable shell remains balanced for pre-Brock progression and does not claim the full battle/capture engine is complete.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route1_wild_encounter_slice.py
+godot --headless --path native/nexus-red --script tests/route1_wild_encounter_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

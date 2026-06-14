@@ -49,12 +49,14 @@ python3 tools/validate_native_starter_slice.py
 python3 tools/validate_native_route1_slice.py
 python3 tools/validate_native_battle_placeholder_slice.py
 python3 tools/validate_native_worldlink_route1_slice.py
+python3 tools/validate_native_route1_wild_encounter_slice.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
 godot --headless --path native/nexus-red --script tests/route1_slice_test.gd
 godot --headless --path native/nexus-red --script tests/battle_placeholder_test.gd
 godot --headless --path native/nexus-red --script tests/worldlink_route1_test.gd
+godot --headless --path native/nexus-red --script tests/route1_wild_encounter_test.gd
 ```
 
 ## Legal Rule

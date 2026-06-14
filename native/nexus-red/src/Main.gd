@@ -5,6 +5,7 @@ const BedroomScene := preload("res://scenes/world/Bedroom.tscn")
 const OakLabScene := preload("res://scenes/world/OakLab.tscn")
 const Route1Scene := preload("res://scenes/world/Route1.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
+const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
 const GAME_TITLE := "POKEMON NEXUS RED"
 
@@ -53,6 +54,7 @@ func _on_go_to_route_1() -> void:
 	var route_1 := Route1Scene.instantiate()
 	route_1.save_state = save_state
 	route_1.start_battle_placeholder.connect(_on_start_battle_placeholder)
+	route_1.start_wild_encounter.connect(_on_start_wild_encounter)
 	_replace_screen(route_1)
 
 
@@ -67,6 +69,21 @@ func _on_start_battle_placeholder(battle_id: String) -> void:
 
 func _on_battle_placeholder_finished(result: String) -> void:
 	save_state.finish_battle_placeholder(result)
+	_on_go_to_route_1()
+
+
+func _on_start_wild_encounter(encounter_data: Dictionary) -> void:
+	if save_state.active_encounter_id == "":
+		save_state.start_wild_encounter(encounter_data)
+	var encounter := WildEncounterPlaceholderScene.instantiate()
+	encounter.save_state = save_state
+	encounter.encounter_data = save_state.active_encounter_data
+	encounter.encounter_finished.connect(_on_wild_encounter_finished)
+	_replace_screen(encounter)
+
+
+func _on_wild_encounter_finished(result: String) -> void:
+	save_state.finish_wild_encounter(result)
 	_on_go_to_route_1()
 
 

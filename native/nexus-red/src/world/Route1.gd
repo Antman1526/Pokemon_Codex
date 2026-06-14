@@ -2,15 +2,18 @@ extends Control
 
 const PlayerAvatar := preload("res://src/world/PlayerAvatar.gd")
 const WorldLinkPanel := preload("res://src/worldlink/WorldLinkPanel.gd")
+const EncounterService := preload("res://src/encounter/EncounterService.gd")
 const RED_ROUTE_FLAG := "red_route_1_companion_scene_seen"
 const BLUE_BATTLE_FLAG := "blue_battle_placeholder_seen"
 
 signal start_battle_placeholder(battle_id)
+signal start_wild_encounter(encounter_data)
 
 var save_state
 var dialogue_label: Label
 var player: ColorRect
 var worldlink_panel: PanelContainer
+var encounter_service := EncounterService.new()
 
 
 func _ready() -> void:
@@ -25,6 +28,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			trigger_red_scene()
 		else:
 			trigger_blue_battle_placeholder()
+	if event.is_action_pressed("cancel"):
+		trigger_route_1_wild_encounter()
 	if event.is_action_pressed("worldlink"):
 		_toggle_worldlink()
 
@@ -77,7 +82,7 @@ func _build_route() -> void:
 	add_child(player)
 
 	dialogue_label = Label.new()
-	dialogue_label.text = "Route 1 opens north. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press W for WorldLink."
+	dialogue_label.text = "Route 1 opens north. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press W for WorldLink."
 	dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	dialogue_label.anchor_left = 0.06
 	dialogue_label.anchor_top = 0.82
@@ -99,6 +104,17 @@ func trigger_blue_battle_placeholder() -> void:
 		save_state.record_blue_battle_placeholder()
 	dialogue_label.text = "Blue: There you are. I already know your first partner and I already know mine. Battle system is next, but remember this: I am not waiting for you."
 	emit_signal("start_battle_placeholder", "blue_route_1")
+
+
+func trigger_route_1_wild_encounter() -> void:
+	var encounter := encounter_service.pick_route_1_encounter(save_state)
+	if encounter.is_empty():
+		dialogue_label.text = "The grass rustles, but no encounter data is ready yet."
+		return
+	if save_state:
+		save_state.start_wild_encounter(encounter)
+	dialogue_label.text = "The grass shakes. Red raises a hand: first wild encounter incoming."
+	emit_signal("start_wild_encounter", encounter)
 
 
 func _toggle_worldlink() -> void:
