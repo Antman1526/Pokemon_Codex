@@ -1,0 +1,209 @@
+diff --git a/data/maps/PewterCity_Frlg/map.json b/data/maps/PewterCity_Frlg/map.json
+index 749bc9402a..0dc278508a 100644
+--- a/data/maps/PewterCity_Frlg/map.json
++++ b/data/maps/PewterCity_Frlg/map.json
+@@ -84,6 +84,20 @@
+       "script": "PewterCity_EventScript_BugCatcher",
+       "flag": "0"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 17,
++      "y": 19,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PewterCity_EventScript_RedTraining",
++      "flag": "0"
++    },
+     {
+       "local_id": "LOCALID_PEWTER_GYM_GUIDE",
+       "type": "object",
+diff --git a/data/maps/PewterCity_Frlg/scripts.inc b/data/maps/PewterCity_Frlg/scripts.inc
+index 866f360ad3..6f48a6eefc 100644
+--- a/data/maps/PewterCity_Frlg/scripts.inc
++++ b/data/maps/PewterCity_Frlg/scripts.inc
+@@ -628,6 +628,19 @@ PewterCity_EventScript_KnowWhatTheyreDoing::
+ 	release
+ 	end
+ 
++PewterCity_EventScript_RedTraining::
++	lock
++	faceplayer
++	goto_if_set FLAG_BADGE01_GET, PewterCity_EventScript_RedTrainingPostBrock
++	msgbox PewterCity_Text_RedTrainingPreBrock, MSGBOX_NPC
++	release
++	end
++
++PewterCity_EventScript_RedTrainingPostBrock::
++	msgbox PewterCity_Text_RedTrainingPostBrock, MSGBOX_NPC
++	release
++	end
++
+ PewterCity_EventScript_TrainerTips::
+ 	msgbox PewterCity_Text_TrainerTipsEarningEXP, MSGBOX_SIGN
+ 	end
+@@ -878,6 +891,25 @@ PewterCity_Text_BrockOnlySeriousTrainerHere::
+ 	.string "But PEWTER GYM's BROCK isn't like\n"
+ 	.string "that, not one bit.$"
+ 
++PewterCity_Text_RedTrainingPreBrock::
++	.string "RED: BROCK trains Rock types, but\n"
++	.string "don't think this is only about\l"
++	.string "Grass and Water.\p"
++	.string "Status moves, accuracy drops, and\n"
++	.string "a second attacker can matter just\l"
++	.string "as much.\p"
++	.string "I'll be outside when you finish.\n"
++	.string "This badge is yours to win.$"
++
++PewterCity_Text_RedTrainingPostBrock::
++	.string "RED: Nice battle, Antman.\p"
++	.string "WORLDLINK just flagged PEWTER\n"
++	.string "MUSEUM. Something scanned the\l"
++	.string "fossil cases after the badge lit.\p"
++	.string "I'll check the ridge toward MT.\n"
++	.string "MOON. You should talk to the\l"
++	.string "museum staff.$"
++
+ PewterCity_Text_DidYouCheckOutMuseum::
+ 	.string "Did you check out the MUSEUM?$"
+ 
+@@ -973,4 +1005,3 @@ PewterCity_Text_RunningShoesLetterFromMom::
+ 	.string "Remember, I'll always cheer for\n"
+ 	.string "you! Don't ever give up!\p"
+ 	.string "From Mom$"
+-
+diff --git a/data/maps/Route1_Frlg/map.json b/data/maps/Route1_Frlg/map.json
+index 7a1e26f25f..060f965c40 100644
+--- a/data/maps/Route1_Frlg/map.json
++++ b/data/maps/Route1_Frlg/map.json
+@@ -54,6 +54,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "Route1_EventScript_Boy",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 12,
++      "y": 27,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route1_EventScript_RedTraining",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/Route1_Frlg/scripts.inc b/data/maps/Route1_Frlg/scripts.inc
+index 3a39538f4e..c2b19d5b17 100644
+--- a/data/maps/Route1_Frlg/scripts.inc
++++ b/data/maps/Route1_Frlg/scripts.inc
+@@ -30,6 +30,13 @@ Route1_EventScript_Boy::
+ 	msgbox Route1_Text_CanJumpFromLedges, MSGBOX_NPC
+ 	end
+ 
++Route1_EventScript_RedTraining::
++	lock
++	faceplayer
++	msgbox Route1_Text_RedTraining, MSGBOX_NPC
++	release
++	end
++
+ Route1_EventScript_RouteSign::
+ 	msgbox Route1_Text_RouteSign, MSGBOX_SIGN
+ 	end
+@@ -58,7 +65,19 @@ Route1_Text_CanJumpFromLedges::
+ 	.string "You can get back to PALLET TOWN\n"
+ 	.string "quicker that way.$"
+ 
++Route1_Text_RedTraining::
++	.string "RED: Antman, over here.\p"
++	.string "This route already feels different\n"
++	.string "from the stories OAK told us.\p"
++	.string "If you see a rare POKéMON, catch\n"
++	.string "it. Don't worry about the perfect\l"
++	.string "team yet.\p"
++	.string "BROCK will test whether we can\n"
++	.string "adapt, not whether we picked the\l"
++	.string "obvious starter.\p"
++	.string "I'll keep watching the grass.\n"
++	.string "You set the pace.$"
++
+ Route1_Text_RouteSign::
+ 	.string "ROUTE 1\n"
+ 	.string "PALLET TOWN - VIRIDIAN CITY$"
+-
+diff --git a/data/maps/ViridianCity_Frlg/map.json b/data/maps/ViridianCity_Frlg/map.json
+index f9bb7f17c3..befec418af 100644
+--- a/data/maps/ViridianCity_Frlg/map.json
++++ b/data/maps/ViridianCity_Frlg/map.json
+@@ -133,6 +133,20 @@
+       "script": "ViridianCity_EventScript_Boy",
+       "flag": "0"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 24,
++      "y": 24,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "ViridianCity_EventScript_RedTraining",
++      "flag": "0"
++    },
+     {
+       "local_id": "LOCALID_VIRIDIAN_BORDER_TREE",
+       "type": "object",
+diff --git a/data/maps/ViridianCity_Frlg/scripts.inc b/data/maps/ViridianCity_Frlg/scripts.inc
+index d77e34c990..c22e74c4de 100644
+--- a/data/maps/ViridianCity_Frlg/scripts.inc
++++ b/data/maps/ViridianCity_Frlg/scripts.inc
+@@ -77,6 +77,13 @@ ViridianCity_EventScript_Boy::
+ 	msgbox ViridianCity_Text_CanCarryMonsAnywhere, MSGBOX_NPC
+ 	end
+ 
++ViridianCity_EventScript_RedTraining::
++	lock
++	faceplayer
++	msgbox ViridianCity_Text_RedTraining, MSGBOX_NPC
++	release
++	end
++
+ @ Other old man, not the tutorial old man
+ ViridianCity_EventScript_OldMan::
+ 	lock
+@@ -238,6 +245,16 @@ ViridianCity_Text_CanCarryMonsAnywhere::
+ 	.string "It's great that you can carry and\n"
+ 	.string "use POKéMON anytime, anywhere.$"
+ 
++ViridianCity_Text_RedTraining::
++	.string "RED: I checked the POKéMON CENTER.\n"
++	.string "NURSE JOY says teams are arriving\l"
++	.string "from every direction.\p"
++	.string "Build a bench before PEWTER.\n"
++	.string "A full party gives you options,\l"
++	.string "even when the levels stay capped.\p"
++	.string "BLUE is rushing ahead. Let him.\n"
++	.string "We learn more by being ready.$"
++
+ ViridianCity_Text_GymClosedWonderWhoLeaderIs::
+ 	.string "This POKéMON GYM is always closed.\p"
+ 	.string "I wonder who the LEADER is?$"
+@@ -356,4 +373,3 @@ ViridianCity_Text_GymSign::
+ 
+ ViridianCity_Text_GymDoorsAreLocked::
+ 	.string "VIRIDIAN GYM's doors are locked…$"
+-

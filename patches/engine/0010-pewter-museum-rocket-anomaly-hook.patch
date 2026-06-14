@@ -1,0 +1,79 @@
+diff --git a/data/maps/PewterCity_Museum_1F_Frlg/map.json b/data/maps/PewterCity_Museum_1F_Frlg/map.json
+index ed298b58c4..734181ac09 100644
+--- a/data/maps/PewterCity_Museum_1F_Frlg/map.json
++++ b/data/maps/PewterCity_Museum_1F_Frlg/map.json
+@@ -88,6 +88,20 @@
+       "script": "PewterCity_Museum_1F_EventScript_Scientist2",
+       "flag": "0"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 18,
++      "y": 7,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PewterCity_Museum_1F_EventScript_NexusFossilAide",
++      "flag": "0"
++    },
+     {
+       "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
+diff --git a/data/maps/PewterCity_Museum_1F_Frlg/scripts.inc b/data/maps/PewterCity_Museum_1F_Frlg/scripts.inc
+index a30b96ac99..3451b9634f 100644
+--- a/data/maps/PewterCity_Museum_1F_Frlg/scripts.inc
++++ b/data/maps/PewterCity_Museum_1F_Frlg/scripts.inc
+@@ -135,6 +135,19 @@ PewterCity_Museum_1F_EventScript_Scientist2::
+ 	msgbox PewterCity_Museum_1F_Text_WeHaveTwoFossilsOnExhibit, MSGBOX_NPC
+ 	end
+ 
++PewterCity_Museum_1F_EventScript_NexusFossilAide::
++	lock
++	faceplayer
++	goto_if_unset FLAG_BADGE01_GET, PewterCity_Museum_1F_EventScript_NexusFossilAidePreBadge
++	msgbox PewterCity_Museum_1F_Text_NexusFossilAidePostBadge, MSGBOX_NPC
++	release
++	end
++
++PewterCity_Museum_1F_EventScript_NexusFossilAidePreBadge::
++	msgbox PewterCity_Museum_1F_Text_NexusFossilAidePreBadge, MSGBOX_NPC
++	release
++	end
++
+ PewterCity_Museum_1F_EventScript_OldMan::
+ 	msgbox PewterCity_Museum_1F_Text_ShouldBeGratefulForLongLife, MSGBOX_NPC
+ 	end
+@@ -263,6 +276,24 @@ PewterCity_Museum_1F_Text_WeHaveTwoFossilsOnExhibit::
+ 	.string "We have two fossils of rare,\n"
+ 	.string "prehistoric POKéMON on exhibit.$"
+ 
++PewterCity_Museum_1F_Text_NexusFossilAidePreBadge::
++	.string "We're recalibrating the fossil\n"
++	.string "cases today.\p"
++	.string "The old bones keep reacting to\n"
++	.string "something outside PEWTER.$"
++
++PewterCity_Museum_1F_Text_NexusFossilAidePostBadge::
++	.string "You won the BOULDERBADGE?\n"
++	.string "Then listen carefully.\p"
++	.string "A black-market scan swept our\n"
++	.string "fossil cases the moment your badge\l"
++	.string "registered on the LEAGUE net.\p"
++	.string "The access trail used a ROCKET\n"
++	.string "cipher, but the energy signature\l"
++	.string "wasn't purely KANTO.\p"
++	.string "If MT. MOON starts glowing, don't\n"
++	.string "treat it like a cave story.$"
++
+ PewterCity_Museum_1F_Text_BeautifulPieceOfAmber::
+ 	.string "There is a beautiful piece of\n"
+ 	.string "AMBER in a clear gold color.$"
+@@ -274,4 +305,3 @@ PewterCity_Museum_1F_Text_AerodactylFossil::
+ PewterCity_Museum_1F_Text_KabutopsFossil::
+ 	.string "KABUTOPS Fossil\n"
+ 	.string "A primitive and rare POKéMON.$"
+-

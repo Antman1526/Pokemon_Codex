@@ -1,0 +1,50 @@
+diff --git a/data/maps/PewterCity_Gym_Frlg/scripts.inc b/data/maps/PewterCity_Gym_Frlg/scripts.inc
+index b656d9b236..8fcece42fa 100644
+--- a/data/maps/PewterCity_Gym_Frlg/scripts.inc
++++ b/data/maps/PewterCity_Gym_Frlg/scripts.inc
+@@ -27,6 +27,7 @@ PewterCity_Gym_EventScript_GiveTM39::
+ 	giveitem_msg PewterCity_Gym_Text_ReceivedTM39FromBrock, ITEM_TM39
+ 	setflag FLAG_GOT_TM39_FROM_BROCK
+ 	msgbox PewterCity_Gym_Text_ExplainTM39
++	msgbox PewterCity_Gym_Text_WorldLinkMuseumAlert
+ 	release
+ 	end
+ 
+@@ -133,6 +134,14 @@ PewterCity_Gym_Text_ExplainTM39::
+ 	.string "It hurls boulders at the foe and\n"
+ 	.string "lowers its SPEED.$"
+ 
++PewterCity_Gym_Text_WorldLinkMuseumAlert::
++	.string "WORLDLINK ALERT\p"
++	.string "AVA: PEWTER MUSEUM just logged a\n"
++	.string "fossil scan I didn't request.\p"
++	.string "RED: I'll check the MT. MOON ridge.\n"
++	.string "Antman, ask the museum staff what\l"
++	.string "changed after your badge.$"
++
+ PewterCity_Gym_Text_BrockPostBattle::
+ 	.string "There are all kinds of TRAINERS in\n"
+ 	.string "this huge world of ours.\p"
+@@ -199,4 +208,3 @@ PewterCity_Gym_Text_GymStatuePlayerWon::
+ 	.string "LEADER: BROCK\p"
+ 	.string "WINNING TRAINERS:\n"
+ 	.string "{RIVAL}, {PLAYER}$"
+-
+diff --git a/src/data/trainers_frlg.party b/src/data/trainers_frlg.party
+index 20fdc71388..2138a49a65 100644
+--- a/src/data/trainers_frlg.party
++++ b/src/data/trainers_frlg.party
+@@ -7049,6 +7049,13 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+ - Tackle
+ - Defense Curl
+ 
++Nosepass
++Level: 12
++IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
++- Tackle
++- Harden
++- Rock Throw
++
+ Onix
+ Level: 14
+ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
