@@ -106,11 +106,14 @@ Acceptance:
 - Player can select one starter.
 - Blue receives the first rival counterpick.
 - Ava and Dax receive valid starters.
+- First Blue pressure dialogue appears after starter selection.
 
 Verification:
 
 ```sh
 python3 tools/validate_design_data.py
+python3 tools/validate_native_starter_slice.py
+godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
 ```
 
 Manual check:

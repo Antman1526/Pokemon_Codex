@@ -4,6 +4,11 @@ var player_name := "Antman"
 var current_region := "kanto"
 var current_scene := "bedroom"
 var active_companion := "red"
+var player_starter := ""
+var player_starter_group := ""
+var blue_starter := ""
+var ava_starter := ""
+var dax_starter := ""
 var story_flags: Dictionary = {}
 var worldlink_queue: Array[String] = []
 
@@ -13,9 +18,16 @@ func start_new_game(name: String) -> void:
 	current_region = "kanto"
 	current_scene = "bedroom"
 	active_companion = "red"
+	player_starter = ""
+	player_starter_group = ""
+	blue_starter = ""
+	ava_starter = ""
+	dax_starter = ""
 	story_flags = {
 		"started_native_shell": true,
 		"mom_opening_scene_seen": false,
+		"starter_chosen": false,
+		"blue_pressure_scene_seen": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -26,3 +38,16 @@ func start_new_game(name: String) -> void:
 
 func set_flag(flag_name: String, value: bool) -> void:
 	story_flags[flag_name] = value
+
+
+func choose_starter(selection: Dictionary) -> void:
+	player_starter = selection.get("player_starter", "")
+	player_starter_group = selection.get("player_starter_group", "")
+	blue_starter = selection.get("blue_starter", "")
+	ava_starter = selection.get("ava_starter", "")
+	dax_starter = selection.get("dax_starter", "")
+	current_scene = "oak_lab"
+	set_flag("starter_chosen", true)
+	set_flag("blue_pressure_scene_seen", true)
+	worldlink_queue.append("starter_chosen_" + player_starter.to_lower())
+	worldlink_queue.append("blue_chose_" + blue_starter.to_lower())

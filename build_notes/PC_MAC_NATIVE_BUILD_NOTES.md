@@ -16,9 +16,13 @@ The first playable slice currently covers:
 - New Game flow,
 - Antman's bedroom,
 - Mom opening-scene prompt,
+- transition to Professor Oak's lab,
+- 39-starter selector prototype,
+- Blue/Ava/Dax starter assignment state,
+- first Blue pressure dialogue after starter selection,
 - placeholder WorldLink panel,
 - save-state skeleton,
-- native content data for regions, factions, companions, and opening feed.
+- native content data for regions, factions, companions, starters, and opening feed.
 
 Godot is installed locally:
 
@@ -76,8 +80,10 @@ Native shell validation:
 
 ```sh
 python3 tools/validate_native_godot_shell.py
+python3 tools/validate_native_starter_slice.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
+godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
 ```
 
 Expected future export commands:
@@ -91,9 +97,9 @@ godot --headless --path native/nexus-red --export-release "macOS" builds/macos/P
 
 Next build step:
 
-- add the Oak lab transition,
-- add the 39-starter selector prototype,
-- add the first Blue rival pressure scene,
-- keep battle and full creature data out of scope until the starter flow is stable.
+- add Route 1 as the first walkable route,
+- add Red's first on-route companion scene,
+- add the first Blue lab battle placeholder,
+- keep full battle mechanics and full creature data out of scope until the route flow is stable.
 
 Do not port all nine regions at once. Keep expanding the playable native Kanto shell, then build chapter by chapter.

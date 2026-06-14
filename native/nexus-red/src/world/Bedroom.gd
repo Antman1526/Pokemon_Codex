@@ -2,6 +2,8 @@ extends Control
 
 const WorldLinkPanel := preload("res://src/worldlink/WorldLinkPanel.gd")
 
+signal go_to_oak_lab
+
 var save_state
 var dialogue_label: Label
 var worldlink_panel: PanelContainer
@@ -14,7 +16,10 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
-		_play_mom_scene()
+		if mom_scene_seen:
+			emit_signal("go_to_oak_lab")
+		else:
+			_play_mom_scene()
 	if event.is_action_pressed("worldlink"):
 		_toggle_worldlink()
 
@@ -76,7 +81,7 @@ func _play_mom_scene() -> void:
 	if save_state:
 		save_state.set_flag("mom_opening_scene_seen", true)
 	if dialogue_label:
-		dialogue_label.text = "Mom: Antman, Professor Oak called. Red saw impossible tracks near Route 1, and the League news says creatures are migrating where they shouldn't."
+		dialogue_label.text = "Mom: Antman, Professor Oak called. Red saw impossible tracks near Route 1, and the League news says creatures are migrating where they shouldn't. Oak is waiting at the lab. Press Z or Enter again."
 
 
 func _toggle_worldlink() -> void:
