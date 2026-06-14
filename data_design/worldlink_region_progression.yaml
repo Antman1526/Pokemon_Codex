@@ -1,0 +1,61 @@
+worldlink_region_progression:
+  design_status: approved_direction
+  principle: "WorldLink unlocks regions through story progression one at a time; it is not a free fast-travel region selector during the main journey."
+  current_main_story_rule: "Only the active region is open for main-story progression. Earlier regions can reopen later through explicit story systems, but new regions do not unlock until the current region's Nexus chapter is resolved."
+  travel_feel: "Every region transition should feel like a committed departure with companions, rivals, villains, and Pokemon availability shifting around Antman's journey."
+  unlock_order:
+    - order: 1
+      region: kanto
+      unlock_state: unlocked_at_new_game
+      entry_method: "New Pallet Town bedroom, Mom intro, Oak lab starter ceremony."
+      lock_condition: "Kanto remains the only active region until the Indigo League and Kanto Nexus gate are resolved."
+      major_return_hooks: ["Pallet Town", "Cerulean", "Cinnabar", "Indigo Plateau"]
+    - order: 2
+      region: johto
+      unlock_state: locked
+      entry_method: "Story departure from Kanto after the Indigo Nexus gate stabilizes."
+      lock_condition: "Johto unlocks after Kanto's core League/Rocket arc, not from an early map menu."
+      major_return_hooks: ["New Bark Town", "Ecruteak", "Goldenrod Radio Tower"]
+    - order: 3
+      region: hoenn
+      unlock_state: locked
+      entry_method: "Sea route and research vessel handoff after Johto's tower/ruins chapter."
+      lock_condition: "Hoenn unlocks only after Johto's Rocket resurgence and historical Nexus anchor are resolved."
+      major_return_hooks: ["Slateport", "Mt. Chimney", "Sootopolis"]
+    - order: 4
+      region: sinnoh_hisui
+      unlock_state: locked
+      entry_method: "Northern expedition route after Hoenn's land/sea crisis."
+      lock_condition: "Sinnoh/Hisui unlocks after Hoenn's weather and primal-anchor crisis is contained."
+      major_return_hooks: ["Canalave", "Mt. Coronet", "Spear Pillar"]
+    - order: 5
+      region: unova
+      unlock_state: locked
+      entry_method: "International ferry and League invitation after Sinnoh myth research."
+      lock_condition: "Unova unlocks after Spear Pillar reveals that region anchors can be politicized."
+      major_return_hooks: ["Castelia", "Nimbasa", "Nacrene", "Pokemon League"]
+    - order: 6
+      region: kalos
+      unlock_state: locked
+      entry_method: "Lumiose research exchange after Unova's public WorldLink crisis."
+      lock_condition: "Kalos unlocks after Plasma's ideology arc exposes WorldLink to the public."
+      major_return_hooks: ["Lumiose", "Glittering Cave", "Geosenge"]
+    - order: 7
+      region: alola
+      unlock_state: locked
+      entry_method: "Island Challenge invitation after Kalos weapon data points to Ultra Space."
+      lock_condition: "Alola unlocks after Kalos proves WorldLink can be weaponized."
+      major_return_hooks: ["Melemele", "Aether Paradise", "Poni Island"]
+    - order: 8
+      region: galar
+      unlock_state: locked
+      entry_method: "Champion exhibition route after Alola's wormhole chapter."
+      lock_condition: "Galar unlocks after Ultra Space explains how distant regions can overlap."
+      major_return_hooks: ["Motostoke", "Hammerlocke", "Wyndon"]
+    - order: 9
+      region: paldea
+      unlock_state: locked
+      entry_method: "Academy research summons after Galar's energy crisis."
+      lock_condition: "Paldea unlocks after Eternatus-scale energy reveals the final convergence path."
+      major_return_hooks: ["Mesagoza", "Titan routes", "Area Zero"]
+  postgame_rule: "After the Paldea/Area Zero final convergence is beaten, WorldLink can become a broad travel network for rematches, legendary cleanup, rival events, and Friends system content."

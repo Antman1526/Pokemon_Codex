@@ -129,8 +129,8 @@ def validate_policy() -> list[str]:
     data = yaml.safe_load(read(POLICY))
     kanto = data.get("red_tag_battle_policy", {}).get("region_cadence", {}).get("kanto", {})
     candidate = kanto.get("first_true_tag_battle_candidate", "")
-    if "Cerulean bridge" not in candidate:
-        errors.append("Kanto first true tag battle must be the Cerulean bridge arc")
+    if "Route 25" not in candidate:
+        errors.append("Kanto first true tag battle must now point to Route 25")
     if "classic Nugget Bridge" not in candidate:
         errors.append("Kanto tag battle policy must preserve classic Nugget Bridge first")
 

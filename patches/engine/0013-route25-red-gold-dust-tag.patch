@@ -1,0 +1,241 @@
+--- a/data/maps/Route25_Frlg/map.json
++++ b/data/maps/Route25_Frlg/map.json
+@@ -161,9 +161,51 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "Route25_EventScript_ItemTM43",
+       "flag": "FLAG_HIDE_ROUTE25_TM43"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 44,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route25_EventScript_RedGoldDustTag",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
++      "x": 46,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route25_EventScript_RedGoldDustTag",
++      "flag": "0"
+     },
+     {
+       "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN",
++      "x": 46,
++      "y": 6,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route25_EventScript_RedGoldDustTag",
++      "flag": "0"
++    },
++    {
++      "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG",
+       "x": 30,
+       "y": 3,
+--- a/data/maps/Route25_Frlg/scripts.inc
++++ b/data/maps/Route25_Frlg/scripts.inc
+@@ -1,6 +1,25 @@
+ Route25_Frlg_MapScripts::
+ 	.byte 0
+ 
++Route25_EventScript_RedGoldDustTag::
++	lock
++	faceplayer
++	checktrainerflag TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS
++	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_RedGoldDustTagPostBattle
++	msgbox Route25_Text_RedGoldDustTagIntro, MSGBOX_NPC
++	msgbox Route25_Text_RocketGoldDustArgument
++	trainerbattle_two_trainers TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS, Route25_Text_RocketTagDefeat, TRAINER_GOLD_DUST_BROKER_AUREL, Route25_Text_GoldDustTagDefeat
++	settrainerflag TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS
++	settrainerflag TRAINER_GOLD_DUST_BROKER_AUREL
++	msgbox Route25_Text_RedGoldDustTagVictory
++	release
++	end
++
++Route25_EventScript_RedGoldDustTagPostBattle::
++	msgbox Route25_Text_RedGoldDustTagPostBattle, MSGBOX_NPC
++	release
++	end
++
+ Route25_EventScript_SeaCottageSign::
+ 	msgbox Route25_Text_SeaCottageSign, MSGBOX_SIGN
+ 	end
+@@ -9,6 +28,50 @@
+ 	msgbox Route25_Text_AreYouHereAlone, MSGBOX_NPC
+ 	end
+ 
++Route25_Text_RedGoldDustTagIntro::
++	.string "RED: Hold up, Antman.\p"
++	.string "ROCKET followed the bridge signal,\n"
++	.string "but they are not alone.\p"
++	.string "The broker in gold has been\n"
++	.string "tracking the same fossil pulse.\p"
++	.string "Stay with me. This is our first\n"
++	.string "real tag fight.$"
++
++Route25_Text_RocketGoldDustArgument::
++	.string "ROCKET: Back away from BILL's\n"
++	.string "machine. The boss claimed this\l"
++	.string "WorldLink reading.\p"
++	.string "GOLD DUST: Claimed?\n"
++	.string "You shook MT. MOON and cracked a\l"
++	.string "sellable anchor.\p"
++	.string "ROCKET: We pull regions.\n"
++	.string "You sell scraps.\p"
++	.string "GOLD DUST: And you ruin inventory.\p"
++	.string "RED: They can argue later.\n"
++	.string "They are moving on us now!$"
++
++Route25_Text_RocketTagDefeat::
++	.string "The cape signal spiked!$"
++
++Route25_Text_GoldDustTagDefeat::
++	.string "That fossil should have been ours!$"
++
++Route25_Text_RedGoldDustTagVictory::
++	.string "RED: We did it.\p"
++	.string "You watched the left side, I read\n"
++	.string "their rhythm, and they broke first.\p"
++	.string "That was our first tag win.\n"
++	.string "Remember how it felt.\p"
++	.string "If ROCKET and GOLD DUST are already\n"
++	.string "fighting over KANTO's anchors, every\l"
++	.string "region will have its own war.$"
++
++Route25_Text_RedGoldDustTagPostBattle::
++	.string "RED: BILL's cottage is clear for now.\p"
++	.string "Help him, then we watch VERMILION.\n"
++	.string "BLUE heard I was traveling with you.\l"
++	.string "He is not going to take that quietly.$"
++
+ Route25_Text_JoeyIntro::
+ 	.string "Local TRAINERS come here to\n"
+ 	.string "practice.$"
+@@ -127,4 +190,3 @@
+ 	.string "Hello, are you here alone?\p"
+ 	.string "If you're out at CERULEAN's cape…\n"
+ 	.string "Well, it should be as a couple.$"
+-
+--- a/data/maps/Route25_SeaCottage_Frlg/scripts.inc
++++ b/data/maps/Route25_SeaCottage_Frlg/scripts.inc
+@@ -303,8 +303,10 @@
+ 	.string "Hey!\n"
+ 	.string "What's with that skeptical look?\p"
+ 	.string "I'm not joshing you, pal.\p"
+-	.string "I screwed up an experiment and got\n"
+-	.string "combined with a POKéMON!\p"
++	.string "I tested a WorldLink pulse with a\n"
++	.string "gold fossil shard, and my TELEPORTER\l"
++	.string "went wild.\p"
++	.string "Now I'm combined with a POKéMON!\p"
+ 	.string "So, how about it?\n"
+ 	.string "Help me out here!$"
+ 
+@@ -316,8 +318,10 @@
+ 	.string "Hey!\n"
+ 	.string "What's with that skeptical look?\p"
+ 	.string "I'm not joshing you, lady.\p"
+-	.string "I screwed up an experiment and got\n"
+-	.string "combined with a POKéMON!\p"
++	.string "I tested a WorldLink pulse with a\n"
++	.string "gold fossil shard, and my TELEPORTER\l"
++	.string "went wild.\p"
++	.string "Now I'm combined with a POKéMON!\p"
+ 	.string "So, how about it?\n"
+ 	.string "Help me out here!$"
+ 
+@@ -325,7 +329,9 @@
+ 	.string "Wait till I get inside the\n"
+ 	.string "TELEPORTER.\p"
+ 	.string "When I do, go to my PC and run\n"
+-	.string "the Cell Separation System.$"
++	.string "the Cell Separation System.\p"
++	.string "If the screen flashes gold, ignore\n"
++	.string "it. That's the WorldLink residue.$"
+ 
+ Route25_SeaCottage_Text_NoPleaseChief::
+ 	.string "No!?\n"
+@@ -402,4 +408,3 @@
+ 
+ Route25_SeaCottage_Text_SeeWhichMon::
+ 	.string "Which POKéMON do you want to see?$"
+-
+--- a/include/constants/opponents_frlg.h
++++ b/include/constants/opponents_frlg.h
+@@ -627,12 +627,14 @@
+ #define TRAINER_CHAMPION_REMATCH_BULBASAUR         621
+ #define TRAINER_CHAMPION_REMATCH_CHARMANDER        622
+ #define TRAINER_CUE_BALL_PAXTON                    623
++#define TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS    624
++#define TRAINER_GOLD_DUST_BROKER_AUREL             625
+ 
+ // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
+ //       only space for 25 additional trainers before trainer flag space overflows.
+ //       MAX_TRAINERS_COUNT_FRLG can be increased but will take up additional saveblock space
+ 
+-#define TRAINERS_COUNT_FRLG                      624
++#define TRAINERS_COUNT_FRLG                      626
+ #define MAX_TRAINERS_COUNT_FRLG                  768
+ 
+ #endif  // GUARD_CONSTANTS_OPPONENTS_FRLG_H
+--- a/src/data/trainers_frlg.party
++++ b/src/data/trainers_frlg.party
+@@ -13793,4 +13793,38 @@
+ 
+ Muk
+ Level: 39
++IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
++
++=== TRAINER_TEAM_ROCKET_GRUNT_ROUTE25_NEXUS ===
++Name: GRUNT
++Class: Team Rocket Frlg
++Pic: Rocket Grunt M Frlg
++Gender: Male
++Music: Aqua
++Double Battle: No
++AI: Check Bad Move
++
++Koffing
++Level: 18
++IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
++- Smog
++- Tackle
++- Smokescreen
++- Assurance
++
++=== TRAINER_GOLD_DUST_BROKER_AUREL ===
++Name: AUREL
++Class: Burglar Frlg
++Pic: Burglar Frlg
++Gender: Male
++Music: Suspicious
++Double Battle: No
++AI: Check Bad Move
++
++Meowth
++Level: 18
+ IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
++- Pay Day
++- Bite
++- Fake Out
++- Sand Attack
