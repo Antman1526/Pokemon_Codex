@@ -214,6 +214,23 @@ python3 tools/validate_native_route1_wild_encounter_slice.py
 godot --headless --path native/nexus-red --script tests/route1_wild_encounter_test.gd
 ```
 
+### Task 7.8: Add minimal wild encounter loop
+
+Acceptance:
+
+- Route 1 wild encounters initialize deterministic HP from encounter data.
+- Full-HP capture is blocked in the first loop.
+- A simple player attack lowers wild HP without knocking out the tutorial catch.
+- A damaged first wild encounter can be caught with a deterministic `catch_success` result.
+- Red gives first-capture coaching during the loop.
+
+Verification:
+
+```sh
+python3 tools/validate_native_wild_encounter_loop_slice.py
+godot --headless --path native/nexus-red --script tests/wild_encounter_loop_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

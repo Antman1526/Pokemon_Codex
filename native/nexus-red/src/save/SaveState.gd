@@ -153,7 +153,7 @@ func start_wild_encounter(encounter: Dictionary) -> void:
 
 func finish_wild_encounter(result: String) -> void:
 	last_encounter_result = result
-	if result == "placeholder_catch" and not active_encounter_data.is_empty():
+	if result in ["catch_success", "placeholder_catch"] and not active_encounter_data.is_empty():
 		var species := str(active_encounter_data.get("species", ""))
 		if species != "":
 			_add_capture(species)

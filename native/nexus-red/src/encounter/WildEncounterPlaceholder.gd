@@ -2,22 +2,41 @@ extends Control
 
 signal encounter_finished(result)
 
+const CaptureRules := preload("res://src/encounter/CaptureRules.gd")
+
 var save_state
 var encounter_data: Dictionary = {}
 var dialogue_label: Label
+var wild_status_label: Label
+var wild_hp := 0
+var wild_max_hp := 0
+var action_count := 0
+var capture_attempts := 0
+var capture_rules := CaptureRules.new()
 
 
 func _ready() -> void:
 	if encounter_data.is_empty() and save_state:
 		encounter_data = save_state.active_encounter_data
+	_initialize_loop_state()
 	_build_encounter_screen()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
-		finish_placeholder_catch()
+		if action_count == 0:
+			attack_wild()
+		else:
+			attempt_capture()
 	if event.is_action_pressed("cancel"):
-		finish_placeholder_run()
+		run_from_encounter()
+
+
+func _initialize_loop_state() -> void:
+	wild_max_hp = capture_rules.calculate_max_hp(encounter_data)
+	wild_hp = wild_max_hp
+	action_count = 0
+	capture_attempts = 0
 
 
 func _build_encounter_screen() -> void:
@@ -78,8 +97,17 @@ func _build_encounter_screen() -> void:
 	wild_label.add_theme_font_size_override("font_size", 22)
 	add_child(wild_label)
 
+	wild_status_label = Label.new()
+	wild_status_label.text = _wild_status_text()
+	wild_status_label.anchor_left = 0.58
+	wild_status_label.anchor_top = 0.34
+	wild_status_label.anchor_right = 0.92
+	wild_status_label.anchor_bottom = 0.4
+	wild_status_label.add_theme_font_size_override("font_size", 18)
+	add_child(wild_status_label)
+
 	dialogue_label = Label.new()
-	dialogue_label.text = "Red: Keep your hand steady. Press Z or Enter to record a placeholder catch, or X/Esc to run."
+	dialogue_label.text = "Red: Keep your hand steady. Press Z or Enter to weaken it first, then press again to throw. X/Esc runs."
 	dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	dialogue_label.anchor_left = 0.06
 	dialogue_label.anchor_top = 0.82
@@ -90,11 +118,36 @@ func _build_encounter_screen() -> void:
 	add_child(dialogue_label)
 
 
+func attack_wild() -> void:
+	var damage := capture_rules.calculate_attack_damage(_player_starter(), encounter_data)
+	wild_hp = max(1, wild_hp - damage)
+	action_count += 1
+	_update_wild_status()
+	if dialogue_label:
+		dialogue_label.text = "Red: Good. You lowered %s to %d/%d HP. Now throw clean before it slips away." % [_wild_species(), wild_hp, wild_max_hp]
+
+
+func attempt_capture() -> void:
+	capture_attempts += 1
+	var result := capture_rules.capture_result(wild_hp, wild_max_hp)
+	if result == CaptureRules.CATCH_SUCCESS:
+		if dialogue_label:
+			dialogue_label.text = "Red: That's it. %s is caught. First field capture logged." % _wild_species()
+		emit_signal("encounter_finished", result)
+		return
+	if dialogue_label:
+		dialogue_label.text = "Red: Not yet. Weaken it first so the capture sticks."
+
+
 func finish_placeholder_catch() -> void:
-	emit_signal("encounter_finished", "placeholder_catch")
+	attempt_capture()
 
 
 func finish_placeholder_run() -> void:
+	run_from_encounter()
+
+
+func run_from_encounter() -> void:
 	emit_signal("encounter_finished", "placeholder_run")
 
 
@@ -110,3 +163,12 @@ func _wild_species() -> String:
 
 func _wild_level() -> int:
 	return int(encounter_data.get("level", 1))
+
+
+func _wild_status_text() -> String:
+	return "%s HP: %d/%d" % [_wild_species(), wild_hp, wild_max_hp]
+
+
+func _update_wild_status() -> void:
+	if wild_status_label:
+		wild_status_label.text = _wild_status_text()
