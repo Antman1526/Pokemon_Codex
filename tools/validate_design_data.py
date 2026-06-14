@@ -63,7 +63,7 @@ def validate_regions(data) -> list[str]:
         "alola",
         "galar",
         "paldea",
-        "world_nexus_championship",
+        "nexus_island",
     }
     missing = expected - set(regions)
     if missing:

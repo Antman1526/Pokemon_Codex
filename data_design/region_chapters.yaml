@@ -26,7 +26,7 @@ regions:
     exit_destination: Hoenn
     exit_method: global ferry routes
     theme: "Tradition and old legends warn against forced unity."
-    villain_focus: [team_rocket_remnants, team_moonlight]
+    villain_focus: [team_rocket_remnants, team_moonlight, team_gold_dust]
     mechanic_focus: [day_night, friendship, roaming_legends, rematches]
     required_story_beats:
       - Silver joins the rival network.
@@ -43,7 +43,7 @@ regions:
     exit_destination: Sinnoh
     exit_method: Devon/Steven research transit
     theme: "Land and sea collapse when extremists receive outside technology."
-    villain_focus: [team_magma, team_aqua, team_rocket_smugglers, team_gold_dust]
+    villain_focus: [team_magma, team_aqua, team_rocket_smugglers, team_gold_dust, team_gas]
     mechanic_focus: [weather, diving, expanded_fishing, secret_areas]
     required_story_beats:
       - Brendan or May joins as weather research rival.
@@ -60,13 +60,13 @@ regions:
     exit_destination: Unova
     exit_method: Looker investigation route
     theme: "The world has a memory, and ancient space-time scars are reopening."
-    villain_focus: [team_galactic, team_phoenix, team_moonlight]
+    villain_focus: [team_phoenix, team_moonlight, team_gold_dust, nexus_order]
     mechanic_focus: [space_time_anomalies, ancient_forms, ruins, lore_dungeons]
     required_story_beats:
       - Cynthia becomes lore mentor.
       - Dawn or Lucas joins as ruins rival.
       - Phoenix revives unstable ancient forms.
-      - Galactic prototypes Nexus-style space-time machinery.
+      - Nexus Order observers test space-time machinery through stolen myth research.
       - Giratina reveals the Meridian Engine tears false corridors.
     gym_structure: classic_8_gyms_plus_distortion_climax
     compression_policy: "Prioritize Jubilife, Eterna, Celestic, lakes, Mt. Coronet, Spear Pillar, Distortion World."
@@ -77,11 +77,11 @@ regions:
     exit_destination: Kalos
     exit_method: AZ energy document lead
     theme: "Truth and ideals collide with the ethics of catching and controlling Pokemon."
-    villain_focus: [team_plasma, team_rocket_finance, team_gold_dust]
+    villain_focus: [team_clover, team_rocket_finance, team_gold_dust, nexus_order]
     mechanic_focus: [reputation_choices, battle_subway, rotating_battle_formats]
     required_story_beats:
       - N challenges the World Pokedex morally.
-      - Plasma splits into liberation allies and Ghetsis loyalists.
+      - Team Clover publicly preaches harmony while secretly manipulating breeding lines and rare encounters.
       - Rocket launders money through Castelia imports.
       - Gold Dust runs rare Pokemon auctions.
       - Truth, Ideals, or Balance choice affects final support.
@@ -94,12 +94,12 @@ regions:
     exit_destination: Alola
     exit_method: Sycamore/AZ Ultra energy lead
     theme: "Beauty without compassion becomes destruction."
-    villain_focus: [team_flare, team_gold_dust, nexus_order_observers]
+    villain_focus: [team_phoenix, team_gold_dust, nexus_order]
     mechanic_focus: [mega_evolution, customization, style_rank]
     required_story_beats:
       - Serena or Calem joins as Mega/style rival.
       - Gold Dust funds rare Mega Stone access.
-      - Lysandre reframes Nexus as selective survival.
+      - Team Phoenix reframes Nexus energy as the power to destroy and rebirth the world.
       - AZ recognizes the Meridian energy pattern.
       - Keystone Resonator unlocks full Mega system.
     gym_structure: classic_8_gyms
@@ -111,11 +111,11 @@ regions:
     exit_destination: Galar
     exit_method: Aether energy shipment data
     theme: "Family, islands, and Ultra Space resist being controlled."
-    villain_focus: [aether_corruption, team_skull, nexus_wormhole_unit]
+    villain_focus: [team_moonlight, team_clover, nexus_order]
     mechanic_focus: [z_moves, trials, regional_variants, ultra_beasts]
     required_story_beats:
       - Island trials replace the standard gym rhythm.
-      - Team Skull becomes an ally network.
+      - Team Clover charity sites hide rare-egg and blessing experiments.
       - Lillie's family arc anchors the chapter.
       - Ultra Beasts become boss encounters.
       - Solgaleo or Lunala proves safe dimensional travel is possible.
@@ -128,13 +128,13 @@ regions:
     exit_destination: Paldea
     exit_method: Sonia trace to Area Zero research network
     theme: "Spectacle hides energy infrastructure."
-    villain_focus: [macro_cosmos, team_rocket_betting, team_gold_dust]
+    villain_focus: [team_gas, team_rocket_betting, team_gold_dust, nexus_order]
     mechanic_focus: [dynamax_power_spots, raids, stadium_bosses]
     required_story_beats:
       - Marnie is primary Galar rival with Hop and Bede as recurring bosses.
       - Rocket runs illegal stadium betting.
       - Gold Dust monopolizes raid rewards.
-      - Rose sees Meridian energy as a solution.
+      - Team Gas sells Meridian-powered industrial dependency as the solution to Galar's energy future.
       - Eternatus energy is stolen during the climax.
     gym_structure: stadium_gyms_champion_cup
     compression_policy: "Prioritize Motostoke, Hammerlocke, Spikemuth, Wyndon, Rose Tower, Energy Plant."
@@ -142,34 +142,37 @@ regions:
   paldea:
     order: 9
     arrival_hub: Mesagoza Academy
-    exit_destination: World Nexus Championship
+    exit_destination: Nexus Island
     exit_method: academy summit and Area Zero discovery
     theme: "Treasure is purpose, not power."
-    villain_focus: [team_star_misunderstanding, team_phoenix, nexus_order]
+    villain_focus: [team_phoenix, team_clover, nexus_order]
     mechanic_focus: [terastallization, open_objective_board, area_zero]
     required_story_beats:
       - Academy becomes global research hub.
       - Nemona becomes final friendly rival.
       - Penny exposes Nexus communications.
       - Arven's Titan quest ties Herba Mystica to ecological repair.
+      - Team Clover school outreach hides fortune-based recruitment.
       - Area Zero reveals the Meridian Engine imitates natural convergence.
     gym_structure: compressed_three_path_structure
     compression_policy: "Use academy board to combine gyms, Titans, Team Star bases, and Area Zero."
 
-  world_nexus_championship:
+  nexus_island:
     order: 10
-    arrival_hub: World Nexus Stadium
+    arrival_hub: Nexus Port City
     exit_destination: Postgame World Roam
-    exit_method: Meridian Engine defeat
-    theme: "The entire world chooses connection without control."
-    villain_focus: [nexus_order, team_rocket_schism, all_villain_fallout]
-    mechanic_focus: [championship_ladder, rival_tournament, legendary_trials, final_dungeon]
+    exit_method: Giovanni defeated and Nexus convergence stabilized
+    theme: "Every region's conflict collides on the island where the hidden world energy reaches the surface."
+    villain_focus: [team_rocket, team_magma, team_aqua, team_phoenix, team_moonlight, team_gold_dust, team_gas, team_clover, nexus_order]
+    mechanic_focus: [full_final_region, faction_war, championship_ladder, rival_tournament, legendary_trials, final_dungeon]
     required_story_beats:
-      - Ten-rival ladder resolves.
-      - Villain teams attack tournament districts.
-      - Giovanni chooses control, revenge, or retreat based on flags.
-      - Legendary guardians stabilize regional energy.
-      - Caelum Voss activates the Meridian Engine.
+      - Nexus Port City enters lockdown after every faction lands.
+      - Antman rescues island towns from faction commanders.
+      - Villain leaders betray each other across jungle, volcano, industrial coast, moonlit forest, desert ruins, clover sanctuary, deep-sea trench, and Rocket metropolis zones.
+      - Ten-rival ladder resolves before the final mountain ascent.
+      - Red, Ash, Misty, Brock, Blue, May, and Bill coordinate the final counteroffensive.
+      - Giovanni activates Rocket's underground capital and attempts to seize the Nexus convergence.
+      - Nexus Order reveals it manipulated the faction war but remains the hidden meta-villain behind the energy crisis.
+      - Legendary guardians stabilize regional energy before Antman faces Giovanni.
     gym_structure: champion_ladder_and_final_boss
-    compression_policy: "Final chapter uses hubs, gauntlets, and set-piece dungeons instead of another full region."
-
+    compression_policy: "Full final-region chapter with towns, routes, caves, ruins, beaches, forests, mountains, labs, villain bases, hidden bosses, and postgame world rematches."

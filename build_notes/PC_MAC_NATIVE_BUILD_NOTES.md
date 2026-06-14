@@ -4,7 +4,21 @@ Date: 2026-06-14
 
 ## Current Status
 
-The repository does not yet contain a native PC/Mac game project.
+The repository contains the first native Godot shell under:
+
+```text
+native/nexus-red/
+```
+
+The first playable slice currently covers:
+
+- title screen,
+- New Game flow,
+- Antman's bedroom,
+- Mom opening-scene prompt,
+- placeholder WorldLink panel,
+- save-state skeleton,
+- native content data for regions, factions, companions, and opening feed.
 
 Godot is installed locally:
 
@@ -58,6 +72,14 @@ Expected future dev command:
 godot --path native/nexus-red
 ```
 
+Native shell validation:
+
+```sh
+python3 tools/validate_native_godot_shell.py
+godot --headless --path native/nexus-red --check-only --quit
+godot --headless --path native/nexus-red --script tests/smoke_test.gd
+```
+
 Expected future export commands:
 
 ```sh
@@ -67,14 +89,11 @@ godot --headless --path native/nexus-red --export-release "macOS" builds/macos/P
 
 ## Next Build Step
 
-Create `native/nexus-red/` as a Godot project with:
+Next build step:
 
-- title/menu scene,
-- Antman's bedroom scene,
-- input map,
-- save skeleton,
-- region/chapter data loader,
-- WorldLink UI placeholder,
-- local validation command.
+- add the Oak lab transition,
+- add the 39-starter selector prototype,
+- add the first Blue rival pressure scene,
+- keep battle and full creature data out of scope until the starter flow is stable.
 
-Do not port all nine regions at once. Start with a playable native Kanto shell, then expand chapter by chapter.
+Do not port all nine regions at once. Keep expanding the playable native Kanto shell, then build chapter by chapter.

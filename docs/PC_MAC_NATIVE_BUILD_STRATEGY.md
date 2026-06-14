@@ -6,7 +6,7 @@ Legacy target: the `.gba`/OpenEmu work remains useful as a prototype and nostalg
 
 ## 1. High-Level Decision
 
-Pokemon Nexus Red should move to a native desktop fan-game architecture for the complete vision: Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, Paldea, the World Nexus Championship, all Pokemon through Generation 9, full companion arcs, WorldLink, 10 rivals, modern battle systems, and long-form region progression.
+Pokemon Nexus Red should move to a native desktop fan-game architecture for the complete vision: Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, Paldea, and the final full-region Nexus Island chapter, all Pokemon through Generation 9, full companion arcs, WorldLink, 10 rivals, modern battle systems, and long-form region progression.
 
 Proposed: build one native game, not two separate versions. The same project exports to:
 
@@ -40,14 +40,15 @@ Title: `POKEMON NEXUS RED`
 
 Subtitle direction: `A World Circuit Adventure`
 
-Tone: warmer adventure with serious villain pressure. Red is Antman's full-game friend and recurring AI companion. Brock, Misty, and May are mandatory recurring story companions, with later regional friends joining chapter arcs.
+Tone: warmer adventure with serious villain pressure. Red is Antman's primary full-game friend and recurring AI companion. Ash, Misty, and Brock are long-term recurring travel-party companions, while Blue, May, and Bill rotate into major arcs.
 
 Primary player fantasy:
 
 - Start in Pallet Town as Antman, a new trainer following Red's path.
 - Travel one region at a time, in story order.
 - See rivals progress through WorldLink without turning region travel into quick-jump teleporting.
-- Complete a full global Pokemon journey where every region's original story is honored, twisted, and tied into the Meridian/Nexus crisis.
+- Complete a full global Pokemon journey where every region's original story spirit is honored, twisted through the custom faction war, and tied into the Meridian/Nexus crisis.
+- End on Nexus Island, a full final-region chapter where Giovanni, Team Rocket, every rival, every companion, all visible factions, and the hidden Nexus Order collide.
 
 ## 4. Native Architecture
 
@@ -75,7 +76,7 @@ native/nexus-red/
       alola/
       galar/
       paldea/
-      world_nexus_championship/
+      nexus_island/
     trainers/
     pokemon/
     moves/
@@ -86,7 +87,9 @@ native/nexus-red/
   exports/
 ```
 
-Data first, scenes second. Region chapters, trainers, encounters, marts, WorldLink notifications, companion scenes, and boss teams should live in structured data files. Godot scenes should render and execute that data, not hard-code every event.
+Data first, scenes second. Region chapters, trainers, encounters, marts, WorldLink notifications, companion scenes, faction wars, and boss teams should live in structured data files. Godot scenes should render and execute that data, not hard-code every event.
+
+Internal source should use generic names such as creature, trainer, region, faction, companion, and WorldLink. Design docs can preserve Pokemon-style references, but source/data should stay swap-friendly where practical.
 
 ## 5. Core Systems To Build Natively
 
@@ -135,14 +138,14 @@ Rule: all base Pokemon must be catchable before the final boss through normal st
 
 ### WorldLink
 
-WorldLink is a signature native UI system, not a simple message box.
+WorldLink is a signature native UI system, not a simple message box. It should look like a polished HD FireRed-era trainer device, not a modern phone.
 
 Pages:
 
 - Feed: rival captures, badge wins, villain alerts, companion notes.
 - Map: current region route status and next story objective.
 - Rivals: 10 rival profiles, progress, recent team notes.
-- Companions: Red, Brock, Misty, May, and rotating regional allies.
+- Companions: Red, Ash, Brock, Misty, May, Bill, Blue, and rotating regional allies.
 - Pokedex Checklist: optional catch guidance, not forced guidance.
 - Settings: notification frequency, digest mode, difficulty/Nuzlocke toggles.
 
@@ -150,7 +153,7 @@ Rule: WorldLink notifications pause during caves, dungeons, hideouts, ruins, tow
 
 ### Companions
 
-Red is a warm full-game friend:
+Red is the primary full-game companion:
 
 - appears frequently,
 - travels with Antman during story routes,
@@ -159,7 +162,19 @@ Red is a warm full-game friend:
 - joins AI-controlled tag battles,
 - never fights Antman's gym battles for him.
 
-Brock and Misty become mandatory recurring companions after their Kanto arcs. May becomes the major Hoenn field-research companion. Later chapters add regional companions without replacing Red.
+Ash, Brock, and Misty become long-term recurring companions after their Kanto arcs. Blue remains the rival-to-ally pressure point, May becomes the major Hoenn field-research companion, and Bill becomes the technical systems ally. Later chapters add regional companions without replacing Red.
+
+### Visual Direction
+
+Classic FireRed style, upgraded for native PC/Mac:
+
+- top-down tile-based towns, routes, interiors, caves, forests, gyms, labs, and battle presentation;
+- higher-detail HD pixel tiles and cleaner palettes;
+- smoother character animation;
+- weather and day/night lighting;
+- improved water, grass, cave, and city effects;
+- polished menus and WorldLink UI;
+- widescreen-native layout while preserving FireRed readability.
 
 ### QoL And Player Options
 
@@ -186,7 +201,7 @@ Native build should include all requested QoL:
 
 ## 6. Build Commands
 
-Godot is not currently installed on this machine. Once installed and export templates are configured, use commands shaped like:
+Godot 4.6.3 and matching export templates are installed on this machine. Use commands shaped like:
 
 ```sh
 godot --headless --path native/nexus-red --export-release "Windows Desktop" builds/windows/PokemonNexusRed.exe
@@ -199,7 +214,7 @@ Expected local dev command:
 godot --path native/nexus-red
 ```
 
-Until Godot is installed, repository validation should focus on data/spec consistency rather than binary export.
+Until export presets exist in the Godot project, repository validation should focus on data/spec consistency and headless project checks rather than binary export.
 
 ## 7. Migration Plan
 
@@ -259,9 +274,11 @@ Build each region as a complete chapter, in order:
 6. Alola
 7. Galar
 8. Paldea
-9. World Nexus Championship
+9. Nexus Island
 
-Each chapter must include its original story spine, Nexus twist, villain conflict, companion/rival content, mechanic spotlight, and exit hook.
+Each chapter must include its original story spine, Nexus twist, custom faction conflict, companion/rival content, mechanic spotlight, and exit hook.
+
+Canonical later-region villain teams such as Galactic, Plasma, Flare, Skull, Macro Cosmos, and Star are not active faction IDs in the native plan. Their story themes are preserved through Rocket, Magma, Aqua, Phoenix, Moonlight, Gold Dust, Gas, Clover, and the hidden Nexus Order.
 
 ## 8. Legal And Asset Rules
 
@@ -282,6 +299,7 @@ The native direction is ready when:
 - GBA/OpenEmu is documented as legacy prototype/reference.
 - Platform targets are machine-validated.
 - The next implementation task can scaffold `native/nexus-red/` without reopening the engine decision.
+- Nexus Island is documented as the full final-region chapter.
 
 ## 10. Immediate Next Recommendation
 

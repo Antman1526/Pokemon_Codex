@@ -1,0 +1,16 @@
+{
+  "current_region": "kanto",
+  "final_region": "nexus_island",
+  "regions": [
+    {"id": "kanto", "order": 1, "display_name": "Kanto", "theme": "Red-style origin arc"},
+    {"id": "johto", "order": 2, "display_name": "Johto", "theme": "Tradition and ruins arc"},
+    {"id": "hoenn", "order": 3, "display_name": "Hoenn", "theme": "Land and sea war arc"},
+    {"id": "sinnoh_hisui", "order": 4, "display_name": "Sinnoh/Hisui", "theme": "Myth and time arc"},
+    {"id": "unova", "order": 5, "display_name": "Unova", "theme": "Ideology and modern cities arc"},
+    {"id": "kalos", "order": 6, "display_name": "Kalos", "theme": "Beauty, war, and ancient weapon arc"},
+    {"id": "alola", "order": 7, "display_name": "Alola", "theme": "Islands and cosmic arc"},
+    {"id": "galar", "order": 8, "display_name": "Galar", "theme": "Stadium and fame arc"},
+    {"id": "paldea", "order": 9, "display_name": "Paldea", "theme": "Academy and open exploration arc"},
+    {"id": "nexus_island", "order": 10, "display_name": "Nexus Island", "theme": "Final full-region faction war"}
+  ]
+}

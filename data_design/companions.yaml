@@ -2,7 +2,7 @@
 
 companions:
   red:
-    role: full_game_travel_companion
+    role: primary_full_game_companion
     frequency: frequent
     can_follow: true
     can_tag_battle: true
@@ -23,7 +23,21 @@ companions:
       alola: [ultra_beast_rescue]
       galar: [stadium_exhibition_training]
       paldea: [area_zero_threshold]
-      world_nexus_championship: [crisis_tag_battle, postgame_friend_battle]
+      nexus_island: [crisis_tag_battle, final_counteroffensive, postgame_friend_battle]
+
+  ash:
+    role: long_term_heroic_battle_companion
+    frequency: frequent_recurring
+    can_follow: situational
+    can_tag_battle: true
+    can_train_player: true
+    can_help_gym_battles: false
+    personality: brave_impulsive_heart_first
+    scene_focus: [heroic_rescues, morale, tag_battles, legendary_courage, rival_encouragement]
+    regional_presence:
+      kanto: [early_friendship, route_ambush_assist, rocket_rescue]
+      kalos: [ancient_weapon_reaction, blue_character_moment]
+      nexus_island: [multi_team_war, final_counteroffensive]
 
   brock:
     role: early_mentor_survival_friend
@@ -36,7 +50,7 @@ companions:
     scene_focus: [field_survival, training, breeding_advice, rock_ground_strategy, fossil_ethics]
     regional_presence:
       kanto: [post_gym_respect, mt_moon_check_in, cerulean_route_camp, rock_tunnel_guidance, cinnabar_fossil_ethics]
-      world_nexus_championship: [prep_room_long_battles]
+      nexus_island: [prep_room_long_battles, faction_war_survival_routes]
 
   misty:
     role: confidence_water_route_friend
@@ -50,7 +64,23 @@ companions:
     regional_presence:
       kanto: [post_gym_respect, vermilion_water_hint, ss_anne_manifest, safari_water_anomaly]
       hoenn: [aqua_kyogre_specialist_scene]
-      world_nexus_championship: [tempo_rematch_doubles_prep]
+      alola: [island_ocean_specialist, moonlight_tide_gate]
+      nexus_island: [tempo_rematch_doubles_prep, deep_sea_trench_support]
+
+  blue:
+    role: rival_to_anti_hero_ally
+    frequency: major_recurring
+    can_follow: rare_story_only
+    can_tag_battle: true
+    can_train_player: false
+    can_help_gym_battles: false
+    personality: arrogant_driven_maturing
+    scene_focus: [rival_pressure, league_challenges, reluctant_alliance, anti_rocket_strategy]
+    regional_presence:
+      kanto: [first_battle, badge_race, league_challenge]
+      kalos: [ancient_weapon_character_moment]
+      paldea: [global_mission_return]
+      nexus_island: [final_rival_gauntlet, rocket_metropolis_assist]
 
   may:
     role: hoenn_field_companion_ecology_friend
@@ -63,12 +93,27 @@ companions:
     scene_focus: [field_research, weather, habitats, ecology, rare_pokemon_tips]
     regional_presence:
       hoenn: [arrival_intro, weather_institute_partner, mt_chimney_reaction, route_119_weather_tracking, sootopolis_evacuation, sky_pillar_aftermath]
-      world_nexus_championship: [research_support_with_ava]
+      nexus_island: [research_support_with_ava, ecological_stabilization]
+
+  bill:
+    role: technical_network_ally
+    frequency: major_system_support
+    can_follow: false
+    can_tag_battle: false
+    can_train_player: false
+    can_help_gym_battles: false
+    personality: brilliant_excitable_systems_minded
+    scene_focus: [storage_network, teleportation, region_linking, energy_patterns, villain_technology]
+    regional_presence:
+      kanto: [storage_intro, route_25_systems_hook]
+      paldea: [academy_energy_decode]
+      nexus_island: [convergence_analysis, rocket_network_countermeasure]
 
 global_rules:
   - "Companions cannot fight Antman's gym battles."
   - "Companions can join villain tag battles and route/dungeon skirmishes."
   - "Companion dialogue should be concise and useful."
-  - "Red is the most frequent companion but should still leave space for Antman's agency."
-  - "Brock and Misty are mandatory recurring companions after their gym arcs."
+  - "Red is the primary full-game companion and should still leave space for Antman's agency."
+  - "Ash, Brock, and Misty are long-term recurring companions after their Kanto arcs."
+  - "Blue, May, and Bill rotate in for major arcs instead of always occupying the active travel party."
   - "Rotate companion presence to avoid overcrowding."

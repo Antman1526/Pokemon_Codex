@@ -1,0 +1,15 @@
+{
+  "primary_antagonist": "team_rocket",
+  "hidden_meta_villain": "nexus_order",
+  "factions": [
+    {"id": "team_rocket", "display_name": "Team Rocket", "leader": "Giovanni", "role": "primary global syndicate"},
+    {"id": "team_magma", "display_name": "Team Magma", "leader": "Maxie", "role": "land and volcanic expansion"},
+    {"id": "team_aqua", "display_name": "Team Aqua", "leader": "Archie", "role": "sea expansion and ocean control"},
+    {"id": "team_phoenix", "display_name": "Team Phoenix", "leader": "Aurelia Voss", "role": "destruction and rebirth"},
+    {"id": "team_moonlight", "display_name": "Team Moonlight", "leader": "Selene Noct", "role": "dreams, memory, shadow, and dimensional paths"},
+    {"id": "team_gold_dust", "display_name": "Team Gold Dust", "leader": "Midas Vale", "role": "wealth, fossils, relics, and rare resources"},
+    {"id": "team_gas", "display_name": "Team Gas", "leader": "Baron Smog", "role": "industrial pollution and energy dependency"},
+    {"id": "team_clover", "display_name": "Team Clover", "leader": "Celia Fortune", "role": "luck, healing, rare encounters, and nature manipulation"},
+    {"id": "nexus_order", "display_name": "Nexus Order", "leader": "Unknown", "role": "hidden meta-villain manipulating regional convergence"}
+  ]
+}

@@ -11,7 +11,7 @@ Move the complete all-nine-region Pokemon Nexus Red vision from a GBA-first impl
 
 - Use Godot 4 as the recommended engine for the native build.
 - Keep story/content data-driven so nine regions, 10 rivals, companions, encounters, trainers, marts, and WorldLink notifications can scale.
-- Preserve FireRed-first visual direction without binding the project to GBA memory, save, or UI constraints.
+- Preserve classic FireRed-style visual direction with upgraded HD pixel visuals, richer lighting, smoother UI, and widescreen readability without binding the project to GBA memory, save, or UI constraints.
 - Start with a Kanto shell and bedroom/lab loop before porting large Pokemon datasets.
 
 ## Phase 1: Native Shell
@@ -47,7 +47,7 @@ Acceptance:
 Verification:
 
 ```sh
-godot --headless --path native/nexus-red --check-only
+godot --headless --path native/nexus-red --check-only --quit
 ```
 
 Files likely touched:
@@ -61,7 +61,7 @@ Files likely touched:
 Acceptance:
 
 - Native project can load region/chapter data from structured files.
-- Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, Paldea, and World Nexus Championship IDs are recognized.
+- Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, Paldea, and Nexus Island IDs are recognized.
 - Current region defaults to Kanto.
 
 Verification:

@@ -1,6 +1,6 @@
 # Pokemon Nexus Red
 
-Pokemon Nexus Red is a nine-region Pokemon ROM-hack/fan-game design project. It begins in Pallet Town with Antman, a new trainer following Red's path, and expands through Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, and Paldea.
+Pokemon Nexus Red is a native PC/Mac monster-taming RPG design project. It begins in Pallet Town with Antman, a new trainer following Red's path, and expands through Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, Paldea, and the final full-region Nexus Island chapter.
 
 The project goal is to create a legal, phased build framework that Claude Code and Codex can implement chapter by chapter. Primary target: native PC/Mac standalone game. Legacy/prototype target: `.gba` playable in OpenEmu.
 
@@ -9,12 +9,12 @@ The native build is the recommended path for the complete all-nine-region game. 
 ## Core Design
 
 - 9 main-series regions connected by one meta-story.
-- FireRed-first visual identity, now aimed at a native PC/Mac build with the GBA/decomp work preserved as a prototype track.
+- Classic FireRed-style visual identity, upgraded for native PC/Mac with HD pixel tiles, richer lighting, smoother UI, and widescreen readability.
 - 39 starter choices: all 27 regional starters plus 12 special starters.
 - 10 rivals traveling the same World Circuit.
 - WorldLink notification feed for rival progress and world events.
 - Team Rocket as the recurring villain network.
-- New organizations: Phoenix, Moonlight, Gold Dust, and Nexus Order.
+- New organizations: Phoenix, Moonlight, Gold Dust, Gas, Clover, and the hidden Nexus Order.
 - Modern mechanics: Physical/Special split, Fairy type, Gen 9-style moves/abilities where supported, level caps, Nuzlocke tools, reusable TMs, Ability Capsules, Infinite Repel, and HM replacement key items.
 
 ## Important Files
@@ -44,6 +44,9 @@ Run:
 ```sh
 python3 tools/validate_design_data.py
 python3 tools/validate_native_platform_strategy.py
+python3 tools/validate_native_godot_shell.py
+godot --headless --path native/nexus-red --check-only --quit
+godot --headless --path native/nexus-red --script tests/smoke_test.gd
 ```
 
 ## Legal Rule

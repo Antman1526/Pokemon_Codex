@@ -45,9 +45,13 @@ non_negotiable_design_carryover:
   - all_9_regions_in_order
   - antman_pallet_town_protagonist
   - red_full_game_warm_companion
-  - brock_misty_may_recurring_companions
+  - red_primary_full_game_companion
+  - ash_misty_brock_long_term_companions
+  - blue_may_bill_major_arc_support
   - 10_rivals_worldlink_progress
   - one_region_at_a_time_story_travel
+  - nexus_island_final_full_region
+  - custom_faction_war_without_later_canonical_team_roster
   - all_pokemon_through_gen_9_catchable_before_final_boss
   - 39_starter_opening_scope
   - physical_special_split
@@ -69,3 +73,5 @@ first_native_milestones:
     description: Full Kanto campaign with Indigo League and Johto unlock.
   - id: johto_native
     description: Johto chapter with Radio Tower, Silver, Ecruteak, and Hoenn unlock.
+  - id: nexus_island_native
+    description: Final full-region island chapter with faction war, Rocket metropolis, legendary convergence, rival gauntlet, and Giovanni final battle.

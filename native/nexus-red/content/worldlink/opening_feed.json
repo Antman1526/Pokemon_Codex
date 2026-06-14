@@ -1,0 +1,8 @@
+{
+  "feed": [
+    {"id": "red_route_1_tracks", "category": "companion", "text": "Red marked strange Route 1 tracks outside town."},
+    {"id": "blue_first_battle_pressure", "category": "rival", "text": "Blue is already asking when the first battle starts."},
+    {"id": "oak_world_migration_alert", "category": "story", "text": "Oak flagged a migration anomaly near the hometown grass line."},
+    {"id": "nexus_island_locked", "category": "region", "text": "Nexus Island remains locked until all regions converge."}
+  ]
+}

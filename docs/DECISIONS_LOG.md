@@ -48,9 +48,9 @@ Implication: the full main story target rises to roughly 100-130 hours, with com
 
 ### Art Direction
 
-Decision: FireRed-first visual style.
+Decision: classic FireRed style, but much better visuals.
 
-Implication: the game should feel visually closest to FireRed in tiles, palette clarity, UI nostalgia, and Kanto identity. Because the recommended engine path is still pokeemerald-expansion, implementation may use Emerald-compatible internals, but the player-facing art direction should be FireRed-first with custom polish.
+Implication: the game should keep top-down tile-based towns, routes, interiors, caves, forests, gyms, labs, and battle presentation, while upgrading to HD pixel tiles, richer palettes, weather/day-night lighting, smoother animation, polished menus, improved battle effects, and widescreen-native readability.
 
 ### Starter Scope
 
@@ -87,6 +87,24 @@ Implication: Red can follow Antman, talk during exploration, help train, and joi
 Decision: Brock, Misty, and May become recurring friends with dedicated scenes.
 
 Implication: Brock becomes an early mentor for training, field survival, and Rock/Ground strategy. Misty becomes a water-route, confidence, and battle-tempo friend. May becomes the Hoenn field-research friend who connects ecology, weather, and the wider World Circuit.
+
+### Ash, Blue, Bill, and Red Companion Model
+
+Decision: Red is the primary full-game companion. Ash, Misty, and Brock are long-term recurring travel-party companions. Blue is the rival who becomes an anti-hero ally, May is the Hoenn ecology companion, and Bill is the technical network ally.
+
+Implication: Red remains the most important companion and should not be replaced by Ash. Ash, Misty, and Brock make the journey feel like a traveling-party story, while Blue, May, and Bill rotate in for major arcs to avoid overcrowding.
+
+### Nexus Island Final Chapter
+
+Decision: the final chapter is Nexus Island, a full final-region-scale island, not a small postgame zone or only a championship hub.
+
+Implication: Nexus Island needs towns, routes, caves, ruins, beaches, forests, mountains, research labs, villain bases, hidden bosses, final rival battles, a full multi-faction war, a Rocket metropolis, legendary convergence, and the final Giovanni battle.
+
+### Native Faction Model
+
+Decision: the native PC/Mac plan uses Rocket, Magma, Aqua, Phoenix, Moonlight, Gold Dust, Gas, Clover, plus the hidden Nexus Order. Later canonical teams such as Galactic, Plasma, Flare, Skull, Macro Cosmos, and Star are dropped as active faction IDs.
+
+Implication: preserve each region's story spirit through the custom faction war instead of carrying every canonical villain team as a separate active organization.
 
 ### Battle Gimmick Scope
 
