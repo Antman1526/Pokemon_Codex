@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_FALKNER_GYM_ARRIVAL
+    trigger: FLAG_FALKNER_GYM_REACHED
+    priority: major
+    text: "Violet Gym arrival confirmed. Falkner is treating Flying as tempo, wind, and route control."
+
+  - id: WL_JOHTO_ZEPHYR_BADGE_REGISTERED
+    trigger: FLAG_ZEPHYR_BADGE_REGISTERED
+    priority: major
+    text: "Zephyr Badge registered. Antman cleared Johto's first badge without Red carrying the battle."
+
+  - id: WL_JOHTO_FIELD_CHECKLIST_UNLOCKED
+    trigger: FLAG_ZEPHYR_BADGE_REGISTERED
+    priority: major
+    text: "Field Checklist page unlocked. Johto routes now surface habitat notes, active objectives, and safe next steps."
+
+  - id: WL_JOHTO_ROUTE32_NEXT
+    trigger: FLAG_ZEPHYR_BADGE_REGISTERED
+    priority: major
+    text: "WorldLink: Route 32 next. Silver moved silently toward Union Cave; Hoenn remains locked."
+
   - id: WL_JOHTO_SPROUT_TOWER_UPPER_ARRIVAL
     trigger: FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED
     priority: major

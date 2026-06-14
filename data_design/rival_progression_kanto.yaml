@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_falkner_battle:
+    player_range: "Falkner Gym battle and Zephyr Badge before Route 32"
+    companions:
+      red:
+        location: Violet Gym entrance
+        event: post_tower_reunion_before_badge
+        notification: "Red met Antman after Sprout Tower and said the Zephyr Badge should be won in Antman's own rhythm."
+      lyra:
+        location: Violet City
+        event: route32_gate_watch
+        notification: "Lyra says Route 32 opens after Falkner and warns that Union Cave is where quiet Johto starts getting loud."
+    rivals:
+      silver:
+        location: Route 32 edge
+        event: silent_route32_departure
+        notification: "Silver watched the Zephyr Badge result without a word and left toward Route 32."
+      ava:
+        location: Elm Lab remote feed
+        event: falkner_bell_record_analysis
+        notification: "Ava says Moonlight's bell record behaves like a route signal, so the Field Checklist needs to go live now."
+
   johto_sprout_tower_upper_floor:
     player_range: "Sprout Tower upper floor before Falkner"
     companions:

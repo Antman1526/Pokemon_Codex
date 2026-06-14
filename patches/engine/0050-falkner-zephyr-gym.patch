@@ -1,0 +1,267 @@
+diff --git a/data/maps/VioletCity_Frlg/map.json b/data/maps/VioletCity_Frlg/map.json
+index d74dc0c94a..58ae4daca3 100644
+--- a/data/maps/VioletCity_Frlg/map.json
++++ b/data/maps/VioletCity_Frlg/map.json
+@@ -120,6 +120,13 @@
+       "elevation": 3,
+       "dest_map": "MAP_SPROUT_TOWER_1F",
+       "dest_warp_id": "0"
++    },
++    {
++      "x": 15,
++      "y": 16,
++      "elevation": 0,
++      "dest_map": "MAP_VIOLET_CITY_GYM",
++      "dest_warp_id": "1"
+     }
+   ],
+   "coord_events": [],
+diff --git a/data/maps/VioletCity_Gym_Frlg/map.json b/data/maps/VioletCity_Gym_Frlg/map.json
+new file mode 100644
+index 0000000000..cb6755f1a2
+--- /dev/null
++++ b/data/maps/VioletCity_Gym_Frlg/map.json
+@@ -0,0 +1,137 @@
++{
++  "id": "MAP_VIOLET_CITY_GYM",
++  "name": "VioletCity_Gym_Frlg",
++  "layout": "LAYOUT_PEWTER_CITY_GYM",
++  "music": "MUS_RG_GYM",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_INDOOR",
++  "allow_cycling": false,
++  "allow_escaping": false,
++  "allow_running": false,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_GYM",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_VIOLET_GYM_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 4,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Gym_Frlg_EventScript_RedAfterTower",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_GYM_AVA_FEED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 8,
++      "y": 11,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Gym_Frlg_EventScript_AvaBellAnalysis",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_GYM_FALKNER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MAN_3",
++      "x": 6,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Gym_Frlg_EventScript_FalknerBattleScene",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_GYM_CHECKLIST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GYM_GUY",
++      "x": 7,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Gym_Frlg_EventScript_FieldChecklist",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_VIOLET_GYM_ROUTE32",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 3,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "VioletCity_Gym_Frlg_EventScript_Route32Next",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 5,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_VIOLET_CITY",
++      "dest_warp_id": "1"
++    },
++    {
++      "x": 6,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_VIOLET_CITY",
++      "dest_warp_id": "1"
++    },
++    {
++      "x": 7,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_VIOLET_CITY",
++      "dest_warp_id": "1"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 4,
++      "y": 12,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "VioletCity_Gym_Frlg_EventScript_GymStatue"
++    },
++    {
++      "type": "sign",
++      "x": 8,
++      "y": 12,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "VioletCity_Gym_Frlg_EventScript_GymStatue"
++    }
++  ]
++}
+diff --git a/data/maps/VioletCity_Gym_Frlg/scripts.inc b/data/maps/VioletCity_Gym_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..7de72bc167
+--- /dev/null
++++ b/data/maps/VioletCity_Gym_Frlg/scripts.inc
+@@ -0,0 +1,73 @@
++VioletCity_Gym_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, VioletCity_Gym_Frlg_OnTransition
++	.byte 0
++
++VioletCity_Gym_Frlg_OnTransition:
++	setflag FLAG_FALKNER_GYM_REACHED
++	end
++
++VioletCity_Gym_Frlg_EventScript_RedAfterTower::
++	msgbox VioletCity_Gym_Frlg_Text_RedAfterTower, MSGBOX_NPC
++	end
++
++VioletCity_Gym_Frlg_EventScript_AvaBellAnalysis::
++	msgbox VioletCity_Gym_Frlg_Text_AvaBellAnalysis, MSGBOX_NPC
++	end
++
++VioletCity_Gym_Frlg_EventScript_FalknerBattleScene::
++	setflag FLAG_ZEPHYR_BADGE_REGISTERED
++	msgbox VioletCity_Gym_Frlg_Text_FalknerBattleScene, MSGBOX_NPC
++	end
++
++VioletCity_Gym_Frlg_EventScript_FieldChecklist::
++	msgbox VioletCity_Gym_Frlg_Text_FieldChecklist, MSGBOX_NPC
++	end
++
++VioletCity_Gym_Frlg_EventScript_Route32Next::
++	msgbox VioletCity_Gym_Frlg_Text_Route32Next, MSGBOX_NPC
++	end
++
++VioletCity_Gym_Frlg_EventScript_GymStatue::
++	msgbox VioletCity_Gym_Frlg_Text_GymStatue, MSGBOX_SIGN
++	end
++
++VioletCity_Gym_Frlg_Text_RedAfterTower::
++	.string "RED: You carried the tower.\p"
++	.string "I am proud of that.\n"
++	.string "Not because you won alone.\p"
++	.string "Because you listened before\n"
++	.string "you pushed forward.$"
++
++VioletCity_Gym_Frlg_Text_AvaBellAnalysis::
++	.string "AVA: Bell analysis complete.\p"
++	.string "MOONLIGHT changed the record\n"
++	.string "like it was a route signal.\p"
++	.string "After this badge, I am turning\n"
++	.string "on your Field Checklist page.$"
++
++VioletCity_Gym_Frlg_Text_FalknerBattleScene::
++	.string "FALKNER: Flying-type control lesson.\p"
++	.string "Wind wins by reading pressure,\n"
++	.string "not by pretending it is stone.\p"
++	.string "Your rhythm held. ZEPHYR BADGE registered.\p"
++	.string "Let this badge remind you:\n"
++	.string "routes move before enemies do.$"
++
++VioletCity_Gym_Frlg_Text_FieldChecklist::
++	.string "Field Checklist page unlocked.\p"
++	.string "WorldLink will now mark active\n"
++	.string "routes, habitat notes, and safe\l"
++	.string "next steps for Johto.$"
++
++VioletCity_Gym_Frlg_Text_Route32Next::
++	.string "SILVER left without a word.\p"
++	.string "That is worse than bragging.\n"
++	.string "He is already reading Route 32.\p"
++	.string "WorldLink: Route 32 next.\n"
++	.string "Hoenn remains locked.$"
++
++VioletCity_Gym_Frlg_Text_GymStatue::
++	.string "VIOLET POKEMON GYM\p"
++	.string "LEADER: FALKNER\p"
++	.string "WINNING TRAINERS:\n"
++	.string "{PLAYER}$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index c3c33095e4..96c7813804 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -864,6 +864,7 @@
+     "Route30_Frlg",
+     "MrPokemonsHouse_Frlg",
+     "VioletCity_Frlg",
++    "VioletCity_Gym_Frlg",
+     "SproutTower_1F_Frlg",
+     "SproutTower_Upper_Frlg",
+     "ViridianCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 1cb80ed4ed..1046f16902 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -154,8 +154,8 @@
+ #define FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED   0x0B1
+ #define FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED   0x0B2
+ #define FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED   0x0B3
+-#define FLAG_0x0B4               0x0B4
+-#define FLAG_0x0B5               0x0B5
++#define FLAG_FALKNER_GYM_REACHED   0x0B4
++#define FLAG_ZEPHYR_BADGE_REGISTERED   0x0B5
+ #define FLAG_0x0B6               0x0B6
+ #define FLAG_0x0B7               0x0B7
+ #define FLAG_0x0B8               0x0B8
