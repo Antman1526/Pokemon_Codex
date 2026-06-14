@@ -66,6 +66,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-14 12:29 CDT: Codex built the Pokemon Mansion Phoenix field-test milestone from patches `0001` through `0031`. Full validator suite passed, including `validate_pokemon_mansion_phoenix_field_test.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.71%. This milestone turns Mansion exploration into the first Phoenix pressure dungeon, keeps the first Phoenix-linked battle on existing Scientist Ted, and makes the Secret Key a Blaine handoff.
+- 2026-06-14 13:05 CDT: Codex built the Vermilion Misty Surge refinement from patches `0001` through `0032`. Full patch replay and validator suite passed, including `validate_vermilion_misty_surge_refinement.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.71%. This slice adds Misty-led Surge prep, changes the Rocket grid sabotage payoff to credit Misty's advice, keeps Trail Cutter as a prototype while the full HM replacement system remains pending, and turns the Fan Club Gold Dust clue into a mysterious gold lapel/Celadon auction breadcrumb.
 - 2026-06-14 12:19 CDT: Codex built the Cinnabar Sea Phoenix arrival milestone from patches `0001` through `0030`. Full validator suite passed, including `validate_cinnabar_sea_phoenix_arrival.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.70%. This milestone adds Route 19 Tide Rider guidance, Red's Cinnabar restraint scene, Phoenix first-contact in the Lab, and the Pokemon Mansion Mewtwo/Phoenix echo.
 - 2026-06-14 12:06 CDT: Codex built the Sabrina Moonlight Gym milestone from patches `0001` through `0029`. Full validator suite passed, including `validate_sabrina_moonlight_gym.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.70%. This milestone adds Red and Misty outside Sabrina's distorted Gym, the Moonlight Veil entrance signal, and Marsh Badge WorldLink stabilization toward the sea/Phoenix arc.
 - 2026-06-14 19:20 CDT: Codex built the Silph mid-floors Portable PC milestone from patches `0001` through `0027`. Full validator suite passed, including `validate_silph_mid_floors_portable_pc.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.69%.
@@ -112,6 +113,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0024-safari-gold-dust-field-log.patch` - Ava's Safari Field Log, Gold Dust scout pressure, Warden prize route tease, and Koga status prep.
 - `patches/engine/0025-koga-warden-saffron-lockdown.patch` - Koga status trial, Warden notes theft, and Saffron lockdown handoff.
 - `patches/engine/0026-saffron-silph-lower-floors.patch` - Saffron arrival, Red Silph split, Silph lower floors, and Portable PC full-access teaser.
+- `patches/engine/0032-vermilion-misty-surge-refinement.patch` - Misty-led Surge prep refinement, Trail Cutter prototype wording, and mysterious Fan Club Gold Dust/Celadon clue.
 
 ## Validation
 
@@ -303,6 +305,10 @@ Manual OpenEmu checklist still needed:
 - [ ] Pokemon Mansion 3F Mewtwo birth warning rewrite keeps Mewtwo unresolved and warns about creation without restraint.
 - [ ] Pokemon Mansion B1F Secret Key Blaine handoff text points to Blaine as the next Act 6 objective.
 - [ ] `0031-pokemon-mansion-phoenix-field-test.patch` applies cleanly and `validate_pokemon_mansion_phoenix_field_test.py` passes.
+- [ ] Vermilion Misty-led Surge prep explains grounding the Gym's storm-current pressure.
+- [ ] Vermilion Gym sabotage payoff credits Misty's advice and Trail Cutter remains a prototype.
+- [ ] Fan Club clue uses the gold lapel pin, blank auction card, Celadon stamp, and dust mark.
+- [ ] `0032-vermilion-misty-surge-refinement.patch` applies cleanly and `validate_vermilion_misty_surge_refinement.py` passes.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

@@ -67,12 +67,13 @@ def validate_vermilion() -> list[str]:
         "VermilionCity_EventScript_BlueJealousy",
         "VermilionCity_EventScript_MistyHarbor",
         "RED is waiting around",
-        "I'm in",
         "JOHTO signal detected",
         "Region access locked until KANTO",
     ):
         if marker not in scripts:
             errors.append(f"Vermilion scripts missing marker: {marker}")
+    if "I'm in" not in scripts and "MISTY: Surge is not just a Gym" not in scripts:
+        errors.append("Vermilion scripts missing Misty companion continuation marker")
 
     required_objects = {
         "OBJ_EVENT_GFX_RED": "VermilionCity_EventScript_RedHarbor",

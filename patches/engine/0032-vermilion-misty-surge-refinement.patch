@@ -1,0 +1,67 @@
+--- a/data/maps/VermilionCity_Frlg/scripts.inc
++++ b/data/maps/VermilionCity_Frlg/scripts.inc
+@@ -348,14 +348,16 @@
+ 	.string "check inside.$"
+ 
+ VermilionCity_Text_MistyHarborPostCrisis::
+-	.string "MISTY: Okay, I'm in.\p"
+-	.string "Not for your Gym battles--those are\n"
+-	.string "yours to win.\p"
+-	.string "But for ROCKET, GOLD DUST, and\n"
+-	.string "whatever JOHTO signal woke up?\p"
+-	.string "You, RED, and I are a team.\p"
+-	.string "SURGE's power is pulling like a\n"
+-	.string "storm current. Don't ignore it.$"
++	.string "MISTY: Surge is not just a Gym\n"
++	.string "challenge.\p"
++	.string "His power grid is acting like a\n"
++	.string "storm tide.\p"
++	.string "Water loses to electricity if you\n"
++	.string "meet it head-on. So don't.\p"
++	.string "Ground it. Cut the route.\n"
++	.string "Make him respect your pace.\p"
++	.string "Win the badge your way.\n"
++	.string "I will keep the harbor calm.$"
+ 
+ VermilionCity_Text_GrimerMultipliesInSludge::
+ 	.string "We're careful about pollution here.\p"
+--- a/data/maps/VermilionCity_Gym_Frlg/scripts.inc
++++ b/data/maps/VermilionCity_Gym_Frlg/scripts.inc
+@@ -331,8 +331,8 @@
+ 	.string "lightning-quick anytime, kid!\p"
+ 	.string "WorldLink registered your first\n"
+ 	.string "TRAIL CUTTER prototype, too.\p"
+-	.string "HM01 still works for now, but your\n"
+-	.string "field tools are waking up.\p"
++	.string "Full HM replacement system\n"
++	.string "pending. Field tools are waking.\p"
+ 	.string "You're special, kid!\n"
+ 	.string "Take this!$"
+ 
+@@ -373,7 +373,7 @@
+ 	.string "tag.\p"
+ 	.string "WorldLink Alert: VERMILION GYM\n"
+ 	.string "grid sabotage contained.\p"
+-	.string "RED was right. Bring GROUND answers\n"
++	.string "MISTY was right. Bring GROUND answers\n"
+ 	.string "before you challenge SURGE.$"
+ 
+ VermilionCity_Gym_Text_RocketGridSabotagePostBattle::
+--- a/data/maps/VermilionCity_PokemonFanClub_Frlg/scripts.inc
++++ b/data/maps/VermilionCity_PokemonFanClub_Frlg/scripts.inc
+@@ -201,10 +201,11 @@
+ VermilionCity_PokemonFanClub_Text_ChairmanVeryVocalAboutPokemon::
+ 	.string "Our CHAIRMAN is very vocal about\n"
+ 	.string "POKéMON.\p"
+-	.string "A GOLD DUST collector was here\n"
+-	.string "asking about rare lineages.\p"
+-	.string "He kept saying a CELADON buyer\n"
+-	.string "would pay for perfect records.$"
++	.string "A quiet visitor left a gold lapel pin\n"
++	.string "by the photo wall.\p"
++	.string "With it: a blank auction card\n"
++	.string "stamped CELADON.\p"
++	.string "No name. Just a dust mark.$"
+ 
+ VermilionCity_PokemonFanClub_Text_ListenPolitelyToOtherTrainers::
+ 	.string "Let's all listen politely to other\n"

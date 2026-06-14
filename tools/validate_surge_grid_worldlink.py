@@ -123,13 +123,18 @@ def validate_supporting_text() -> list[str]:
     fan_club = read(ENGINE / "data" / "maps" / "VermilionCity_PokemonFanClub_Frlg" / "scripts.inc")
     vermilion = read(ENGINE / "data" / "maps" / "VermilionCity_Frlg" / "scripts.inc")
 
-    for marker in ("GOLD DUST collector", "CELADON buyer", "rare lineages"):
-        if marker not in fan_club:
-            errors.append(f"Fan Club text missing marker: {marker}")
+    fan_club_old = ("GOLD DUST collector", "CELADON buyer", "rare lineages")
+    fan_club_refined = ("gold lapel pin", "blank auction card", "No name. Just a dust mark")
+    if not all(marker in fan_club for marker in fan_club_old) and not all(
+        marker in fan_club for marker in fan_club_refined
+    ):
+        errors.append("Fan Club text must contain either the original Gold Dust clue or the refined gold-lapel mystery clue")
 
-    for marker in ("SURGE's Gym is pulsing", "Bring a GROUND answer", "SURGE's power is pulling"):
+    for marker in ("SURGE's Gym is pulsing", "Bring a GROUND answer"):
         if marker not in vermilion:
             errors.append(f"Vermilion harbor text missing marker: {marker}")
+    if "SURGE's power is pulling" not in vermilion and "MISTY: Surge is not just a Gym" not in vermilion:
+        errors.append("Vermilion harbor text missing Surge prep marker")
 
     return errors
 

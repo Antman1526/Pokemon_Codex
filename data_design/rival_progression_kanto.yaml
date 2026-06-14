@@ -86,8 +86,8 @@ progression_bands:
         notification: "Red marked the Vermilion Gym grid as Rocket-tampered."
       misty:
         location: Vermilion Harbor
-        event: post_ss_anne_join_and_current_reading
-        notification: "Misty logged the harbor current and confirmed the Johto signal is still locked."
+        event: misty_led_surge_training_and_harbor_watch
+        notification: "Misty read Surge's Gym like a storm current: ground the voltage, cut the route, and win the badge your way."
     rivals:
       blue:
         location: Route 11

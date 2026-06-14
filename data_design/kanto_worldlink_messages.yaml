@@ -51,6 +51,11 @@ messages:
     priority: major
     text: "WorldLink Alert: Vermilion Gym power grid is pulsing with the S.S. Anne manifest frequency."
 
+  - id: WL_KANTO_MISTY_SURGE_PREP
+    trigger: FLAG_GOT_HM01
+    priority: major
+    text: "Misty reads Surge's Gym as a storm current: do not meet voltage head-on, ground it, then win the badge your way."
+
   - id: WL_KANTO_POST_SURGE_RIVAL_BATCH
     trigger: FLAG_BADGE03_GET
     priority: major
