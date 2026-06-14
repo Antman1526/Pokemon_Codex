@@ -578,6 +578,31 @@ progression_bands:
         event: dax_mansion_switch_report
         notification: "Dax reports that the Mansion switches are unfair because they fight back by changing the building instead of throwing punches."
 
+  blaine_phoenix_ethics:
+    player_range: "Secret Key recovery through Volcano Badge"
+    companions:
+      red:
+        location: Cinnabar shore / Gym exit
+        event: red_after_blaine_restraint_reflection
+        notification: "Red says Blaine did not just test fire; he tested whether Antman can refuse power that wants to be worshiped."
+      brock:
+        location: Cinnabar fossil ethics note
+        event: brock_blaine_revival_ethics
+        notification: "Brock marks Blaine's warning in WorldLink: recovery is not ownership, and old life is not a trophy."
+    rivals:
+      blue:
+        location: Cinnabar Gym door rumor
+        event: blue_volcano_badge_pressure
+        notification: "Blue earned the Volcano Badge and went quiet again. WorldLink marks the silence as pressure building toward Viridian."
+      ava:
+        location: Cinnabar Gym ethics log
+        event: ava_blaine_phoenix_ethics_log
+        notification: "Ava logged Blaine's Phoenix warning: rebirth without restraint becomes control."
+      dax:
+        location: Cinnabar Gym quiz rooms
+        event: dax_blaine_quiz_heat_report
+        notification: "Dax says Blaine's quiz machines hit harder than expected because every answer sounded like a warning."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

@@ -163,7 +163,9 @@ acts:
       - mansion_restoration_ledger
       - mansion_mewtwo_birth_warning
       - secret_key_blaine_handoff
+      - blaine_phoenix_ethics_gym
       - blaine_revival_warning
+      - volcano_badge_worldlink_viridian_handoff
       - red_cinnabar_restraint_scene
       - giovanni_viridian_battle
     unlocks: [sky_pass_local, kanto_rematches_tier_1, high_tier_kanto_marts]

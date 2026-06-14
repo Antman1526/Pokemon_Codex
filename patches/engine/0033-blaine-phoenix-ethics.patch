@@ -1,0 +1,127 @@
+diff --git a/data/maps/CinnabarIsland_Gym_Frlg/scripts.inc b/data/maps/CinnabarIsland_Gym_Frlg/scripts.inc
+index e92c2abca8..e9c9fa8299 100644
+--- a/data/maps/CinnabarIsland_Gym_Frlg/scripts.inc
++++ b/data/maps/CinnabarIsland_Gym_Frlg/scripts.inc
+@@ -61,6 +61,7 @@ CinnabarIsland_Gym_EventScript_DefeatedBlaine::
+ 	setvar VAR_MAP_SCENE_CINNABAR_ISLAND, 1
+ 	clearflag FLAG_HIDE_CINNABAR_BILL
+ 	set_gym_trainers_frlg 7
++	msgbox CinnabarIsland_Gym_Text_WorldLinkVolcanoBadge
+ 	goto CinnabarIsland_Gym_EventScript_GiveTM38
+ 	end
+ 
+@@ -711,23 +712,35 @@ CinnabarIsland_Gym_EventScript_OpenDoor6::
+ 
+ CinnabarIsland_Gym_Text_BlaineIntro::
+ 	.string "Hah!\p"
++	.string "You found the Secret Key, then\n"
++	.string "the question behind it.\p"
++	.string "Phoenix calls old fire rebirth.\p"
++	.string "I call creation without restraint\n"
++	.string "a wildfire.\p"
+ 	.string "I am BLAINE, the red-hot LEADER\n"
+ 	.string "of CINNABAR GYM!\p"
+ 	.string "My fiery POKéMON are all rough\n"
+ 	.string "and ready with intense heat!\p"
+ 	.string "They incinerate all challengers!\p"
++	.string "Prove you can command heat without\n"
++	.string "worshiping it.\p"
+ 	.string "Hah!\n"
+ 	.string "You better have BURN HEAL!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
+ 
+ CinnabarIsland_Gym_Text_BlaineDefeat::
+ 	.string "I have burned down to nothing!\n"
+ 	.string "Not even ashes remain!\p"
++	.string "Good. You listened to the fire\n"
++	.string "without letting it own you.\p"
++	.string "Recovery is not ownership.\p"
+ 	.string "You have earned the VOLCANOBADGE.$"
+ 
+ CinnabarIsland_Gym_Text_FireBlastIsUltimateFireMove::
+ 	.string "FIRE BLAST is the ultimate fire\n"
+ 	.string "technique.\p"
+-	.string "Don't waste it on WATER POKéMON.$"
++	.string "Don't waste it on WATER POKéMON.\p"
++	.string "Ask why a thing should return\n"
++	.string "before you teach it to burn again.$"
+ 
+ CinnabarIsland_Gym_Text_ExplainVolcanoBadge::
+ 	.string "Hah!\p"
+@@ -742,8 +755,15 @@ CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine::
+ CinnabarIsland_Gym_Text_BlainePostBattle::
+ 	.string "TM38 contains FIRE BLAST.\n"
+ 	.string "Teach it to FIRE-type POKéMON.\p"
+-	.string "VULPIX or CHARMELEON would be\n"
+-	.string "ideal for that move.$"
++	.string "Viridian's door is moving.\p"
++	.string "Giovanni will not stay hidden once\n"
++	.string "Phoenix learns what you know.$"
++
++CinnabarIsland_Gym_Text_WorldLinkVolcanoBadge::
++	.string "WorldLink: Volcano Badge verified.\p"
++	.string "Phoenix ethics logged.\p"
++	.string "Blaine's warning points back to\n"
++	.string "Viridian's door is moving.$"
+ 
+ CinnabarIsland_Gym_Text_MakeSpaceForThis::
+ 	.string "Make space for this, child!$"
+@@ -759,8 +779,8 @@ CinnabarIsland_Gym_Text_ErikDefeat::
+ CinnabarIsland_Gym_Text_ErikPostBattle::
+ 	.string "Fire, or to be more precise,\n"
+ 	.string "combustion…\p"
+-	.string "…Oxygen in the air…\n"
+-	.string "Blah, blah, blah, blah…$"
++	.string "BLAINE kept the quiz machines\n"
++	.string "because facts need pressure.$"
+ 
+ CinnabarIsland_Gym_Text_QuinnIntro::
+ 	.string "I was a thief, but I went straight\n"
+@@ -782,8 +802,9 @@ CinnabarIsland_Gym_Text_AveryDefeat::
+ 	.string "My studies were insufficient!$"
+ 
+ CinnabarIsland_Gym_Text_AveryPostBattle::
+-	.string "My theories are too complicated\n"
+-	.string "for you to understand.$"
++	.string "My theories were complicated.\p"
++	.string "Blaine made them simple:\n"
++	.string "consent before revival.$"
+ 
+ CinnabarIsland_Gym_Text_RamonIntro::
+ 	.string "I like using FIRE-type POKéMON.\n"
+@@ -809,7 +830,9 @@ CinnabarIsland_Gym_Text_DerekPostBattle::
+ 	.string "Night fell when a fiery bird\n"
+ 	.string "POKéMON appeared.\p"
+ 	.string "Its light allowed BLAINE to find\n"
+-	.string "his way down safely.$"
++	.string "his way down safely.\p"
++	.string "Phoenix heard only the miracle.\n"
++	.string "Blaine remembered the danger.$"
+ 
+ CinnabarIsland_Gym_Text_DustyIntro::
+ 	.string "I've been to many GYMS, but this\n"
+@@ -833,14 +856,19 @@ CinnabarIsland_Gym_Text_ZacDefeat::
+ CinnabarIsland_Gym_Text_ZacPostBattle::
+ 	.string "Water beats fire, of course.\p"
+ 	.string "But fire melts ice, so the FIRE\n"
+-	.string "type beats ICE-type POKéMON.$"
++	.string "type beats ICE-type POKéMON.\p"
++	.string "Power has matchups. So does\n"
++	.string "responsibility.$"
+ 
+ CinnabarIsland_Gym_Text_GymGuyAdvice::
+ 	.string "Yo!\n"
+ 	.string "Champ in the making!\p"
+ 	.string "The hotheaded BLAINE is a FIRE\n"
+ 	.string "POKéMON pro.\p"
++	.string "He also knows Phoenix science\n"
++	.string "better than he wants to.\p"
+ 	.string "Douse his spirits with water!\p"
++	.string "And remember: life is not a trophy.\p"
+ 	.string "You'd better take some\n"
+ 	.string "BURN HEALS, too.$"
+ 
+@@ -898,4 +926,3 @@ CinnabarIsland_Gym_Text_CorrectGoOnThrough::
+ CinnabarIsland_Gym_Text_SorryBadCall::
+ 	.string "Sorry!\n"
+ 	.string "Bad call!$"
+-

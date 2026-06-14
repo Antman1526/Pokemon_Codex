@@ -316,6 +316,16 @@ messages:
     priority: major
     text: "Secret Key recovered. WorldLink routes Antman to Blaine: Cinnabar's fire specialist knows why revival science keeps burning its keepers."
 
+  - id: WL_KANTO_BLAINE_PHOENIX_ETHICS
+    trigger: FLAG_BADGE07_GET
+    priority: major
+    text: "Blaine logged the line Phoenix refuses to respect: recovery is not ownership, and rebirth without restraint becomes control."
+
+  - id: WL_KANTO_VOLCANO_BADGE_VIRIDIAN_HANDOFF
+    trigger: FLAG_BADGE07_GET
+    priority: major
+    text: "Volcano Badge verified. Viridian's door is moving again; Giovanni's final Kanto route is opening under Rocket and Phoenix pressure."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
