@@ -141,13 +141,17 @@ python3 tools/validate_native_platform_strategy.py
 
 Acceptance:
 
-- Player can walk from Pallet to Route 1, Viridian, and Pewter.
-- Red appears for warm training scenes.
+- Player can walk onto a first Route 1 prototype.
+- Red appears for the first warm route companion scene.
+- Blue battle placeholder records first battle pressure before the real battle engine exists.
 - Encounter levels scale with early progression.
 
 Verification:
 
-- Manual 20-minute smoke test.
+```sh
+python3 tools/validate_native_route1_slice.py
+godot --headless --path native/nexus-red --script tests/route1_slice_test.gd
+```
 
 ### Task 8: Build Brock and Pewter Museum anomaly
 

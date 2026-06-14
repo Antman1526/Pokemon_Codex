@@ -28,6 +28,9 @@ func start_new_game(name: String) -> void:
 		"mom_opening_scene_seen": false,
 		"starter_chosen": false,
 		"blue_pressure_scene_seen": false,
+		"route_1_reached": false,
+		"red_route_1_companion_scene_seen": false,
+		"blue_battle_placeholder_seen": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -38,6 +41,13 @@ func start_new_game(name: String) -> void:
 
 func set_flag(flag_name: String, value: bool) -> void:
 	story_flags[flag_name] = value
+
+
+func enter_route_1() -> void:
+	current_scene = "route_1"
+	set_flag("route_1_reached", true)
+	if not worldlink_queue.has("route_1_reached"):
+		worldlink_queue.append("route_1_reached")
 
 
 func choose_starter(selection: Dictionary) -> void:
@@ -51,3 +61,16 @@ func choose_starter(selection: Dictionary) -> void:
 	set_flag("blue_pressure_scene_seen", true)
 	worldlink_queue.append("starter_chosen_" + player_starter.to_lower())
 	worldlink_queue.append("blue_chose_" + blue_starter.to_lower())
+
+
+func record_red_route_1_scene() -> void:
+	active_companion = "red"
+	set_flag("red_route_1_companion_scene_seen", true)
+	if not worldlink_queue.has("red_route_1_companion"):
+		worldlink_queue.append("red_route_1_companion")
+
+
+func record_blue_battle_placeholder() -> void:
+	set_flag("blue_battle_placeholder_seen", true)
+	if not worldlink_queue.has("blue_route_1_battle_placeholder"):
+		worldlink_queue.append("blue_route_1_battle_placeholder")

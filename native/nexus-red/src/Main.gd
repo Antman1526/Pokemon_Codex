@@ -3,6 +3,7 @@ extends Control
 const TitleScreenScene := preload("res://scenes/ui/TitleScreen.tscn")
 const BedroomScene := preload("res://scenes/world/Bedroom.tscn")
 const OakLabScene := preload("res://scenes/world/OakLab.tscn")
+const Route1Scene := preload("res://scenes/world/Route1.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
 const GAME_TITLE := "POKEMON NEXUS RED"
 
@@ -37,12 +38,20 @@ func _on_go_to_oak_lab() -> void:
 	var oak_lab := OakLabScene.instantiate()
 	oak_lab.save_state = save_state
 	oak_lab.return_to_bedroom.connect(_on_return_to_bedroom)
+	oak_lab.go_to_route_1.connect(_on_go_to_route_1)
 	_replace_screen(oak_lab)
 
 
 func _on_return_to_bedroom() -> void:
 	save_state.current_scene = "bedroom"
 	_show_bedroom()
+
+
+func _on_go_to_route_1() -> void:
+	save_state.enter_route_1()
+	var route_1 := Route1Scene.instantiate()
+	route_1.save_state = save_state
+	_replace_screen(route_1)
 
 
 func _replace_screen(next_screen: Control) -> void:

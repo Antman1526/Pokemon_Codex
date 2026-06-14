@@ -3,10 +3,12 @@ extends Control
 const StarterSelector := preload("res://src/starter/StarterSelector.gd")
 
 signal return_to_bedroom
+signal go_to_route_1
 
 var save_state
 var dialogue_label: Label
 var selector: PanelContainer
+var depart_button: Button
 
 
 func _ready() -> void:
@@ -57,8 +59,24 @@ func _build_lab() -> void:
 	selector.starter_selected.connect(_on_starter_chosen)
 	add_child(selector)
 
+	depart_button = Button.new()
+	depart_button.text = "Step onto Route 1"
+	depart_button.visible = false
+	depart_button.anchor_left = 0.36
+	depart_button.anchor_top = 0.68
+	depart_button.anchor_right = 0.64
+	depart_button.anchor_bottom = 0.75
+	depart_button.pressed.connect(_depart_to_route_1)
+	add_child(depart_button)
+
 
 func _on_starter_chosen(selection: Dictionary) -> void:
 	if save_state:
 		save_state.choose_starter(selection)
 	dialogue_label.text = "Blue: You picked %s? Fine. I will take %s and prove I am ahead of you before Route 1." % [selection.get("player_starter", ""), selection.get("blue_starter", "")]
+	if depart_button:
+		depart_button.visible = true
+
+
+func _depart_to_route_1() -> void:
+	emit_signal("go_to_route_1")
