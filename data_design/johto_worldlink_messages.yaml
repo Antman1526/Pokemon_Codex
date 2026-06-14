@@ -1,6 +1,21 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_NEW_BARK_MAP_LIVE
+    trigger: FLAG_NEW_BARK_ARRIVAL_REACHED
+    priority: major
+    text: "WorldLink: Johto active. New Bark Town arrival confirmed. Elm Lab is the next required story node."
+
+  - id: WL_JOHTO_LYRA_FIRST_CONTACT
+    trigger: FLAG_NEW_BARK_ARRIVAL_REACHED
+    priority: major
+    text: "Lyra met Antman and Red in New Bark. Silver's profile moved toward Cherrygrove before first contact."
+
+  - id: WL_JOHTO_HOENN_LOCK_CONFIRMED
+    trigger: FLAG_NEW_BARK_ARRIVAL_REACHED
+    priority: minor
+    text: "Hoenn remains locked. Johto must resolve its tower, Rocket, and legendary anchor crisis first."
+
   - id: WL_JOHTO_ARRIVAL_OBJECTIVE
     trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
     priority: major

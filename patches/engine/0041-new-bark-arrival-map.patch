@@ -1,0 +1,195 @@
+diff --git a/data/maps/NewBarkTown_Frlg/map.json b/data/maps/NewBarkTown_Frlg/map.json
+new file mode 100644
+index 0000000000..b1a2e3026d
+--- /dev/null
++++ b/data/maps/NewBarkTown_Frlg/map.json
+@@ -0,0 +1,85 @@
++{
++  "id": "MAP_NEW_BARK_TOWN",
++  "name": "NewBarkTown_Frlg",
++  "layout": "LAYOUT_PALLET_TOWN",
++  "music": "MUS_RG_PALLET",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SUNNY",
++  "map_type": "MAP_TYPE_TOWN",
++  "allow_cycling": true,
++  "allow_escaping": false,
++  "allow_running": true,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": [],
++  "object_events": [
++    {
++      "local_id": "LOCALID_NEW_BARK_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 11,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_Frlg_EventScript_RedArrival",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_NEW_BARK_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 13,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_Frlg_EventScript_LyraArrival",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_NEW_BARK_ELM_SIGNAL",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 12,
++      "y": 14,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_Frlg_EventScript_ElmSignal",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 9,
++      "y": 11,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "NewBarkTown_Frlg_EventScript_TownSign"
++    },
++    {
++      "type": "sign",
++      "x": 5,
++      "y": 14,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "NewBarkTown_Frlg_EventScript_WorldLinkSign"
++    }
++  ]
++}
+diff --git a/data/maps/NewBarkTown_Frlg/scripts.inc b/data/maps/NewBarkTown_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..bc737b6c13
+--- /dev/null
++++ b/data/maps/NewBarkTown_Frlg/scripts.inc
+@@ -0,0 +1,59 @@
++NewBarkTown_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, NewBarkTown_Frlg_OnTransition
++	.byte 0
++
++NewBarkTown_Frlg_OnTransition:
++	setflag FLAG_NEW_BARK_ARRIVAL_REACHED
++	end
++
++NewBarkTown_Frlg_EventScript_RedArrival::
++	msgbox NewBarkTown_Frlg_Text_RedArrival, MSGBOX_NPC
++	end
++
++NewBarkTown_Frlg_EventScript_LyraArrival::
++	msgbox NewBarkTown_Frlg_Text_LyraArrival, MSGBOX_NPC
++	end
++
++NewBarkTown_Frlg_EventScript_ElmSignal::
++	msgbox NewBarkTown_Frlg_Text_ElmSignal, MSGBOX_NPC
++	end
++
++NewBarkTown_Frlg_EventScript_TownSign::
++	msgbox NewBarkTown_Frlg_Text_TownSign, MSGBOX_SIGN
++	end
++
++NewBarkTown_Frlg_EventScript_WorldLinkSign::
++	msgbox NewBarkTown_Frlg_Text_WorldLinkSign, MSGBOX_SIGN
++	end
++
++NewBarkTown_Frlg_Text_RedArrival::
++	.string "RED: We made it, Antman.\p"
++	.string "Johto feels quieter than KANTO,\n"
++	.string "but not smaller.\p"
++	.string "I'll stay close on the early road.\n"
++	.string "Gyms are yours. Trouble is ours.$"
++
++NewBarkTown_Frlg_Text_LyraArrival::
++	.string "LYRA: Welcome to Johto, Antman!\p"
++	.string "I watched your KANTO feed, but this\n"
++	.string "is better than a profile alert.\p"
++	.string "Silver profile moved toward Cherrygrove\n"
++	.string "before I could get a clean read.\p"
++	.string "Let's not call him an enemy yet.$"
++
++NewBarkTown_Frlg_Text_ElmSignal::
++	.string "ELM: New Bark Lab has your clearance.\p"
++	.string "WorldLink: Johto active.\n"
++	.string "First objective: reach my lab.\p"
++	.string "Hoenn remains locked until Johto's\n"
++	.string "tower and legendary signals settle.$"
++
++NewBarkTown_Frlg_Text_TownSign::
++	.string "NEW BARK TOWN\p"
++	.string "The town where Johto's wind begins.$"
++
++NewBarkTown_Frlg_Text_WorldLinkSign::
++	.string "WorldLink Gate Status:\p"
++	.string "KANTO departure complete.\n"
++	.string "JOHTO active.\p"
++	.string "Hoenn remains locked.$"
+diff --git a/data/maps/PalletTown_Frlg/scripts.inc b/data/maps/PalletTown_Frlg/scripts.inc
+index c87c8d6ea5..a4031d0697 100644
+--- a/data/maps/PalletTown_Frlg/scripts.inc
++++ b/data/maps/PalletTown_Frlg/scripts.inc
+@@ -427,6 +427,9 @@ PalletTown_EventScript_RedWorldCircuitGateConfirmDeparture::
+ 	msgbox PalletTown_Text_RedWorldCircuitGateReady, MSGBOX_NPC
+ 	msgbox PalletTown_Text_WorldCircuitGateDepartureConfirmed, MSGBOX_DEFAULT
+ 	setflag FLAG_JOHTO_DEPARTURE_CONFIRMED
++	setflag FLAG_NEW_BARK_ARRIVAL_REACHED
++	warp MAP_NEW_BARK_TOWN, 12, 17
++	waitstate
+ 	release
+ 	end
+ 
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index d6320f485b..b08ae5b3ee 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -858,6 +858,7 @@
+   ],
+   "gMapGroup_TownsAndRoutes_Frlg": [
+     "PalletTown_Frlg",
++    "NewBarkTown_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 58749de27d..a018a87c7a 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -6,7 +6,7 @@
+ #define FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS 0x021
+ #define FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF    0x022
+ #define FLAG_JOHTO_DEPARTURE_CONFIRMED       0x023
+-#define FLAG_0x024               0x024
++#define FLAG_NEW_BARK_ARRIVAL_REACHED       0x024
+ #define FLAG_0x025               0x025
+ #define FLAG_0x026               0x026
+ #define FLAG_0x027               0x027

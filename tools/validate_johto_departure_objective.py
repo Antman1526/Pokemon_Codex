@@ -164,8 +164,8 @@ def validate_design_data() -> list[str]:
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
     if transition.get("active_region") != "johto":
         errors.append("current transition state must mark Johto as active")
-    if transition.get("next_required_story_node") != "new_bark_worldlink_arrival":
-        errors.append("current transition state must point to New Bark arrival")
+    if transition.get("next_required_story_node") not in {"new_bark_worldlink_arrival", "elm_lab_first_visit"}:
+        errors.append("current transition state must point to New Bark arrival or later Elm Lab follow-up")
 
     return errors
 
