@@ -333,6 +333,31 @@ progression_bands:
         event: lyra_poke_flute_locked_profile
         notification: "Lyra's locked profile hummed along with the Poke Flute tone, then WorldLink kept Johto travel sealed."
 
+  route12_snorlax_fuchsia_path:
+    player_range: "Route 12 Snorlax through first Fuchsia arrival"
+    companions:
+      red:
+        location: Route 12 Snorlax road
+        event: red_snorlax_field_support
+        notification: "Red stood by Antman at Route 12 and says the Poke Flute proves some roadblocks need patience before power."
+      misty:
+        location: Route 12 waterline
+        event: misty_fuchsia_current_advice
+        notification: "Misty says the current toward Fuchsia is open and warns that Saffron feels like water held behind a cracking wall."
+    rivals:
+      dax:
+        location: Fuchsia City entrance
+        event: dax_snorlax_wakeup_report
+        notification: "Dax heard the Snorlax wake-up from the south road and insists he would have dodged the first Body Slam."
+      blue:
+        location: Saffron gate rumor
+        event: blue_saffron_impatience_warning
+        notification: "Blue is circling Saffron and says Fuchsia is a detour, which usually means he is about to learn why preparation matters."
+      ava:
+        location: Safari Zone research desk
+        event: ava_safari_rare_habitat_research
+        notification: "Ava flagged the Safari Zone as a rare-habitat preserve and warned that Gold Dust will care about anything that can only be caught there."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

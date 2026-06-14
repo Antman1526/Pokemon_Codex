@@ -102,6 +102,11 @@ acts:
     purpose: "Turn Rocket from local crime into global infrastructure."
     required_maps: [saffron_city, silph_co, saffron_gym, fuchsia_city, safari_zone, fuchsia_gym]
     required_events:
+      - route12_snorlax_poke_flute_gate
+      - red_misty_snorlax_support
+      - dax_snorlax_rival_pressure
+      - fuchsia_arrival_safari_koga_hook
+      - saffron_pressure_deferred
       - silph_co_takeover
       - giovanni_sponsor_hint
       - sabrina_moonlight_interference

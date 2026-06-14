@@ -87,6 +87,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-14 12:36 CDT: Codex built the Rocket Hideout B1F milestone from patches `0001` through `0020`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, Lavender Tower Moonlight validation, Celadon market hideout validation, and Rocket Hideout B1F validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.65%.
 - 2026-06-14 13:28 CDT: Codex built the Giovanni Silph Scope milestone from patches `0001` through `0021`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, Lavender Tower Moonlight validation, Celadon market hideout validation, Rocket Hideout B1F validation, and Giovanni Silph Scope validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.66%.
 - 2026-06-14 14:24 CDT: Codex built the Silph Scope return milestone from patches `0001` through `0022`. Design validation, all prior milestone validators, and Silph Scope return validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.66%. This milestone adds Marowak grief support with Red, Poke Flute route unlock guidance, and the Fuchsia/Saffron branch warning.
+- 2026-06-14 14:49 CDT: Codex built the Route 12 Snorlax and Fuchsia arrival milestone from patches `0001` through `0023`. Design validation, all prior milestone validators, and Route 12 Snorlax Fuchsia validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.67%. This milestone adds the Poke Flute field payoff, Red/Misty road support, Dax's Fuchsia arrival pressure, and the Safari/Koga hook.
 
 ## Engine Patches To Apply Before Build
 
@@ -112,6 +113,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0020-rocket-hideout-b1f.patch` - Rocket Hideout B1F Red companion check, Rocket logistics rewrite, Gold Dust ledger clue, and Portable PC beta terminal.
 - `patches/engine/0021-giovanni-silph-scope.patch` - Rocket Hideout Blue late-arrival scene, Red pre-Giovanni support, Meridian prototype hint, Silph Scope return guidance, and Portable PC beta storage confidence.
 - `patches/engine/0022-silph-scope-return.patch` - Lavender Tower Silph Scope return payoff, Red Marowak grief support, Poke Flute route unlock guidance, and Fuchsia/Saffron branch warning.
+- `patches/engine/0023-route12-snorlax-fuchsia.patch` - Route 12 Snorlax Poke Flute payoff, Red/Misty road support, Dax Fuchsia arrival, and Safari/Koga hook.
 
 ## Validation
 
@@ -148,6 +150,7 @@ python3 tools/validate_celadon_market_hideout.py
 python3 tools/validate_rocket_hideout_b1f.py
 python3 tools/validate_giovanni_silph_scope.py
 python3 tools/validate_silph_scope_return.py
+python3 tools/validate_route12_snorlax_fuchsia.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -169,6 +172,7 @@ Celadon market hideout validation passed.
 Rocket Hideout B1F validation passed.
 Giovanni Silph Scope validation passed.
 Silph Scope return validation passed.
+Route 12 Snorlax Fuchsia validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -251,6 +255,11 @@ Manual OpenEmu checklist still needed:
 - [ ] Marowak calm text says the Silph Scope revealed grief, not a monster.
 - [ ] Pokemon Tower 7F Rocket grunts reference Antman's Silph Scope return and Rocket proof-control motive.
 - [ ] Mr. Fuji Poke Flute reward points toward Snorlax roads, Fuchsia, and Saffron/Silph Co. pressure.
+- [ ] Route 12 Red support scene appears near Snorlax after Poke Flute unlock.
+- [ ] Route 12 Misty support scene points toward Fuchsia and warns against rushing Saffron.
+- [ ] Route 12 Snorlax wake-up text references WorldLink and the Poke Flute field payoff.
+- [ ] Fuchsia Dax arrival scene appears and frames Safari/Koga as the next recommended route.
+- [ ] Fuchsia Safari/Gym signs mention rare-habitat research, Gold Dust risk, and Koga poison/status preparation.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

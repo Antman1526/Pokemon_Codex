@@ -1,0 +1,263 @@
+--- a/data/maps/Route12_Frlg/map.json
++++ b/data/maps/Route12_Frlg/map.json
+@@ -101,6 +101,34 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "Route12_EventScript_Snorlax",
+       "flag": "FLAG_HIDE_ROUTE_12_SNORLAX"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 12,
++      "y": 69,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route12_EventScript_RedSnorlaxSupport",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MISTY",
++      "x": 16,
++      "y": 69,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route12_EventScript_MistySnorlaxSupport",
++      "flag": "0"
+     },
+     {
+       "type": "object",
+--- a/data/maps/Route12_Frlg/scripts.inc
++++ b/data/maps/Route12_Frlg/scripts.inc
+@@ -14,6 +14,7 @@
+ 	lock
+ 	faceplayer
+ 	goto_if_unset FLAG_GOT_POKE_FLUTE, Route12_EventScript_SnorlaxNoPokeFlute
++	msgbox Route12_Text_SnorlaxWorldLinkReady
+ 	msgbox Text_WantToUsePokeFlute, MSGBOX_YESNO
+ 	goto_if_eq VAR_RESULT, NO, Route12_EventScript_DontUsePokeFlute
+ 	call EventScript_AwakenSnorlax
+@@ -40,6 +41,7 @@
+ 
+ Route12_EventScript_FoughtSnorlax::
+ 	msgbox Text_SnorlaxReturnedToMountains
++	msgbox Route12_Text_FuchsiaPathOpen
+ 	release
+ 	end
+ 
+@@ -56,10 +58,44 @@
+ 	msgbox Route12_Text_SportfishingArea, MSGBOX_SIGN
+ 	end
+ 
++Route12_EventScript_RedSnorlaxSupport::
++	lock
++	faceplayer
++	goto_if_set FLAG_WOKE_UP_ROUTE_12_SNORLAX, Route12_EventScript_RedSnorlaxSupportAfter
++	msgbox Route12_Text_RedSnorlaxSupport, MSGBOX_NPC
++	release
++	end
++
++Route12_EventScript_RedSnorlaxSupportAfter::
++	msgbox Route12_Text_RedSnorlaxSupportAfter, MSGBOX_NPC
++	release
++	end
++
++Route12_EventScript_MistySnorlaxSupport::
++	lock
++	faceplayer
++	goto_if_set FLAG_WOKE_UP_ROUTE_12_SNORLAX, Route12_EventScript_MistySnorlaxSupportAfter
++	msgbox Route12_Text_MistySnorlaxSupport, MSGBOX_NPC
++	release
++	end
++
++Route12_EventScript_MistySnorlaxSupportAfter::
++	msgbox Route12_Text_MistySnorlaxSupportAfter, MSGBOX_NPC
++	release
++	end
++
+ Route12_Text_MonSprawledOutInSlumber::
+ 	.string "A POKéMON is sprawled out in\n"
+-	.string "a deep and comfortable slumber.$"
++	.string "a deep and comfortable slumber.\p"
++	.string "WorldLink marks this as a living\n"
++	.string "roadblock, not a region gate.$"
+ 
++Route12_Text_SnorlaxWorldLinkReady::
++	.string "WorldLink: POKé FLUTE route\n"
++	.string "test ready.\p"
++	.string "Red and Misty are standing by.\n"
++	.string "Wake SNORLAX, then hold steady.$"
++
+ Text_SnorlaxWokeUp::
+ 	.string "SNORLAX woke up!\p"
+ 	.string "It attacked in a grumpy rage!$"
+@@ -69,12 +105,47 @@
+ 	.string "It gave a huge yawn…\l"
+ 	.string "And returned to the mountains.$"
+ 
++Route12_Text_FuchsiaPathOpen::
++	.string "WorldLink registered the road\n"
++	.string "south as open.\p"
++	.string "FUCHSIA CITY is now the safest\n"
++	.string "Kanto route forward.\p"
++	.string "SAFFRON pressure is rising, but\n"
++	.string "the Safari/KOGA path comes first.$"
++
+ Text_WantToUsePokeFlute::
+ 	.string "Want to use the POKé FLUTE?$"
+ 
+ Text_PlayedPokeFlute::
+ 	.string "{PLAYER} played the POKé FLUTE.$"
+ 
++Route12_Text_RedSnorlaxSupport::
++	.string "RED: This one is different from\n"
++	.string "Rocket.\p"
++	.string "SNORLAX is not blocking us on\n"
++	.string "purpose. It is just asleep.\p"
++	.string "Use Fuji's flute. If it wakes\n"
++	.string "angry, we battle clean.$"
++
++Route12_Text_RedSnorlaxSupportAfter::
++	.string "RED: That opened the road.\p"
++	.string "You handled it without making\n"
++	.string "SNORLAX into the enemy.\p"
++	.string "Fuchsia is next. Saffron can wait\n"
++	.string "until we know what Rocket built.$"
++
++Route12_Text_MistySnorlaxSupport::
++	.string "MISTY: The water down this route\n"
++	.string "is moving again.\p"
++	.string "Fuchsia's Safari Zone sounds fun,\n"
++	.string "but rare Pokemon draw rare thieves.\p"
++	.string "Gold Dust will care about that.$"
++
++Route12_Text_MistySnorlaxSupportAfter::
++	.string "MISTY: Fuchsia first.\p"
++	.string "Koga teaches poison and patience.\n"
++	.string "We will need both before Saffron.$"
++
+ Route12_Text_NedIntro::
+ 	.string "Yeah!\n"
+ 	.string "I got a bite here!$"
+--- a/data/maps/FuchsiaCity_Frlg/map.json
++++ b/data/maps/FuchsiaCity_Frlg/map.json
+@@ -255,6 +255,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "FuchsiaCity_EventScript_Lass",
+       "flag": "FLAG_HIDE_POSTGAME_GOSSIPERS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER_FRLG",
++      "x": 25,
++      "y": 28,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "FuchsiaCity_EventScript_DaxArrival",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+--- a/data/maps/FuchsiaCity_Frlg/scripts.inc
++++ b/data/maps/FuchsiaCity_Frlg/scripts.inc
+@@ -40,6 +40,19 @@
+ 	release
+ 	end
+ 
++FuchsiaCity_EventScript_DaxArrival::
++	lock
++	faceplayer
++	goto_if_set FLAG_WOKE_UP_ROUTE_12_SNORLAX, FuchsiaCity_EventScript_DaxArrivalAfterSnorlax
++	msgbox FuchsiaCity_Text_DaxArrivalEarly, MSGBOX_NPC
++	release
++	end
++
++FuchsiaCity_EventScript_DaxArrivalAfterSnorlax::
++	msgbox FuchsiaCity_Text_DaxArrivalAfterSnorlax, MSGBOX_NPC
++	release
++	end
++
+ FuchsiaCity_EventScript_CitySign::
+ 	msgbox FuchsiaCity_Text_CitySign, MSGBOX_SIGN
+ 	end
+@@ -141,13 +154,17 @@
+ FuchsiaCity_Text_DidYouTrySafariGame::
+ 	.string "Did you try the SAFARI GAME?\p"
+ 	.string "There are some rare POKéMON that\n"
+-	.string "can only be caught there.$"
++	.string "can only be caught there.\p"
++	.string "A researcher said Gold Dust pays\n"
++	.string "attention to places like that.$"
+ 
+ FuchsiaCity_Text_SafariZoneZooInFront::
+ 	.string "The SAFARI ZONE has a zoo in front\n"
+ 	.string "of the entrance.\p"
+ 	.string "Out back is the SAFARI GAME for\n"
+-	.string "catching POKéMON.$"
++	.string "catching POKéMON.\p"
++	.string "WorldLink calls it a rare-habitat\n"
++	.string "preserve, not a prize shelf.$"
+ 
+ FuchsiaCity_Text_WheresSara::
+ 	.string "ERIK: Where's SARA?\n"
+@@ -161,11 +178,15 @@
+ 
+ FuchsiaCity_Text_CitySign::
+ 	.string "FUCHSIA CITY\n"
+-	.string "Behold! It's Passion Pink!$"
++	.string "Behold! It's Passion Pink!\p"
++	.string "WorldLink route note: Safari and\n"
++	.string "KOGA prep before SAFFRON.$"
+ 
+ FuchsiaCity_Text_SafariZoneSign::
+ 	.string "POKéMON PARADISE\n"
+-	.string "SAFARI ZONE$"
++	.string "SAFARI ZONE\p"
++	.string "Rare habitats are protected.\n"
++	.string "Gold Dust interest suspected.$"
+ 
+ FuchsiaCity_Text_SafariGameSign::
+ 	.string "SAFARI GAME\n"
+@@ -183,8 +204,24 @@
+ FuchsiaCity_Text_GymSign::
+ 	.string "FUCHSIA CITY POKéMON GYM\n"
+ 	.string "LEADER: KOGA\l"
+-	.string "The Poisonous Ninja Master$"
++	.string "The Poisonous Ninja Master\p"
++	.string "WorldLink tip: learn status control\n"
++	.string "before SAFFRON's Rocket siege.$"
+ 
++FuchsiaCity_Text_DaxArrivalEarly::
++	.string "DAX: You got here without waking\n"
++	.string "the Route 12 SNORLAX?\p"
++	.string "That means I did not miss the big\n"
++	.string "part. Good.$"
++
++FuchsiaCity_Text_DaxArrivalAfterSnorlax::
++	.string "DAX: I heard that SNORLAX wake up\n"
++	.string "from here!\p"
++	.string "For the record, I would have\n"
++	.string "dodged the first Body Slam.\p"
++	.string "Safari first, then KOGA. If Blue\n"
++	.string "runs into SAFFRON early, let him.$"
++
+ FuchsiaCity_Text_ChanseySign::
+ 	.string "Name: CHANSEY\n"
+ 	.string "Catching one is all up to chance.$"
+@@ -249,4 +286,3 @@
+ 	.string "this town.\p"
+ 	.string "I'm training to use POISON POKéMON\n"
+ 	.string "as well as my father.$"
+-

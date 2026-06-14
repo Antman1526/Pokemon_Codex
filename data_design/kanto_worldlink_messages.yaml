@@ -161,6 +161,21 @@ messages:
     priority: major
     text: "Route branch updated: Fuchsia is reachable through Snorlax roads, while Saffron pressure is rising around Silph Co. Choose the path, but stay in Kanto."
 
+  - id: WL_KANTO_ROUTE12_SNORLAX_AWAKENED
+    trigger: FLAG_WOKE_UP_ROUTE_12_SNORLAX
+    priority: major
+    text: "Route 12 Snorlax awakened. Red and Misty confirm the Poke Flute can open living roadblocks without breaking Kanto route order."
+
+  - id: WL_KANTO_FUCHSIA_PATH_OPEN
+    trigger: FLAG_WOKE_UP_ROUTE_12_SNORLAX
+    priority: major
+    text: "Fuchsia path open. Safari Zone rare-habitat research and Koga poison training are now the recommended Kanto route."
+
+  - id: WL_KANTO_SAFFRON_PRESSURE_DEFERRED
+    trigger: FLAG_WOKE_UP_ROUTE_12_SNORLAX
+    priority: major
+    text: "Saffron pressure rising around Silph Co., but WorldLink recommends Fuchsia first: catch, train, and learn status control before Rocket's tower war."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
