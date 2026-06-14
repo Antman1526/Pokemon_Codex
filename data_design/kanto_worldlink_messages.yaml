@@ -236,6 +236,31 @@ messages:
     priority: major
     text: "Blue's Silph pressure spiked near Lapras. This is rivalry, fear, and pride mixed together, not a normal badge-race update."
 
+  - id: WL_KANTO_SILPH_UPPER_FLOORS
+    trigger: VAR_MAP_SCENE_SILPH_CO_7F
+    priority: major
+    text: "Silph upper floors active: Gold Dust buyer-network evidence, emergency heal hub, final stair, then Giovanni's boardroom. Stay in Kanto."
+
+  - id: WL_KANTO_RED_BOARDROOM_CHECK
+    trigger: VAR_MAP_SCENE_SILPH_CO_7F
+    priority: flavor
+    text: "Red reached the Silph 10F final stair. He is moving civilians and says Giovanni's boardroom is Antman's fight."
+
+  - id: WL_KANTO_GIOVANNI_MERIDIAN_GATE
+    trigger: VAR_MAP_SCENE_SILPH_CO_11F
+    priority: major
+    text: "Giovanni named Silph the first Meridian Gate: storage, capture tech, badges, teleports, and routes forced into one control pattern."
+
+  - id: WL_KANTO_MASTER_BALL_RESTORED
+    trigger: FLAG_GOT_MASTER_BALL_FROM_SILPH
+    priority: major
+    text: "Master Ball secured. WorldLink classifies it as emergency trust, not a trophy, auction crown, or Rocket chain."
+
+  - id: WL_KANTO_SABRINA_MOONLIGHT_HANDOFF
+    trigger: FLAG_GOT_MASTER_BALL_FROM_SILPH
+    priority: major
+    text: "Silph network restored, but Sabrina's Gym is pulsing with Moonlight interference. Next Kanto objective: stabilize Saffron's psychic signal."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

@@ -129,6 +129,12 @@ acts:
       - silph_5f_portable_pc_full_unlock
       - silph_6f_red_civilian_route
       - silph_7f_blue_emotional_pressure
+      - silph_8f_buyer_network_evidence
+      - silph_9f_emergency_heal_hub
+      - silph_10f_red_final_stair_check
+      - silph_11f_giovanni_meridian_gate
+      - master_ball_worldlink_payoff
+      - sabrina_moonlight_handoff
       - silph_co_takeover
       - giovanni_sponsor_hint
       - sabrina_moonlight_interference

@@ -66,6 +66,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-14 19:20 CDT: Codex built the Silph mid-floors Portable PC milestone from patches `0001` through `0027`. Full validator suite passed, including `validate_silph_mid_floors_portable_pc.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.69%.
+- 2026-06-14 19:42 CDT: Codex built the Silph finale Giovanni milestone from patches `0001` through `0028`. Full validator suite passed, including `validate_silph_finale_giovanni.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.69%.
 - 2026-06-13 23:41 CDT: Codex built the Vermilion S.S. Anne crisis milestone from patches `0001` through `0014`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, and Vermilion S.S. Anne crisis validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.63%.
 - 2026-06-14 08:59 CDT: Codex built the Surge grid and WorldLink feed milestone from patches `0001` through `0015`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, and Surge grid WorldLink validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
 - 2026-06-14 09:37 CDT: Codex built the Route 11 Diglett bridge milestone from patches `0001` through `0016`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, and Route 11 Diglett bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
@@ -277,6 +278,13 @@ Manual OpenEmu checklist still needed:
 - [ ] Silph 6F text references Red's civilian route through the building.
 - [ ] Silph 7F Blue emotional pressure scene appears before the classic rival battle.
 - [ ] `0027-silph-mid-floors-portable-pc.patch` applies cleanly and `validate_silph_mid_floors_portable_pc.py` passes.
+- [ ] Silph 8F text references Gold Dust buyer-network evidence.
+- [ ] Silph 9F healing woman frames the room as an emergency heal hub.
+- [ ] Silph 10F Red boardroom check appears near the final stair.
+- [ ] Silph 11F Giovanni Meridian Gate speech appears before the boss battle.
+- [ ] Master Ball WorldLink payoff text appears after Giovanni.
+- [ ] Sabrina Moonlight handoff appears through Silph 11F post-boss reward text.
+- [ ] `0028-silph-finale-giovanni.patch` applies cleanly and `validate_silph_finale_giovanni.py` passes.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

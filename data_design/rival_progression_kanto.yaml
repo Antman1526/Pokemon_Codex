@@ -466,6 +466,35 @@ progression_bands:
         event: dax_silph_floor_count
         notification: "Dax is counting Silph floors like gym rounds and says he is absolutely helping, even if nobody gave him a floor assignment."
 
+  silph_finale_giovanni_master_ball:
+    player_range: "Silph Co. 8F through Master Ball reward"
+    companions:
+      red:
+        location: Silph Co. 10F final stair
+        event: red_final_stair_check
+        notification: "Red reached the final stair, moved civilians toward the 9F heal hub, and told Antman that Giovanni's boardroom is his fight."
+      misty:
+        location: Saffron exit routes
+        event: misty_post_silph_calm
+        notification: "Misty reports Saffron's exits are calm after Silph, but says the Gym current feels like moonlit water before a storm."
+      brock:
+        location: WorldLink systems note
+        event: brock_master_ball_warning
+        notification: "Brock warns that the Master Ball is not a prize to show off; it is a responsibility that needs better judgment than Rocket or Gold Dust."
+    rivals:
+      blue:
+        location: Saffron rooftop rumor
+        event: blue_post_silph_silence
+        notification: "Blue has gone quiet after Silph 7F. WorldLink marks this as rivalry pressure, not retreat."
+      ava:
+        location: Silph terminal analysis
+        event: ava_meridian_gate_analysis
+        notification: "Ava logged Giovanni's Meridian Gate phrase as the clearest link yet between Kanto tech and future region-control attempts."
+      dax:
+        location: Saffron streets
+        event: dax_rocket_floor_count_finale
+        notification: "Dax says eleven floors is too many for one villain team and insists he was distracting Rocket somewhere important."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

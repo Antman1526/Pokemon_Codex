@@ -1,0 +1,389 @@
+diff --git a/data/maps/SilphCo_10F_Frlg/map.json b/data/maps/SilphCo_10F_Frlg/map.json
+index 8c505d9d42..126f44e024 100644
+--- a/data/maps/SilphCo_10F_Frlg/map.json
++++ b/data/maps/SilphCo_10F_Frlg/map.json
+@@ -58,6 +58,20 @@
+       "script": "SilphCo_10F_EventScript_Grunt",
+       "flag": "FLAG_HIDE_SILPH_ROCKETS"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 9,
++      "y": 3,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SilphCo_10F_EventScript_RedBoardroomCheck",
++      "flag": "0"
++    },
+     {
+       "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+diff --git a/data/maps/SilphCo_10F_Frlg/scripts.inc b/data/maps/SilphCo_10F_Frlg/scripts.inc
+index 7b599daae2..ad3514eacd 100644
+--- a/data/maps/SilphCo_10F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_10F_Frlg/scripts.inc
+@@ -23,6 +23,13 @@ SilphCo_10F_EventScript_FloorSign::
+ 	msgbox SilphCo_10F_Text_FloorSign, MSGBOX_SIGN
+ 	end
+ 
++SilphCo_10F_EventScript_RedBoardroomCheck::
++	lock
++	faceplayer
++	msgbox SilphCo_10F_Text_RedBoardroomCheck, MSGBOX_NPC
++	release
++	end
++
+ SilphCo_10F_EventScript_Travis::
+ 	trainerbattle_single TRAINER_SCIENTIST_TRAVIS, SilphCo_10F_Text_TravisIntro, SilphCo_10F_Text_TravisDefeat
+ 	msgbox SilphCo_10F_Text_TravisPostBattle, MSGBOX_AUTOCLOSE
+@@ -42,7 +49,9 @@ SilphCo_10F_Text_GruntDefeat::
+ 
+ SilphCo_10F_Text_GruntPostBattle::
+ 	.string "Nice try, but the boardroom is up\n"
+-	.string "one more floor.$"
++	.string "one more floor.\p"
++	.string "Red is close, but even he knows\n"
++	.string "Giovanni wants you alone.$"
+ 
+ SilphCo_10F_Text_TravisIntro::
+ 	.string "Enough of your silly games!$"
+@@ -52,17 +61,36 @@ SilphCo_10F_Text_TravisDefeat::
+ 
+ SilphCo_10F_Text_TravisPostBattle::
+ 	.string "Are you satisfied with beating me?\n"
+-	.string "Then go on home!$"
++	.string "Then go on home!\p"
++	.string "Or climb one more floor and learn\n"
++	.string "why Silph built the Master Ball.$"
+ 
+ SilphCo_10F_Text_WaaaImScared::
+ 	.string "Waaaaa!\n"
+-	.string "I'm scared!$"
++	.string "I'm scared!\p"
++	.string "Red said the last stair is clear,\n"
++	.string "but the boardroom is not.$"
+ 
+ SilphCo_10F_Text_KeepMeCryingASecret::
+ 	.string "About me crying…\n"
+-	.string "Please keep it a secret.$"
++	.string "Please keep it a secret.\p"
++	.string "Tell Red I made it to the heal\n"
++	.string "hub after the blackout.$"
+ 
+ SilphCo_10F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "10F$"
+-
++	.string "10F\p"
++	.string "Final stair checkpoint. Red\n"
++	.string "reports civilians moving safely.$"
++
++SilphCo_10F_Text_RedBoardroomCheck::
++	.string "Red: Antman, I got the lower\n"
++	.string "workers moving to 9F.\p"
++	.string "Misty has the exits calm, and\n"
++	.string "Brock is watching the systems.\p"
++	.string "The boardroom is yours. I will\n"
++	.string "not step into your boss fight.\p"
++	.string "Giovanni is quiet because he\n"
++	.string "already thinks he owns the room.\p"
++	.string "Show him he does not own your\n"
++	.string "team, your road, or Kanto.$"
+diff --git a/data/maps/SilphCo_11F_Frlg/scripts.inc b/data/maps/SilphCo_11F_Frlg/scripts.inc
+index 655dfe73fb..ae7767ef73 100644
+--- a/data/maps/SilphCo_11F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_11F_Frlg/scripts.inc
+@@ -134,23 +134,27 @@ SilphCo_11F_EventScript_Grunt2::
+ 
+ SilphCo_11F_Text_ThanksForSavingMeDearBoy::
+ 	.string "PRESIDENT: Oh, dear boy!\n"
+-	.string "Thank you for saving SILPH.\p"
++	.string "Thank you for saving Silph.\p"
+ 	.string "I will never forget you saved us in\n"
+ 	.string "our moment of peril.\p"
+-	.string "I have to thank you in some way.\p"
+-	.string "Because I am rich, I can give you\n"
+-	.string "anything.\p"
+-	.string "Here, maybe this will do.$"
++	.string "Giovanni wanted capture tech, PC\n"
++	.string "storage, badges, and routes joined\l"
++	.string "into one controllable network.\p"
++	.string "WorldLink calls it a Meridian Gate.\p"
++	.string "The Master Ball is a responsibility,\n"
++	.string "not a trophy. Please take it.$"
+ 
+ SilphCo_11F_Text_ThanksForSavingMeDearGirl::
+ 	.string "PRESIDENT: Oh, dear girl!\n"
+-	.string "Thank you for saving SILPH.\p"
++	.string "Thank you for saving Silph.\p"
+ 	.string "I will never forget you saved us in\n"
+ 	.string "our moment of peril.\p"
+-	.string "I have to thank you in some way.\p"
+-	.string "Because I am rich, I can give you\n"
+-	.string "anything.\p"
+-	.string "Here, maybe this will do.$"
++	.string "Giovanni wanted capture tech, PC\n"
++	.string "storage, badges, and routes joined\l"
++	.string "into one controllable network.\p"
++	.string "WorldLink calls it a Meridian Gate.\p"
++	.string "The Master Ball is a responsibility,\n"
++	.string "not a trophy. Please take it.$"
+ 
+ SilphCo_11F_Text_ObtainedMasterBallFromPresident::
+ 	.string "{PLAYER} obtained a MASTER BALL\n"
+@@ -159,12 +163,17 @@ SilphCo_11F_Text_ObtainedMasterBallFromPresident::
+ SilphCo_11F_Text_ThatsOurSecretPrototype::
+ 	.string "PRESIDENT: You can't buy that\n"
+ 	.string "anywhere.\p"
+-	.string "It's our secret prototype MASTER\n"
+-	.string "BALL.\p"
+-	.string "It will catch any POKéMON without\n"
+-	.string "fail!\p"
+-	.string "You should be quiet about using it,\n"
+-	.string "though.$"
++	.string "It is our secret prototype Master\n"
++	.string "Ball.\p"
++	.string "It will catch any Pokemon without\n"
++	.string "fail.\p"
++	.string "Gold Dust would make it an auction\n"
++	.string "crown. Rocket would make it a chain.\p"
++	.string "Use it only when your judgment is\n"
++	.string "stronger than both.\p"
++	.string "WorldLink restored the Silph net,\n"
++	.string "but Sabrina's Gym is now pulsing\l"
++	.string "with a Moonlight reading.$"
+ 
+ SilphCo_11F_Text_YouHaveNoRoomForThis::
+ 	.string "You have no room for this.$"
+@@ -172,17 +181,25 @@ SilphCo_11F_Text_YouHaveNoRoomForThis::
+ SilphCo_11F_Text_ThanksForRescuingUs::
+ 	.string "SECRETARY: Thank you for rescuing\n"
+ 	.string "all of us.\p"
+-	.string "We, from the PRESIDENT down,\n"
+-	.string "are indebted to you.$"
++	.string "Red kept people calm below, but\n"
++	.string "you broke the boardroom.\p"
++	.string "If Sabrina calls, answer quickly.\n"
++	.string "The restored network feels wrong.$"
+ 
+ SilphCo_11F_Text_GiovanniIntro::
+ 	.string "Ah, {PLAYER}!\n"
+ 	.string "So we meet again!\p"
+-	.string "The PRESIDENT and I are discussing\n"
++	.string "The President and I were discussing\n"
+ 	.string "a vital business proposition.\p"
++	.string "Silph's storage, capture systems,\n"
++	.string "teleports, and badge locks all\l"
++	.string "answer to one pattern.\p"
++	.string "I call it the first Meridian Gate.\p"
++	.string "A region can be loved, {PLAYER}.\n"
++	.string "It can also be pulled.\p"
+ 	.string "Keep your nose out of grown-up\n"
+-	.string "matters…\p"
+-	.string "Or, experience a world of pain!$"
++	.string "matters...\p"
++	.string "Or experience a world of pain!$"
+ 
+ SilphCo_11F_Text_GiovanniDefeat::
+ 	.string "Arrgh!!\n"
+@@ -190,10 +207,15 @@ SilphCo_11F_Text_GiovanniDefeat::
+ 
+ SilphCo_11F_Text_GiovanniPostBattle::
+ 	.string "Blast it all!\n"
+-	.string "You ruined our plans for SILPH!\p"
+-	.string "But, TEAM ROCKET will never fall!\p"
+-	.string "{PLAYER}! Never forget that all\n"
+-	.string "POKéMON exist for TEAM ROCKET!\p"
++	.string "You ruined our plans for Silph!\p"
++	.string "But Team Rocket will never fall.\p"
++	.string "Gold Dust will buy scraps. Moonlight\n"
++	.string "will chase dreams. Others will come\l"
++	.string "wearing cleaner faces.\p"
++	.string "You have stopped one gate, not the\n"
++	.string "machine that wants all regions.\p"
++	.string "{PLAYER}! Never forget that power\n"
++	.string "answers trainers who seize it.\p"
+ 	.string "I must go, but I shall return!$"
+ 
+ SilphCo_11F_Text_Grunt2Intro::
+@@ -205,7 +227,9 @@ SilphCo_11F_Text_Grunt2Defeat::
+ 	.string "Please!$"
+ 
+ SilphCo_11F_Text_Grunt2PostBattle::
+-	.string "So, you want to see my BOSS?$"
++	.string "So, you want to see my boss?\p"
++	.string "Fine. Step into the Meridian Gate\n"
++	.string "room and learn why Rocket came.$"
+ 
+ SilphCo_11F_Text_Grunt1Intro::
+ 	.string "Halt! Do you have an appointment\n"
+@@ -217,12 +241,17 @@ SilphCo_11F_Text_Grunt1Defeat::
+ 
+ SilphCo_11F_Text_Grunt1PostBattle::
+ 	.string "Watch your step…\n"
+-	.string "My BOSS likes his POKéMON tough!$"
++	.string "My boss likes his Pokemon tough!\p"
++	.string "He likes systems tougher. That is\n"
++	.string "why he came to Silph.$"
+ 
+ SilphCo_11F_Text_MonitorHasMonsOnIt::
+-	.string "The monitor has POKéMON on it!$"
++	.string "The monitor has Pokemon on it!\p"
++	.string "WorldLink alert: Sabrina's Gym is\n"
++	.string "receiving Moonlight interference.$"
+ 
+ SilphCo_11F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "11F$"
+-
++	.string "11F\p"
++	.string "Boardroom: Meridian Gate attempt\n"
++	.string "contained. Master Ball secured.$"
+diff --git a/data/maps/SilphCo_8F_Frlg/scripts.inc b/data/maps/SilphCo_8F_Frlg/scripts.inc
+index 2a4918cd70..d05c58a260 100644
+--- a/data/maps/SilphCo_8F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_8F_Frlg/scripts.inc
+@@ -39,10 +39,16 @@ SilphCo_8F_EventScript_Grunt2::
+ 	end
+ 
+ SilphCo_8F_Text_WonderIfSilphIsFinished::
+-	.string "I wonder if SILPH is finished…$"
++	.string "I wonder if Silph is finished...\p"
++	.string "Rocket took the building, but\n"
++	.string "Gold Dust is waiting to buy the\l"
++	.string "proof after the noise stops.$"
+ 
+ SilphCo_8F_Text_ThanksForSavingUs::
+-	.string "Thanks for saving us!$"
++	.string "Thanks for saving us!\p"
++	.string "We found the buyer pings after\n"
++	.string "Rocket ran. Gold Dust never even\l"
++	.string "had to enter the tower.$"
+ 
+ SilphCo_8F_Text_Grunt1Intro::
+ 	.string "That's as far as you'll go!$"
+@@ -52,7 +58,9 @@ SilphCo_8F_Text_Grunt1Defeat::
+ 
+ SilphCo_8F_Text_Grunt1PostBattle::
+ 	.string "If you don't turn back…\n"
+-	.string "I'll call for backup!$"
++	.string "I'll call for backup!\p"
++	.string "The upper floors route Master Ball\n"
++	.string "specs, not little kid rumors.$"
+ 
+ SilphCo_8F_Text_ParkerIntro::
+ 	.string "You're causing us problems!$"
+@@ -62,8 +70,11 @@ SilphCo_8F_Text_ParkerDefeat::
+ 	.string "I lost?$"
+ 
+ SilphCo_8F_Text_ParkerPostBattle::
+-	.string "So, what do you think of SILPH\n"
+-	.string "BUILDING's maze?$"
++	.string "So, what do you think of Silph\n"
++	.string "Building's maze?\p"
++	.string "Rocket used the teleports like a\n"
++	.string "shipping map. Gold Dust watched\l"
++	.string "the routes like an auction list.$"
+ 
+ SilphCo_8F_Text_Grunt2Intro::
+ 	.string "I am one of the four ROCKET\n"
+@@ -74,16 +85,22 @@ SilphCo_8F_Text_Grunt2Defeat::
+ 	.string "Oh, Brothers!$"
+ 
+ SilphCo_8F_Text_Grunt2PostBattle::
+-	.string "I'll leave you up to my brothers.$"
++	.string "I'll leave you up to my brothers.\p"
++	.string "Giovanni says Silph is the first\n"
++	.string "company that can make a region\l"
++	.string "obey a network.$"
+ 
+ SilphCo_8F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "8F$"
++	.string "8F\p"
++	.string "WorldLink upper-floor scan:\n"
++	.string "buyer network evidence rising.$"
+ 
+ SilphCo_8F_Text_ToRocketBossMonsAreTools::
+-	.string "TEAM ROCKET's BOSS is terribly\n"
++	.string "Team Rocket's boss is terribly\n"
+ 	.string "cruel!\p"
+-	.string "To him, POKéMON are just tools to\n"
++	.string "To him, Pokemon are just tools to\n"
+ 	.string "be used.\p"
+ 	.string "What will happen if that tyrant\n"
+-	.string "takes over our company…$"
++	.string "turns Silph into his first\l"
++	.string "Meridian Gate?$"
+diff --git a/data/maps/SilphCo_9F_Frlg/scripts.inc b/data/maps/SilphCo_9F_Frlg/scripts.inc
+index bbce068309..6d1f73ebc3 100644
+--- a/data/maps/SilphCo_9F_Frlg/scripts.inc
++++ b/data/maps/SilphCo_9F_Frlg/scripts.inc
+@@ -46,13 +46,19 @@ SilphCo_9F_EventScript_Grunt2::
+ 
+ SilphCo_9F_Text_YouShouldTakeQuickNap::
+ 	.string "You look tired.\n"
+-	.string "You should take a quick nap.$"
++	.string "You should take a quick nap.\p"
++	.string "Silph 9F is an emergency heal hub\n"
++	.string "now. Red sent workers here first.$"
+ 
+ SilphCo_9F_Text_DontGiveUp::
+-	.string "Don't give up!$"
++	.string "Don't give up!\p"
++	.string "WorldLink says Giovanni is above\n"
++	.string "you, but your team is ready.$"
+ 
+ SilphCo_9F_Text_ThankYouSoMuch::
+-	.string "Thank you so much.$"
++	.string "Thank you so much.\p"
++	.string "The emergency heal hub held. That\n"
++	.string "is why people made it out.$"
+ 
+ SilphCo_9F_Text_Grunt1Intro::
+ 	.string "Your POKéMON seem to adore you,\n"
+@@ -62,8 +68,10 @@ SilphCo_9F_Text_Grunt1Defeat::
+ 	.string "Ghaaah!$"
+ 
+ SilphCo_9F_Text_Grunt1PostBattle::
+-	.string "If I had started as a TRAINER at\n"
+-	.string "your age…$"
++	.string "If I had started as a Trainer at\n"
++	.string "your age...\p"
++	.string "Maybe I would have learned that\n"
++	.string "strong teams protect people.$"
+ 
+ SilphCo_9F_Text_EdIntro::
+ 	.string "Your POKéMON have weak points!\n"
+@@ -74,7 +82,9 @@ SilphCo_9F_Text_EdDefeat::
+ 
+ SilphCo_9F_Text_EdPostBattle::
+ 	.string "Exploiting weak spots does work.\n"
+-	.string "Think about type advantages.$"
++	.string "Think about type advantages.\p"
++	.string "Giovanni thinks every region has\n"
++	.string "a weak point. That is worse.$"
+ 
+ SilphCo_9F_Text_Grunt2Intro::
+ 	.string "I am one of the four ROCKET\n"
+@@ -85,9 +95,12 @@ SilphCo_9F_Text_Grunt2Defeat::
+ 	.string "Brothers, I lost!$"
+ 
+ SilphCo_9F_Text_Grunt2PostBattle::
+-	.string "My brothers will avenge me!$"
++	.string "My brothers will avenge me!\p"
++	.string "And if they do not, Giovanni will\n"
++	.string "turn this heal hub into a trap.$"
+ 
+ SilphCo_9F_Text_FloorSign::
+ 	.string "SILPH CO. HEAD OFFICE\n"
+-	.string "9F$"
+-
++	.string "9F\p"
++	.string "Emergency heal hub. WorldLink\n"
++	.string "recommends a save before 11F.$"
