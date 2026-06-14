@@ -267,6 +267,39 @@ progression_bands:
         event: lyra_hideout_locked_profile
         notification: "Lyra's locked profile flickered beside a bell-stamped coin in the Rocket ledger, then went quiet."
 
+  giovanni_silph_scope_payoff:
+    player_range: "Rocket Hideout B3F through Silph Scope pickup"
+    companions:
+      red:
+        location: Rocket Hideout B4F
+        event: red_giovanni_preboss_check
+        notification: "Red waited before Giovanni's room and told Antman this boss feels quieter, colder, and more dangerous than the grunts."
+      misty:
+        location: WorldLink call from Cerulean
+        event: misty_silph_scope_return_call
+        notification: "Misty says the Silph Scope should cut through Lavender's still water and show what Rocket tried to hide."
+      brock:
+        location: WorldLink call from Pewter
+        event: brock_giovanni_grounding_call
+        notification: "Brock warns that Giovanni battles like a stone wall: patient, heavy, and built to make challengers rush."
+    rivals:
+      blue:
+        location: Rocket Hideout B3F
+        event: blue_hideout_late_arrival
+        notification: "Blue reached B3F late and snapped that Antman better not let Red call this a solo victory."
+      ava:
+        location: WorldLink research note
+        event: ava_meridian_signal_research
+        notification: "Ava tagged Giovanni's Meridian prototype phrase as the first link between Rocket routes and future region anchors."
+      dax:
+        location: Rocket Hideout upper floors
+        event: dax_giovanni_training_report
+        notification: "Dax challenged three grunts in a row and says Giovanni sounds like the kind of boss who punishes sloppy teams."
+      lyra:
+        location: Johto locked profile
+        event: lyra_meridian_locked_profile
+        notification: "Lyra's locked profile flashed when Giovanni said Meridian, then WorldLink marked Johto still unavailable."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

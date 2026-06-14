@@ -84,8 +84,13 @@ acts:
       - rocket_coin_logistics
       - gold_dust_ledger_clue
       - portable_pc_beta_terminal
+      - rocket_hideout_blue_late_arrival
+      - red_giovanni_preboss_check
+      - giovanni_meridian_prototype_hint
+      - silph_scope_worldlink_return
+      - portable_pc_beta_storage_handshake
       - erika_battle
-    unlocks: [cave_lantern, dig_kit, ability_capsule_vendor_teaser, portable_pc_beta_terminal]
+    unlocks: [cave_lantern, dig_kit, ability_capsule_vendor_teaser, portable_pc_beta_terminal, silph_scope_return_objective]
 
   - id: act_5_saffron_fuchsia
     purpose: "Turn Rocket from local crime into global infrastructure."

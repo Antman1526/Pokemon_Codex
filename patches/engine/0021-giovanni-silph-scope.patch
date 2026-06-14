@@ -1,0 +1,231 @@
+diff --git a/data/maps/RocketHideout_B3F_Frlg/map.json b/data/maps/RocketHideout_B3F_Frlg/map.json
+index 25a6d7f2ab..0837ff4dca 100644
+--- a/data/maps/RocketHideout_B3F_Frlg/map.json
++++ b/data/maps/RocketHideout_B3F_Frlg/map.json
+@@ -44,6 +44,20 @@
+       "script": "RocketHideout_B3F_EventScript_Grunt1",
+       "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BLUE",
++      "x": 14,
++      "y": 19,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RocketHideout_B3F_EventScript_BlueLateArrival",
++      "flag": "0"
++    },
+     {
+       "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+diff --git a/data/maps/RocketHideout_B3F_Frlg/scripts.inc b/data/maps/RocketHideout_B3F_Frlg/scripts.inc
+index b08d750e84..d1a6c01201 100644
+--- a/data/maps/RocketHideout_B3F_Frlg/scripts.inc
++++ b/data/maps/RocketHideout_B3F_Frlg/scripts.inc
+@@ -11,22 +11,27 @@ RocketHideout_B3F_EventScript_Grunt2::
+ 	msgbox RocketHideout_B3F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
+ 	end
+ 
++RocketHideout_B3F_EventScript_BlueLateArrival::
++	msgbox RocketHideout_B3F_Text_BlueLateArrival, MSGBOX_NPC
++	end
++
+ RocketHideout_B3F_Text_Grunt1Intro::
+-	.string "Stop meddling in TEAM ROCKET's\n"
+-	.string "affairs or else!$"
++	.string "Stop meddling in Team Rocket's\n"
++	.string "signal work or else!$"
+ 
+ RocketHideout_B3F_Text_Grunt1Defeat::
+ 	.string "Oof!\n"
+ 	.string "Taken down!$"
+ 
+ RocketHideout_B3F_Text_Grunt1PostBattle::
+-	.string "SILPH SCOPE?\n"
+-	.string "Oh, that machine the BOSS stole.\p"
+-	.string "It's here somewhere.$"
++	.string "Silph Scope?\n"
++	.string "Oh, that machine the boss stole.\p"
++	.string "It sees ghosts, sure, but it also\n"
++	.string "sees signals our coins cannot.$"
+ 
+ RocketHideout_B3F_Text_Grunt2Intro::
+-	.string "We got word from upstairs that you\n"
+-	.string "were coming!$"
++	.string "We got word from upstairs that\n"
++	.string "Antman and Red were coming!$"
+ 
+ RocketHideout_B3F_Text_Grunt2Defeat::
+ 	.string "What?\n"
+@@ -35,5 +40,16 @@ RocketHideout_B3F_Text_Grunt2Defeat::
+ RocketHideout_B3F_Text_Grunt2PostBattle::
+ 	.string "Go ahead and go!\p"
+ 	.string "But you can't run the elevator\n"
+-	.string "without the LIFT KEY.$"
+-
++	.string "without the Lift Key.\p"
++	.string "Blue tried to rush it too. He is\n"
++	.string "even louder than the alarm.$"
++
++RocketHideout_B3F_Text_BlueLateArrival::
++	.string "Blue: Tch. You and Red got this\n"
++	.string "far already?\p"
++	.string "I found the switch first, but\n"
++	.string "Rocket's maze chewed up my time.\p"
++	.string "Do not let Giovanni think this is\n"
++	.string "some friendship victory.\p"
++	.string "Beat him because you are stronger.\n"
++	.string "Then I will beat you later.$"
+diff --git a/data/maps/RocketHideout_B4F_Frlg/map.json b/data/maps/RocketHideout_B4F_Frlg/map.json
+index 321ae08949..86b6985a2a 100644
+--- a/data/maps/RocketHideout_B4F_Frlg/map.json
++++ b/data/maps/RocketHideout_B4F_Frlg/map.json
+@@ -75,6 +75,20 @@
+       "script": "RocketHideout_B4F_EventScript_LiftKey",
+       "flag": "FLAG_HIDE_LIFT_KEY"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 13,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RocketHideout_B4F_EventScript_RedGiovanniCheck",
++      "flag": "0"
++    },
+     {
+       "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
+diff --git a/data/maps/RocketHideout_B4F_Frlg/scripts.inc b/data/maps/RocketHideout_B4F_Frlg/scripts.inc
+index 091c65d8ed..f933ee019d 100644
+--- a/data/maps/RocketHideout_B4F_Frlg/scripts.inc
++++ b/data/maps/RocketHideout_B4F_Frlg/scripts.inc
+@@ -42,9 +42,14 @@ RocketHideout_B4F_EventScript_SilphScope::
+ 	removeobject LOCALID_SILPH_SCOPE
+ 	giveitem ITEM_SILPH_SCOPE
+ 	goto_if_eq VAR_RESULT, FALSE, EventScript_BagIsFull
++	msgbox RocketHideout_B4F_Text_SilphScopeWorldLink, MSGBOX_DEFAULT
+ 	release
+ 	end
+ 
++RocketHideout_B4F_EventScript_RedGiovanniCheck::
++	msgbox RocketHideout_B4F_Text_RedGiovanniCheck, MSGBOX_NPC
++	end
++
+ RocketHideout_B4F_EventScript_Grunt1::
+ 	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_18, RocketHideout_B4F_Text_Grunt1Intro, RocketHideout_B4F_Text_Grunt1Defeat, RocketHideout_B4F_EventScript_DefeatedGrunt1
+ 	msgbox RocketHideout_B4F_Text_Grunt1PostBattle
+@@ -121,27 +126,35 @@ RocketHideout_B4F_EventScript_RemoveBarrier::
+ 	return
+ 
+ RocketHideout_B4F_Text_GiovanniIntro::
+-	.string "So! I must say, I am impressed you\n"
+-	.string "got here.\p"
+-	.string "TEAM ROCKET captures POKéMON from\n"
+-	.string "around the world.\p"
+-	.string "They're important tools for keeping\n"
+-	.string "our criminal enterprise going.\p"
+-	.string "I am the leader, GIOVANNI!\p"
+-	.string "For your insolence, you will feel a\n"
+-	.string "world of pain!$"
++	.string "So. Antman arrives, with Red's\n"
++	.string "shadow close behind.\p"
++	.string "Team Rocket captures Pokemon from\n"
++	.string "around the world because power\l"
++	.string "belongs to whoever moves first.\p"
++	.string "Coins, ghosts, rare anchors,\n"
++	.string "regional routes...\p"
++	.string "This hideout is a crude Meridian\n"
++	.string "prototype, and you disrupted it.\p"
++	.string "I am Giovanni, leader of Team\n"
++	.string "Rocket.\p"
++	.string "WorldLink gave you courage. I will\n"
++	.string "teach you what control means.$"
+ 
+ RocketHideout_B4F_Text_GiovanniDefeat::
+-	.string "WHAT!\n"
+-	.string "This can't be!$"
++	.string "What!\n"
++	.string "So care can sharpen power...$"
+ 
+ RocketHideout_B4F_Text_GiovanniPostBattle::
+-	.string "I see that you raise POKéMON with\n"
++	.string "I see that you raise Pokemon with\n"
+ 	.string "utmost care.\p"
+-	.string "A child like you would never\n"
+-	.string "understand what I hope to achieve.\p"
+-	.string "I shall step aside this time!\p"
+-	.string "I hope we meet again…$"
++	.string "Care wins battles. It does not\n"
++	.string "hold regions together.\p"
++	.string "The Meridian prototype was only a\n"
++	.string "basement model.\p"
++	.string "Silph, Saffron, and the routes\n"
++	.string "beyond Kanto will teach you scale.\p"
++	.string "I shall step aside this time.\p"
++	.string "We will meet again.$"
+ 
+ RocketHideout_B4F_Text_Grunt2Intro::
+ 	.string "I know you!\n"
+@@ -151,8 +164,10 @@ RocketHideout_B4F_Text_Grunt2Defeat::
+ 	.string "Burned again!$"
+ 
+ RocketHideout_B4F_Text_Grunt2PostBattle::
+-	.string "Do you have something against TEAM\n"
+-	.string "ROCKET?$"
++	.string "Do you have something against Team\n"
++	.string "Rocket?\p"
++	.string "The boss says the Meridian model\n"
++	.string "can survive one noisy kid.$"
+ 
+ RocketHideout_B4F_Text_Grunt3Intro::
+ 	.string "How can you not see the beauty of\n"
+@@ -163,7 +178,9 @@ RocketHideout_B4F_Text_Grunt3Defeat::
+ 
+ RocketHideout_B4F_Text_Grunt3PostBattle::
+ 	.string "BOSS!\n"
+-	.string "I'm sorry I failed you!$"
++	.string "I'm sorry I failed you!\p"
++	.string "The Silph Scope chamber is still\n"
++	.string "secure, right?$"
+ 
+ RocketHideout_B4F_Text_Grunt1Intro::
+ 	.string "The elevator doesn't work?\n"
+@@ -174,5 +191,25 @@ RocketHideout_B4F_Text_Grunt1Defeat::
+ 
+ RocketHideout_B4F_Text_Grunt1PostBattle::
+ 	.string "Oh, no!\n"
+-	.string "I dropped the LIFT KEY!$"
+-
++	.string "I dropped the Lift Key!\p"
++	.string "If Giovanni asks, tell him Blue\n"
++	.string "did it.$"
++
++RocketHideout_B4F_Text_RedGiovanniCheck::
++	.string "Red: Giovanni is different.\p"
++	.string "The grunts make noise. He makes\n"
++	.string "systems.\p"
++	.string "I will stay close, but this battle\n"
++	.string "is yours, Antman.\p"
++	.string "Win clean. Then we take the Silph\n"
++	.string "Scope back to Lavender Tower.$"
++
++RocketHideout_B4F_Text_SilphScopeWorldLink::
++	.string "WorldLink registered the Silph\n"
++	.string "Scope.\p"
++	.string "Return objective: Lavender Tower.\n"
++	.string "The ghost signal can now be read.\p"
++	.string "Portable PC beta storage confidence\n"
++	.string "improved.\p"
++	.string "Full field access remains locked\n"
++	.string "until Silph infrastructure is safe.$"

@@ -131,6 +131,21 @@ messages:
     priority: major
     text: "Portable PC beta terminal detected. Bill and Oak are testing limited field storage before the full WorldLink support kit unlocks."
 
+  - id: WL_KANTO_BLUE_HIDEOUT_LATE
+    trigger: FLAG_OPENED_ROCKET_HIDEOUT
+    priority: minor
+    text: "Blue reached Rocket Hideout B3F late and is furious Antman and Red are closer to Giovanni."
+
+  - id: WL_KANTO_GIOVANNI_MERIDIAN_HINT
+    trigger: FLAG_HIDE_CELADON_ROCKETS
+    priority: major
+    text: "Giovanni retreated after naming a Meridian prototype: a model for lining up coins, ghosts, rare Pokemon, and region anchors."
+
+  - id: WL_KANTO_SILPH_SCOPE_RETURN
+    trigger: ITEM_SILPH_SCOPE
+    priority: major
+    text: "Silph Scope registered. Return to Lavender Tower. Portable PC beta storage confidence improved, but full field access remains locked."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

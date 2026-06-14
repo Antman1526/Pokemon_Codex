@@ -85,6 +85,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-14 11:05 CDT: Codex built the Lavender Tower Moonlight milestone from patches `0001` through `0018`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, and Lavender Tower Moonlight validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.65%.
 - 2026-06-14 11:55 CDT: Codex built the Celadon market hideout milestone from patches `0001` through `0019`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, Lavender Tower Moonlight validation, and Celadon market hideout validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.65%.
 - 2026-06-14 12:36 CDT: Codex built the Rocket Hideout B1F milestone from patches `0001` through `0020`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, Lavender Tower Moonlight validation, Celadon market hideout validation, and Rocket Hideout B1F validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.65%.
+- 2026-06-14 13:28 CDT: Codex built the Giovanni Silph Scope milestone from patches `0001` through `0021`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, Lavender Tower Moonlight validation, Celadon market hideout validation, Rocket Hideout B1F validation, and Giovanni Silph Scope validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.66%.
 
 ## Engine Patches To Apply Before Build
 
@@ -108,6 +109,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0018-lavender-tower-moonlight.patch` - Pokemon Tower Red companion check, Team Moonlight name reveal, Marowak dream static, Rocket/Fuji Moonlight separation, and Poke Flute warning.
 - `patches/engine/0019-celadon-market-hideout.patch` - Celadon Gold Dust buyer, Rocket Game Corner WorldLink pulse, Erika market warning, and Ability Capsule vendor access.
 - `patches/engine/0020-rocket-hideout-b1f.patch` - Rocket Hideout B1F Red companion check, Rocket logistics rewrite, Gold Dust ledger clue, and Portable PC beta terminal.
+- `patches/engine/0021-giovanni-silph-scope.patch` - Rocket Hideout Blue late-arrival scene, Red pre-Giovanni support, Meridian prototype hint, Silph Scope return guidance, and Portable PC beta storage confidence.
 
 ## Validation
 
@@ -142,6 +144,7 @@ python3 tools/validate_rock_tunnel_cave_lantern.py
 python3 tools/validate_lavender_tower_moonlight.py
 python3 tools/validate_celadon_market_hideout.py
 python3 tools/validate_rocket_hideout_b1f.py
+python3 tools/validate_giovanni_silph_scope.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -161,6 +164,7 @@ Rock Tunnel Cave Lantern validation passed.
 Lavender Tower Moonlight validation passed.
 Celadon market hideout validation passed.
 Rocket Hideout B1F validation passed.
+Giovanni Silph Scope validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -235,6 +239,10 @@ Manual OpenEmu checklist still needed:
 - [ ] Rocket Hideout B1F Portable PC beta terminal opens the PC menu.
 - [ ] Rocket Hideout B1F Gold Dust ledger references the Celadon buyer and rare anchors.
 - [ ] Rocket Hideout B1F grunts mention Rocket logistics, Silph Scope movement, and Gold Dust pressure.
+- [ ] Rocket Hideout B3F Blue late-arrival scene appears.
+- [ ] Rocket Hideout B4F Red pre-Giovanni support scene appears.
+- [ ] Giovanni references the Meridian prototype without revealing the final Nexus Order.
+- [ ] Silph Scope pickup points Antman back to Lavender Tower and mentions Portable PC beta storage confidence.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.
