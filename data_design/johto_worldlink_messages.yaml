@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_SPROUT_TOWER_UPPER_ARRIVAL
+    trigger: FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED
+    priority: major
+    text: "Sprout Tower upper floor reached. Elder lesson, Silver pressure, and the Zephyr Gym gate are now linked."
+
+  - id: WL_JOHTO_SILVER_FIRST_BATTLE_SCENE
+    trigger: FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED
+    priority: major
+    text: "Silver challenged Antman after the Elder's lesson. First Johto rival battle scene logged above the tower bells."
+
+  - id: WL_JOHTO_CURSED_BELL_RECORD
+    trigger: FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED
+    priority: major
+    text: "Moonlight cursed bell record recovered. Tower history is being rewritten through sound, not stolen through normal archives."
+
+  - id: WL_JOHTO_FALKNER_GYM_UNLOCKED
+    trigger: FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED
+    priority: major
+    text: "Falkner Gym unlocked. Zephyr Badge is the next required Johto objective; Hoenn remains locked."
+
   - id: WL_JOHTO_SPROUT_TOWER_1F_ARRIVAL
     trigger: FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED
     priority: major

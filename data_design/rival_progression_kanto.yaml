@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_sprout_tower_upper_floor:
+    player_range: "Sprout Tower upper floor before Falkner"
+    companions:
+      red:
+        location: Sprout Tower exterior
+        event: trusts_antman_after_tower_test
+        notification: "Red waited outside and says Antman came back carrying Johto's first lesson himself."
+      lyra:
+        location: Violet City
+        event: falkner_gym_route_open
+        notification: "Lyra says Falkner's Gym is open now that the tower lesson is complete."
+    rivals:
+      silver:
+        location: Sprout Tower upper floor
+        event: first_battle_scene_after_elder_lesson
+        notification: "Silver challenged Antman after the Elder's lesson and left before admitting what he learned."
+      ava:
+        location: Elm Lab remote feed
+        event: cursed_bell_record_analysis
+        notification: "Ava says the cursed bell record is not a relic; it is a rewritten route signal."
+
   johto_sprout_tower_first_floor:
     player_range: "Sprout Tower 1F before upper-floor elder and Silver battle"
     companions:

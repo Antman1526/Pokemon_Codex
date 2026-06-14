@@ -1,0 +1,240 @@
+diff --git a/data/maps/SproutTower_1F_Frlg/map.json b/data/maps/SproutTower_1F_Frlg/map.json
+index 45d872a81c..d1cce7cbb2 100644
+--- a/data/maps/SproutTower_1F_Frlg/map.json
++++ b/data/maps/SproutTower_1F_Frlg/map.json
+@@ -93,6 +93,13 @@
+     }
+   ],
+   "warp_events": [
++    {
++      "x": 4,
++      "y": 10,
++      "elevation": 3,
++      "dest_map": "MAP_SPROUT_TOWER_UPPER",
++      "dest_warp_id": "0"
++    },
+     {
+       "x": 18,
+       "y": 10,
+diff --git a/data/maps/SproutTower_Upper_Frlg/map.json b/data/maps/SproutTower_Upper_Frlg/map.json
+new file mode 100644
+index 0000000000..fbb96aa43d
+--- /dev/null
++++ b/data/maps/SproutTower_Upper_Frlg/map.json
+@@ -0,0 +1,115 @@
++{
++  "id": "MAP_SPROUT_TOWER_UPPER",
++  "name": "SproutTower_Upper_Frlg",
++  "layout": "LAYOUT_POKEMON_TOWER_3F",
++  "music": "MUS_RG_POKE_TOWER",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_INDOOR",
++  "allow_cycling": false,
++  "allow_escaping": true,
++  "allow_running": false,
++  "show_map_name": true,
++  "floor_number": 1,
++  "battle_scene": "MAP_BATTLE_SCENE_INDOOR_1",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_SPROUT_TOWER_UPPER_ELDER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
++      "x": 12,
++      "y": 4,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SproutTower_Upper_Frlg_EventScript_ElderLesson",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SPROUT_TOWER_UPPER_SILVER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 10,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SproutTower_Upper_Frlg_EventScript_SilverFirstBattle",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SPROUT_TOWER_UPPER_MOONLIGHT_RECORD",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CHANNELER",
++      "x": 8,
++      "y": 12,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SproutTower_Upper_Frlg_EventScript_CursedBellRecord",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SPROUT_TOWER_UPPER_GOLD_DUST_RECEIPT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 14,
++      "y": 9,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SproutTower_Upper_Frlg_EventScript_GoldDustReceipt",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_SPROUT_TOWER_UPPER_FALKNER_MESSENGER",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MAN_3",
++      "x": 18,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "SproutTower_Upper_Frlg_EventScript_FalknerGymUnlock",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 18,
++      "y": 10,
++      "elevation": 3,
++      "dest_map": "MAP_SPROUT_TOWER_1F",
++      "dest_warp_id": "0"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 4,
++      "y": 10,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "SproutTower_Upper_Frlg_EventScript_UpperFloorSign"
++    }
++  ]
++}
+diff --git a/data/maps/SproutTower_Upper_Frlg/scripts.inc b/data/maps/SproutTower_Upper_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..8a913eb27c
+--- /dev/null
++++ b/data/maps/SproutTower_Upper_Frlg/scripts.inc
+@@ -0,0 +1,70 @@
++SproutTower_Upper_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, SproutTower_Upper_Frlg_OnTransition
++	.byte 0
++
++SproutTower_Upper_Frlg_OnTransition:
++	setflag FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED
++	end
++
++SproutTower_Upper_Frlg_EventScript_ElderLesson::
++	msgbox SproutTower_Upper_Frlg_Text_ElderLesson, MSGBOX_NPC
++	end
++
++SproutTower_Upper_Frlg_EventScript_SilverFirstBattle::
++	msgbox SproutTower_Upper_Frlg_Text_SilverFirstBattle, MSGBOX_NPC
++	end
++
++SproutTower_Upper_Frlg_EventScript_CursedBellRecord::
++	msgbox SproutTower_Upper_Frlg_Text_CursedBellRecord, MSGBOX_NPC
++	end
++
++SproutTower_Upper_Frlg_EventScript_GoldDustReceipt::
++	msgbox SproutTower_Upper_Frlg_Text_GoldDustReceipt, MSGBOX_NPC
++	end
++
++SproutTower_Upper_Frlg_EventScript_FalknerGymUnlock::
++	msgbox SproutTower_Upper_Frlg_Text_FalknerGymUnlock, MSGBOX_NPC
++	end
++
++SproutTower_Upper_Frlg_EventScript_UpperFloorSign::
++	msgbox SproutTower_Upper_Frlg_Text_UpperFloorSign, MSGBOX_SIGN
++	end
++
++SproutTower_Upper_Frlg_Text_ElderLesson::
++	.string "ELDER: Flexibility before force.\p"
++	.string "A tower that will not bend\n"
++	.string "falls before the storm ends.\p"
++	.string "Your journey crossed Kanto by\n"
++	.string "strength. Johto asks for rhythm.$"
++
++SproutTower_Upper_Frlg_Text_SilverFirstBattle::
++	.string "SILVER: Now we battle.\p"
++	.string "If bending is the lesson, then\n"
++	.string "show me it is not just fear.\p"
++	.string "I will not let old men, rivals,\n"
++	.string "or a famous friend carry you.$"
++
++SproutTower_Upper_Frlg_Text_CursedBellRecord::
++	.string "MOONLIGHT RECORD: Cursed bell record.\p"
++	.string "The ink repeats the same note,\n"
++	.string "but the meaning keeps changing.\p"
++	.string "Ava should see this. It is a\n"
++	.string "route signal, not a relic.$"
++
++SproutTower_Upper_Frlg_Text_GoldDustReceipt::
++	.string "GOLD DUST RECEIPT: Archive purchase failed.\p"
++	.string "Reason: Elder refused transfer.\p"
++	.string "Fallback: seek cleaner market\n"
++	.string "channels west of Violet.$"
++
++SproutTower_Upper_Frlg_Text_FalknerGymUnlock::
++	.string "FALKNER: Zephyr Gym unlocked.\p"
++	.string "The Elder says you listened\n"
++	.string "before you pushed forward.\p"
++	.string "WorldLink: Falkner Gym next.\n"
++	.string "Hoenn remains locked.$"
++
++SproutTower_Upper_Frlg_Text_UpperFloorSign::
++	.string "SPROUT TOWER UPPER FLOOR\p"
++	.string "Field Checklist page teased.\n"
++	.string "Falkner waits below the wind.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index e07fd2bd7c..c3c33095e4 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -865,6 +865,7 @@
+     "MrPokemonsHouse_Frlg",
+     "VioletCity_Frlg",
+     "SproutTower_1F_Frlg",
++    "SproutTower_Upper_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 339d772994..1cb80ed4ed 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -153,7 +153,7 @@
+ #define FLAG_MR_POKEMON_HOUSE_FIRST_VISIT_REACHED   0x0B0
+ #define FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED   0x0B1
+ #define FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED   0x0B2
+-#define FLAG_0x0B3               0x0B3
++#define FLAG_SPROUT_TOWER_UPPER_FLOOR_REACHED   0x0B3
+ #define FLAG_0x0B4               0x0B4
+ #define FLAG_0x0B5               0x0B5
+ #define FLAG_0x0B6               0x0B6
