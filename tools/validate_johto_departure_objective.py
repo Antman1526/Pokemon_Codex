@@ -164,7 +164,7 @@ def validate_design_data() -> list[str]:
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
     if transition.get("active_region") != "johto":
         errors.append("current transition state must mark Johto as active")
-    if transition.get("next_required_story_node") not in {"new_bark_worldlink_arrival", "elm_lab_first_visit", "route_29_first_steps", "cherrygrove_first_arrival", "route_30_first_steps", "mr_pokemon_house_first_visit", "violet_city_first_arrival", "sprout_tower_first_floor", "sprout_tower_upper_floor", "falkner_gym_battle", "route_32_union_cave_road", "union_cave_first_entry", "azalea_first_arrival"}:
+    if transition.get("next_required_story_node") not in {"new_bark_worldlink_arrival", "elm_lab_first_visit", "route_29_first_steps", "cherrygrove_first_arrival", "route_30_first_steps", "mr_pokemon_house_first_visit", "violet_city_first_arrival", "sprout_tower_first_floor", "sprout_tower_upper_floor", "falkner_gym_battle", "route_32_union_cave_road", "union_cave_first_entry", "azalea_first_arrival", "slowpoke_well_first_entry"}:
         errors.append("current transition state must point to New Bark arrival or later Johto follow-up")
 
     return errors

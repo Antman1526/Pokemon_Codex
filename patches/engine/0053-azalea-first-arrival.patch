@@ -1,0 +1,315 @@
+diff --git a/data/maps/AzaleaTown_Frlg/map.json b/data/maps/AzaleaTown_Frlg/map.json
+new file mode 100644
+index 0000000000..726931f26f
+--- /dev/null
++++ b/data/maps/AzaleaTown_Frlg/map.json
+@@ -0,0 +1,153 @@
++{
++  "id": "MAP_AZALEA_TOWN",
++  "name": "AzaleaTown_Frlg",
++  "layout": "LAYOUT_LAVENDER_TOWN",
++  "music": "MUS_RG_LAVENDER",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SUNNY",
++  "map_type": "MAP_TYPE_TOWN",
++  "allow_cycling": true,
++  "allow_escaping": false,
++  "allow_running": true,
++  "show_map_name": true,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_AZALEA_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 7,
++      "y": 14,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_LyraTownEdge",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 5,
++      "y": 12,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_RedTownWatch",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_KURT",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
++      "x": 12,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_KurtWarning",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_ROCKET",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
++      "x": 18,
++      "y": 15,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_RocketWellGuard",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_GOLD_DUST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 20,
++      "y": 15,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_GoldDustTailMarket",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_BUGSY_AIDE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BUG_CATCHER_FRLG",
++      "x": 15,
++      "y": 7,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_BugsyAide",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_AZALEA_SILVER_TRACE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 21,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "AzaleaTown_Frlg_EventScript_SilverTrace",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 5,
++      "y": 14,
++      "elevation": 3,
++      "dest_map": "MAP_UNION_CAVE_1F",
++      "dest_warp_id": "1"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 18,
++      "y": 16,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "AzaleaTown_Frlg_EventScript_SlowpokeWellLock"
++    },
++    {
++      "type": "sign",
++      "x": 14,
++      "y": 4,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "AzaleaTown_Frlg_EventScript_TownSign"
++    }
++  ]
++}
+diff --git a/data/maps/AzaleaTown_Frlg/scripts.inc b/data/maps/AzaleaTown_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..b0cce1197c
+--- /dev/null
++++ b/data/maps/AzaleaTown_Frlg/scripts.inc
+@@ -0,0 +1,103 @@
++AzaleaTown_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, AzaleaTown_Frlg_OnTransition
++	.byte 0
++
++AzaleaTown_Frlg_OnTransition:
++	setflag FLAG_AZALEA_FIRST_ARRIVAL_REACHED
++	end
++
++AzaleaTown_Frlg_EventScript_LyraTownEdge::
++	msgbox AzaleaTown_Frlg_Text_LyraTownEdge, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_RedTownWatch::
++	msgbox AzaleaTown_Frlg_Text_RedTownWatch, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_KurtWarning::
++	setflag FLAG_AZALEA_KURT_WARNING_REACHED
++	msgbox AzaleaTown_Frlg_Text_KurtWarning, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_RocketWellGuard::
++	msgbox AzaleaTown_Frlg_Text_RocketWellGuard, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_GoldDustTailMarket::
++	msgbox AzaleaTown_Frlg_Text_GoldDustTailMarket, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_BugsyAide::
++	msgbox AzaleaTown_Frlg_Text_BugsyAide, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_SilverTrace::
++	msgbox AzaleaTown_Frlg_Text_SilverTrace, MSGBOX_NPC
++	end
++
++AzaleaTown_Frlg_EventScript_SlowpokeWellLock::
++	setflag FLAG_AZALEA_SLOWPOKE_WELL_GATE_CHECKED
++	msgbox AzaleaTown_Frlg_Text_SlowpokeWellLock, MSGBOX_SIGN
++	end
++
++AzaleaTown_Frlg_EventScript_TownSign::
++	msgbox AzaleaTown_Frlg_Text_TownSign, MSGBOX_SIGN
++	end
++
++AzaleaTown_Frlg_Text_LyraTownEdge::
++	.string "LYRA: Azalea is quiet in\n"
++	.string "the wrong way.\p"
++	.string "People are staying indoors,\n"
++	.string "but nobody is confused about\n"
++	.string "where the problem is.$"
++
++AzaleaTown_Frlg_Text_RedTownWatch::
++	.string "RED: I will watch the cave\n"
++	.string "road behind us.\p"
++	.string "You talk to Kurt. If Rocket\n"
++	.string "pushes from the Well, I will\n"
++	.string "keep the exit clean.$"
++
++AzaleaTown_Frlg_Text_KurtWarning::
++	.string "KURT: Slowpoke are not\n"
++	.string "inventory.\p"
++	.string "Apricorn craft is for helping\n"
++	.string "Pokemon, not polishing greed.\p"
++	.string "Clear the Well, then we talk.$"
++
++AzaleaTown_Frlg_Text_RocketWellGuard::
++	.string "ROCKET: The well is closed.\p"
++	.string "Official safety inspection.\n"
++	.string "Unofficially, walk away.$"
++
++AzaleaTown_Frlg_Text_GoldDustTailMarket::
++	.string "GOLD DUST: A market is only\n"
++	.string "ugly until paperwork arrives.\p"
++	.string "Slowpoke tails, route access,\n"
++	.string "Gym delays--everything can be\n"
++	.string "priced if people are scared.$"
++
++AzaleaTown_Frlg_Text_BugsyAide::
++	.string "BUGSY AIDE: Gym challenge\n"
++	.string "delayed by town emergency.\p"
++	.string "Bugsy is studying how Rocket\n"
++	.string "moves like a swarm around\n"
++	.string "Slowpoke Well.$"
++
++AzaleaTown_Frlg_Text_SilverTrace::
++	.string "SILVER TRACE: Well side.\p"
++	.string "Still no battle.\p"
++	.string "He is watching how you handle\n"
++	.string "people who steal strength.$"
++
++AzaleaTown_Frlg_Text_SlowpokeWellLock::
++	.string "WorldLink: Slowpoke Well next.\p"
++	.string "Kurt is moving. Rocket is dug\n"
++	.string "in. Gold Dust is waiting to\n"
++	.string "profit from whoever wins.\p"
++	.string "Hoenn remains locked.$"
++
++AzaleaTown_Frlg_Text_TownSign::
++	.string "AZALEA TOWN\p"
++	.string "Apricorn craft, quiet wells,\n"
++	.string "and promises older than roads.$"
+diff --git a/data/maps/UnionCave_1F_Frlg/map.json b/data/maps/UnionCave_1F_Frlg/map.json
+index d020116651..d5456422d2 100644
+--- a/data/maps/UnionCave_1F_Frlg/map.json
++++ b/data/maps/UnionCave_1F_Frlg/map.json
+@@ -114,6 +114,13 @@
+       "elevation": 3,
+       "dest_map": "MAP_ROUTE32",
+       "dest_warp_id": "0"
++    },
++    {
++      "x": 44,
++      "y": 7,
++      "elevation": 3,
++      "dest_map": "MAP_AZALEA_TOWN",
++      "dest_warp_id": "0"
+     }
+   ],
+   "coord_events": [],
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index 745795ff2f..e7ca2bdab5 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -867,6 +867,7 @@
+     "VioletCity_Gym_Frlg",
+     "Route32_Frlg",
+     "UnionCave_1F_Frlg",
++    "AzaleaTown_Frlg",
+     "SproutTower_1F_Frlg",
+     "SproutTower_Upper_Frlg",
+     "ViridianCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 82478b692f..ef4037fa64 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -161,9 +161,9 @@
+ #define FLAG_UNION_CAVE_FIRST_ENTRY_REACHED   0x0B8
+ #define FLAG_UNION_CAVE_FIELD_CHECKLIST_REVIEWED   0x0B9
+ #define FLAG_UNION_CAVE_RED_EMERGENCY_REACHED   0x0BA
+-#define FLAG_0x0BB               0x0BB
+-#define FLAG_0x0BC               0x0BC
+-#define FLAG_0x0BD               0x0BD
++#define FLAG_AZALEA_FIRST_ARRIVAL_REACHED   0x0BB
++#define FLAG_AZALEA_KURT_WARNING_REACHED   0x0BC
++#define FLAG_AZALEA_SLOWPOKE_WELL_GATE_CHECKED   0x0BD
+ #define FLAG_0x0BE               0x0BE
+ #define FLAG_0x0BF               0x0BF
+ #define FLAG_0x0C0               0x0C0

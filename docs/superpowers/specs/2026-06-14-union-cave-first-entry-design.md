@@ -19,6 +19,7 @@ Union Cave becomes Johto's first true enclosed road after Falkner: not a shortcu
 - Add NPC/object touchpoints for Lyra, Red, Rocket, Gold Dust, Ava's checklist relay, Silver trace, and the blocked Azalea exit.
 - Add flags for first entry, cave checklist review, and Red's emergency scene.
 - Keep Hoenn locked and set `azalea_first_arrival` as the next required story node.
+- After Azalea first arrival is implemented, the same journey chain should continue forward to `slowpoke_well_first_entry`.
 
 ## Systems Notes
 

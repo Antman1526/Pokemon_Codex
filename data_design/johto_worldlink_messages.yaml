@@ -1,6 +1,31 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_AZALEA_FIRST_ARRIVAL
+    trigger: FLAG_AZALEA_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "Azalea first arrival confirmed. The town is quiet, Kurt is watching the Well, and Red is guarding the cave road behind Antman."
+
+  - id: WL_JOHTO_KURT_WARNING
+    trigger: FLAG_AZALEA_KURT_WARNING_REACHED
+    priority: major
+    text: "Kurt warning logged. Slowpoke are not inventory, and Apricorn craft stays locked until the Well crisis is handled."
+
+  - id: WL_JOHTO_ROCKET_GOLD_DUST_TAIL_MARKET
+    trigger: FLAG_AZALEA_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "Rocket is guarding Slowpoke Well while Gold Dust is trying to make the tail market look legal."
+
+  - id: WL_JOHTO_BUGSY_LOCKED
+    trigger: FLAG_AZALEA_FIRST_ARRIVAL_REACHED
+    priority: major
+    text: "Bugsy's Gym is visible but locked by town emergency protocol. Slowpoke Well comes first."
+
+  - id: WL_JOHTO_SLOWPOKE_WELL_NEXT
+    trigger: FLAG_AZALEA_SLOWPOKE_WELL_GATE_CHECKED
+    priority: major
+    text: "WorldLink: Slowpoke Well next. Silver's trace is well-side, Kurt is moving, and Hoenn remains locked."
+
   - id: WL_JOHTO_UNION_CAVE_FIRST_ENTRY
     trigger: FLAG_UNION_CAVE_FIRST_ENTRY_REACHED
     priority: major

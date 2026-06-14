@@ -3,6 +3,31 @@
 chapter: kanto
 
 progression_bands:
+  johto_azalea_first_arrival:
+    player_range: "Azalea Town first arrival before Slowpoke Well"
+    companions:
+      lyra:
+        location: Azalea Town edge
+        event: azalea_silence_warning
+        notification: "Lyra says Azalea is quiet in the wrong way and points Antman toward Kurt before the Well."
+      red:
+        location: Azalea / Union Cave road
+        event: azalea_cave_watch
+        notification: "Red watches the cave road behind Antman so the town crisis can stay Antman's lead."
+      kurt:
+        location: Azalea Town
+        event: slowpoke_moral_warning
+        notification: "Kurt warns that Slowpoke are not inventory and refuses to talk Apricorn craft until the Well is safe."
+    rivals:
+      silver:
+        location: Slowpoke Well side
+        event: slowpoke_well_trace_no_battle
+        notification: "Silver left a trace near the Well but did not challenge anyone. He is watching how Antman handles Rocket."
+      ava:
+        location: WorldLink town checklist feed
+        event: azalea_town_checklist
+        notification: "Ava unlocks the Azalea checklist: Kurt, Bugsy lock, Apricorn tease, Slowpoke Well next."
+
   johto_union_cave_first_entry:
     player_range: "Union Cave first entry before Azalea Town"
     companions:

@@ -148,7 +148,7 @@ def validate_design_data() -> list[str]:
     rivals = load_yaml(RIVAL_PROGRESSION)
 
     act2 = next((act for act in johto.get("acts", []) if act.get("id") == "act_2_azalea_goldenrod"), {})
-    for required_map in ("route_32", "union_cave"):
+    for required_map in ("route_32", "union_cave", "azalea_town"):
         if required_map not in act2.get("required_maps", []):
             errors.append(f"Johto act 2 missing required map: {required_map}")
     for event_id in (
@@ -183,11 +183,11 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("current_safe_hub") not in {"route_32", "union_cave"}:
+    if transition.get("current_safe_hub") not in {"route_32", "union_cave", "azalea_town"}:
         errors.append("current transition state must record Route 32 or Union Cave as current safe hub")
-    if transition.get("current_route") not in {"route_32", "union_cave"}:
+    if transition.get("current_route") not in {"route_32", "union_cave", "azalea_town"}:
         errors.append("current transition state must keep current route as route_32 or union_cave")
-    if transition.get("next_required_story_node") not in {"union_cave_first_entry", "azalea_first_arrival"}:
+    if transition.get("next_required_story_node") not in {"union_cave_first_entry", "azalea_first_arrival", "slowpoke_well_first_entry"}:
         errors.append("current transition state must advance next node to union_cave_first_entry or azalea_first_arrival")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")

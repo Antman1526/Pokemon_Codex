@@ -59,7 +59,7 @@ def validate_patch_docs() -> list[str]:
         (
             SPEC,
             "Union Cave spec",
-            ("Rocket remnants and Gold Dust actively fighting", "first cave-specific Field Checklist", "azalea_first_arrival"),
+            ("Rocket remnants and Gold Dust actively fighting", "first cave-specific Field Checklist", "azalea_first_arrival", "slowpoke_well_first_entry"),
         ),
         (
             PLAN,
@@ -184,12 +184,12 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("current_safe_hub") != "union_cave":
-        errors.append("current transition state must record Union Cave as current safe hub")
-    if transition.get("current_route") != "union_cave":
-        errors.append("current transition state must keep current route as union_cave")
-    if transition.get("next_required_story_node") != "azalea_first_arrival":
-        errors.append("current transition state must advance next node to azalea_first_arrival")
+    if transition.get("current_safe_hub") not in {"union_cave", "azalea_town"}:
+        errors.append("current transition state must record Union Cave or Azalea Town as current safe hub")
+    if transition.get("current_route") not in {"union_cave", "azalea_town"}:
+        errors.append("current transition state must keep current route as union_cave or azalea_town")
+    if transition.get("next_required_story_node") not in {"azalea_first_arrival", "slowpoke_well_first_entry"}:
+        errors.append("current transition state must advance next node to azalea_first_arrival or slowpoke_well_first_entry")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")
 

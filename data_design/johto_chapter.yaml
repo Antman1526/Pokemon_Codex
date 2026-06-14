@@ -104,12 +104,21 @@ acts:
       - cave_field_checklist_page
       - silver_union_cave_exit_trace
       - azalea_exit_locked_until_kurt
+      - azalea_first_arrival
+      - lyra_azalea_silence_warning
+      - red_azalea_cave_watch
+      - kurt_slowpoke_moral_warning
+      - rocket_well_guard_lock
+      - gold_dust_tail_market_pressure
+      - bugsy_gym_locked_until_well
+      - apricorn_balls_tease
+      - worldlink_slowpoke_well_next
       - slowpoke_well_rocket_return
       - kurt_apricorn_tools
       - ilex_forest_worldlink_static
       - whitney_battle
       - radio_tower_frequency_warning
-    unlocks: [route_32_live_map, field_checklist_route32_page, union_cave_story_gate, azalea_road_pressure, union_cave_live_map, field_checklist_union_cave_page, rocket_gold_dust_cave_conflict, azalea_story_gate, apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
+    unlocks: [route_32_live_map, field_checklist_route32_page, union_cave_story_gate, azalea_road_pressure, union_cave_live_map, field_checklist_union_cave_page, rocket_gold_dust_cave_conflict, azalea_story_gate, azalea_town_live_map, azalea_town_checklist_page, slowpoke_well_story_gate, bugsy_gym_story_gate_locked, apricorn_balls_tease, apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
 
   - id: act_3_ecruteak_mahogany
     purpose: "Bring Johto's towers, beasts, and Rocket broadcast pressure into the Nexus plot."
