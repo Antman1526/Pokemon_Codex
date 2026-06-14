@@ -135,6 +135,39 @@ progression_bands:
         event: lyra_signal_remains_locked
         notification: "Lyra's profile flickered again, but WorldLink still marks Johto travel as locked."
 
+  rock_tunnel_lavender_approach:
+    player_range: "Route 10 through first Lavender arrival"
+    companions:
+      brock:
+        location: Route 10 Pokemon Center
+        event: brock_cave_lantern_advice
+        notification: "Brock registered Cave Lantern advice and told Antman to trust his footing in Rock Tunnel."
+      red:
+        location: Rock Tunnel 1F
+        event: warm_rock_tunnel_companion_check
+        notification: "Red entered Rock Tunnel with Antman and marked a safe line through the cave."
+      misty:
+        location: Cerulean / WorldLink call
+        event: lavender_tower_waterline_warning
+        notification: "Misty says the Lavender signal feels like still water before a storm."
+    rivals:
+      blue:
+        location: Pokemon Tower approach
+        event: pokemon_tower_race_pressure
+        notification: "Blue is racing toward Pokemon Tower and wants the next mystery solved first."
+      ava:
+        location: Rock Tunnel survey notes
+        event: low_light_static_research
+        notification: "Ava logged low-light static from Rock Tunnel and asked Oak to compare it with Lavender Tower."
+      dax:
+        location: Route 10
+        event: route10_training_report
+        notification: "Dax trained on Route 10 and says cave darkness is just another opponent."
+      lyra:
+        location: Johto locked profile
+        event: lyra_tower_signal_locked
+        notification: "Lyra's locked profile pulsed when Lavender Tower appeared in WorldLink."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

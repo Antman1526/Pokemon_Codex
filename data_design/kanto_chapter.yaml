@@ -60,6 +60,11 @@ acts:
       - diglett_cave_trail_cutter_ground_ping
       - brock_rock_tunnel_field_advice
       - rock_tunnel_checklist_handoff
+      - cave_lantern_auto_flash_protocol
+      - brock_route10_cave_lantern_advice
+      - red_rock_tunnel_companion_check
+      - moonlight_echo_low_light_static
+      - lavender_low_light_static_arrival
       - cave_lantern_intro
       - lavender_moonlight_dream_static
       - red_lavender_warning

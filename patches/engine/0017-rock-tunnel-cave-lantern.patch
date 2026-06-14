@@ -1,0 +1,230 @@
+diff --git a/data/maps/LavenderTown_Frlg/scripts.inc b/data/maps/LavenderTown_Frlg/scripts.inc
+index 59add4c917..b70055cb95 100644
+--- a/data/maps/LavenderTown_Frlg/scripts.inc
++++ b/data/maps/LavenderTown_Frlg/scripts.inc
+@@ -67,7 +67,10 @@ LavenderTown_Text_TownKnownAsMonGraveSite::
+ LavenderTown_Text_GhostsAppearedInTower::
+ 	.string "Ghosts appeared in POKéMON TOWER.\p"
+ 	.string "I think they're the spirits of\n"
+-	.string "POKéMON that the ROCKETS killed.$"
++	.string "POKéMON that the ROCKETS killed.\p"
++	.string "Since ROCK TUNNEL shook, radios\n"
++	.string "pick up low-light static near the\l"
++	.string "tower after sunset.$"
+ 
+ LavenderTown_Text_TownSign::
+ 	.string "LAVENDER TOWN\n"
+@@ -85,4 +88,3 @@ LavenderTown_Text_VolunteerPokemonHouse::
+ LavenderTown_Text_PokemonTowerSign::
+ 	.string "POKéMON TOWER\n"
+ 	.string "Becalm the Spirits of POKéMON$"
+-
+diff --git a/data/maps/RockTunnel_1F_Frlg/map.json b/data/maps/RockTunnel_1F_Frlg/map.json
+index 582ca231f7..c7388ff883 100644
+--- a/data/maps/RockTunnel_1F_Frlg/map.json
++++ b/data/maps/RockTunnel_1F_Frlg/map.json
+@@ -155,6 +155,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "RockTunnel_1F_EventScript_ItemEscapeRope",
+       "flag": "FLAG_HIDE_ROCK_TUNNEL_1F_ESCAPE_ROPE"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 15,
++      "y": 4,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RockTunnel_1F_EventScript_RedCaveLantern",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/RockTunnel_1F_Frlg/scripts.inc b/data/maps/RockTunnel_1F_Frlg/scripts.inc
+index 84fafd001d..da666aebe6 100644
+--- a/data/maps/RockTunnel_1F_Frlg/scripts.inc
++++ b/data/maps/RockTunnel_1F_Frlg/scripts.inc
+@@ -4,12 +4,22 @@ RockTunnel_1F_Frlg_MapScripts::
+ 
+ RockTunnel_1F_OnTransition::
+ 	setworldmapflag FLAG_WORLD_MAP_ROCK_TUNNEL_1F
++	goto_if_unset FLAG_BADGE03_GET, RockTunnel_1F_OnTransition_End
++	setflag FLAG_SYS_USE_FLASH
++RockTunnel_1F_OnTransition_End::
+ 	end
+ 
+ RockTunnel_1F_EventScript_RouteSign::
+ 	msgbox RockTunnel_1F_Text_RouteSign, MSGBOX_SIGN
+ 	end
+ 
++RockTunnel_1F_EventScript_RedCaveLantern::
++	lock
++	faceplayer
++	msgbox RockTunnel_1F_Text_RedCaveLantern, MSGBOX_NPC
++	release
++	end
++
+ RockTunnel_1F_EventScript_Lenny::
+ 	trainerbattle_single TRAINER_HIKER_LENNY, RockTunnel_1F_Text_LennyIntro, RockTunnel_1F_Text_LennyDefeat
+ 	msgbox RockTunnel_1F_Text_LennyPostBattle, MSGBOX_AUTOCLOSE
+@@ -48,6 +58,19 @@ RockTunnel_1F_EventScript_Dana::
+ RockTunnel_1F_Text_LennyIntro::
+ 	.string "This tunnel goes a long way, kid!$"
+ 
++RockTunnel_1F_Text_RedCaveLantern::
++	.string "RED: There you are.\p"
++	.string "The Cave Lantern is working.\n"
++	.string "BROCK was right about your footing.\p"
++	.string "But listen past the ZUBAT.\p"
++	.string "The echo keeps saying LAVENDER\n"
++	.string "before anyone in here says it.\p"
++	.string "WorldLink calls it low-light\n"
++	.string "static. I don't like it.\p"
++	.string "Stay close. I can help with trouble\n"
++	.string "in the tunnel--not your badges,\l"
++	.string "but this road is ours.$"
++
+ RockTunnel_1F_Text_LennyDefeat::
+ 	.string "Doh!\n"
+ 	.string "You win!$"
+@@ -127,4 +150,3 @@ RockTunnel_1F_Text_ArianaPostBattle::
+ RockTunnel_1F_Text_RouteSign::
+ 	.string "ROCK TUNNEL\n"
+ 	.string "CERULEAN CITY - LAVENDER TOWN$"
+-
+diff --git a/data/maps/RockTunnel_B1F_Frlg/map.json b/data/maps/RockTunnel_B1F_Frlg/map.json
+index 284129699b..b28463d161 100644
+--- a/data/maps/RockTunnel_B1F_Frlg/map.json
++++ b/data/maps/RockTunnel_B1F_Frlg/map.json
+@@ -379,6 +379,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "EventScript_RockSmash",
+       "flag": "FLAG_TEMP_11"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LIGHT_SPRITE",
++      "x": 30,
++      "y": 28,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RockTunnel_B1F_EventScript_MoonlightEcho",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/RockTunnel_B1F_Frlg/scripts.inc b/data/maps/RockTunnel_B1F_Frlg/scripts.inc
+index 265bf5cc2b..f83690d354 100644
+--- a/data/maps/RockTunnel_B1F_Frlg/scripts.inc
++++ b/data/maps/RockTunnel_B1F_Frlg/scripts.inc
+@@ -1,6 +1,13 @@
+ RockTunnel_B1F_Frlg_MapScripts::
+ 	.byte 0
+ 
++RockTunnel_B1F_EventScript_MoonlightEcho::
++	lock
++	faceplayer
++	msgbox RockTunnel_B1F_Text_MoonlightEcho, MSGBOX_NPC
++	release
++	end
++
+ RockTunnel_B1F_EventScript_Sofia::
+ 	trainerbattle_single TRAINER_PICNICKER_SOFIA, RockTunnel_B1F_Text_SofiaIntro, RockTunnel_B1F_Text_SofiaDefeat
+ 	msgbox RockTunnel_B1F_Text_SofiaPostBattle, MSGBOX_AUTOCLOSE
+@@ -47,6 +54,14 @@ RockTunnel_B1F_Text_SofiaIntro::
+ 	.string "You can bend twigs as trail\n"
+ 	.string "markers.$"
+ 
++RockTunnel_B1F_Text_MoonlightEcho::
++	.string "Moonlight Echo:\p"
++	.string "Do not wake the tower.\p"
++	.string "Do not count the graves.\p"
++	.string "Dreams travel farther than ships.\p"
++	.string "WorldLink signal unstable:\n"
++	.string "low-light static increasing.$"
++
+ RockTunnel_B1F_Text_SofiaDefeat::
+ 	.string "Ohhh!\n"
+ 	.string "I did my best!$"
+@@ -135,4 +150,3 @@ RockTunnel_B1F_Text_WinstonDefeat::
+ RockTunnel_B1F_Text_WinstonPostBattle::
+ 	.string "I'm an artist, not a fighter.\n"
+ 	.string "I'll go home to draw.$"
+-
+diff --git a/data/maps/Route10_PokemonCenter_1F_Frlg/map.json b/data/maps/Route10_PokemonCenter_1F_Frlg/map.json
+index f22c0c7a96..650f533103 100644
+--- a/data/maps/Route10_PokemonCenter_1F_Frlg/map.json
++++ b/data/maps/Route10_PokemonCenter_1F_Frlg/map.json
+@@ -86,6 +86,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "Route10_PokemonCenter_1F_EventScript_Aide",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BROCK",
++      "x": 4,
++      "y": 6,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route10_PokemonCenter_1F_EventScript_BrockCaveLantern",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/Route10_PokemonCenter_1F_Frlg/scripts.inc b/data/maps/Route10_PokemonCenter_1F_Frlg/scripts.inc
+index 4e9d19d21c..362cf2c723 100644
+--- a/data/maps/Route10_PokemonCenter_1F_Frlg/scripts.inc
++++ b/data/maps/Route10_PokemonCenter_1F_Frlg/scripts.inc
+@@ -29,6 +29,13 @@ Route10_PokemonCenter_1F_EventScript_Youngster::
+ 	msgbox Route10_PokemonCenter_1F_Text_HeardGhostsHauntLavender, MSGBOX_NPC
+ 	end
+ 
++Route10_PokemonCenter_1F_EventScript_BrockCaveLantern::
++	lock
++	faceplayer
++	msgbox Route10_PokemonCenter_1F_Text_BrockCaveLantern, MSGBOX_NPC
++	release
++	end
++
+ Route10_PokemonCenter_1F_EventScript_Aide::
+ 	lock
+ 	faceplayer
+@@ -74,6 +81,20 @@ Route10_PokemonCenter_1F_Text_HeardGhostsHauntLavender::
+ 	.string "I heard that ghosts haunt\n"
+ 	.string "LAVENDER TOWN.$"
+ 
++Route10_PokemonCenter_1F_Text_BrockCaveLantern::
++	.string "BROCK: Antman. Good timing.\p"
++	.string "OAK asked me to review your\n"
++	.string "WorldLink field tools.\p"
++	.string "Your Thunder Badge lets the Cave\n"
++	.string "Lantern protocol wake in ROCK\l"
++	.string "TUNNEL.\p"
++	.string "It won't fight for you. It just\n"
++	.string "keeps the floor honest.\p"
++	.string "Use repel control, keep Ground and\n"
++	.string "Rock answers ready, and trust RED.\p"
++	.string "He knows quiet paths better than\n"
++	.string "any trainer I've met.$"
++
+ Route10_PokemonCenter_1F_Text_GiveEverstoneIfCaught20Mons::
+ 	.string "Oh… {PLAYER}!\n"
+ 	.string "I've been looking for you!\p"
+@@ -107,4 +128,3 @@ Route10_PokemonCenter_1F_Text_ExplainEverstone::
+ 	.string "to that POKéMON.\p"
+ 	.string "It will prevent evolution according\n"
+ 	.string "to the PROFESSOR.$"
+-

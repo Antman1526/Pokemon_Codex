@@ -76,6 +76,21 @@ messages:
     priority: major
     text: "Rock Tunnel checklist: clear Route 11 pressure, inspect Diglett's Cave, return toward Cerulean, and prepare for low-light cave travel."
 
+  - id: WL_KANTO_CAVE_LANTERN_READY
+    trigger: FLAG_BADGE03_GET
+    priority: major
+    text: "Cave Lantern protocol ready. WorldLink can light Rock Tunnel after Thunder Badge without forcing a Flash user."
+
+  - id: WL_KANTO_RED_ROCK_TUNNEL_CHECK
+    trigger: FLAG_BADGE03_GET
+    priority: flavor
+    text: "Red entered Rock Tunnel and marked the path. He says the cave is safe, but the echo is repeating words it should not know."
+
+  - id: WL_KANTO_MOONLIGHT_ECHO
+    trigger: FLAG_BADGE03_GET
+    priority: major
+    text: "Moonlight Echo detected under Rock Tunnel. Classification pending until Lavender Tower readings stabilize."
+
   - id: WL_KANTO_LEAGUE_INVITE
     trigger: FLAG_NEXUS_EARTH_BADGE
     priority: major
