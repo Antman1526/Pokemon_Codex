@@ -3,6 +3,23 @@
 chapter: kanto
 
 progression_bands:
+  johto_new_bark_elm_lab:
+    player_range: "New Bark arrival through Elm Lab check-in"
+    companions:
+      red:
+        location: New Bark Town / Elm Lab
+        event: route29_support_confirmed
+        notification: "Red confirmed he will walk Route 29 with Antman, but Johto Gym battles stay Antman's challenge."
+      lyra:
+        location: Elm Lab / Cherrygrove route
+        event: cherrygrove_guide_confirmed
+        notification: "Lyra logged the Cherrygrove guide path and told Antman not to trust every quiet trainer on Route 29."
+    rivals:
+      silver:
+        location: Route 29 shadow
+        event: route29_shadow_before_contact
+        notification: "Silver's profile crossed Route 29 before first contact. Intent remains unclassified."
+
   kanto_start:
     player_range: "Pallet through Route 1"
     companions:

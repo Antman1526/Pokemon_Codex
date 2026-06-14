@@ -1,0 +1,263 @@
+diff --git a/data/maps/NewBarkTown_ElmLab_Frlg/map.json b/data/maps/NewBarkTown_ElmLab_Frlg/map.json
+new file mode 100644
+index 0000000000..c22808fb5b
+--- /dev/null
++++ b/data/maps/NewBarkTown_ElmLab_Frlg/map.json
+@@ -0,0 +1,105 @@
++{
++  "id": "MAP_NEW_BARK_TOWN_ELM_LAB",
++  "name": "NewBarkTown_ElmLab_Frlg",
++  "layout": "LAYOUT_PALLET_TOWN_PROFESSOR_OAKS_LAB",
++  "music": "MUS_RG_OAK_LAB",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_INDOOR",
++  "allow_cycling": false,
++  "allow_escaping": false,
++  "allow_running": false,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_ELM_LAB_PROF_ELM",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_PROF_BIRCH",
++      "x": 6,
++      "y": 3,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_ElmLab_Frlg_EventScript_ElmFirstVisit",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ELM_LAB_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 5,
++      "y": 9,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_ElmLab_Frlg_EventScript_RedLabSupport",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ELM_LAB_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 8,
++      "y": 9,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_ElmLab_Frlg_EventScript_LyraLabGuide",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ELM_LAB_AIDE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 11,
++      "y": 10,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "NewBarkTown_ElmLab_Frlg_EventScript_Aide",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 6,
++      "y": 12,
++      "elevation": 3,
++      "dest_map": "MAP_NEW_BARK_TOWN",
++      "dest_warp_id": "0"
++    },
++    {
++      "x": 7,
++      "y": 12,
++      "elevation": 3,
++      "dest_map": "MAP_NEW_BARK_TOWN",
++      "dest_warp_id": "0"
++    },
++    {
++      "x": 5,
++      "y": 12,
++      "elevation": 3,
++      "dest_map": "MAP_NEW_BARK_TOWN",
++      "dest_warp_id": "0"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": []
++}
+diff --git a/data/maps/NewBarkTown_ElmLab_Frlg/scripts.inc b/data/maps/NewBarkTown_ElmLab_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..5fd4995381
+--- /dev/null
++++ b/data/maps/NewBarkTown_ElmLab_Frlg/scripts.inc
+@@ -0,0 +1,59 @@
++NewBarkTown_ElmLab_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, NewBarkTown_ElmLab_Frlg_OnTransition
++	.byte 0
++
++NewBarkTown_ElmLab_Frlg_OnTransition:
++	setflag FLAG_ELM_LAB_FIRST_VISIT_REACHED
++	end
++
++NewBarkTown_ElmLab_Frlg_EventScript_ElmFirstVisit::
++	msgbox NewBarkTown_ElmLab_Frlg_Text_ElmFirstVisit, MSGBOX_NPC
++	end
++
++NewBarkTown_ElmLab_Frlg_EventScript_RedLabSupport::
++	msgbox NewBarkTown_ElmLab_Frlg_Text_RedLabSupport, MSGBOX_NPC
++	end
++
++NewBarkTown_ElmLab_Frlg_EventScript_LyraLabGuide::
++	msgbox NewBarkTown_ElmLab_Frlg_Text_LyraLabGuide, MSGBOX_NPC
++	end
++
++NewBarkTown_ElmLab_Frlg_EventScript_Aide::
++	msgbox NewBarkTown_ElmLab_Frlg_Text_Aide, MSGBOX_NPC
++	end
++
++NewBarkTown_ElmLab_Frlg_Text_ElmFirstVisit::
++	.string "ELM: Welcome to my lab, Antman.\p"
++	.string "Oak sent your KANTO record, but\n"
++	.string "Johto is not just another badge list.\p"
++	.string "Pokemon here react to hour, friendship,\n"
++	.string "habitat, and old stories.\p"
++	.string "Route 29 is the next required road.\n"
++	.string "Watch the grass, not just trainers.\p"
++	.string "Silver's signal crossed Route 29\n"
++	.string "before we could identify him.\p"
++	.string "Hoenn remains locked until Johto's\n"
++	.string "own crisis is understood.$"
++
++NewBarkTown_ElmLab_Frlg_Text_RedLabSupport::
++	.string "RED: I will walk the first stretch\n"
++	.string "of Route 29 with you.\p"
++	.string "Not to lead you.\n"
++	.string "To make sure Johto gets your pace.\p"
++	.string "If Silver is watching the road, we\n"
++	.string "will notice him together.$"
++
++NewBarkTown_ElmLab_Frlg_Text_LyraLabGuide::
++	.string "LYRA: I know the Cherrygrove guide.\p"
++	.string "He looks harmless, but he notices\n"
++	.string "everything that enters town.\p"
++	.string "Meet me after Route 29.\n"
++	.string "I want to see how your KANTO team\n"
++	.string "handles Johto's first quiet road.$"
++
++NewBarkTown_ElmLab_Frlg_Text_Aide::
++	.string "Elm's aide updated your checklist:\p"
++	.string "Route 29, Cherrygrove, Route 30,\n"
++	.string "Sprout Tower, then Falkner.\p"
++	.string "WorldLink notifications stay active\n"
++	.string "outside caves and dungeons.$"
+diff --git a/data/maps/NewBarkTown_Frlg/map.json b/data/maps/NewBarkTown_Frlg/map.json
+index b1a2e3026d..f3b772f521 100644
+--- a/data/maps/NewBarkTown_Frlg/map.json
++++ b/data/maps/NewBarkTown_Frlg/map.json
+@@ -62,7 +62,15 @@
+       "flag": "0"
+     }
+   ],
+-  "warp_events": [],
++  "warp_events": [
++    {
++      "x": 16,
++      "y": 13,
++      "elevation": 0,
++      "dest_map": "MAP_NEW_BARK_TOWN_ELM_LAB",
++      "dest_warp_id": "0"
++    }
++  ],
+   "coord_events": [],
+   "bg_events": [
+     {
+@@ -80,6 +88,14 @@
+       "elevation": 0,
+       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+       "script": "NewBarkTown_Frlg_EventScript_WorldLinkSign"
++    },
++    {
++      "type": "sign",
++      "x": 16,
++      "y": 14,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "NewBarkTown_Frlg_EventScript_ElmLabDoor"
+     }
+   ]
+ }
+diff --git a/data/maps/NewBarkTown_Frlg/scripts.inc b/data/maps/NewBarkTown_Frlg/scripts.inc
+index bc737b6c13..9fc3d04f7b 100644
+--- a/data/maps/NewBarkTown_Frlg/scripts.inc
++++ b/data/maps/NewBarkTown_Frlg/scripts.inc
+@@ -26,6 +26,10 @@ NewBarkTown_Frlg_EventScript_WorldLinkSign::
+ 	msgbox NewBarkTown_Frlg_Text_WorldLinkSign, MSGBOX_SIGN
+ 	end
+ 
++NewBarkTown_Frlg_EventScript_ElmLabDoor::
++	msgbox NewBarkTown_Frlg_Text_ElmLabDoor, MSGBOX_SIGN
++	end
++
+ NewBarkTown_Frlg_Text_RedArrival::
+ 	.string "RED: We made it, Antman.\p"
+ 	.string "Johto feels quieter than KANTO,\n"
+@@ -57,3 +61,8 @@ NewBarkTown_Frlg_Text_WorldLinkSign::
+ 	.string "KANTO departure complete.\n"
+ 	.string "JOHTO active.\p"
+ 	.string "Hoenn remains locked.$"
++
++NewBarkTown_Frlg_Text_ElmLabDoor::
++	.string "Elm Lab\p"
++	.string "Johto habitat research and\n"
++	.string "WorldLink clearance desk.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index b08ae5b3ee..b3556242a8 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -925,7 +925,8 @@
+     "PalletTown_PlayersHouse_1F_Frlg",
+     "PalletTown_PlayersHouse_2F_Frlg",
+     "PalletTown_RivalsHouse_Frlg",
+-    "PalletTown_ProfessorOaksLab_Frlg"
++    "PalletTown_ProfessorOaksLab_Frlg",
++    "NewBarkTown_ElmLab_Frlg"
+   ],
+   "gMapGroup_IndoorViridian_Frlg": [
+     "ViridianCity_House_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index a018a87c7a..ccaa155280 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -7,7 +7,7 @@
+ #define FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF    0x022
+ #define FLAG_JOHTO_DEPARTURE_CONFIRMED       0x023
+ #define FLAG_NEW_BARK_ARRIVAL_REACHED       0x024
+-#define FLAG_0x025               0x025
++#define FLAG_ELM_LAB_FIRST_VISIT_REACHED   0x025
+ #define FLAG_0x026               0x026
+ #define FLAG_0x027               0x027
+ 

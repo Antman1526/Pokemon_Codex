@@ -1,6 +1,21 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_ELM_LAB_FIRST_VISIT
+    trigger: FLAG_ELM_LAB_FIRST_VISIT_REACHED
+    priority: major
+    text: "Elm Lab check-in complete. Johto research mode now tracks habitat behavior, friendship, and time-of-day encounters."
+
+  - id: WL_JOHTO_ROUTE29_OBJECTIVE
+    trigger: FLAG_ELM_LAB_FIRST_VISIT_REACHED
+    priority: major
+    text: "Route 29 is the next required road. Red will support field travel; Lyra will meet Antman again near the Cherrygrove guide route."
+
+  - id: WL_JOHTO_SILVER_ROUTE29_SHADOW
+    trigger: FLAG_ELM_LAB_FIRST_VISIT_REACHED
+    priority: minor
+    text: "Silver's signal crossed Route 29 before first contact. Intent remains unclassified."
+
   - id: WL_JOHTO_NEW_BARK_MAP_LIVE
     trigger: FLAG_NEW_BARK_ARRIVAL_REACHED
     priority: major
