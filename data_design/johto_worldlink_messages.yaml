@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_ROUTE32_FIRST_STEPS
+    trigger: FLAG_ROUTE32_FIRST_STEPS_REACHED
+    priority: major
+    text: "Route 32 first steps confirmed. Lyra is guiding the road while Red stays in Violet as backup."
+
+  - id: WL_JOHTO_ROUTE32_FIELD_CHECKLIST
+    trigger: FLAG_ROUTE32_FIELD_CHECKLIST_REVIEWED
+    priority: major
+    text: "Field Checklist: Route 32. Mareep day grass, Wooper waterline nights, and Togepi egg-route hints logged."
+
+  - id: WL_JOHTO_SILVER_ROUTE32_TRACE
+    trigger: FLAG_ROUTE32_FIRST_STEPS_REACHED
+    priority: minor
+    text: "Silver trace detected on Route 32. No battle, no speech, only movement toward Union Cave."
+
+  - id: WL_JOHTO_UNION_CAVE_NEXT
+    trigger: FLAG_ROUTE32_FIRST_STEPS_REACHED
+    priority: major
+    text: "WorldLink: Union Cave next. Gold Dust is pricing the road; Rocket remnants are moving underground. Hoenn remains locked."
+
   - id: WL_JOHTO_FALKNER_GYM_ARRIVAL
     trigger: FLAG_FALKNER_GYM_REACHED
     priority: major

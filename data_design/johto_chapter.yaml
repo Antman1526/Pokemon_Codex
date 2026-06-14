@@ -87,14 +87,22 @@ acts:
 
   - id: act_2_azalea_goldenrod
     purpose: "Rebuild Johto's slow tradition arc around Rocket remnants becoming organized again."
-    required_maps: [azalea_town, slowpoke_well, ilex_forest, goldenrod_city, goldenrod_radio_tower, goldenrod_gym]
+    required_maps: [route_32, union_cave, azalea_town, slowpoke_well, ilex_forest, goldenrod_city, goldenrod_radio_tower, goldenrod_gym]
     required_events:
+      - route_32_union_cave_road
+      - lyra_route32_physical_guide
+      - red_violet_backup_call
+      - route32_field_checklist_review
+      - mareep_wooper_togepi_hints
+      - silver_route32_worldlink_trace
+      - gold_dust_route32_toll_pressure
+      - rocket_union_cave_remnant_tease
       - slowpoke_well_rocket_return
       - kurt_apricorn_tools
       - ilex_forest_worldlink_static
       - whitney_battle
       - radio_tower_frequency_warning
-    unlocks: [apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
+    unlocks: [route_32_live_map, field_checklist_route32_page, union_cave_story_gate, azalea_road_pressure, apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
 
   - id: act_3_ecruteak_mahogany
     purpose: "Bring Johto's towers, beasts, and Rocket broadcast pressure into the Nexus plot."

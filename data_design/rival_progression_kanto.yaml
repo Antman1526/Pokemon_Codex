@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_route32_union_cave_road:
+    player_range: "Route 32 after Zephyr Badge before Union Cave"
+    companions:
+      lyra:
+        location: Route 32
+        event: physical_route32_guide
+        notification: "Lyra walks Route 32 with Antman and points out where Johto's quiet roads start becoming real pressure."
+      red:
+        location: Violet City
+        event: violet_backup_call
+        notification: "Red stays in Violet as backup and says Antman should let Lyra read the local road."
+    rivals:
+      silver:
+        location: Route 32 / Union Cave edge
+        event: worldlink_trace_no_battle
+        notification: "Silver left only a WorldLink trace toward Union Cave. No battle. No speech."
+      ava:
+        location: Field Checklist feed
+        event: route32_habitat_notes
+        notification: "Ava turns on Route 32 checklist notes for Mareep, Wooper, and Togepi egg-route rumors."
+
   johto_falkner_battle:
     player_range: "Falkner Gym battle and Zephyr Badge before Route 32"
     companions:

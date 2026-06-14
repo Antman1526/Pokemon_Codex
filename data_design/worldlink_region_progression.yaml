@@ -14,9 +14,9 @@ worldlink_region_progression:
     previous_region: kanto
     unlocked_by: FLAG_JOHTO_DEPARTURE_CONFIRMED
     arrival_map: new_bark_town
-    current_safe_hub: violet_gym
+    current_safe_hub: route_32
     current_route: route_32
-    next_required_story_node: route_32_union_cave_road
+    next_required_story_node: union_cave_first_entry
     hard_lock_next_region: hoenn
     rule: "Johto is the active journey after Pallet Gate departure; Hoenn remains locked until Johto's tower, Rocket, and legendary arc resolves."
   unlock_order:
