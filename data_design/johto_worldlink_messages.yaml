@@ -1,6 +1,21 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_ROUTE29_FIRST_STEPS
+    trigger: FLAG_ROUTE29_FIRST_STEPS_REACHED
+    priority: major
+    text: "Route 29 first steps confirmed. Red is present as field support only; Antman remains lead trainer."
+
+  - id: WL_JOHTO_ROUTE29_DAY_NIGHT
+    trigger: FLAG_ROUTE29_FIRST_STEPS_REACHED
+    priority: minor
+    text: "Route 29 habitat note: day and night encounter tables should diverge once wild Johto data is expanded."
+
+  - id: WL_JOHTO_CHERRYGROVE_NEXT
+    trigger: FLAG_ROUTE29_FIRST_STEPS_REACHED
+    priority: major
+    text: "WorldLink: Cherrygrove next. Lyra expects Antman near the guide route; Silver remains no-contact."
+
   - id: WL_JOHTO_ELM_LAB_FIRST_VISIT
     trigger: FLAG_ELM_LAB_FIRST_VISIT_REACHED
     priority: major

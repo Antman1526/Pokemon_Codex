@@ -3,6 +3,23 @@
 chapter: kanto
 
 progression_bands:
+  johto_route29_first_steps:
+    player_range: "Route 29 first outdoor Johto steps"
+    companions:
+      red:
+        location: Route 29
+        event: field_support_without_battle_control
+        notification: "Red is walking Route 29 with Antman as field support, not as a battle guide."
+      lyra:
+        location: Route 29 / Cherrygrove approach
+        event: cherrygrove_handoff
+        notification: "Lyra is heading toward Cherrygrove to prepare the first Johto town guide handoff."
+    rivals:
+      silver:
+        location: Route 29 north grassline
+        event: shadow_sighting_no_battle
+        notification: "Silver was seen on Route 29 but did not challenge anyone. Intent remains unknown."
+
   johto_new_bark_elm_lab:
     player_range: "New Bark arrival through Elm Lab check-in"
     companions:

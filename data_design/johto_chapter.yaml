@@ -24,6 +24,11 @@ acts:
       - red_route29_support_confirmed
       - lyra_cherrygrove_guide_confirmed
       - silver_route29_shadow
+      - route_29_first_steps
+      - red_route29_field_support
+      - route29_day_night_encounter_tease
+      - silver_route29_shadow_sighting
+      - lyra_cherrygrove_handoff
       - elm_lab_receiving_signal
       - lyra_friendly_rival_join
       - silver_profile_detected_no_theft_yet
@@ -31,7 +36,7 @@ acts:
       - gold_dust_tower_records_tease
       - sprout_tower_moonlight_whisper
       - falkner_battle
-    unlocks: [new_bark_town_live_map, elm_lab_live_map, route_29_story_gate, johto_habitat_checklist, johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
+    unlocks: [new_bark_town_live_map, elm_lab_live_map, route_29_story_gate, route_29_live_map, route29_day_night_tracking, cherrygrove_story_gate, johto_habitat_checklist, johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
 
   - id: act_2_azalea_goldenrod
     purpose: "Rebuild Johto's slow tradition arc around Rocket remnants becoming organized again."

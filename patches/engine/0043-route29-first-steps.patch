@@ -1,0 +1,212 @@
+diff --git a/data/maps/NewBarkTown_Frlg/map.json b/data/maps/NewBarkTown_Frlg/map.json
+index f3b772f521..4cf86fc3ff 100644
+--- a/data/maps/NewBarkTown_Frlg/map.json
++++ b/data/maps/NewBarkTown_Frlg/map.json
+@@ -14,7 +14,13 @@
+   "show_map_name": false,
+   "floor_number": 0,
+   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+-  "connections": [],
++  "connections": [
++    {
++      "map": "MAP_ROUTE29",
++      "offset": 0,
++      "direction": "up"
++    }
++  ],
+   "object_events": [
+     {
+       "local_id": "LOCALID_NEW_BARK_RED",
+diff --git a/data/maps/Route29_Frlg/map.json b/data/maps/Route29_Frlg/map.json
+new file mode 100644
+index 0000000000..bb542bf49e
+--- /dev/null
++++ b/data/maps/Route29_Frlg/map.json
+@@ -0,0 +1,98 @@
++{
++  "id": "MAP_ROUTE29",
++  "name": "Route29_Frlg",
++  "layout": "LAYOUT_ROUTE1",
++  "music": "MUS_RG_ROUTE1",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_SUNNY",
++  "map_type": "MAP_TYPE_ROUTE",
++  "allow_cycling": true,
++  "allow_escaping": false,
++  "allow_running": true,
++  "show_map_name": false,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": [
++    {
++      "map": "MAP_NEW_BARK_TOWN",
++      "offset": 0,
++      "direction": "down"
++    }
++  ],
++  "object_events": [
++    {
++      "local_id": "LOCALID_ROUTE29_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 8,
++      "y": 29,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route29_Frlg_EventScript_RedFieldSupport",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE29_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 15,
++      "y": 18,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route29_Frlg_EventScript_LyraCherrygroveHandoff",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE29_SILVER_SHADOW",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BLUE",
++      "x": 16,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route29_Frlg_EventScript_SilverShadow",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_ROUTE29_AIDE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 6,
++      "y": 28,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_WANDER_UP_AND_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route29_Frlg_EventScript_DayNightSign",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 9,
++      "y": 31,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "Route29_Frlg_EventScript_RouteSign"
++    }
++  ]
++}
+diff --git a/data/maps/Route29_Frlg/scripts.inc b/data/maps/Route29_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..8c3492d8c1
+--- /dev/null
++++ b/data/maps/Route29_Frlg/scripts.inc
+@@ -0,0 +1,58 @@
++Route29_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, Route29_Frlg_OnTransition
++	.byte 0
++
++Route29_Frlg_OnTransition:
++	setflag FLAG_ROUTE29_FIRST_STEPS_REACHED
++	end
++
++Route29_Frlg_EventScript_RedFieldSupport::
++	msgbox Route29_Frlg_Text_RedFieldSupport, MSGBOX_NPC
++	end
++
++Route29_Frlg_EventScript_LyraCherrygroveHandoff::
++	msgbox Route29_Frlg_Text_LyraCherrygroveHandoff, MSGBOX_NPC
++	end
++
++Route29_Frlg_EventScript_SilverShadow::
++	msgbox Route29_Frlg_Text_SilverShadow, MSGBOX_NPC
++	end
++
++Route29_Frlg_EventScript_DayNightSign::
++	msgbox Route29_Frlg_Text_DayNightSign, MSGBOX_NPC
++	end
++
++Route29_Frlg_EventScript_RouteSign::
++	msgbox Route29_Frlg_Text_RouteSign, MSGBOX_SIGN
++	end
++
++Route29_Frlg_Text_RedFieldSupport::
++	.string "RED: This is Johto's first real road,\n"
++	.string "Antman.\p"
++	.string "I'll walk nearby, but I won't steer\n"
++	.string "your team.\p"
++	.string "Johto listens before it pushes.\n"
++	.string "Take your time.$"
++
++Route29_Frlg_Text_LyraCherrygroveHandoff::
++	.string "LYRA: Cherrygrove is close.\p"
++	.string "The guide there knows every shortcut,\n"
++	.string "but he also notices who avoids them.\p"
++	.string "WorldLink: Cherrygrove next.$"
++
++Route29_Frlg_Text_SilverShadow::
++	.string "SILVER: ...\p"
++	.string "You brought KANTO's shadow with you.\p"
++	.string "Good.\n"
++	.string "Then you might survive Johto.$"
++
++Route29_Frlg_Text_DayNightSign::
++	.string "Elm's route note:\p"
++	.string "Route 29 changes between day and night.\p"
++	.string "Some Pokemon only show themselves\n"
++	.string "when the road is quiet.$"
++
++Route29_Frlg_Text_RouteSign::
++	.string "ROUTE 29\p"
++	.string "NEW BARK TOWN - CHERRYGROVE CITY\p"
++	.string "No Hoenn route registered.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index b3556242a8..a1090c493b 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -859,6 +859,7 @@
+   "gMapGroup_TownsAndRoutes_Frlg": [
+     "PalletTown_Frlg",
+     "NewBarkTown_Frlg",
++    "Route29_Frlg",
+     "ViridianCity_Frlg",
+     "PewterCity_Frlg",
+     "CeruleanCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index ccaa155280..d8c2dad0f5 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -8,7 +8,7 @@
+ #define FLAG_JOHTO_DEPARTURE_CONFIRMED       0x023
+ #define FLAG_NEW_BARK_ARRIVAL_REACHED       0x024
+ #define FLAG_ELM_LAB_FIRST_VISIT_REACHED   0x025
+-#define FLAG_0x026               0x026
++#define FLAG_ROUTE29_FIRST_STEPS_REACHED   0x026
+ #define FLAG_0x027               0x027
+ 
+ // Hide/show flags
