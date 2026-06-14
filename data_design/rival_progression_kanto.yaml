@@ -669,6 +669,39 @@ progression_bands:
         event: lyra_indigo_lock_final_tease
         notification: "Lyra's profile flickers at Indigo, but Johto stays locked until the Champion record clears and Oak issues the passport."
 
+  elite_four_region_foreshadowing:
+    player_range: "Elite Four rooms through Lance defeat"
+    companions:
+      red:
+        location: Indigo exterior / WorldLink muted
+        event: red_elite_four_silent_watch
+        notification: "Red stays silent outside the League line. WorldLink marks this as respect, not absence."
+      misty:
+        location: WorldLink prep note
+        event: misty_lorelei_ice_current_note
+        notification: "Misty flags Lorelei's warning: distant regions can look warm while hiding cold pressure beneath the surface."
+      brock:
+        location: WorldLink prep note
+        event: brock_bruno_tradition_note
+        notification: "Brock says Bruno's Johto warning matters: tradition is not nostalgia when it teaches restraint."
+    rivals:
+      blue:
+        location: Champion room
+        event: blue_champion_room_waiting
+        notification: "Blue cleared the Elite Four first and is waiting as Champion. The World Circuit will not open for second place."
+      ava:
+        location: League signal log
+        event: ava_elite_four_region_signal_log
+        notification: "Ava logs the Elite Four as regional signal anchors: islands, towers, grief, and dragons."
+      dax:
+        location: Indigo spectator line
+        event: dax_elite_four_scorekeeping
+        notification: "Dax is keeping score outside Indigo and insists pressure counts as training if it makes your hands shake."
+      lyra:
+        location: Johto locked profile
+        event: lyra_lance_blackthorn_tease
+        notification: "Lyra's locked profile flickers when Lance says Blackthorn. Johto remains sealed until Blue is defeated."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

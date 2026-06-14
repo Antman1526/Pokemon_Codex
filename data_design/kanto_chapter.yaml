@@ -182,8 +182,13 @@ acts:
       - indigo_companion_ready_room
       - blue_pre_league_or_champion_battle
       - red_watches_league
+      - elite_four_region_foreshadowing
+      - lorelei_alola_ice_island_signal
+      - bruno_johto_tradition_signal
+      - agatha_moonlight_grief_signal
       - elite_four
       - lance_legendary_energy_warning
+      - lance_world_circuit_dragon_warning
       - oak_world_circuit_passport
     unlocks: [world_circuit_passport, johto_travel, pokedex_readiness_beta, kanto_rematches_tier_2]
 

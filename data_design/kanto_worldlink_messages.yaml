@@ -371,6 +371,16 @@ messages:
     priority: major
     text: "Indigo readiness: Red, Misty, and Brock are outside the League line. Companions can support Antman, but League battles are solo."
 
+  - id: WL_KANTO_ELITE_FOUR_REGION_SIGNALS
+    trigger: VAR_MAP_SCENE_POKEMON_LEAGUE
+    priority: major
+    text: "Elite Four signal log: Lorelei points to ice islands and Alola seas; Bruno to Johto discipline; Agatha to Moonlight grief; Lance to dragon routes."
+
+  - id: WL_KANTO_LANCE_WORLD_CIRCUIT_WARNING
+    trigger: FLAG_DEFEATED_LANCE
+    priority: major
+    text: "Lance warning logged: dragons remember Blackthorn and old maps. The World Circuit opens only after Champion Blue is defeated."
+
   - id: WL_KANTO_WORLD_CIRCUIT_UNLOCKED
     trigger: FLAG_NEXUS_KANTO_LEAGUE_CLEARED
     priority: major

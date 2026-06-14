@@ -1,0 +1,154 @@
+diff --git a/data/maps/PokemonLeague_AgathasRoom_Frlg/scripts.inc b/data/maps/PokemonLeague_AgathasRoom_Frlg/scripts.inc
+index f3fe48d173..5a9b16dabf 100644
+--- a/data/maps/PokemonLeague_AgathasRoom_Frlg/scripts.inc
++++ b/data/maps/PokemonLeague_AgathasRoom_Frlg/scripts.inc
+@@ -92,16 +92,15 @@ PokemonLeague_AgathasRoom_Text_Intro::
+ 	.string "I am AGATHA of the ELITE FOUR.\p"
+ 	.string "I hear OAK's taken a lot of\n"
+ 	.string "interest in you, child.\p"
+-	.string "That old duff was once tough and\n"
+-	.string "handsome.\p"
+-	.string "But that was decades ago.\n"
+-	.string "He's a shadow of his former self.\p"
+-	.string "Now he just wants to fiddle with\n"
+-	.string "his POKéDEX.\p"
+-	.string "He's wrong.\n"
+-	.string "POKéMON are for battling!\p"
+-	.string "{PLAYER}! I'll show you how a real\n"
+-	.string "TRAINER battles!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
++	.string "Oak studies life because he is\n"
++	.string "afraid of what follows it.\p"
++	.string "Moonlight listens to grief.\n"
++	.string "Lavender was only the first door.\p"
++	.string "If a lost voice calls with your\n"
++	.string "friend's face, child...\p"
++	.string "Do not let it wear your face.\p"
++	.string "{PLAYER}! Show me you can battle\n"
++	.string "without being haunted!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
+ 
+ PokemonLeague_AgathasRoom_Text_RematchIntro::
+ 	.string "I am AGATHA of the ELITE FOUR.\p"
+@@ -126,6 +125,6 @@ PokemonLeague_AgathasRoom_Text_PostBattle::
+ 	.string "You win!\p"
+ 	.string "I see what the old duff sees in\n"
+ 	.string "you now.\p"
+-	.string "I have nothing else to say.\n"
++	.string "You carry grief without feeding it.\n"
++	.string "That will matter after KANTO.\p"
+ 	.string "Run along now, child!$"
+-
+diff --git a/data/maps/PokemonLeague_BrunosRoom_Frlg/scripts.inc b/data/maps/PokemonLeague_BrunosRoom_Frlg/scripts.inc
+index c74eda1ea9..c4fd467bf1 100644
+--- a/data/maps/PokemonLeague_BrunosRoom_Frlg/scripts.inc
++++ b/data/maps/PokemonLeague_BrunosRoom_Frlg/scripts.inc
+@@ -114,15 +114,14 @@ PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayDown::
+ 
+ PokemonLeague_BrunosRoom_Text_Intro::
+ 	.string "I am BRUNO of the ELITE FOUR!\p"
+-	.string "Through rigorous training, people\n"
+-	.string "and POKéMON can become stronger\l"
+-	.string "without limit.\p"
+-	.string "I've lived and trained with my\n"
+-	.string "fighting POKéMON!\l"
+-	.string "And that will never change!\p"
+-	.string "{PLAYER}!\p"
+-	.string "We will grind you down with our\n"
+-	.string "superior power!\p"
++	.string "Johto keeps old discipline:\n"
++	.string "bells, towers, and vows.\p"
++	.string "Strength is a tradition, not a\n"
++	.string "number on a League screen.\p"
++	.string "Your friends helped carry you.\n"
++	.string "Now carry their trust alone.\p"
++	.string "{PLAYER}!\n"
++	.string "We will test your foundation!\p"
+ 	.string "Hoo hah!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
+ 
+ PokemonLeague_BrunosRoom_Text_RematchIntro::
+@@ -144,5 +143,6 @@ PokemonLeague_BrunosRoom_Text_Defeat::
+ 
+ PokemonLeague_BrunosRoom_Text_PostBattle::
+ 	.string "My job is done.\n"
+-	.string "Go face your next challenge.$"
+-
++	.string "Go face your next challenge.\p"
++	.string "When Johto calls, listen before\n"
++	.string "you run. Old roads punish noise.$"
+diff --git a/data/maps/PokemonLeague_LancesRoom_Frlg/scripts.inc b/data/maps/PokemonLeague_LancesRoom_Frlg/scripts.inc
+index d83e3c6ddc..3d0f5351ad 100644
+--- a/data/maps/PokemonLeague_LancesRoom_Frlg/scripts.inc
++++ b/data/maps/PokemonLeague_LancesRoom_Frlg/scripts.inc
+@@ -170,12 +170,11 @@ PokemonLeague_LancesRoom_Text_Intro::
+ 	.string "I lead the ELITE FOUR.\p"
+ 	.string "You can call me LANCE the dragon\n"
+ 	.string "TRAINER.\p"
+-	.string "You know that dragons are\n"
+-	.string "mythical POKéMON.\p"
+-	.string "They're hard to catch and raise,\n"
+-	.string "but their powers are superior.\p"
+-	.string "They're virtually indestructible.\n"
+-	.string "There's no being clever with them.\p"
++	.string "Dragons carry old maps in their\n"
++	.string "blood: Blackthorn, ancient routes,\l"
++	.string "and storms no badge can command.\p"
++	.string "The World Circuit is not a prize.\n"
++	.string "It is a promise to survive scale.\p"
+ 	.string "Well, are you ready to lose?\p"
+ 	.string "Your LEAGUE challenge ends with\n"
+ 	.string "me, {PLAYER}!{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
+@@ -204,10 +203,10 @@ PokemonLeague_LancesRoom_Text_Defeat::
+ PokemonLeague_LancesRoom_Text_PostBattle::
+ 	.string "I still can't believe my dragons\n"
+ 	.string "lost to you, {PLAYER}.\p"
+-	.string "You are now the POKéMON LEAGUE\n"
+-	.string "CHAMPION!\p"
+-	.string "…Or, you would have been, but\n"
+-	.string "you have one more challenge left.\p"
++	.string "Blue is Champion now.\n"
++	.string "He beat the ELITE FOUR first.\p"
++	.string "The World Circuit will not\n"
++	.string "open for second place.\p"
+ 	.string "There is one more TRAINER to face!\n"
+ 	.string "His name is…\p"
+ 	.string "{RIVAL}!\p"
+@@ -215,4 +214,3 @@ PokemonLeague_LancesRoom_Text_PostBattle::
+ 	.string "you.\p"
+ 	.string "He is the real POKéMON LEAGUE\n"
+ 	.string "CHAMPION.$"
+-
+diff --git a/data/maps/PokemonLeague_LoreleisRoom_Frlg/scripts.inc b/data/maps/PokemonLeague_LoreleisRoom_Frlg/scripts.inc
+index 979343bedd..b12d8068fd 100644
+--- a/data/maps/PokemonLeague_LoreleisRoom_Frlg/scripts.inc
++++ b/data/maps/PokemonLeague_LoreleisRoom_Frlg/scripts.inc
+@@ -95,12 +95,14 @@ PokemonLeague_LoreleisRoom_EventScript_DefeatedLorelei::
+ PokemonLeague_LoreleisRoom_Text_Intro::
+ 	.string "Welcome to the POKéMON LEAGUE.\p"
+ 	.string "I am LORELEI of the ELITE FOUR.\p"
+-	.string "No one can best me when it comes\n"
+-	.string "to icy POKéMON.\p"
+-	.string "Freezing moves are powerful.\p"
+-	.string "Your POKéMON will be at my mercy\n"
+-	.string "when they are frozen solid.\p"
+-	.string "Hahaha!\n"
++	.string "I learned cold patience on\n"
++	.string "ice islands past KANTO.\p"
++	.string "A badge is a passport only when\n"
++	.string "the TRAINER can survive the road.\p"
++	.string "Alola keeps warm seas,\n"
++	.string "but even there, ice can stop\l"
++	.string "a careless heart.\p"
++	.string "Show me your road does not freeze.\n"
+ 	.string "Are you ready?{PLAY_BGM}{MUS_RG_ENCOUNTER_GYM_LEADER}$"
+ 
+ PokemonLeague_LoreleisRoom_Text_RematchIntro::
+@@ -122,6 +124,7 @@ PokemonLeague_LoreleisRoom_Text_Defeat::
+ PokemonLeague_LoreleisRoom_Text_PostBattle::
+ 	.string "You're better than I thought.\n"
+ 	.string "Go on ahead.\p"
+-	.string "You only got a taste of the\n"
+-	.string "POKéMON LEAGUE's power.$"
+-
++	.string "Remember this: far regions do not\n"
++	.string "open because you want them.\p"
++	.string "They open when you prove you can\n"
++	.string "leave one place with respect.$"

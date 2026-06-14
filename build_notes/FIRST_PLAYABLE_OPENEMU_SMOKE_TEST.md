@@ -318,6 +318,9 @@ Manual OpenEmu checklist still needed:
 - [ ] Victory Road rival standings rewrite Route 22 Blue, Victory Road trainers, and Indigo readiness.
 - [ ] Indigo Pokemon Center confirms Red, Misty, and Brock support Antman outside the League line.
 - [ ] `0035-victory-road-rival-standings.patch` applies cleanly and `validate_victory_road_rival_standings.py` passes.
+- [ ] Elite Four region foreshadowing rewrites Lorelei, Bruno, Agatha, and Lance without changing battle flow.
+- [ ] Lance warns that the World Circuit opens only after Champion Blue is defeated.
+- [ ] `0036-elite-four-region-foreshadowing.patch` applies cleanly and `validate_elite_four_region_foreshadowing.py` passes.
 - [ ] Vermilion Misty-led Surge prep explains grounding the Gym's storm-current pressure.
 - [ ] Vermilion Gym sabotage payoff credits Misty's advice and Trail Cutter remains a prototype.
 - [ ] Fan Club clue uses the gold lapel pin, blank auction card, Celadon stamp, and dust mark.
