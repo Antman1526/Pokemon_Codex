@@ -231,6 +231,23 @@ python3 tools/validate_native_wild_encounter_loop_slice.py
 godot --headless --path native/nexus-red --script tests/wild_encounter_loop_test.gd
 ```
 
+### Task 7.9: Add wild encounter command menu
+
+Acceptance:
+
+- Wild encounters display visible Fight, Catch, and Run commands.
+- Fight lowers wild HP through the existing minimal loop.
+- Catch remains visible and produces `catch_success` after damage.
+- Run remains available through the visible command menu.
+- Existing keyboard shortcut behavior still works while the UI matures.
+
+Verification:
+
+```sh
+python3 tools/validate_native_wild_command_menu_slice.py
+godot --headless --path native/nexus-red --script tests/wild_command_menu_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

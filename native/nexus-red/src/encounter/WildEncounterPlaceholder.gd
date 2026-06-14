@@ -8,6 +8,10 @@ var save_state
 var encounter_data: Dictionary = {}
 var dialogue_label: Label
 var wild_status_label: Label
+var command_menu: HBoxContainer
+var fight_button: Button
+var catch_button: Button
+var run_button: Button
 var wild_hp := 0
 var wild_max_hp := 0
 var action_count := 0
@@ -117,12 +121,53 @@ func _build_encounter_screen() -> void:
 	dialogue_label.add_theme_color_override("font_color", Color("14243d"))
 	add_child(dialogue_label)
 
+	_build_command_menu()
+	_update_command_menu()
+
+
+func _build_command_menu() -> void:
+	command_menu = HBoxContainer.new()
+	command_menu.anchor_left = 0.56
+	command_menu.anchor_top = 0.62
+	command_menu.anchor_right = 0.94
+	command_menu.anchor_bottom = 0.76
+	command_menu.add_theme_constant_override("separation", 12)
+	add_child(command_menu)
+
+	fight_button = Button.new()
+	fight_button.text = "Fight"
+	fight_button.custom_minimum_size = Vector2(120, 48)
+	fight_button.pressed.connect(attack_wild)
+	command_menu.add_child(fight_button)
+
+	catch_button = Button.new()
+	catch_button.text = "Catch"
+	catch_button.custom_minimum_size = Vector2(120, 48)
+	catch_button.pressed.connect(attempt_capture)
+	command_menu.add_child(catch_button)
+
+	run_button = Button.new()
+	run_button.text = "Run"
+	run_button.custom_minimum_size = Vector2(120, 48)
+	run_button.pressed.connect(run_from_encounter)
+	command_menu.add_child(run_button)
+
+
+func _update_command_menu() -> void:
+	if fight_button:
+		fight_button.disabled = false
+	if catch_button:
+		catch_button.disabled = false
+	if run_button:
+		run_button.disabled = false
+
 
 func attack_wild() -> void:
 	var damage := capture_rules.calculate_attack_damage(_player_starter(), encounter_data)
 	wild_hp = max(1, wild_hp - damage)
 	action_count += 1
 	_update_wild_status()
+	_update_command_menu()
 	if dialogue_label:
 		dialogue_label.text = "Red: Good. You lowered %s to %d/%d HP. Now throw clean before it slips away." % [_wild_species(), wild_hp, wild_max_hp]
 
@@ -131,6 +176,10 @@ func attempt_capture() -> void:
 	capture_attempts += 1
 	var result := capture_rules.capture_result(wild_hp, wild_max_hp)
 	if result == CaptureRules.CATCH_SUCCESS:
+		if fight_button:
+			fight_button.disabled = true
+		if catch_button:
+			catch_button.disabled = true
 		if dialogue_label:
 			dialogue_label.text = "Red: That's it. %s is caught. First field capture logged." % _wild_species()
 		emit_signal("encounter_finished", result)
