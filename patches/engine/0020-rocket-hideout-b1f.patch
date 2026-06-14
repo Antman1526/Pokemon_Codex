@@ -1,0 +1,179 @@
+diff --git a/data/maps/RocketHideout_B1F_Frlg/map.json b/data/maps/RocketHideout_B1F_Frlg/map.json
+index a6f1cd07e8..773936c4ee 100644
+--- a/data/maps/RocketHideout_B1F_Frlg/map.json
++++ b/data/maps/RocketHideout_B1F_Frlg/map.json
+@@ -86,6 +86,48 @@
+       "script": "RocketHideout_B1F_EventScript_Grunt5",
+       "flag": "FLAG_HIDE_MISC_KANTO_ROCKETS"
+     },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 13,
++      "y": 4,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RocketHideout_B1F_EventScript_RedInfiltrationCheck",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CLIPBOARD",
++      "x": 14,
++      "y": 5,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RocketHideout_B1F_EventScript_PortablePcBeta",
++      "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_CLIPBOARD",
++      "x": 17,
++      "y": 18,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "RocketHideout_B1F_EventScript_GoldDustLedger",
++      "flag": "0"
++    },
+     {
+       "type": "object",
+       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+diff --git a/data/maps/RocketHideout_B1F_Frlg/scripts.inc b/data/maps/RocketHideout_B1F_Frlg/scripts.inc
+index d01ada0d44..7fa77d901d 100644
+--- a/data/maps/RocketHideout_B1F_Frlg/scripts.inc
++++ b/data/maps/RocketHideout_B1F_Frlg/scripts.inc
+@@ -36,6 +36,18 @@ RocketHideout_B1F_EventScript_Grunt5::
+ 	msgbox RocketHideout_B1F_Text_Grunt5PostBattle, MSGBOX_AUTOCLOSE
+ 	end
+ 
++RocketHideout_B1F_EventScript_RedInfiltrationCheck::
++	msgbox RocketHideout_B1F_Text_RedInfiltrationCheck, MSGBOX_NPC
++	end
++
++RocketHideout_B1F_EventScript_PortablePcBeta::
++	msgbox RocketHideout_B1F_Text_PortablePcBeta, MSGBOX_DEFAULT
++	goto EventScript_PC
++
++RocketHideout_B1F_EventScript_GoldDustLedger::
++	msgbox RocketHideout_B1F_Text_GoldDustLedger, MSGBOX_SIGN
++	end
++
+ RocketHideout_B1F_EventScript_DefeatedGrunt5::
+ 	call RocketHideout_B1F_EventScript_RemoveBarrier
+ 	playse SE_UNLOCK
+@@ -63,27 +75,31 @@ RocketHideout_B1F_EventScript_RemoveBarrier::
+ 	return
+ 
+ RocketHideout_B1F_Text_Grunt1Intro::
+-	.string "Who are you?\n"
+-	.string "How did you get here?$"
++	.string "This floor runs Rocket logistics.\n"
++	.string "No kids past the coin crates!$"
+ 
+ RocketHideout_B1F_Text_Grunt1Defeat::
+ 	.string "Oww!\n"
+ 	.string "Beaten!$"
+ 
+ RocketHideout_B1F_Text_Grunt1PostBattle::
+-	.string "Blast it… You're dissing TEAM\n"
+-	.string "ROCKET, aren't you?$"
++	.string "The Silph Scope parts moved\n"
++	.string "downstairs before you arrived.\p"
++	.string "Team Gold Dust keeps asking for\n"
++	.string "clean ledgers. Let them wait.$"
+ 
+ RocketHideout_B1F_Text_Grunt2Intro::
+-	.string "You broke into TEAM ROCKET's\n"
++	.string "You broke into Team Rocket's\n"
+ 	.string "operation? What nerve!$"
+ 
+ RocketHideout_B1F_Text_Grunt2Defeat::
+ 	.string "Boom!$"
+ 
+ RocketHideout_B1F_Text_Grunt2PostBattle::
+-	.string "You're not going to get away with\n"
+-	.string "this, brat!$"
++	.string "WorldLink or not, you are not\n"
++	.string "reading our transfer lists.\p"
++	.string "Coins upstairs hide Pokemon,\n"
++	.string "scopes, fossils, everything.$"
+ 
+ RocketHideout_B1F_Text_Grunt3Intro::
+ 	.string "Intruder alert!$"
+@@ -92,8 +108,10 @@ RocketHideout_B1F_Text_Grunt3Defeat::
+ 	.string "I can't do it!$"
+ 
+ RocketHideout_B1F_Text_Grunt3PostBattle::
+-	.string "SILPH SCOPE? Humph!\n"
+-	.string "I don't know where it is.$"
++	.string "Silph Scope? Humph!\n"
++	.string "It is not on this floor.\p"
++	.string "Rocket noise distracts cops while\n"
++	.string "buyers price what we steal.$"
+ 
+ RocketHideout_B1F_Text_Grunt4Intro::
+ 	.string "Why did you come here?$"
+@@ -102,8 +120,10 @@ RocketHideout_B1F_Text_Grunt4Defeat::
+ 	.string "This won't do!$"
+ 
+ RocketHideout_B1F_Text_Grunt4PostBattle::
+-	.string "Okay, I'll talk…\n"
+-	.string "Take the elevator to see my BOSS.$"
++	.string "Okay, I'll talk...\n"
++	.string "Take the elevator to the boss.\p"
++	.string "But if a Celadon buyer in gold\n"
++	.string "asks, I never said that.$"
+ 
+ RocketHideout_B1F_Text_Grunt5Intro::
+ 	.string "Are you lost, you little mouse?$"
+@@ -112,6 +132,34 @@ RocketHideout_B1F_Text_Grunt5Defeat::
+ 	.string "Why…?$"
+ 
+ RocketHideout_B1F_Text_Grunt5PostBattle::
+-	.string "Uh-oh, that ruckus somehow opened\n"
+-	.string "the door!$"
+-
++	.string "Uh-oh, that ruckus opened\n"
++	.string "the door!\p"
++	.string "Rocket logistics are supposed to\n"
++	.string "look boring, not broken.$"
++
++RocketHideout_B1F_Text_RedInfiltrationCheck::
++	.string "Red: Antman, there you are.\p"
++	.string "Upstairs felt like noise. Down\n"
++	.string "here feels planned.\p"
++	.string "Rocket is moving crates, coins,\n"
++	.string "and Silph Scope parts.\p"
++	.string "Gold Dust is not running this\n"
++	.string "place, but they are watching it.\p"
++	.string "I will keep close. You take the\n"
++	.string "lead and we will train through it.$"
++
++RocketHideout_B1F_Text_PortablePcBeta::
++	.string "WorldLink trainer support:\n"
++	.string "Portable PC beta terminal.\p"
++	.string "Bill and Oak are testing field\n"
++	.string "storage for long routes.\p"
++	.string "Connection is unstable, but it\n"
++	.string "should reach your PC boxes.$"
++
++RocketHideout_B1F_Text_GoldDustLedger::
++	.string "Gold Dust ledger:\p"
++	.string "Celadon buyer requests pedigree\n"
++	.string "records, rare anchors, and prize\l"
++	.string "Pokemon with unusual signals.\p"
++	.string "Note: Rocket steals loudly.\n"
++	.string "Pay only after verification.$"

@@ -79,8 +79,13 @@ acts:
       - erika_market_warning
       - rocket_game_corner_hideout
       - gold_dust_celadon_buyer
+      - rocket_hideout_b1f_infiltration
+      - red_hideout_entry_check
+      - rocket_coin_logistics
+      - gold_dust_ledger_clue
+      - portable_pc_beta_terminal
       - erika_battle
-    unlocks: [cave_lantern, dig_kit, ability_capsule_vendor_teaser]
+    unlocks: [cave_lantern, dig_kit, ability_capsule_vendor_teaser, portable_pc_beta_terminal]
 
   - id: act_5_saffron_fuchsia
     purpose: "Turn Rocket from local crime into global infrastructure."

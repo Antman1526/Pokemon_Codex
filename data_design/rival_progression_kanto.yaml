@@ -234,6 +234,39 @@ progression_bands:
         event: lyra_celadon_locked_profile
         notification: "Lyra's locked profile pulsed when WorldLink scanned Celadon coins stamped with a bell pattern."
 
+  rocket_hideout_b1f_infiltration:
+    player_range: "Rocket Game Corner basement B1F"
+    companions:
+      red:
+        location: Rocket Hideout B1F entrance
+        event: red_hideout_entry_check
+        notification: "Red entered the Rocket Hideout with Antman and says the basement sounds too organized to be only a Game Corner scam."
+      misty:
+        location: WorldLink call from Cerulean
+        event: misty_hideout_current_call
+        notification: "Misty says Rocket's coin traffic moves like a dirty current under Celadon. Follow the flow to the source."
+      brock:
+        location: WorldLink call from Pewter
+        event: brock_hideout_grounding_call
+        notification: "Brock says a real hideout leaves weight behind: crates, ledgers, and footprints. Check what Rocket forgot to hide."
+    rivals:
+      blue:
+        location: Celadon Game Corner side room
+        event: blue_hideout_race
+        notification: "Blue claims he found the Rocket switch first and says Antman better not slow him down in the basement."
+      ava:
+        location: WorldLink research note
+        event: ava_gold_dust_ledger_research
+        notification: "Ava flagged a Gold Dust ledger entry tying the Celadon buyer to rare anchors and stolen prize Pokemon."
+      dax:
+        location: Celadon arcade stairwell
+        event: dax_hideout_training_report
+        notification: "Dax says hideout grunts are better training than arcade machines and asks if Rocket offers rematches."
+      lyra:
+        location: Johto locked profile
+        event: lyra_hideout_locked_profile
+        notification: "Lyra's locked profile flickered beside a bell-stamped coin in the Rocket ledger, then went quiet."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

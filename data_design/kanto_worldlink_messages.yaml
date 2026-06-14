@@ -116,6 +116,21 @@ messages:
     priority: major
     text: "Rocket Game Corner basement opened. WorldLink confirms coin traffic is masking Silph Scope and rare-item transfers."
 
+  - id: WL_KANTO_ROCKET_HIDEOUT_B1F
+    trigger: FLAG_OPENED_ROCKET_HIDEOUT
+    priority: major
+    text: "Rocket Hideout B1F scan active. Rocket logistics are moving coins, Silph Scope parts, and rare-prize records below Celadon."
+
+  - id: WL_KANTO_GOLD_DUST_LEDGER
+    trigger: FLAG_OPENED_ROCKET_HIDEOUT
+    priority: major
+    text: "Gold Dust ledger clue found: the Celadon buyer is pricing pedigree records, rare anchors, and Rocket-stolen Pokemon."
+
+  - id: WL_KANTO_PORTABLE_PC_BETA
+    trigger: FLAG_OPENED_ROCKET_HIDEOUT
+    priority: major
+    text: "Portable PC beta terminal detected. Bill and Oak are testing limited field storage before the full WorldLink support kit unlocks."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
