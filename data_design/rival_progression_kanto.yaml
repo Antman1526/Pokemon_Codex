@@ -77,6 +77,35 @@ progression_bands:
         event: rocket_double_battle_partner
         notification: "Dax found Rocket grunts carrying fossil scan data."
 
+  vermilion_surge:
+    player_range: "After S.S. Anne through Thunder Badge"
+    companions:
+      red:
+        location: Vermilion Harbor / Gym entrance
+        event: surge_ground_training_and_grid_warning
+        notification: "Red marked the Vermilion Gym grid as Rocket-tampered."
+      misty:
+        location: Vermilion Harbor
+        event: post_ss_anne_join_and_current_reading
+        notification: "Misty logged the harbor current and confirmed the Johto signal is still locked."
+    rivals:
+      blue:
+        location: Route 11
+        event: rushing_after_ss_anne
+        notification: "Blue cleared the S.S. Anne route and is racing toward Route 11."
+      ava:
+        location: Vermilion Harbor
+        event: johto_resonance_research
+        notification: "Ava logged Johto resonance from the harbor manifest."
+      dax:
+        location: Vermilion Gym lobby
+        event: surge_training_report
+        notification: "Dax beat a Sailor and is training for Surge."
+      lyra:
+        location: Johto locked profile
+        event: first_locked_region_tease
+        notification: "Locked profile detected: Lyra / Johto. Region access unavailable."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

@@ -22,6 +22,7 @@ git apply --directory=engine/pokeemerald-expansion patches/engine/0011-mt-moon-n
 git apply --directory=engine/pokeemerald-expansion patches/engine/0012-cerulean-misty-bridge-setup.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0013-route25-red-gold-dust-tag.patch
 git apply --directory=engine/pokeemerald-expansion patches/engine/0014-vermilion-ss-anne-crisis.patch
+git apply --directory=engine/pokeemerald-expansion patches/engine/0015-surge-grid-worldlink.patch
 ```
 
 Command:
@@ -76,6 +77,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 23:41 CDT: Codex built the Vermilion S.S. Anne crisis milestone from patches `0001` through `0014`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, and Vermilion S.S. Anne crisis validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.63%.
+- 2026-06-14 08:59 CDT: Codex built the Surge grid and WorldLink feed milestone from patches `0001` through `0015`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, and Surge grid WorldLink validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
 
 ## Engine Patches To Apply Before Build
 
@@ -93,6 +95,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0012-cerulean-misty-bridge-setup.patch` - Cerulean Red/Misty companion setup and Nugget Bridge Rocket WorldLink recruitment hook.
 - `patches/engine/0013-route25-red-gold-dust-tag.patch` - Route 25 first Red tag setup, Rocket/Team Gold Dust clash, and Bill WorldLink anomaly rewrite.
 - `patches/engine/0014-vermilion-ss-anne-crisis.patch` - Vermilion Blue jealousy scene, S.S. Anne Rocket/Gold Dust/Johto manifest crisis, Misty post-crisis joining, and Johto locked preview.
+- `patches/engine/0015-surge-grid-worldlink.patch` - Rocket grid sabotage in Vermilion Gym, Surge cap tuning, Trail Cutter prototype text, Fan Club Gold Dust clue, and post-Surge WorldLink rival feed.
 
 ## Validation
 
@@ -121,6 +124,7 @@ python3 tools/validate_mt_moon_nexus_break.py
 python3 tools/validate_cerulean_misty_bridge.py
 python3 tools/validate_route25_red_gold_dust.py
 python3 tools/validate_vermilion_ss_anne_crisis.py
+python3 tools/validate_surge_grid_worldlink.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -134,6 +138,7 @@ Mt. Moon Nexus Break validation passed.
 Cerulean Misty Bridge validation passed.
 Route 25 Red Gold Dust validation passed.
 Vermilion S.S. Anne crisis validation passed.
+Surge grid WorldLink validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -181,5 +186,13 @@ Manual OpenEmu checklist still needed:
 - [ ] Captain text references the gold manifest flash and Johto compass signal.
 - [ ] Misty post-crisis harbor scene says she is joining the recurring companion team.
 - [ ] Vermilion Harbor sign shows Johto detected but locked after the crisis.
+- [ ] Vermilion Harbor Red post-crisis scene points toward Surge prep.
+- [ ] Vermilion Harbor Misty post-crisis scene warns about Surge's power/current.
+- [ ] Vermilion Gym Rocket grid sabotage NPC appears.
+- [ ] Rocket grid sabotage battle starts before Surge.
+- [ ] Surge uses Voltorb level 21, Pikachu level 22, and Raichu level 24.
+- [ ] Thunder Badge reward text mentions Trail Cutter prototype registration.
+- [ ] Post-Surge WorldLink rival feed mentions Blue, Ava, Dax, and locked Lyra / Johto.
+- [ ] Pokemon Fan Club worker mentions the Gold Dust collector and Celadon buyer.
 - [ ] Save works after this milestone.
 - [ ] Reload works after this milestone.

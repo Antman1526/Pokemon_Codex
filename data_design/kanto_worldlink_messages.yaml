@@ -46,6 +46,21 @@ messages:
     priority: major
     text: "Silph manifest decoded: Slateport, Castelia, Lumiose, Wyndon, and Mesagoza are listed as transfer points."
 
+  - id: WL_KANTO_SURGE_GRID_WARNING
+    trigger: FLAG_NEXUS_SURGE_GRID_SABOTAGE_SEEN
+    priority: major
+    text: "WorldLink Alert: Vermilion Gym power grid is pulsing with the S.S. Anne manifest frequency."
+
+  - id: WL_KANTO_POST_SURGE_RIVAL_BATCH
+    trigger: FLAG_BADGE03_GET
+    priority: major
+    text: "Rival Feed: Blue cleared the S.S. Anne route. Ava logged Johto resonance. Dax is training for Surge. Locked profile detected: Lyra / Johto."
+
+  - id: WL_KANTO_TRAIL_CUTTER_PROTOTYPE
+    trigger: FLAG_BADGE03_GET
+    priority: major
+    text: "WorldLink Field Tools: Trail Cutter prototype registered. Full HM replacement system pending."
+
   - id: WL_KANTO_LEAGUE_INVITE
     trigger: FLAG_NEXUS_EARTH_BADGE
     priority: major
@@ -55,4 +70,3 @@ messages:
     trigger: FLAG_NEXUS_KANTO_LEAGUE_CLEARED
     priority: major
     text: "World Circuit Passport approved. Johto travel is now available."
-

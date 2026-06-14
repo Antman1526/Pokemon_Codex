@@ -45,6 +45,10 @@ acts:
       - rocket_smuggling_manifest
       - vermilion_harbor_johto_locked_hint
       - misty_post_ss_anne_join_scene
+      - surge_gym_power_grid_sabotage
+      - trail_cutter_prototype_registration
+      - post_surge_worldlink_rival_feed_batch
+      - fan_club_gold_dust_celadon_buyer_clue
       - lt_surge_battle
     unlocks: [vs_seeker, good_rod]
 

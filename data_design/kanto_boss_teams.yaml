@@ -43,7 +43,7 @@ kanto_bosses:
       expert: 26
     standard:
       - { species: Voltorb, level: 21, role: speed_status }
-      - { species: Pikachu, level: 22, role: mascot_pressure }
+      - { species: Pikachu, level: 22, role: mascot_pressure, note: "Engine milestone 0015 raises Pikachu from vanilla 18 to match the documented Surge cap curve." }
       - { species: Raichu, level: 24, role: ace }
     hard:
       - { species: Voltorb, level: 23, role: speed_status }
@@ -177,4 +177,3 @@ elite_four:
     cap: 62
     identity: adaptive_rival_champion
     team_rule: "Starter-counter team plus Kanto classics and one WorldLink-informed wildcard."
-
