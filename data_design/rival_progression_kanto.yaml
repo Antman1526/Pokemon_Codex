@@ -553,6 +553,31 @@ progression_bands:
         event: dax_sea_route_training_report
         notification: "Dax claims swimming beside a Tide Rider counts as leg day, water day, and survival training all at once."
 
+  pokemon_mansion_phoenix_field_test:
+    player_range: "Pokemon Mansion entry through Secret Key recovery"
+    companions:
+      red:
+        location: Pokemon Mansion entrance check
+        event: red_mansion_restraint_check
+        notification: "Red says the Mansion is not haunted by ghosts; it is haunted by people who thought power excused every question."
+      brock:
+        location: Cinnabar fossil ethics note
+        event: brock_mansion_revival_ethics
+        notification: "Brock warns that fossil revival and Mewtwo research both ask the same question: can a trainer protect life without owning it?"
+    rivals:
+      ava:
+        location: Pokemon Mansion restoration ledger
+        event: ava_mansion_phoenix_field_test
+        notification: "Ava tagged Scientist Ted as a Phoenix field-test contractor and flagged the Mansion diaries as a restoration ledger."
+      blue:
+        location: Cinnabar Gym door rumor
+        event: blue_secret_key_pressure
+        notification: "Blue is hunting the Secret Key fast, but WorldLink marks his silence as caution after reading the Mewtwo notes."
+      dax:
+        location: Pokemon Mansion switch maze
+        event: dax_mansion_switch_report
+        notification: "Dax reports that the Mansion switches are unfair because they fight back by changing the building instead of throwing punches."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

@@ -157,6 +157,10 @@ acts:
       - phoenix_research_assistants
       - phoenix_lab_first_contact
       - pokemon_mansion_mewtwo_phoenix_echo
+      - mansion_phoenix_field_test
+      - mansion_restoration_ledger
+      - mansion_mewtwo_birth_warning
+      - secret_key_blaine_handoff
       - blaine_revival_warning
       - red_cinnabar_restraint_scene
       - giovanni_viridian_battle

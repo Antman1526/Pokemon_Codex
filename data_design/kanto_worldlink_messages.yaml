@@ -296,6 +296,21 @@ messages:
     priority: flavor
     text: "Pokemon Mansion echo logged. Mewtwo is still a rumor in Kanto, but Phoenix is already studying the shape of failed creation."
 
+  - id: WL_KANTO_MANSION_PHOENIX_FIELD_TEST
+    trigger: FLAG_BADGE06_GET
+    priority: major
+    text: "Pokemon Mansion field test detected. Phoenix-linked researchers are using existing Mansion scientists, not uniformed grunts."
+
+  - id: WL_KANTO_RESTORATION_LEDGER
+    trigger: FLAG_BADGE06_GET
+    priority: flavor
+    text: "Restoration ledger recovered from Mansion diaries. Phoenix is cataloging Mew, Mewtwo, fossil proteins, and failure notes as one rebirth archive."
+
+  - id: WL_KANTO_SECRET_KEY_BLAINE_HANDOFF
+    trigger: FLAG_HIDE_POKEMON_MANSION_B1F_SECRET_KEY
+    priority: major
+    text: "Secret Key recovered. WorldLink routes Antman to Blaine: Cinnabar's fire specialist knows why revival science keeps burning its keepers."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major

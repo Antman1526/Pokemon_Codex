@@ -1,0 +1,157 @@
+diff --git a/data/maps/PokemonMansion_1F_Frlg/scripts.inc b/data/maps/PokemonMansion_1F_Frlg/scripts.inc
+index 9bf3dab01a..1dc9e181e9 100644
+--- a/data/maps/PokemonMansion_1F_Frlg/scripts.inc
++++ b/data/maps/PokemonMansion_1F_Frlg/scripts.inc
+@@ -36,19 +36,23 @@ PokemonMansion_1F_EventScript_Johnson::
+ 	end
+ 
+ PokemonMansion_1F_Text_TedIntro::
+-	.string "Who are you?\n"
+-	.string "There shouldn't be anyone here.\p"
+-	.string "Unless Phoenix sent you to ask\n"
+-	.string "about the old creation logs.$"
++	.string "Phoenix field test begins now.\p"
++	.string "I am not a grunt. I am a scientist\n"
++	.string "paid to see who survives the data.\p"
++	.string "If you want the Secret Key, prove\n"
++	.string "you can stand near old power.$"
+ 
+ PokemonMansion_1F_Text_TedDefeat::
+-	.string "Ouch!$"
++	.string "Field test failed...\n"
++	.string "or maybe succeeded.$"
+ 
+ PokemonMansion_1F_Text_TedPostBattle::
+-	.string "A key? I don't know what you're\n"
+-	.string "talking about.\p"
+-	.string "Mewtwo was a rumor before it was\n"
+-	.string "a warning. Remember that.$"
++	.string "Phoenix wanted a trainer who could\n"
++	.string "read this place without grabbing.\p"
++	.string "The restoration ledger is upstairs.\n"
++	.string "Mewtwo is deeper than a rumor.\p"
++	.string "The Secret Key waits below, but\n"
++	.string "Blaine is the real lock.$"
+ 
+ PokemonMansion_1F_Text_JohnsonIntro::
+ 	.string "W-w-waah! You startled me!\n"
+diff --git a/data/maps/PokemonMansion_2F_Frlg/scripts.inc b/data/maps/PokemonMansion_2F_Frlg/scripts.inc
+index 168649c809..3b444eedd4 100644
+--- a/data/maps/PokemonMansion_2F_Frlg/scripts.inc
++++ b/data/maps/PokemonMansion_2F_Frlg/scripts.inc
+@@ -41,7 +41,9 @@ PokemonMansion_Text_NotQuiteYet::
+ 
+ PokemonMansion_1F_Text_ArnieIntro::
+ 	.string "I can't get out!\n"
+-	.string "This old place is one big puzzle.$"
++	.string "This old place is one big puzzle.\p"
++	.string "Phoenix people came through smiling\n"
++	.string "like the puzzle owed them answers.$"
+ 
+ PokemonMansion_1F_Text_ArnieDefeat::
+ 	.string "Oh, no!\n"
+@@ -49,16 +51,21 @@ PokemonMansion_1F_Text_ArnieDefeat::
+ 
+ PokemonMansion_1F_Text_ArniePostBattle::
+ 	.string "The switches here open and close\n"
+-	.string "alternating sets of doors.$"
++	.string "alternating sets of doors.\p"
++	.string "They were copying notes from every\n"
++	.string "diary and calling it restoration.$"
+ 
+ PokemonMansion_1F_Text_NewMonDiscoveredInGuyanaJungle::
+ 	.string "Diary: July 5\n"
+ 	.string "Guyana, South America\p"
+ 	.string "A new POKéMON was discovered deep\n"
+-	.string "in the jungle.$"
++	.string "in the jungle.\p"
++	.string "Phoenix restoration ledger note:\n"
++	.string "origin data is not ownership.$"
+ 
+ PokemonMansion_1F_Text_ChristenedDiscoveredMonMew::
+ 	.string "Diary: July 10\n"
+ 	.string "We christened the newly discovered\l"
+-	.string "POKéMON, MEW.$"
+-
++	.string "POKéMON, MEW.\p"
++	.string "WorldLink margin note: naming a\n"
++	.string "life is not the same as knowing it.$"
+diff --git a/data/maps/PokemonMansion_3F_Frlg/scripts.inc b/data/maps/PokemonMansion_3F_Frlg/scripts.inc
+index 8954af0096..20864b8567 100644
+--- a/data/maps/PokemonMansion_3F_Frlg/scripts.inc
++++ b/data/maps/PokemonMansion_3F_Frlg/scripts.inc
+@@ -37,10 +37,14 @@ PokemonMansion_1F_Text_SimonDefeat::
+ 	.string "Ayah!$"
+ 
+ PokemonMansion_1F_Text_SimonPostBattle::
+-	.string "I wonder where my partner went.$"
++	.string "I wonder where my partner went.\p"
++	.string "He said the Secret Key was just\n"
++	.string "bait for anyone chasing Blaine.$"
+ 
+ PokemonMansion_1F_Text_BraydonIntro::
+-	.string "My mentor once lived here.$"
++	.string "My mentor once lived here.\p"
++	.string "Phoenix says the old work deserves\n"
++	.string "a cleaner second birth.$"
+ 
+ PokemonMansion_1F_Text_BraydonDefeat::
+ 	.string "Whew!\n"
+@@ -48,10 +52,14 @@ PokemonMansion_1F_Text_BraydonDefeat::
+ 
+ PokemonMansion_1F_Text_BraydonPostBattle::
+ 	.string "So, you're stuck?\n"
+-	.string "Try jumping off over there!$"
++	.string "Try jumping off over there!\p"
++	.string "And if you read the Mewtwo note,\n"
++	.string "remember: birth was not consent.$"
+ 
+ PokemonMansion_1F_Text_MewGaveBirthToMewtwo::
+ 	.string "Diary: Feb. 6\n"
+ 	.string "MEW gave birth.\p"
+-	.string "We named the newborn MEWTWO.$"
+-
++	.string "We named the newborn MEWTWO.\p"
++	.string "WorldLink warning: creation without\n"
++	.string "restraint becomes a weapon first\l"
++	.string "and a question too late.$"
+diff --git a/data/maps/PokemonMansion_B1F_Frlg/scripts.inc b/data/maps/PokemonMansion_B1F_Frlg/scripts.inc
+index d33d3be377..b81389aa33 100644
+--- a/data/maps/PokemonMansion_B1F_Frlg/scripts.inc
++++ b/data/maps/PokemonMansion_B1F_Frlg/scripts.inc
+@@ -39,22 +39,30 @@ PokemonMansion_B1F_Text_LewisDefeat::
+ 
+ PokemonMansion_B1F_Text_LewisPostBattle::
+ 	.string "You can find stuff lying around.\n"
+-	.string "The residents must've left them.$"
++	.string "The residents must've left them.\p"
++	.string "Phoenix left newer marks, though.\n"
++	.string "Clean shoes. Clean lies.$"
+ 
+ PokemonMansion_B1F_Text_IvanIntro::
+ 	.string "This place is ideal for a lab.\n"
+-	.string "Look at all this space.$"
++	.string "Look at all this space.\p"
++	.string "Phoenix calls it a recovery site.\n"
++	.string "I call it a warning.$"
+ 
+ PokemonMansion_B1F_Text_IvanDefeat::
+ 	.string "What was that for?$"
+ 
+ PokemonMansion_B1F_Text_IvanPostBattle::
+ 	.string "I like it here.\n"
+-	.string "It's conducive to my studies.$"
++	.string "It's conducive to my studies.\p"
++	.string "The Secret Key opens Blaine's Gym,\n"
++	.string "but Blaine opens the old story.$"
+ 
+ PokemonMansion_B1F_Text_MewtwoIsFarTooPowerful::
+ 	.string "Diary: Sept. 1\n"
+ 	.string "MEWTWO is far too powerful.\p"
+ 	.string "We have failed to curb its vicious\n"
+-	.string "tendencies…$"
+-
++	.string "tendencies...\p"
++	.string "WorldLink handoff: recover the\n"
++	.string "Secret Key, then ask Blaine why\l"
++	.string "Cinnabar keeps burning truth.$"
