@@ -1,0 +1,20 @@
+{
+  "id": "blue_route_1",
+  "status": "placeholder",
+  "battle_type": "single_trainer",
+  "location": "route_1",
+  "player_side": {
+    "trainer_id": "antman",
+    "slots": ["player_starter"]
+  },
+  "opponent": {
+    "id": "blue",
+    "display_name": "Blue",
+    "slots": ["blue_starter"],
+    "intent": "first rival pressure before the real battle engine"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": ["blue_route_1_battle_started", "blue_route_1_battle_finished"]
+  }
+}

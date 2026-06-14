@@ -5,6 +5,8 @@ const WorldLinkPanel := preload("res://src/worldlink/WorldLinkPanel.gd")
 const RED_ROUTE_FLAG := "red_route_1_companion_scene_seen"
 const BLUE_BATTLE_FLAG := "blue_battle_placeholder_seen"
 
+signal start_battle_placeholder(battle_id)
+
 var save_state
 var dialogue_label: Label
 var player: ColorRect
@@ -96,6 +98,7 @@ func trigger_blue_battle_placeholder() -> void:
 	if save_state:
 		save_state.record_blue_battle_placeholder()
 	dialogue_label.text = "Blue: There you are. I already know your first partner and I already know mine. Battle system is next, but remember this: I am not waiting for you."
+	emit_signal("start_battle_placeholder", "blue_route_1")
 
 
 func _toggle_worldlink() -> void:

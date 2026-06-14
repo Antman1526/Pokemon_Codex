@@ -9,6 +9,8 @@ var player_starter_group := ""
 var blue_starter := ""
 var ava_starter := ""
 var dax_starter := ""
+var active_battle_id := ""
+var last_battle_result := ""
 var story_flags: Dictionary = {}
 var worldlink_queue: Array[String] = []
 
@@ -23,6 +25,8 @@ func start_new_game(name: String) -> void:
 	blue_starter = ""
 	ava_starter = ""
 	dax_starter = ""
+	active_battle_id = ""
+	last_battle_result = ""
 	story_flags = {
 		"started_native_shell": true,
 		"mom_opening_scene_seen": false,
@@ -31,6 +35,8 @@ func start_new_game(name: String) -> void:
 		"route_1_reached": false,
 		"red_route_1_companion_scene_seen": false,
 		"blue_battle_placeholder_seen": false,
+		"blue_route_1_battle_started": false,
+		"blue_route_1_battle_finished": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -74,3 +80,19 @@ func record_blue_battle_placeholder() -> void:
 	set_flag("blue_battle_placeholder_seen", true)
 	if not worldlink_queue.has("blue_route_1_battle_placeholder"):
 		worldlink_queue.append("blue_route_1_battle_placeholder")
+
+
+func start_battle_placeholder(battle_id: String) -> void:
+	active_battle_id = battle_id
+	last_battle_result = ""
+	if battle_id == "blue_route_1":
+		set_flag("blue_route_1_battle_started", true)
+
+
+func finish_battle_placeholder(result: String) -> void:
+	last_battle_result = result
+	if active_battle_id == "blue_route_1":
+		set_flag("blue_route_1_battle_finished", true)
+		if not worldlink_queue.has("blue_route_1_battle_finished"):
+			worldlink_queue.append("blue_route_1_battle_finished")
+	active_battle_id = ""

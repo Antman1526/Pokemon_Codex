@@ -4,6 +4,7 @@ const TitleScreenScene := preload("res://scenes/ui/TitleScreen.tscn")
 const BedroomScene := preload("res://scenes/world/Bedroom.tscn")
 const OakLabScene := preload("res://scenes/world/OakLab.tscn")
 const Route1Scene := preload("res://scenes/world/Route1.tscn")
+const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
 const GAME_TITLE := "POKEMON NEXUS RED"
 
@@ -51,7 +52,22 @@ func _on_go_to_route_1() -> void:
 	save_state.enter_route_1()
 	var route_1 := Route1Scene.instantiate()
 	route_1.save_state = save_state
+	route_1.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(route_1)
+
+
+func _on_start_battle_placeholder(battle_id: String) -> void:
+	save_state.start_battle_placeholder(battle_id)
+	var battle := BattlePlaceholderScene.instantiate()
+	battle.save_state = save_state
+	battle.battle_id = battle_id
+	battle.battle_finished.connect(_on_battle_placeholder_finished)
+	_replace_screen(battle)
+
+
+func _on_battle_placeholder_finished(result: String) -> void:
+	save_state.finish_battle_placeholder(result)
+	_on_go_to_route_1()
 
 
 func _replace_screen(next_screen: Control) -> void:

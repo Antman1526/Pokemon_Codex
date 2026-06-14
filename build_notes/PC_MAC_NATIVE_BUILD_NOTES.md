@@ -23,6 +23,8 @@ The first playable slice currently covers:
 - Route 1 walkable prototype,
 - Red's first Route 1 companion scene,
 - first Blue battle placeholder state,
+- shared battle placeholder screen,
+- Blue Route 1 placeholder battle data,
 - placeholder WorldLink panel,
 - save-state skeleton,
 - native content data for regions, factions, companions, starters, and opening feed.
@@ -85,10 +87,12 @@ Native shell validation:
 python3 tools/validate_native_godot_shell.py
 python3 tools/validate_native_starter_slice.py
 python3 tools/validate_native_route1_slice.py
+python3 tools/validate_native_battle_placeholder_slice.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
 godot --headless --path native/nexus-red --script tests/route1_slice_test.gd
+godot --headless --path native/nexus-red --script tests/battle_placeholder_test.gd
 ```
 
 Expected future export commands:
@@ -102,9 +106,9 @@ godot --headless --path native/nexus-red --export-release "macOS" builds/macos/P
 
 Next build step:
 
-- add the first battle placeholder screen shared by Blue and future trainers,
 - add Route 1 encounter-rumor data without full combat,
 - add the first WorldLink rival notification batch after Route 1,
+- start the battle engine data model behind the placeholder screen,
 - keep full battle mechanics and full creature data out of scope until the placeholder battle flow is stable.
 
 Do not port all nine regions at once. Keep expanding the playable native Kanto shell, then build chapter by chapter.

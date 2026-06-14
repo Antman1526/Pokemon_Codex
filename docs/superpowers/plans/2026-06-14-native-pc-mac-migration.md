@@ -166,6 +166,22 @@ Verification:
 - Win Brock battle on Standard.
 - Confirm museum scene unlocks only after the badge.
 
+### Task 7.5: Build shared battle placeholder
+
+Acceptance:
+
+- Blue's Route 1 pressure can open a shared battle placeholder screen.
+- The screen shows player starter and Blue starter.
+- Save state records battle started, result, and finished flags.
+- The screen returns to Route 1 after completion.
+
+Verification:
+
+```sh
+python3 tools/validate_native_battle_placeholder_slice.py
+godot --headless --path native/nexus-red --script tests/battle_placeholder_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
