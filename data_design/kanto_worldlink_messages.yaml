@@ -356,6 +356,21 @@ messages:
     priority: major
     text: "All Kanto badges verified. Indigo Plateau registration is open."
 
+  - id: WL_KANTO_ROUTE22_BLUE_LEAGUE_PRESSURE
+    trigger: VAR_MAP_SCENE_ROUTE22
+    priority: major
+    text: "Blue challenged Antman on Route 22 before Victory Road. Red stayed at the gate; this was Antman's League proof."
+
+  - id: WL_KANTO_VICTORY_ROAD_RIVAL_STANDINGS
+    trigger: VAR_MAP_SCENE_ROUTE22
+    priority: major
+    text: "Victory Road standings: Blue entered first, Ava mapped safe switch routes, Dax left training marks. WorldLink pauses cave feed until Indigo."
+
+  - id: WL_KANTO_INDIGO_COMPANION_READY
+    trigger: VAR_MAP_SCENE_ROUTE22
+    priority: major
+    text: "Indigo readiness: Red, Misty, and Brock are outside the League line. Companions can support Antman, but League battles are solo."
+
   - id: WL_KANTO_WORLD_CIRCUIT_UNLOCKED
     trigger: FLAG_NEXUS_KANTO_LEAGUE_CLEARED
     priority: major

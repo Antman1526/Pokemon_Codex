@@ -636,6 +636,39 @@ progression_bands:
         event: lyra_johto_still_locked_tease
         notification: "Lyra's locked Johto profile flickered after the Earth Badge, but WorldLink keeps Johto sealed until Indigo clearance."
 
+  victory_road_rival_standings:
+    player_range: "Route 22 late Blue battle through Indigo Plateau entry"
+    companions:
+      red:
+        location: Route 22 gate / Victory Road threshold
+        event: red_victory_road_threshold
+        notification: "Red waits at the gate and says Victory Road is Antman's proof, not a companion mission."
+      misty:
+        location: Indigo approach message
+        event: misty_indigo_current_note
+        notification: "Misty sends League notes: save healing for chains, respect speed control, and do not let Blue set the pace."
+      brock:
+        location: Indigo approach message
+        event: brock_indigo_resource_note
+        notification: "Brock sends a resource checklist: PP, status cures, setup answers, and a team that can fight tired."
+    rivals:
+      blue:
+        location: Route 22 / Indigo route
+        event: blue_route22_final_kanto_pressure
+        notification: "Blue challenged Antman before Victory Road and framed Indigo as the place he finally passes both Antman and Red."
+      ava:
+        location: Victory Road switch routes
+        event: ava_victory_road_safe_routes
+        notification: "Ava mapped safe switch routes in Victory Road and tagged rival standings without breaking cave focus."
+      dax:
+        location: Victory Road training marks
+        event: dax_victory_road_training_marks
+        notification: "Dax left loud training marks in Victory Road and calls them motivation, not vandalism."
+      lyra:
+        location: Johto locked profile
+        event: lyra_indigo_lock_final_tease
+        notification: "Lyra's profile flickers at Indigo, but Johto stays locked until the Champion record clears and Oak issues the passport."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

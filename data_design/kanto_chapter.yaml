@@ -177,7 +177,9 @@ acts:
     purpose: "Close the Kanto journey and open the World Circuit."
     required_maps: [victory_road, indigo_plateau, elite_four_rooms, champion_room]
     required_events:
+      - route22_blue_league_pressure
       - victory_road_rival_standings
+      - indigo_companion_ready_room
       - blue_pre_league_or_champion_battle
       - red_watches_league
       - elite_four

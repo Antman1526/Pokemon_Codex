@@ -1,0 +1,200 @@
+diff --git a/data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/scripts.inc b/data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/scripts.inc
+index 42411f1bf0..a8a06b64ba 100644
+--- a/data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/scripts.inc
++++ b/data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/scripts.inc
+@@ -71,6 +71,9 @@ IndigoPlateau_PokemonCenter_1F_EventScript_Nurse::
+ IndigoPlateau_PokemonCenter_1F_Text_GymGuyAdvice::
+ 	.string "Yo!\n"
+ 	.string "Champ in the making!\p"
++	.string "Red, Misty, and Brock\n"
++	.string "are outside.\p"
++	.string "They got you here, not through here.\p"
+ 	.string "At the POKéMON LEAGUE, you will\n"
+ 	.string "face the ELITE FOUR all in a row.\p"
+ 	.string "If you lose, you have to start all\n"
+@@ -81,6 +84,10 @@ IndigoPlateau_PokemonCenter_1F_Text_GymGuyAdvice::
+ IndigoPlateau_PokemonCenter_1F_Text_FaceEliteFourGoodLuck::
+ 	.string "From here on, you face the\n"
+ 	.string "ELITE FOUR one by one.\p"
++	.string "Win, and Oak can issue the\n"
++	.string "World Circuit Passport.\p"
++	.string "Johto stays locked until the\n"
++	.string "Champion record clears.\p"
+ 	.string "If you win, a door opens to the\n"
+ 	.string "next TRAINER. Good luck!$"
+ 
+@@ -110,4 +117,3 @@ IndigoPlateau_PokemonCenter_1F_Text_LancesCousinGymLeaderFarAway::
+ 	.string "From what I've heard, LANCE has\n"
+ 	.string "a cousin who's a GYM LEADER\l"
+ 	.string "somewhere far away.$"
+-
+diff --git a/data/maps/Route22_Frlg/scripts.inc b/data/maps/Route22_Frlg/scripts.inc
+index 0497ab4dcc..e73e58ed40 100644
+--- a/data/maps/Route22_Frlg/scripts.inc
++++ b/data/maps/Route22_Frlg/scripts.inc
+@@ -265,14 +265,15 @@ Route22_Text_RivalShouldCatchSomeMons::
+ 	.string "つかまえれば　いい　じゃん！$"
+ 
+ Route22_Text_LateRivalIntro::
+-	.string "{RIVAL}: What? {PLAYER}!\n"
+-	.string "What a surprise to see you here!\p"
+-	.string "So you're going to the POKéMON\n"
+-	.string "LEAGUE?\p"
+-	.string "You collected all the BADGES, too?\n"
+-	.string "That's cool!\p"
+-	.string "Then I'll whip you, {PLAYER}, as a\n"
+-	.string "warm-up for the POKéMON LEAGUE!\p"
++	.string "{RIVAL}: There you are, {PLAYER}.\p"
++	.string "Red is waiting at the gate.\n"
++	.string "Of course he is.\p"
++	.string "Misty and Brock sent League notes.\n"
++	.string "Ava, Dax, everybody's watching.\p"
++	.string "But this is where I pass\n"
++	.string "both of you.\p"
++	.string "No Rocket, no sponsor, no excuse.\p"
++	.string "One warm-up before INDIGO.\n"
+ 	.string "Come on!$"
+ 
+ Route22_Text_LateRivalDefeat::
+@@ -280,11 +281,13 @@ Route22_Text_LateRivalDefeat::
+ 	.string "I was just careless, you!$"
+ 
+ Route22_Text_LateRivalPostBattle::
+-	.string "That loosened me up.\n"
+-	.string "I'm ready for the POKéMON LEAGUE!\p"
+-	.string "{PLAYER}, you need more practice.\p"
+-	.string "But hey, you know that!\n"
+-	.string "I'm out of here. Smell ya!$"
++	.string "That... loosened me up.\n"
++	.string "I'm ready for the POKéMON LEAGUE.\p"
++	.string "You got here because people helped.\n"
++	.string "I got here because I had to.\p"
++	.string "We'll see which road made the\n"
++	.string "stronger TRAINER.\p"
++	.string "Smell ya at Indigo.$"
+ 
+ @ Translated in RB as "{RIVAL}: Hahaha! {PLAYER}! That's your best? You're nowhere near as good as me, pal! Go train some more! You loser!"
+ Route22_Text_LateRivalVictory::
+@@ -298,4 +301,3 @@ Route22_Text_LateRivalVictory::
+ Route22_Text_LeagueGateSign::
+ 	.string "POKéMON LEAGUE\n"
+ 	.string "Front Gate$"
+-
+diff --git a/data/maps/VictoryRoad_1F_Frlg/scripts.inc b/data/maps/VictoryRoad_1F_Frlg/scripts.inc
+index d868987888..c45ff4f145 100644
+--- a/data/maps/VictoryRoad_1F_Frlg/scripts.inc
++++ b/data/maps/VictoryRoad_1F_Frlg/scripts.inc
+@@ -44,15 +44,16 @@ VictoryRoad_1F_EventScript_Rolando::
+ 	end
+ 
+ VictoryRoad_1F_Text_NaomiIntro::
+-	.string "I wonder if you are good enough\n"
+-	.string "for me?$"
++	.string "Victory Road is not a shortcut.\n"
++	.string "It is a mirror with teeth.$"
+ 
+ VictoryRoad_1F_Text_NaomiDefeat::
+ 	.string "I lost out…$"
+ 
+ VictoryRoad_1F_Text_NaomiPostBattle::
+-	.string "I never wanted to lose to anybody,\n"
+-	.string "especially to a younger kid…$"
++	.string "The rival feed goes quiet\n"
++	.string "in caves.\p"
++	.string "That is when doubt gets loud.$"
+ 
+ VictoryRoad_1F_Text_RolandoIntro::
+ 	.string "I can see you're good.\n"
+@@ -63,5 +64,6 @@ VictoryRoad_1F_Text_RolandoDefeat::
+ 
+ VictoryRoad_1F_Text_RolandoPostBattle::
+ 	.string "Tch!\n"
+-	.string "I concede, you are better than I!$"
+-
++	.string "I concede, you are better than I!\p"
++	.string "Keep your repels ready, count your\n"
++	.string "healing, and do not rush INDIGO.$"
+diff --git a/data/maps/VictoryRoad_2F_Frlg/scripts.inc b/data/maps/VictoryRoad_2F_Frlg/scripts.inc
+index e3e718ebaa..cd3d6ee8a8 100644
+--- a/data/maps/VictoryRoad_2F_Frlg/scripts.inc
++++ b/data/maps/VictoryRoad_2F_Frlg/scripts.inc
+@@ -85,8 +85,11 @@ VictoryRoad_2F_Text_DawsonDefeat::
+ 	.string "Unbelievable!$"
+ 
+ VictoryRoad_2F_Text_DawsonPostBattle::
+-	.string "I can beat you when it comes to\n"
+-	.string "knowledge about POKéMON!$"
++	.string "WorldLink standings are alive:\n"
++	.string "Blue, Ava, and Dax\n"
++	.string "all checked in.\p"
++	.string "Knowledge matters now more than\n"
++	.string "ever.$"
+ 
+ VictoryRoad_2F_Text_DaisukeIntro::
+ 	.string "This here is VICTORY ROAD.\n"
+@@ -97,7 +100,9 @@ VictoryRoad_2F_Text_DaisukeDefeat::
+ 
+ VictoryRoad_2F_Text_DaisukePostBattle::
+ 	.string "If you get stuck, try moving some\n"
+-	.string "boulders around.$"
++	.string "boulders around.\p"
++	.string "Ava marked safe switch routes.\n"
++	.string "Smart TRAINERS leave notes.$"
+ 
+ VictoryRoad_2F_Text_NelsonIntro::
+ 	.string "Ah, so you wish to challenge the\n"
+@@ -107,7 +112,9 @@ VictoryRoad_2F_Text_NelsonDefeat::
+ 	.string "You got me!$"
+ 
+ VictoryRoad_2F_Text_NelsonPostBattle::
+-	.string "{RIVAL} also came through here.$"
++	.string "{RIVAL} also came through here.\p"
++	.string "Blue came through angry, fast,\n"
++	.string "and scared enough to improve.$"
+ 
+ VictoryRoad_2F_Text_VincentIntro::
+ 	.string "Come on!\n"
+@@ -133,4 +140,3 @@ VictoryRoad_2F_Text_GregoryPostBattle::
+ @ Unused, old text for Moltres
+ VictoryRoad_2F_Text_Gyaoo::
+ 	.string "ギヤーオ！$"
+-
+diff --git a/data/maps/VictoryRoad_3F_Frlg/scripts.inc b/data/maps/VictoryRoad_3F_Frlg/scripts.inc
+index 467906927d..6c4b76f11b 100644
+--- a/data/maps/VictoryRoad_3F_Frlg/scripts.inc
++++ b/data/maps/VictoryRoad_3F_Frlg/scripts.inc
+@@ -90,7 +90,9 @@ VictoryRoad_3F_Text_GeorgeDefeat::
+ 
+ VictoryRoad_3F_Text_GeorgePostBattle::
+ 	.string "So, it was you who beat GIOVANNI\n"
+-	.string "of TEAM ROCKET?$"
++	.string "of TEAM ROCKET?\p"
++	.string "Red stopped at the threshold.\n"
++	.string "He said this part is yours.$"
+ 
+ VictoryRoad_3F_Text_AlexaIntro::
+ 	.string "TRAINERS live to seek stronger\n"
+@@ -124,6 +126,8 @@ VictoryRoad_3F_Text_ColbyDefeat::
+ VictoryRoad_3F_Text_ColbyPostBattle::
+ 	.string "All TRAINERS here are headed to\n"
+ 	.string "the POKéMON LEAGUE.\p"
++	.string "Dax left training marks on the\n"
++	.string "wall. Loud, but useful.\p"
+ 	.string "Don't let down your guard.$"
+ 
+ VictoryRoad_3F_Text_RayIntro::
+@@ -141,6 +145,9 @@ VictoryRoad_3F_Text_RayPostBattle::
+ VictoryRoad_3F_Text_RayNotEnoughMons::
+ 	.string "RAY: Together, the two of us are\n"
+ 	.string "striving for the pinnacle.\p"
++	.string "Kanto League does not\n"
++	.string "allow partners.\p"
++	.string "This road still teaches teamwork.\p"
+ 	.string "We need you to bring two POKéMON\n"
+ 	.string "into battle with us.$"
+ 
+@@ -158,4 +165,3 @@ VictoryRoad_3F_Text_TyraPostBattle::
+ VictoryRoad_3F_Text_TyraNotEnoughMons::
+ 	.string "TYRA: You can't battle with us if\n"
+ 	.string "you have only one POKéMON.$"
+-

@@ -315,6 +315,9 @@ Manual OpenEmu checklist still needed:
 - [ ] Earth Badge WorldLink handoff opens Victory Road and explicitly keeps Johto locked until Indigo clearance.
 - [ ] Viridian Gym support text references Rocket shadows, sponsor orders, and the Gym feeling like a verdict.
 - [ ] `0034-viridian-giovanni-sponsor-pressure.patch` applies cleanly and `validate_viridian_giovanni_sponsor_pressure.py` passes.
+- [ ] Victory Road rival standings rewrite Route 22 Blue, Victory Road trainers, and Indigo readiness.
+- [ ] Indigo Pokemon Center confirms Red, Misty, and Brock support Antman outside the League line.
+- [ ] `0035-victory-road-rival-standings.patch` applies cleanly and `validate_victory_road_rival_standings.py` passes.
 - [ ] Vermilion Misty-led Surge prep explains grounding the Gym's storm-current pressure.
 - [ ] Vermilion Gym sabotage payoff credits Misty's advice and Trail Cutter remains a prototype.
 - [ ] Fan Club clue uses the gold lapel pin, blank auction card, Celadon stamp, and dust mark.
