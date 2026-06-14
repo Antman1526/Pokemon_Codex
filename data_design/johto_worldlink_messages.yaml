@@ -1,6 +1,26 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_SPROUT_TOWER_1F_ARRIVAL
+    trigger: FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED
+    priority: major
+    text: "Sprout Tower 1F arrival confirmed. Tower records, bell rhythm, and the Nexus Egg are now linked."
+
+  - id: WL_JOHTO_RED_STAYS_OUTSIDE
+    trigger: FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED
+    priority: minor
+    text: "Red stays outside Sprout Tower by choice. Antman must handle the first Johto tradition test directly."
+
+  - id: WL_JOHTO_SILVER_UPPER_FLOOR_SETUP
+    trigger: FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED
+    priority: major
+    text: "Silver refused a first-floor battle and moved upward. First real Silver clash is being staged above."
+
+  - id: WL_JOHTO_MOONLIGHT_MAIN_THREAT
+    trigger: FLAG_SPROUT_TOWER_FIRST_FLOOR_REACHED
+    priority: major
+    text: "Moonlight is the main Sprout Tower threat. Gold Dust is present, but their pressure is archival and transactional."
+
   - id: WL_JOHTO_VIOLET_CITY_ARRIVAL
     trigger: FLAG_VIOLET_CITY_FIRST_ARRIVAL_REACHED
     priority: major

@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_sprout_tower_first_floor:
+    player_range: "Sprout Tower 1F before upper-floor elder and Silver battle"
+    companions:
+      red:
+        location: Violet City / Sprout Tower exterior
+        event: stays_outside_sprout_tower
+        notification: "Red stayed outside Sprout Tower and told Antman this is the first Johto lesson he has to carry himself."
+      lyra:
+        location: Violet City
+        event: monitors_tower_entrance
+        notification: "Lyra is watching the tower entrance and says the bells sound steady only from outside."
+    rivals:
+      silver:
+        location: Sprout Tower 1F
+        event: first_floor_confrontation_no_battle
+        notification: "Silver confronted Antman on Sprout Tower 1F, refused a cheap battle, and moved upward."
+      ava:
+        location: Elm Lab remote feed
+        event: tower_record_data_sync
+        notification: "Ava says Moonlight ink is changing bell records faster than Elm's feed can archive them."
+
   johto_violet_city_first_arrival:
     player_range: "Violet City first arrival before Sprout Tower"
     companions:

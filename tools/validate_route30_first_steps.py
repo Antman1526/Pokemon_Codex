@@ -171,7 +171,7 @@ def validate_design_data() -> list[str]:
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
     if transition.get("current_route") != "route_30":
         errors.append("current transition state must record current_route route_30")
-    if transition.get("next_required_story_node") not in {"mr_pokemon_house_first_visit", "violet_city_first_arrival", "sprout_tower_first_floor"}:
+    if transition.get("next_required_story_node") not in {"mr_pokemon_house_first_visit", "violet_city_first_arrival", "sprout_tower_first_floor", "sprout_tower_upper_floor"}:
         errors.append("current transition state must advance next node to mr_pokemon_house_first_visit")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")
