@@ -168,6 +168,39 @@ progression_bands:
         event: lyra_tower_signal_locked
         notification: "Lyra's locked profile pulsed when Lavender Tower appeared in WorldLink."
 
+  pokemon_tower_moonlight_reveal:
+    player_range: "Pokemon Tower through Mr. Fuji rescue"
+    companions:
+      red:
+        location: Pokemon Tower 2F
+        event: red_pokemon_tower_after_blue_check
+        notification: "Red stayed with Antman after Blue's Tower challenge and says the grief signal reacted to Cubone's name."
+      misty:
+        location: WorldLink call from Cerulean
+        event: misty_lavender_grief_warning
+        notification: "Misty says Lavender feels like a tide pool after a storm: calm on top, dangerous underneath."
+      brock:
+        location: WorldLink call from Pewter
+        event: brock_fuji_grounding_call
+        notification: "Brock says Mr. Fuji knows the difference between a restless spirit and a human exploiting one."
+    rivals:
+      blue:
+        location: Pokemon Tower 2F
+        event: blue_tower_race_pressure
+        notification: "Blue challenged Antman in Pokemon Tower and still insists the badge race matters more than ghost stories."
+      ava:
+        location: Lavender survey notes
+        event: ava_moonlight_signal_research
+        notification: "Ava tagged the Moonlight Veil as the first clean Team Moonlight signal in Kanto."
+      dax:
+        location: Route 8 training route
+        event: dax_tower_bravery_report
+        notification: "Dax claims he is not scared of Pokemon Tower, then asks if Ghost types can punch back."
+      lyra:
+        location: Johto locked profile
+        event: lyra_moonlight_locked_profile
+        notification: "Lyra's locked Johto profile flashed when Team Moonlight named itself, then vanished again."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

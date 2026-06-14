@@ -91,6 +91,21 @@ messages:
     priority: major
     text: "Moonlight Echo detected under Rock Tunnel. Classification pending until Lavender Tower readings stabilize."
 
+  - id: WL_KANTO_POKEMON_TOWER_BLUE_RACE
+    trigger: VAR_MAP_SCENE_POKEMON_TOWER_2F
+    priority: minor
+    text: "Blue challenged Antman inside Pokemon Tower. WorldLink warns that rival pressure is amplifying the dream static."
+
+  - id: WL_KANTO_TEAM_MOONLIGHT_REVEALED
+    trigger: VAR_TEMP_1
+    priority: major
+    text: "Team Moonlight identified itself through the Moonlight Veil. Classification: grief signal, not Rocket command traffic."
+
+  - id: WL_KANTO_FUJI_DREAM_STATIC
+    trigger: FLAG_RESCUED_MR_FUJI
+    priority: major
+    text: "Fuji warns that Rocket hurts living Pokemon, while Team Moonlight listens to dream static left behind by grief."
+
   - id: WL_KANTO_LEAGUE_INVITE
     trigger: FLAG_NEXUS_EARTH_BADGE
     priority: major

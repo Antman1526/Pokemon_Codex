@@ -1,0 +1,273 @@
+diff --git a/data/maps/LavenderTown_VolunteerPokemonHouse_Frlg/scripts.inc b/data/maps/LavenderTown_VolunteerPokemonHouse_Frlg/scripts.inc
+index 0bf4a41f6f..05039abeb5 100644
+--- a/data/maps/LavenderTown_VolunteerPokemonHouse_Frlg/scripts.inc
++++ b/data/maps/LavenderTown_VolunteerPokemonHouse_Frlg/scripts.inc
+@@ -113,6 +113,9 @@ LavenderTown_VolunteerPokemonHouse_Text_IdLikeYouToHaveThis::
+ 	.string "MR. FUJI: {PLAYER}…\p"
+ 	.string "Your POKéDEX quest is one that\n"
+ 	.string "requires strong dedication.\p"
++	.string "Rocket wanted silence.\n"
++	.string "Team Moonlight wanted the dream\l"
++	.string "static inside that silence.\p"
+ 	.string "Without deep love for POKéMON,\n"
+ 	.string "your quest may fail.\p"
+ 	.string "I'm not sure if this will help you,\n"
+@@ -126,7 +129,11 @@ LavenderTown_VolunteerPokemonHouse_Text_ExplainPokeFlute::
+ 	.string "Upon hearing the POKé FLUTE,\n"
+ 	.string "sleeping POKéMON will spring awake.\p"
+ 	.string "Try using it on POKéMON that are\n"
+-	.string "sleeping obstacles.$"
++	.string "sleeping obstacles.\p"
++	.string "The Poke Flute wakes sleeping\n"
++	.string "POKéMON, not dreams.\p"
++	.string "If WorldLink hears Moonlight\n"
++	.string "again, find the living cause first.$"
+ 
+ LavenderTown_VolunteerPokemonHouse_Text_MustMakeRoomForThis::
+ 	.string "You must make room for this!$"
+@@ -146,4 +153,3 @@ LavenderTown_VolunteerPokemonHouse_Text_PokemonMagazinesLineShelf::
+ 	.string "POKéMON magazines line the shelf.\p"
+ 	.string "POKéMON INSIDER…\p"
+ 	.string "POKéMON FAN…$"
+-
+diff --git a/data/maps/PokemonTower_2F_Frlg/map.json b/data/maps/PokemonTower_2F_Frlg/map.json
+index 1fff164c7f..03ecea71d3 100644
+--- a/data/maps/PokemonTower_2F_Frlg/map.json
++++ b/data/maps/PokemonTower_2F_Frlg/map.json
+@@ -44,6 +44,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "PokemonTower_2F_EventScript_Channeler",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 14,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PokemonTower_2F_EventScript_RedTowerCheck",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/PokemonTower_2F_Frlg/scripts.inc b/data/maps/PokemonTower_2F_Frlg/scripts.inc
+index 5c0d880b55..422c7fa126 100644
+--- a/data/maps/PokemonTower_2F_Frlg/scripts.inc
++++ b/data/maps/PokemonTower_2F_Frlg/scripts.inc
+@@ -5,6 +5,19 @@ PokemonTower_2F_EventScript_Channeler::
+ 	msgbox PokemonTower_2F_Text_SilphScopeCouldUnmaskGhosts, MSGBOX_NPC
+ 	end
+ 
++PokemonTower_2F_EventScript_RedTowerCheck::
++	lock
++	faceplayer
++	goto_if_eq VAR_MAP_SCENE_POKEMON_TOWER_2F, 1, PokemonTower_2F_EventScript_RedTowerCheckPostBlue
++	msgbox PokemonTower_2F_Text_RedTowerCheckPreBlue, MSGBOX_NPC
++	release
++	end
++
++PokemonTower_2F_EventScript_RedTowerCheckPostBlue::
++	msgbox PokemonTower_2F_Text_RedTowerCheckPostBlue, MSGBOX_NPC
++	release
++	end
++
+ PokemonTower_2F_EventScript_RivalTriggerRight::
+ 	lockall
+ 	setvar VAR_TEMP_1, 0
+@@ -115,6 +128,7 @@ PokemonTower_2F_Text_RivalDefeat::
+ 
+ PokemonTower_2F_Text_RivalPostBattle::
+ 	.string "How's your POKéDEX coming?\n"
++	.string "WorldLink says we're close.\n"
+ 	.string "I just caught a CUBONE!\p"
+ 	.string "I can't find the bigger MAROWAK.\n"
+ 	.string "Where could they be?\p"
+@@ -124,9 +138,22 @@ PokemonTower_2F_Text_RivalPostBattle::
+ 	.string "unlike you.\p"
+ 	.string "Smell ya later!$"
+ 
++PokemonTower_2F_Text_RedTowerCheckPreBlue::
++	.string "RED: Stay close, Antman.\p"
++	.string "This Tower is not a place to\n"
++	.string "race just because Blue does.\p"
++	.string "The Silph Scope can show ghosts,\n"
++	.string "but WorldLink is hearing grief.$"
++
++PokemonTower_2F_Text_RedTowerCheckPostBlue::
++	.string "RED: When Blue said Cubone's\n"
++	.string "mother, the whole floor answered.\p"
++	.string "Rocket is here, but something\n"
++	.string "else is listening through the\l"
++	.string "dream static.$"
++
+ PokemonTower_2F_Text_SilphScopeCouldUnmaskGhosts::
+ 	.string "Even we could not identify the\n"
+ 	.string "wayward ghosts.\p"
+ 	.string "A SILPH SCOPE might be able to\n"
+ 	.string "unmask them.$"
+-
+diff --git a/data/maps/PokemonTower_5F_Frlg/map.json b/data/maps/PokemonTower_5F_Frlg/map.json
+index 86b4c64161..113ca9f6b0 100644
+--- a/data/maps/PokemonTower_5F_Frlg/map.json
++++ b/data/maps/PokemonTower_5F_Frlg/map.json
+@@ -113,6 +113,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "PokemonTower_5F_EventScript_ItemCleanseTag",
+       "flag": "FLAG_HIDE_POKEMON_TOWER_5F_CLEANSE_TAG"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LIGHT_SPRITE",
++      "x": 14,
++      "y": 8,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PokemonTower_5F_EventScript_MoonlightVeil",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/PokemonTower_5F_Frlg/scripts.inc b/data/maps/PokemonTower_5F_Frlg/scripts.inc
+index 13cd61b9c3..36c2af8e65 100644
+--- a/data/maps/PokemonTower_5F_Frlg/scripts.inc
++++ b/data/maps/PokemonTower_5F_Frlg/scripts.inc
+@@ -5,6 +5,10 @@ PokemonTower_5F_EventScript_Channeler::
+ 	msgbox PokemonTower_5F_Text_RestHereInPurifiedSpace, MSGBOX_NPC
+ 	end
+ 
++PokemonTower_5F_EventScript_MoonlightVeil::
++	msgbox PokemonTower_5F_Text_MoonlightVeil, MSGBOX_NPC
++	end
++
+ PokemonTower_5F_EventScript_PurifiedZone::
+ 	lockall
+ 	fadescreen FADE_TO_WHITE
+@@ -46,6 +50,17 @@ PokemonTower_5F_Text_RestHereInPurifiedSpace::
+ 	.string "I have purified this space.\l"
+ 	.string "You can rest here.$"
+ 
++PokemonTower_5F_Text_MoonlightVeil::
++	.string "Moonlight Veil: WorldLink signal\n"
++	.string "accepted.\p"
++	.string "Team Moonlight does not steal\n"
++	.string "POKéMON.\p"
++	.string "We open the dreams they leave\n"
++	.string "behind.\p"
++	.string "Rocket counts bodies. Gold Dust\n"
++	.string "counts relics.\p"
++	.string "We count what sorrow remembers.$"
++
+ PokemonTower_5F_Text_TammyIntro::
+ 	.string "Give…me…\n"
+ 	.string "your…all…$"
+@@ -91,4 +106,3 @@ PokemonTower_5F_Text_PurifiedZoneMonsFullyHealed::
+ 	.string "zone.\p"
+ 	.string "{PLAYER}'s POKéMON were fully\n"
+ 	.string "healed.$"
+-
+diff --git a/data/maps/PokemonTower_6F_Frlg/scripts.inc b/data/maps/PokemonTower_6F_Frlg/scripts.inc
+index 86db6561e6..15a9feb3fc 100644
+--- a/data/maps/PokemonTower_6F_Frlg/scripts.inc
++++ b/data/maps/PokemonTower_6F_Frlg/scripts.inc
+@@ -78,13 +78,16 @@ PokemonTower_6F_Text_JenniferPostBattle::
+ 
+ PokemonTower_6F_Text_BeGoneIntruders::
+ 	.string "Be gone…\n"
+-	.string "Intruders…$"
++	.string "Intruders…\p"
++	.string "Do not let them count my\n"
++	.string "child's dream…$"
+ 
+ PokemonTower_6F_Text_GhostWasCubonesMother::
+-	.string "The ghost was the restless spirit\n"
+-	.string "of CUBONE's mother!$"
++	.string "The ghost was Cubone's mother,\n"
++	.string "the restless spirit of MAROWAK!$"
+ 
+ PokemonTower_6F_Text_MothersSpiritWasCalmed::
+ 	.string "The mother's spirit was calmed.\p"
+-	.string "It departed to the afterlife…$"
+-
++	.string "It departed to the afterlife…\p"
++	.string "The dream static faded, but it\n"
++	.string "did not disappear.$"
+diff --git a/data/maps/PokemonTower_7F_Frlg/scripts.inc b/data/maps/PokemonTower_7F_Frlg/scripts.inc
+index 8a2087d77f..8b7efbb642 100644
+--- a/data/maps/PokemonTower_7F_Frlg/scripts.inc
++++ b/data/maps/PokemonTower_7F_Frlg/scripts.inc
+@@ -232,19 +232,25 @@ PokemonTower_7F_Movement_Grunt3ExitLeft::
+ 
+ PokemonTower_7F_Text_Grunt1Intro::
+ 	.string "What do you want?\n"
+-	.string "Why are you here?$"
++	.string "Why are you here?\p"
++	.string "Rocket owns this floor, not those\n"
++	.string "Team Moonlight whisperers!$"
+ 
+ PokemonTower_7F_Text_Grunt1Defeat::
+ 	.string "I give up!$"
+ 
+ PokemonTower_7F_Text_Grunt1PostBattle::
+-	.string "I'm not going to forget this!$"
++	.string "I'm not going to forget this!\p"
++	.string "Tell Moonlight that Rocket does\n"
++	.string "not share old men or old ghosts!$"
+ 
+ PokemonTower_7F_Text_Grunt2Intro::
+ 	.string "This old guy marched right up to\n"
+ 	.string "our HIDEOUT.\p"
+ 	.string "Then, he starts ranting about how\n"
+ 	.string "TEAM ROCKET's abusing POKéMON.\p"
++	.string "Then Team Moonlight starts\n"
++	.string "calling it dream static.\p"
+ 	.string "So, we're just talking it over as\n"
+ 	.string "adults.$"
+ 
+@@ -255,16 +261,21 @@ PokemonTower_7F_Text_Grunt2Defeat::
+ PokemonTower_7F_Text_Grunt2PostBattle::
+ 	.string "POKéMON are only good for making\n"
+ 	.string "money. Why not use them?\p"
+-	.string "You stay out of our business!$"
++	.string "Moonlight can keep its dreams.\n"
++	.string "You stay out of Rocket business!$"
+ 
+ PokemonTower_7F_Text_Grunt3Intro::
+-	.string "You're not saving anyone, kid!$"
++	.string "You're not saving anyone, kid!\p"
++	.string "Rocket took Fuji. Moonlight just\n"
++	.string "keeps whispering through static.$"
+ 
+ PokemonTower_7F_Text_Grunt3Defeat::
+ 	.string "Don't fight us ROCKETS!$"
+ 
+ PokemonTower_7F_Text_Grunt3PostBattle::
+-	.string "You're not getting away with this!$"
++	.string "You're not getting away with this!\p"
++	.string "Team Rocket will pull Kanto into\n"
++	.string "line before Moonlight can haunt it.$"
+ 
+ PokemonTower_7F_Text_MrFujiThankYouFollowMe::
+ 	.string "MR. FUJI: Heh?\n"
+@@ -275,8 +286,12 @@ PokemonTower_7F_Text_MrFujiThankYouFollowMe::
+ 	.string "CUBONE's mother.\p"
+ 	.string "I think MAROWAK's spirit has\n"
+ 	.string "finally left us.\p"
++	.string "Rocket wounds the living.\n"
++	.string "Team Moonlight listens to what\l"
++	.string "grief leaves behind.\p"
++	.string "Do not mistake one danger for\n"
++	.string "the other.\p"
+ 	.string "I must thank you for your kind\n"
+ 	.string "concern.\p"
+ 	.string "Follow me to my home, POKéMON\n"
+ 	.string "HOUSE, at the foot of this tower.$"
+-

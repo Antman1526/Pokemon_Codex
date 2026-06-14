@@ -82,6 +82,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-14 08:59 CDT: Codex built the Surge grid and WorldLink feed milestone from patches `0001` through `0015`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, and Surge grid WorldLink validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
 - 2026-06-14 09:37 CDT: Codex built the Route 11 Diglett bridge milestone from patches `0001` through `0016`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, and Route 11 Diglett bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
 - 2026-06-14 10:12 CDT: Codex built the Rock Tunnel Cave Lantern milestone from patches `0001` through `0017`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, and Rock Tunnel Cave Lantern validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.64%.
+- 2026-06-14 11:05 CDT: Codex built the Lavender Tower Moonlight milestone from patches `0001` through `0018`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, Route 25 Red Gold Dust validation, Vermilion S.S. Anne crisis validation, Surge grid WorldLink validation, Route 11 Diglett bridge validation, Rock Tunnel Cave Lantern validation, and Lavender Tower Moonlight validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.65%.
 
 ## Engine Patches To Apply Before Build
 
@@ -102,6 +103,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - `patches/engine/0015-surge-grid-worldlink.patch` - Rocket grid sabotage in Vermilion Gym, Surge cap tuning, Trail Cutter prototype text, Fan Club Gold Dust clue, and post-Surge WorldLink rival feed.
 - `patches/engine/0016-route11-diglett-bridge.patch` - Route 11 rival-race checkpoint, warm Red Trail Cutter guidance, Diglett's Cave Trail Cutter calibration, and Rock Tunnel checklist handoff.
 - `patches/engine/0017-rock-tunnel-cave-lantern.patch` - Rock Tunnel Cave Lantern auto-lighting after Thunder Badge, Brock Route 10 cave advice, Red tunnel companion check, Moonlight Echo foreshadowing, and Lavender low-light static.
+- `patches/engine/0018-lavender-tower-moonlight.patch` - Pokemon Tower Red companion check, Team Moonlight name reveal, Marowak dream static, Rocket/Fuji Moonlight separation, and Poke Flute warning.
 
 ## Validation
 
@@ -133,6 +135,7 @@ python3 tools/validate_vermilion_ss_anne_crisis.py
 python3 tools/validate_surge_grid_worldlink.py
 python3 tools/validate_route11_diglett_bridge.py
 python3 tools/validate_rock_tunnel_cave_lantern.py
+python3 tools/validate_lavender_tower_moonlight.py
 file engine/pokeemerald-expansion/pokenexusred.gba
 ```
 
@@ -149,6 +152,7 @@ Vermilion S.S. Anne crisis validation passed.
 Surge grid WorldLink validation passed.
 Route 11 Diglett bridge validation passed.
 Rock Tunnel Cave Lantern validation passed.
+Lavender Tower Moonlight validation passed.
 Game Boy Advance ROM image: "NEXUS RED" (BNRE01, Rev.00)
 ```
 
@@ -208,6 +212,12 @@ Manual OpenEmu checklist still needed:
 - [ ] Route 11 Red scene explains Trail Cutter underground readings.
 - [ ] Diglett's Cave old man says the tunnel is not a region shortcut.
 - [ ] Route 11 East Entrance guard gives the Rock Tunnel checklist.
+- [ ] Pokemon Tower 2F Red scene appears and changes after Blue's battle.
+- [ ] Blue Pokemon Tower battle text references WorldLink pressure.
+- [ ] Pokemon Tower 5F Moonlight Veil names Team Moonlight.
+- [ ] Marowak ghost scene mentions dream static after Cubone's mother is calmed.
+- [ ] Pokemon Tower 7F Rocket grunts separate Rocket motives from Team Moonlight.
+- [ ] Mr. Fuji explains Rocket, Team Moonlight, and the Poke Flute warning.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

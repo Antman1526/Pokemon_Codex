@@ -68,6 +68,11 @@ acts:
       - cave_lantern_intro
       - lavender_moonlight_dream_static
       - red_lavender_warning
+      - pokemon_tower_blue_rival_pressure
+      - red_pokemon_tower_after_blue_check
+      - team_moonlight_name_reveal
+      - marowak_dream_static_layer
+      - fuji_rocket_moonlight_warning
       - rocket_game_corner_hideout
       - gold_dust_celadon_buyer
       - erika_battle
