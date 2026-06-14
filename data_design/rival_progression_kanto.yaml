@@ -801,6 +801,35 @@ progression_bands:
         event: lyra_new_bark_signal_stable
         notification: "Lyra reports from New Bark Town: Kanto clearance received, signal stable, waiting for arrival."
 
+  johto_departure_objective:
+    player_range: "After the Pallet Gate sendoff before New Bark Town is built"
+    companions:
+      red:
+        location: Pallet World Circuit Gate / early Johto road
+        event: red_commits_to_early_johto_support
+        notification: "Red confirms he will stay close through Johto's first road, then let Antman set the pace."
+      misty:
+        location: Pallet World Circuit Gate
+        event: misty_monitors_sea_route_backline
+        notification: "Misty keeps watch on the sea route for Rocket or Gold Dust movement while Antman enters Johto."
+      brock:
+        location: Pallet World Circuit Gate
+        event: brock_prepares_tower_supplies
+        notification: "Brock flags Sprout Tower and Ecruteak as patience checks, not power checks."
+    rivals:
+      blue:
+        location: Kanto rematch board
+        event: blue_refuses_to_follow_immediately
+        notification: "Blue stays behind long enough to rebuild his pride before chasing the Johto board."
+      lyra:
+        location: New Bark Town
+        event: lyra_waits_as_friendly_rival
+        notification: "Lyra is waiting near New Bark as Johto's first friendly rival contact."
+      silver:
+        location: Unknown Johto route
+        event: profile_detected_no_theft_yet
+        notification: "Silver profile detected. WorldLink withholds classification until first contact."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

@@ -1,0 +1,58 @@
+diff --git a/data/maps/PalletTown_Frlg/scripts.inc b/data/maps/PalletTown_Frlg/scripts.inc
+index b2b82998ed..c87c8d6ea5 100644
+--- a/data/maps/PalletTown_Frlg/scripts.inc
++++ b/data/maps/PalletTown_Frlg/scripts.inc
+@@ -418,10 +418,18 @@ PalletTown_EventScript_RedWorldCircuitGate::
+ 	end
+ 
+ PalletTown_EventScript_RedWorldCircuitGateReady::
++	goto_if_unset FLAG_JOHTO_DEPARTURE_CONFIRMED, PalletTown_EventScript_RedWorldCircuitGateConfirmDeparture
+ 	msgbox PalletTown_Text_RedWorldCircuitGateReady, MSGBOX_NPC
+ 	release
+ 	end
+ 
++PalletTown_EventScript_RedWorldCircuitGateConfirmDeparture::
++	msgbox PalletTown_Text_RedWorldCircuitGateReady, MSGBOX_NPC
++	msgbox PalletTown_Text_WorldCircuitGateDepartureConfirmed, MSGBOX_DEFAULT
++	setflag FLAG_JOHTO_DEPARTURE_CONFIRMED
++	release
++	end
++
+ PalletTown_EventScript_MistyWorldCircuitGate::
+ 	lock
+ 	faceplayer
+@@ -579,6 +587,16 @@ PalletTown_Text_RedWorldCircuitGateReady::
+ 	.string "When we leave, we leave as a team--\n"
+ 	.string "then JOHTO sets the pace.$"
+ 
++PalletTown_Text_WorldCircuitGateDepartureConfirmed::
++	.string "WorldLink Objective: Enter Johto.\p"
++	.string "ELM: New Bark Lab receiving\n"
++	.string "KANTO Champion clearance.\p"
++	.string "LYRA: I will meet you by the first\n"
++	.string "Johto road, Antman.\p"
++	.string "SILVER profile detected.\n"
++	.string "Identity locked. Intent unknown.\p"
++	.string "No Hoenn travel route registered.$"
++
+ PalletTown_Text_MistyWorldCircuitGateReady::
+ 	.string "MISTY: The gate current is steady.\p"
+ 	.string "I'll keep reading the water while\n"
+@@ -666,4 +684,3 @@ PalletTown_Text_LookCopiedTrainerTipsSign::
+ PalletTown_Text_PressStartToOpenMenuCopy::
+ 	.string "TRAINER TIPS!\p"
+ 	.string "Press START to open the MENU!$"
+-
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index aa968dc30d..58749de27d 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -5,7 +5,7 @@
+ #define FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT 0x020
+ #define FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS 0x021
+ #define FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF    0x022
+-#define FLAG_0x023               0x023
++#define FLAG_JOHTO_DEPARTURE_CONFIRMED       0x023
+ #define FLAG_0x024               0x024
+ #define FLAG_0x025               0x025
+ #define FLAG_0x026               0x026

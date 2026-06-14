@@ -1,0 +1,93 @@
+# Full Johto chapter planning data.
+
+chapter:
+  id: johto
+  target_hours: [12, 16]
+  visual_style: FireRed_tiles_with_johto_rebuild
+  standard_difficulty: friendly_mainline_hard_with_midgame_spikes
+  previous_region: kanto
+  next_region: hoenn
+
+acts:
+  - id: act_1_new_bark_to_violet
+    purpose: "Make Johto feel like a living second region, not a menu destination."
+    required_maps: [new_bark_town, elm_lab, route_29, cherrygrove_city, route_30, violet_city, sprout_tower, violet_gym]
+    required_events:
+      - new_bark_worldlink_arrival
+      - elm_lab_receiving_signal
+      - lyra_friendly_rival_join
+      - silver_profile_detected_no_theft_yet
+      - rocket_cherrygrove_remnant_tease
+      - gold_dust_tower_records_tease
+      - sprout_tower_moonlight_whisper
+      - falkner_battle
+    unlocks: [johto_route_checklist, day_night_emphasis, apricorn_tease, friendship_tracker_tease]
+
+  - id: act_2_azalea_goldenrod
+    purpose: "Rebuild Johto's slow tradition arc around Rocket remnants becoming organized again."
+    required_maps: [azalea_town, slowpoke_well, ilex_forest, goldenrod_city, goldenrod_radio_tower, goldenrod_gym]
+    required_events:
+      - slowpoke_well_rocket_return
+      - kurt_apricorn_tools
+      - ilex_forest_worldlink_static
+      - whitney_battle
+      - radio_tower_frequency_warning
+    unlocks: [apricorn_balls, johto_rematch_board_tier_1, friendship_evolution_guidance]
+
+  - id: act_3_ecruteak_mahogany
+    purpose: "Bring Johto's towers, beasts, and Rocket broadcast pressure into the Nexus plot."
+    required_maps: [ecruteak_city, burned_tower, tin_tower, route_42, mahogany_town, lake_of_rage, rocket_hideout_johto]
+    required_events:
+      - burned_tower_beast_release
+      - moonlight_ecruteak_dream_loop
+      - morty_battle
+      - lake_of_rage_broadcast_crisis
+      - lance_tag_operation
+      - rocket_hideout_shutdown
+      - pryce_battle
+    unlocks: [roaming_beast_tracking, lake_weather_alerts, johto_rematch_board_tier_2]
+
+  - id: act_4_blackthorn_to_hoenn_handoff
+    purpose: "Resolve Johto tradition before the world opens toward Hoenn's land-sea crisis."
+    required_maps: [olivine_city, cianwood_city, blackthorn_city, dragons_den, johto_league_gate]
+    required_events:
+      - jasmine_lighthouse_mercy
+      - cianwood_medicine_route
+      - claire_dragon_discipline_trial
+      - ho_oh_lugia_meridian_reaction
+      - hoenn_sea_route_handoff
+    unlocks: [hoenn_travel_after_johto_clear, expanded_fishing_tier_2, johto_rematches_tier_3]
+
+gym_leaders:
+  falkner:
+    badge: Zephyr Badge
+    standard_cap: 60
+    standard_feel: "soft landing after Kanto Champion, but with evolved AI"
+  bugsy:
+    badge: Hive Badge
+    standard_cap: 64
+    standard_feel: "tempo and priority lesson"
+  whitney:
+    badge: Plain Badge
+    standard_cap: 68
+    standard_feel: "first Johto spike, optional lower difficulty support"
+  morty:
+    badge: Fog Badge
+    standard_cap: 72
+    standard_feel: "Moonlight-adjacent Ghost pressure"
+  chuck:
+    badge: Storm Badge
+    standard_cap: 76
+    standard_feel: "bulk and status control"
+  jasmine:
+    badge: Mineral Badge
+    standard_cap: 80
+    standard_feel: "defensive Steel planning"
+  pryce:
+    badge: Glacier Badge
+    standard_cap: 84
+    standard_feel: "weather and speed control"
+  clair:
+    badge: Rising Badge
+    standard_cap: 88
+    standard_feel: "dragon mastery before Hoenn unlock"

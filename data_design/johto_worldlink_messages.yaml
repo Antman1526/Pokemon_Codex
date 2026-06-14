@@ -1,0 +1,27 @@
+# Johto WorldLink message planning.
+
+messages:
+  - id: WL_JOHTO_ARRIVAL_OBJECTIVE
+    trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
+    priority: major
+    text: "Johto Objective: arrive in New Bark Town, check in with Elm, and meet Lyra on the first road."
+
+  - id: WL_JOHTO_ELM_LAB_SIGNAL
+    trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
+    priority: major
+    text: "Elm Lab is receiving Kanto Champion clearance. Johto research begins with habitat behavior, time of day, and friendship."
+
+  - id: WL_JOHTO_SILVER_PROFILE_TEASE
+    trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
+    priority: minor
+    text: "Silver profile detected. Identity locked. Intent unknown. Do not classify as enemy until first contact."
+
+  - id: WL_JOHTO_ROCKET_CHERRYGROVE_REMNANT
+    trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
+    priority: minor
+    text: "Cherrygrove rumor: old Rocket routes are moving again, but nobody agrees who is giving orders."
+
+  - id: WL_JOHTO_GOLD_DUST_TOWER_RECORDS
+    trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
+    priority: minor
+    text: "Gold Dust buyer inquiry logged: old tower records, bell patterns, and rare lineage papers."

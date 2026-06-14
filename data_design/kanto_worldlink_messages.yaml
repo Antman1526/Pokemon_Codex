@@ -410,3 +410,8 @@ messages:
     trigger: FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF
     priority: major
     text: "Lyra reports New Bark Town signal stable. WorldLink confirms no direct Johto warp in this slice; the next road must be entered as a story departure."
+
+  - id: WL_KANTO_JOHTO_DEPARTURE_CONFIRMED
+    trigger: FLAG_JOHTO_DEPARTURE_CONFIRMED
+    priority: major
+    text: "Johto departure confirmed. Elm Lab is receiving Antman's clearance, Lyra is waiting on the first road, and Silver's profile is locked until first contact."
