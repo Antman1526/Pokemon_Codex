@@ -400,3 +400,13 @@ messages:
     trigger: FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT
     priority: major
     text: "Lyra's profile is live from New Bark Town. She can see Antman's Kanto clearance and is waiting on the Johto side."
+
+  - id: WL_KANTO_PALLET_GATE_SENDOFF
+    trigger: FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT
+    priority: major
+    text: "Pallet World Circuit Gate active. Red, Misty, Brock, and Blue are waiting for Antman's committed Johto departure."
+
+  - id: WL_KANTO_NEW_BARK_SIGNAL_STABLE
+    trigger: FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF
+    priority: major
+    text: "Lyra reports New Bark Town signal stable. WorldLink confirms no direct Johto warp in this slice; the next road must be entered as a story departure."

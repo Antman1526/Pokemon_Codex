@@ -1,0 +1,221 @@
+diff --git a/data/maps/PalletTown_Frlg/map.json b/data/maps/PalletTown_Frlg/map.json
+index c50a207f2d..eab653f62f 100644
+--- a/data/maps/PalletTown_Frlg/map.json
++++ b/data/maps/PalletTown_Frlg/map.json
+@@ -71,6 +71,62 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "0x0",
+       "flag": "FLAG_HIDE_OAK_IN_PALLET_TOWN"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 10,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PalletTown_EventScript_RedWorldCircuitGate",
++      "flag": "FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_MISTY",
++      "x": 11,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PalletTown_EventScript_MistyWorldCircuitGate",
++      "flag": "FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BROCK",
++      "x": 12,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PalletTown_EventScript_BrockWorldCircuitGate",
++      "flag": "FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_BLUE",
++      "x": 13,
++      "y": 16,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "PalletTown_EventScript_BlueWorldCircuitGate",
++      "flag": "FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/PalletTown_Frlg/scripts.inc b/data/maps/PalletTown_Frlg/scripts.inc
+index d1c66e741a..b2b82998ed 100644
+--- a/data/maps/PalletTown_Frlg/scripts.inc
++++ b/data/maps/PalletTown_Frlg/scripts.inc
+@@ -7,11 +7,21 @@ PalletTown_Frlg_MapScripts::
+ 
+ PalletTown_OnTransition::
+ 	setworldmapflag FLAG_WORLD_MAP_PALLET_TOWN
++	call PalletTown_EventScript_UpdateWorldCircuitGateCompanions
+ 	call_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_TryReadySignLady
+ 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY, 0, PalletTown_EventScript_SetSignLadyPos
+ 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY, 1, PalletTown_EventScript_SetSignLadyDone
+ 	end
+ 
++PalletTown_EventScript_UpdateWorldCircuitGateCompanions::
++	goto_if_set FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT, PalletTown_EventScript_ShowWorldCircuitGateCompanions
++	setflag FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS
++	return
++
++PalletTown_EventScript_ShowWorldCircuitGateCompanions::
++	clearflag FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS
++	return
++
+ PalletTown_EventScript_TryReadySignLady::
+ 	goto_if_unset FLAG_OPENED_START_MENU, Common_EventScript_NopReturn
+ 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY, 1, Common_EventScript_NopReturn
+@@ -394,6 +404,45 @@ PalletTown_EventScript_FatMan::
+ 	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
+ 	end
+ 
++PalletTown_EventScript_RedWorldCircuitGate::
++	lock
++	faceplayer
++	goto_if_set FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF, PalletTown_EventScript_RedWorldCircuitGateReady
++	msgbox PalletTown_Text_RedWorldCircuitGateSendoff, MSGBOX_NPC
++	msgbox PalletTown_Text_MistyWorldCircuitGateSendoff, MSGBOX_NPC
++	msgbox PalletTown_Text_BrockWorldCircuitGateSendoff, MSGBOX_NPC
++	msgbox PalletTown_Text_BlueWorldCircuitGateSendoff, MSGBOX_NPC
++	msgbox PalletTown_Text_WorldCircuitGateSignalStable, MSGBOX_DEFAULT
++	setflag FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF
++	release
++	end
++
++PalletTown_EventScript_RedWorldCircuitGateReady::
++	msgbox PalletTown_Text_RedWorldCircuitGateReady, MSGBOX_NPC
++	release
++	end
++
++PalletTown_EventScript_MistyWorldCircuitGate::
++	lock
++	faceplayer
++	msgbox PalletTown_Text_MistyWorldCircuitGateReady, MSGBOX_NPC
++	release
++	end
++
++PalletTown_EventScript_BrockWorldCircuitGate::
++	lock
++	faceplayer
++	msgbox PalletTown_Text_BrockWorldCircuitGateReady, MSGBOX_NPC
++	release
++	end
++
++PalletTown_EventScript_BlueWorldCircuitGate::
++	lock
++	faceplayer
++	msgbox PalletTown_Text_BlueWorldCircuitGateReady, MSGBOX_NPC
++	release
++	end
++
+ PalletTown_EventScript_OaksLabSign::
+ 	lockall
+ 	famechecker FAMECHECKER_OAK, 0
+@@ -488,6 +537,61 @@ PalletTown_Text_CanStoreItemsAndMonsInPC::
+ 	.string "You can now store and recall items\n"
+ 	.string "and POKéMON as data via PC.$"
+ 
++PalletTown_Text_RedWorldCircuitGateSendoff::
++	.string "RED: This is the first road\n"
++	.string "that does not belong to KANTO.\p"
++	.string "I'll walk with you as far as the\n"
++	.string "gate lets me.\p"
++	.string "After that, JOHTO gets to meet\n"
++	.string "ANTMAN at his own pace.$"
++
++PalletTown_Text_MistyWorldCircuitGateSendoff::
++	.string "MISTY: The sea route is quiet,\n"
++	.string "but not empty.\p"
++	.string "If the current changes, I'll feel\n"
++	.string "it before ROCKET can hide it.\p"
++	.string "Go make NEW BARK remember your\n"
++	.string "name.$"
++
++PalletTown_Text_BrockWorldCircuitGateSendoff::
++	.string "BROCK: I packed extra supplies,\n"
++	.string "field notes, and tower rope.\p"
++	.string "JOHTO's old places reward patience\n"
++	.string "more than power.\p"
++	.string "That means you're ready.$"
++
++PalletTown_Text_BlueWorldCircuitGateSendoff::
++	.string "{RIVAL}: Do not make Johto think\n"
++	.string "KANTO only sent one Champion.\p"
++	.string "I'm not following yet.\p"
++	.string "I'm just making sure you know the\n"
++	.string "next region is watching.$"
++
++PalletTown_Text_WorldCircuitGateSignalStable::
++	.string "World Circuit Gate:\p"
++	.string "LYRA: New Bark Town signal stable.\n"
++	.string "I can see your KANTO clearance.\p"
++	.string "No direct Johto warp yet.\n"
++	.string "Commit to the road at departure.$"
++
++PalletTown_Text_RedWorldCircuitGateReady::
++	.string "RED: World Circuit Gate is ready.\p"
++	.string "When we leave, we leave as a team--\n"
++	.string "then JOHTO sets the pace.$"
++
++PalletTown_Text_MistyWorldCircuitGateReady::
++	.string "MISTY: The gate current is steady.\p"
++	.string "I'll keep reading the water while\n"
++	.string "you take the first Johto steps.$"
++
++PalletTown_Text_BrockWorldCircuitGateReady::
++	.string "BROCK: Supplies are checked.\n"
++	.string "Old towers, old legends, new road.$"
++
++PalletTown_Text_BlueWorldCircuitGateReady::
++	.string "{RIVAL}: Go on.\n"
++	.string "I'll catch the board my way.$"
++
+ PalletTown_Text_OakPokemonResearchLab::
+ 	.string "OAK POKéMON RESEARCH LAB$"
+ 
+@@ -563,4 +667,3 @@ PalletTown_Text_PressStartToOpenMenuCopy::
+ 	.string "TRAINER TIPS!\p"
+ 	.string "Press START to open the MENU!$"
+ 
+-
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index e1c9060fa4..aa968dc30d 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -3,8 +3,8 @@
+ 
+ 
+ #define FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT 0x020
+-#define FLAG_0x021               0x021
+-#define FLAG_0x022               0x022
++#define FLAG_HIDE_WORLD_CIRCUIT_GATE_COMPANIONS 0x021
++#define FLAG_USED_WORLD_CIRCUIT_GATE_SENDOFF    0x022
+ #define FLAG_0x023               0x023
+ #define FLAG_0x024               0x024
+ #define FLAG_0x025               0x025

@@ -194,6 +194,9 @@ acts:
       - oak_world_circuit_passport
       - world_circuit_gate_johto_unlock
       - lyra_profile_goes_live
+      - pallet_world_circuit_gate_sendoff
+      - red_misty_brock_blue_departure_scene
+      - new_bark_signal_stable_no_warp
     unlocks: [world_circuit_passport, johto_travel, pokedex_readiness_beta, kanto_rematches_tier_2]
 
 gym_leaders:

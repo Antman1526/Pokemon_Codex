@@ -768,6 +768,39 @@ progression_bands:
         event: lyra_profile_live_new_bark
         notification: "Lyra's profile is live from New Bark Town. Johto is no longer a locked preview."
 
+  pallet_world_circuit_gate_sendoff:
+    player_range: "After Oak issues the World Circuit Passport before New Bark arrival"
+    companions:
+      red:
+        location: Pallet World Circuit Gate
+        event: red_committed_departure_friend_scene
+        notification: "Red waits at Pallet's World Circuit Gate and says the first Johto road belongs to Antman's pace."
+      misty:
+        location: Pallet World Circuit Gate
+        event: misty_sea_route_stability_check
+        notification: "Misty reads the sea route as quiet but not empty, and promises to watch for Rocket movement."
+      brock:
+        location: Pallet World Circuit Gate
+        event: brock_tower_supply_check
+        notification: "Brock checks supplies and warns that Johto's old towers reward patience more than power."
+    rivals:
+      blue:
+        location: Pallet outskirts
+        event: quiet_johto_departure_pressure
+        notification: "Blue tells Antman not to make Johto think Kanto only sent one Champion, then lets him leave first."
+      ava:
+        location: WorldLink research line
+        event: ava_gate_signal_validation
+        notification: "Ava verifies the Pallet World Circuit Gate and records the first stable New Bark signal."
+      dax:
+        location: Indigo training field
+        event: dax_kanto_rematch_training
+        notification: "Dax stays in Kanto to train against rematches before chasing Antman onto the Johto board."
+      lyra:
+        location: New Bark Town
+        event: lyra_new_bark_signal_stable
+        notification: "Lyra reports from New Bark Town: Kanto clearance received, signal stable, waiting for arrival."
+
 relationship_changes:
   help_ava_at_museum:
     ava:
