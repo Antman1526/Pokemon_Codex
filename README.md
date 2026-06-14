@@ -2,12 +2,14 @@
 
 Pokemon Nexus Red is a nine-region Pokemon ROM-hack/fan-game design project. It begins in Pallet Town with Antman, a new trainer following Red's path, and expands through Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, and Paldea.
 
-The project goal is to create a legal, phased build framework that Claude Code and Codex can implement chapter by chapter. The initial target is a FireRed-feeling Kanto vertical slice from Pallet Town to Brock, then region expansion.
+The project goal is to create a legal, phased build framework that Claude Code and Codex can implement chapter by chapter. Primary target: native PC/Mac standalone game. Legacy/prototype target: `.gba` playable in OpenEmu.
+
+The native build is the recommended path for the complete all-nine-region game. The GBA/OpenEmu path remains a useful FireRed-style prototype/reference track, but it should not constrain the full game vision.
 
 ## Core Design
 
 - 9 main-series regions connected by one meta-story.
-- FireRed-first visual identity, built through a GBA/decomp workflow.
+- FireRed-first visual identity, now aimed at a native PC/Mac build with the GBA/decomp work preserved as a prototype track.
 - 39 starter choices: all 27 regional starters plus 12 special starters.
 - 10 rivals traveling the same World Circuit.
 - WorldLink notification feed for rival progress and world events.
@@ -25,7 +27,9 @@ The project goal is to create a legal, phased build framework that Claude Code a
 - `docs/WORLDLINK_SYSTEM_SPEC.md` - WorldLink UI, notification, checklist, rival, companion, and transit system.
 - `docs/superpowers/specs/2026-06-13-title-opening-companion-design.md` - approved title-screen, opening, Red AI, WorldLink pause, and Brock/Misty companion direction.
 - `docs/REGION_CONTENT_BLUEPRINT.md` - full 9-region content plan.
+- `docs/PC_MAC_NATIVE_BUILD_STRATEGY.md` - primary native Windows/macOS build strategy.
 - `docs/GBA_OPENEMU_BUILD_STRATEGY.md` - how to keep the project on the `.gba` and OpenEmu path.
+- `data_design/platform_targets.yaml` - structured target-platform decision data.
 - `docs/LONG_GAME_RETENTION_DESIGN.md` - pacing and replayability design for a very long game.
 - `docs/CLAUDE_CODEX_GBA_TASK_ROADMAP.md` - phased task roadmap for Claude Code and Codex.
 - `data_design/` - structured planning data for regions, rivals, starters, encounters, and WorldLink.
@@ -39,6 +43,7 @@ Run:
 
 ```sh
 python3 tools/validate_design_data.py
+python3 tools/validate_native_platform_strategy.py
 ```
 
 ## Legal Rule

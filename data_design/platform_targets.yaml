@@ -1,0 +1,71 @@
+# Pokemon Nexus Red platform targets.
+# This file records the native PC/Mac pivot and keeps the GBA path as a legacy prototype track.
+
+platform_strategy:
+  primary_target: native_pc_mac
+  primary_engine_recommendation: godot_4_custom_2d_rpg
+  game_title: POKEMON NEXUS RED
+  subtitle: A World Circuit Adventure
+  full_game_distribution_model: standalone_native_game
+  legacy_target: gba_openemu_prototype
+  legacy_engine: pokeemerald_expansion_patch_stack
+  one_game_policy: "One source project exports to Windows PC and macOS; do not fork content into separate games."
+  rom_policy: "The complete nine-region version is not a GBA ROM. The GBA work remains a playable prototype/reference track."
+
+native_targets:
+  windows:
+    label: Windows PC
+    artifact: builds/windows/PokemonNexusRed.exe
+    packaging: zip_or_installer
+    required: true
+  macos:
+    label: macOS
+    artifact: builds/macos/PokemonNexusRed.app
+    packaging: dmg_or_zipped_app
+    required: true
+  linux:
+    label: Linux
+    artifact: builds/linux/PokemonNexusRed.x86_64
+    packaging: tarball
+    required: false
+
+build_commands:
+  dev: godot --path native/nexus-red
+  windows_release: godot --headless --path native/nexus-red --export-release "Windows Desktop" builds/windows/PokemonNexusRed.exe
+  macos_release: godot --headless --path native/nexus-red --export-release "macOS" builds/macos/PokemonNexusRed.app
+
+native_project_layout:
+  root: native/nexus-red
+  source: native/nexus-red/src
+  content: native/nexus-red/content
+  tests: native/nexus-red/tests
+  exports: native/nexus-red/exports
+
+non_negotiable_design_carryover:
+  - all_9_regions_in_order
+  - antman_pallet_town_protagonist
+  - red_full_game_warm_companion
+  - brock_misty_may_recurring_companions
+  - 10_rivals_worldlink_progress
+  - one_region_at_a_time_story_travel
+  - all_pokemon_through_gen_9_catchable_before_final_boss
+  - 39_starter_opening_scope
+  - physical_special_split
+  - fairy_type_and_modern_moves
+  - level_caps_and_difficulty_options
+  - nuzlocke_tools
+  - modern_qol_suite
+  - dynamax_and_tera_after_hoenn
+  - worldlink_notifications_pause_in_dungeons
+
+first_native_milestones:
+  - id: native_shell
+    description: Bootable Godot shell with title screen, menu, input, save skeleton, and data loader.
+  - id: pallet_intro
+    description: Antman's bedroom, Mom scene, Red outside, Oak lab, and 39-starter selection.
+  - id: kanto_brock_slice
+    description: Route 1 through Pewter with Red training, Brock, and Pewter Museum anomaly.
+  - id: full_kanto_native
+    description: Full Kanto campaign with Indigo League and Johto unlock.
+  - id: johto_native
+    description: Johto chapter with Radio Tower, Silver, Ecruteak, and Hoenn unlock.

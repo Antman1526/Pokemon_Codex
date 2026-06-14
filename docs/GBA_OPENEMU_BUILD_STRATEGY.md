@@ -1,6 +1,7 @@
 # Pokemon Nexus Red - GBA/OpenEmu Build Strategy
 
 Date: 2026-06-13
+Status: Superseded for full-game target as of 2026-06-14. The GBA/OpenEmu path remains a legacy prototype/reference track. The complete all-nine-region game should target native PC/Mac builds.
 Target player format: `.gba` playable in OpenEmu on macOS
 Preferred engine direction: pokeemerald-expansion or a compatible pokeemerald decomp fork
 
@@ -8,7 +9,9 @@ Preferred engine direction: pokeemerald-expansion or a compatible pokeemerald de
 
 Pokemon Nexus Red should stay on the GBA path. That means the project must be built from source into a `.gba` file, then distributed only as a legal patch. OpenEmu can play the final patched `.gba` locally, but the project repository must not contain copyrighted ROM binaries.
 
-Decision: all nine regions must be done as complete, satisfying story chapters. On GBA, this should mean full-feeling curated regional campaigns, not full tile-for-tile recreations of nine retail games. Player-facing visuals should be FireRed-first even if the codebase uses pokeemerald-expansion.
+Historical decision: all nine regions must be done as complete, satisfying story chapters. On GBA, this would mean full-feeling curated regional campaigns, not full tile-for-tile recreations of nine retail games. Player-facing visuals should be FireRed-first even if the codebase uses pokeemerald-expansion.
+
+Current decision: the full all-nine-region game moves to native PC/Mac. Continue using this GBA strategy only for prototype slices, nostalgia tests, and FireRed-style reference builds.
 
 ## 2. What OpenEmu Compatibility Means
 

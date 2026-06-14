@@ -42,6 +42,7 @@ def validate_required_files() -> list[str]:
         "starter_selection_flow.yaml",
         "starter_rival_assignment.yaml",
         "worldlink_schema.yaml",
+        "platform_targets.yaml",
     ]
     for name in required:
         if not (DATA_DIR / name).exists():

@@ -8,9 +8,13 @@ This file records locked design decisions so future Claude/Codex sessions do not
 
 ### Platform
 
-Decision: Pokemon Nexus Red targets a `.gba` ROM playable in OpenEmu on macOS.
+Decision: Pokemon Nexus Red now targets a native PC/Mac standalone game for the complete all-nine-region build.
 
-Implication: use pokeemerald-expansion or a compatible pokeemerald decomp fork. Do not switch to Pokemon Essentials unless the project goal changes.
+Implication: use a Godot 4 custom 2D RPG framework as the recommended primary path. The GBA/OpenEmu path remains a legacy prototype/reference track and can still be used for nostalgia-first experiments, but it should not limit the full game vision.
+
+Decision: the complete nine-region version is one native game exported to Windows PC and macOS, not two separate games and not a single GBA ROM.
+
+Implication: package as `.exe` for Windows and `.app`/`.dmg` for macOS from the same source project. Keep content data-driven so the same story, Pokemon availability, WorldLink, companions, rivals, and region progression power both desktop targets.
 
 ### Region Scope
 
