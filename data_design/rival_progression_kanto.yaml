@@ -3,6 +3,27 @@
 chapter: kanto
 
 progression_bands:
+  johto_union_cave_first_entry:
+    player_range: "Union Cave first entry before Azalea Town"
+    companions:
+      lyra:
+        location: Union Cave entrance
+        event: union_cave_entrance_support
+        notification: "Lyra walks Antman into Union Cave and says Johto's quiet roads become contested underground."
+      red:
+        location: Union Cave emergency WorldLink signal
+        event: emergency_cave_tag_scene
+        notification: "Red appears when the WorldLink signal flickers inside Union Cave, then tells Antman to keep leading."
+    rivals:
+      silver:
+        location: Union Cave Azalea-side trace
+        event: azalea_exit_trace_no_battle
+        notification: "Silver left a trace at the Azalea-side exit. Still no battle, but he is moving toward the Slowpoke Well crisis."
+      ava:
+        location: Field Checklist feed
+        event: cave_habitat_notes
+        notification: "Ava unlocks cave checklist notes for repel planning, Zubat swarms, Onix tunnels, and waterline encounters."
+
   johto_route32_union_cave_road:
     player_range: "Route 32 after Zephyr Badge before Union Cave"
     companions:

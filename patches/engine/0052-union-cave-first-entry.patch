@@ -1,0 +1,268 @@
+diff --git a/data/maps/Route32_Frlg/map.json b/data/maps/Route32_Frlg/map.json
+index 25b7c6dd2c..cf256e33ca 100644
+--- a/data/maps/Route32_Frlg/map.json
++++ b/data/maps/Route32_Frlg/map.json
+@@ -113,7 +113,15 @@
+       "flag": "0"
+     }
+   ],
+-  "warp_events": [],
++  "warp_events": [
++    {
++      "x": 77,
++      "y": 12,
++      "elevation": 3,
++      "dest_map": "MAP_UNION_CAVE_1F",
++      "dest_warp_id": "0"
++    }
++  ],
+   "coord_events": [],
+   "bg_events": [
+     {
+diff --git a/data/maps/UnionCave_1F_Frlg/map.json b/data/maps/UnionCave_1F_Frlg/map.json
+new file mode 100644
+index 0000000000..d020116651
+--- /dev/null
++++ b/data/maps/UnionCave_1F_Frlg/map.json
+@@ -0,0 +1,130 @@
++{
++  "id": "MAP_UNION_CAVE_1F",
++  "name": "UnionCave_1F_Frlg",
++  "layout": "LAYOUT_MT_MOON_1F",
++  "music": "MUS_RG_MT_MOON",
++  "region": "REGION_JOHTO",
++  "region_map_section": "MAPSEC_NONE",
++  "requires_flash": false,
++  "weather": "WEATHER_NONE",
++  "map_type": "MAP_TYPE_UNDERGROUND",
++  "allow_cycling": false,
++  "allow_escaping": true,
++  "allow_running": true,
++  "show_map_name": true,
++  "floor_number": 0,
++  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
++  "connections": null,
++  "object_events": [
++    {
++      "local_id": "LOCALID_UNION_CAVE_LYRA",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
++      "x": 16,
++      "y": 35,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "UnionCave_1F_Frlg_EventScript_LyraEntry",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_UNION_CAVE_ROCKET_GOLD_DUST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
++      "x": 25,
++      "y": 28,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "UnionCave_1F_Frlg_EventScript_RocketGoldDustClash",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_UNION_CAVE_GOLD_DUST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
++      "x": 27,
++      "y": 28,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "UnionCave_1F_Frlg_EventScript_RocketGoldDustClash",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_UNION_CAVE_RED",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 15,
++      "y": 22,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "UnionCave_1F_Frlg_EventScript_RedEmergency",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_UNION_CAVE_CHECKLIST",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_GYM_GUY",
++      "x": 32,
++      "y": 20,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "UnionCave_1F_Frlg_EventScript_CaveChecklist",
++      "flag": "0"
++    },
++    {
++      "local_id": "LOCALID_UNION_CAVE_SILVER_TRACE",
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL",
++      "x": 41,
++      "y": 9,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "UnionCave_1F_Frlg_EventScript_SilverExitTrace",
++      "flag": "0"
++    }
++  ],
++  "warp_events": [
++    {
++      "x": 17,
++      "y": 35,
++      "elevation": 3,
++      "dest_map": "MAP_ROUTE32",
++      "dest_warp_id": "0"
++    }
++  ],
++  "coord_events": [],
++  "bg_events": [
++    {
++      "type": "sign",
++      "x": 44,
++      "y": 7,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "UnionCave_1F_Frlg_EventScript_AzaleaExitLock"
++    }
++  ]
++}
+diff --git a/data/maps/UnionCave_1F_Frlg/scripts.inc b/data/maps/UnionCave_1F_Frlg/scripts.inc
+new file mode 100644
+index 0000000000..9dbe14af16
+--- /dev/null
++++ b/data/maps/UnionCave_1F_Frlg/scripts.inc
+@@ -0,0 +1,76 @@
++UnionCave_1F_Frlg_MapScripts::
++	map_script MAP_SCRIPT_ON_TRANSITION, UnionCave_1F_Frlg_OnTransition
++	.byte 0
++
++UnionCave_1F_Frlg_OnTransition:
++	setflag FLAG_UNION_CAVE_FIRST_ENTRY_REACHED
++	end
++
++UnionCave_1F_Frlg_EventScript_LyraEntry::
++	msgbox UnionCave_1F_Frlg_Text_LyraEntry, MSGBOX_NPC
++	end
++
++UnionCave_1F_Frlg_EventScript_RocketGoldDustClash::
++	msgbox UnionCave_1F_Frlg_Text_RocketGoldDustClash, MSGBOX_NPC
++	end
++
++UnionCave_1F_Frlg_EventScript_RedEmergency::
++	setflag FLAG_UNION_CAVE_RED_EMERGENCY_REACHED
++	msgbox UnionCave_1F_Frlg_Text_RedEmergency, MSGBOX_NPC
++	end
++
++UnionCave_1F_Frlg_EventScript_CaveChecklist::
++	setflag FLAG_UNION_CAVE_FIELD_CHECKLIST_REVIEWED
++	msgbox UnionCave_1F_Frlg_Text_CaveChecklist, MSGBOX_NPC
++	end
++
++UnionCave_1F_Frlg_EventScript_SilverExitTrace::
++	msgbox UnionCave_1F_Frlg_Text_SilverExitTrace, MSGBOX_NPC
++	end
++
++UnionCave_1F_Frlg_EventScript_AzaleaExitLock::
++	msgbox UnionCave_1F_Frlg_Text_AzaleaExitLock, MSGBOX_SIGN
++	end
++
++UnionCave_1F_Frlg_Text_LyraEntry::
++	.string "LYRA: Union Cave is where\n"
++	.string "Johto stops whispering.\p"
++	.string "Routes up top can look peaceful.\n"
++	.string "Underground, people argue over\n"
++	.string "who gets to control the path.$"
++
++UnionCave_1F_Frlg_Text_RocketGoldDustClash::
++	.string "ROCKET: This tunnel is still\n"
++	.string "useful, no matter whose logo\n"
++	.string "is on the crate.\p"
++	.string "GOLD DUST: Ownership beats\n"
++	.string "muscle. We can buy the road\n"
++	.string "you are crawling through.$"
++
++UnionCave_1F_Frlg_Text_RedEmergency::
++	.string "RED: I heard the WorldLink\n"
++	.string "signal crack from Violet.\p"
++	.string "I am here if the cave turns,\n"
++	.string "but you still choose the pace.\p"
++	.string "Tag me in only when it matters.$"
++
++UnionCave_1F_Frlg_Text_CaveChecklist::
++	.string "CAVE CHECKLIST: Union Cave.\p"
++	.string "Pack Repels if you want clean\n"
++	.string "movement. Keep an Escape Rope.\p"
++	.string "Habitat hints: ZUBAT swarms,\n"
++	.string "ONIX tunnels, waterline Pokemon\n"
++	.string "more active after dark.$"
++
++UnionCave_1F_Frlg_Text_SilverExitTrace::
++	.string "SILVER TRACE: Exit side.\p"
++	.string "No battle. No speech.\p"
++	.string "His signal points toward Azalea\n"
++	.string "and the old well.$"
++
++UnionCave_1F_Frlg_Text_AzaleaExitLock::
++	.string "WorldLink: Azalea next.\p"
++	.string "Kurt's town signal is unstable.\n"
++	.string "Rocket and Gold Dust are both\n"
++	.string "moving ahead.\p"
++	.string "Hoenn remains locked.$"
+diff --git a/data/maps/map_groups.json b/data/maps/map_groups.json
+index dc34d35055..745795ff2f 100644
+--- a/data/maps/map_groups.json
++++ b/data/maps/map_groups.json
+@@ -866,6 +866,7 @@
+     "VioletCity_Frlg",
+     "VioletCity_Gym_Frlg",
+     "Route32_Frlg",
++    "UnionCave_1F_Frlg",
+     "SproutTower_1F_Frlg",
+     "SproutTower_Upper_Frlg",
+     "ViridianCity_Frlg",
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 71898c99d9..82478b692f 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -158,9 +158,9 @@
+ #define FLAG_ZEPHYR_BADGE_REGISTERED   0x0B5
+ #define FLAG_ROUTE32_FIRST_STEPS_REACHED   0x0B6
+ #define FLAG_ROUTE32_FIELD_CHECKLIST_REVIEWED   0x0B7
+-#define FLAG_0x0B8               0x0B8
+-#define FLAG_0x0B9               0x0B9
+-#define FLAG_0x0BA               0x0BA
++#define FLAG_UNION_CAVE_FIRST_ENTRY_REACHED   0x0B8
++#define FLAG_UNION_CAVE_FIELD_CHECKLIST_REVIEWED   0x0B9
++#define FLAG_UNION_CAVE_RED_EMERGENCY_REACHED   0x0BA
+ #define FLAG_0x0BB               0x0BB
+ #define FLAG_0x0BC               0x0BC
+ #define FLAG_0x0BD               0x0BD

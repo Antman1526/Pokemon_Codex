@@ -1,6 +1,31 @@
 # Johto WorldLink message planning.
 
 messages:
+  - id: WL_JOHTO_UNION_CAVE_FIRST_ENTRY
+    trigger: FLAG_UNION_CAVE_FIRST_ENTRY_REACHED
+    priority: major
+    text: "Union Cave first entry confirmed. Lyra is inside the mouth of the cave; Rocket remnants and Gold Dust are both blocking the old passage."
+
+  - id: WL_JOHTO_UNION_CAVE_FIELD_CHECKLIST
+    trigger: FLAG_UNION_CAVE_FIELD_CHECKLIST_REVIEWED
+    priority: major
+    text: "Cave Field Checklist: Union Cave. Repel planning, Escape Rope reminders, Zubat swarms, Onix tunnels, and night waterline notes logged."
+
+  - id: WL_JOHTO_ROCKET_GOLD_DUST_CAVE_CLASH
+    trigger: FLAG_UNION_CAVE_FIRST_ENTRY_REACHED
+    priority: major
+    text: "Rocket and Gold Dust are clashing underground. Rocket wants the tunnel useful; Gold Dust wants the tunnel owned."
+
+  - id: WL_JOHTO_RED_UNION_CAVE_EMERGENCY
+    trigger: FLAG_UNION_CAVE_RED_EMERGENCY_REACHED
+    priority: major
+    text: "Red emergency support logged in Union Cave. He arrived because WorldLink flickered, not because Antman needed a gym-style rescue."
+
+  - id: WL_JOHTO_AZALEA_NEXT
+    trigger: FLAG_UNION_CAVE_FIRST_ENTRY_REACHED
+    priority: major
+    text: "WorldLink: Azalea next. Silver's trace is on the exit side, Kurt's town signal is unstable, and Hoenn remains locked."
+
   - id: WL_JOHTO_ROUTE32_FIRST_STEPS
     trigger: FLAG_ROUTE32_FIRST_STEPS_REACHED
     priority: major

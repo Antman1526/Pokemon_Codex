@@ -160,9 +160,9 @@ def validate_design_data() -> list[str]:
             errors.append(f"Johto WorldLink missing id: {message_id}")
 
     transition = regions.get("worldlink_region_progression", {}).get("current_transition_state", {})
-    if transition.get("next_required_story_node") not in {"route_29_first_steps", "cherrygrove_first_arrival", "route_30_first_steps", "mr_pokemon_house_first_visit", "violet_city_first_arrival", "sprout_tower_first_floor", "sprout_tower_upper_floor", "falkner_gym_battle", "route_32_union_cave_road", "union_cave_first_entry"}:
+    if transition.get("next_required_story_node") not in {"route_29_first_steps", "cherrygrove_first_arrival", "route_30_first_steps", "mr_pokemon_house_first_visit", "violet_city_first_arrival", "sprout_tower_first_floor", "sprout_tower_upper_floor", "falkner_gym_battle", "route_32_union_cave_road", "union_cave_first_entry", "azalea_first_arrival"}:
         errors.append("current transition state must advance next node to Route 29 or later Cherrygrove follow-up")
-    if transition.get("current_safe_hub") not in {"elm_lab", "cherrygrove_city", "mr_pokemon_house", "violet_city", "sprout_tower_1f", "sprout_tower_upper", "violet_gym", "route_32"}:
+    if transition.get("current_safe_hub") not in {"elm_lab", "cherrygrove_city", "mr_pokemon_house", "violet_city", "sprout_tower_1f", "sprout_tower_upper", "violet_gym", "route_32", "union_cave"}:
         errors.append("current transition state must record Elm Lab or a later Johto safe hub")
     if transition.get("hard_lock_next_region") != "hoenn":
         errors.append("Hoenn must remain the hard-locked next region")
