@@ -6,7 +6,29 @@ Date: 2026-06-14
 
 The repository does not yet contain a native PC/Mac game project.
 
-`godot`, `godot4`, and `Godot` were not found on the local PATH during this check, so native exports cannot be built yet from this machine.
+Godot is installed locally:
+
+```text
+4.6.3.stable.official.7d41c59c4
+```
+
+The Homebrew cask installed `/Applications/Godot.app` and linked:
+
+```text
+/opt/homebrew/bin/godot
+```
+
+Matching Godot 4.6.3 export templates are installed at:
+
+```text
+~/Library/Application Support/Godot/export_templates/4.6.3.stable/
+```
+
+Confirmed template files include:
+
+- `windows_release_x86_64.exe`
+- `windows_release_arm64.exe`
+- `macos.zip`
 
 ## Platform Pivot
 
@@ -23,7 +45,7 @@ It should not be treated as the required format for the complete all-region rele
 
 ## Required Local Setup
 
-Install Godot 4 and export templates, then confirm:
+Godot 4 and export templates are installed. Reconfirm with:
 
 ```sh
 godot --version
