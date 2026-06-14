@@ -65,6 +65,7 @@ File exists and is 32M. Header reads "NEXUS RED" (BNRE01, Rev.00).
 - 2026-06-13 21:28 CDT: Codex built the Mt. Moon Nexus Break milestone from patches `0001` through `0011`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, and Mt. Moon Nexus Break validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 21:45 CDT: Codex built the Cerulean Misty Bridge setup milestone from patches `0001` through `0012`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, and Cerulean Misty Bridge validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
 - 2026-06-13 22:08 CDT: Codex built the Route 25 Red/Gold Dust tag setup milestone from patches `0001` through `0013`. Design validation, Nexus milestone validation, Act 1 Brock/Red/Pewter validation, Mt. Moon Nexus Break validation, Cerulean Misty Bridge validation, and Route 25 Red Gold Dust validation passed. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.62%.
+- 2026-06-14 12:19 CDT: Codex built the Cinnabar Sea Phoenix arrival milestone from patches `0001` through `0030`. Full validator suite passed, including `validate_cinnabar_sea_phoenix_arrival.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.70%. This milestone adds Route 19 Tide Rider guidance, Red's Cinnabar restraint scene, Phoenix first-contact in the Lab, and the Pokemon Mansion Mewtwo/Phoenix echo.
 - 2026-06-14 12:06 CDT: Codex built the Sabrina Moonlight Gym milestone from patches `0001` through `0029`. Full validator suite passed, including `validate_sabrina_moonlight_gym.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.70%. This milestone adds Red and Misty outside Sabrina's distorted Gym, the Moonlight Veil entrance signal, and Marsh Badge WorldLink stabilization toward the sea/Phoenix arc.
 - 2026-06-14 19:20 CDT: Codex built the Silph mid-floors Portable PC milestone from patches `0001` through `0027`. Full validator suite passed, including `validate_silph_mid_floors_portable_pc.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.69%.
 - 2026-06-14 19:42 CDT: Codex built the Silph finale Giovanni milestone from patches `0001` through `0028`. Full validator suite passed, including `validate_silph_finale_giovanni.py`. Header reads `"NEXUS RED"` (`BNRE01`, Rev.00). Build completed with ROM usage at 80.69%.
@@ -291,6 +292,11 @@ Manual OpenEmu checklist still needed:
 - [ ] Saffron Gym Moonlight Veil sign appears near the entrance teleport maze.
 - [ ] Marsh Badge WorldLink stabilization text points toward sea routes and old fire.
 - [ ] `0029-sabrina-moonlight-gym.patch` applies cleanly and `validate_sabrina_moonlight_gym.py` passes.
+- [ ] Route 19 Red Tide Rider sea-route scene explains earned Kanto sea travel.
+- [ ] Cinnabar Red restraint scene frames old fire, revival science, and Mewtwo rumors carefully.
+- [ ] Cinnabar Lab Phoenix first-contact scene identifies restoration matrices and controlled rebirth language.
+- [ ] Pokemon Mansion Mewtwo Phoenix echo links old science to Phoenix interest without resolving Mewtwo yet.
+- [ ] `0030-cinnabar-sea-phoenix-arrival.patch` applies cleanly and `validate_cinnabar_sea_phoenix_arrival.py` passes.
 - [ ] Route 10 Pokemon Center Brock scene explains Cave Lantern.
 - [ ] Rock Tunnel lights automatically after Thunder Badge through Cave Lantern protocol.
 - [ ] Rock Tunnel Red scene appears and warns about the echo.

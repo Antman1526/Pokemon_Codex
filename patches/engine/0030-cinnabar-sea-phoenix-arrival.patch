@@ -1,0 +1,349 @@
+diff --git a/data/maps/CinnabarIsland_Frlg/map.json b/data/maps/CinnabarIsland_Frlg/map.json
+index a58426de7f..76940cc943 100644
+--- a/data/maps/CinnabarIsland_Frlg/map.json
++++ b/data/maps/CinnabarIsland_Frlg/map.json
+@@ -84,6 +84,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "0x0",
+       "flag": "FLAG_HIDE_CINNABAR_SEAGALLOP"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 11,
++      "y": 7,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_UP",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CinnabarIsland_EventScript_RedCinnabarRestraint",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/CinnabarIsland_Frlg/scripts.inc b/data/maps/CinnabarIsland_Frlg/scripts.inc
+index 7bc6750507..d645f3007e 100644
+--- a/data/maps/CinnabarIsland_Frlg/scripts.inc
++++ b/data/maps/CinnabarIsland_Frlg/scripts.inc
+@@ -336,6 +336,19 @@ CinnabarIsland_EventScript_OldMan::
+ 	msgbox CinnabarIsland_Text_ScientistsExperimentInMansion, MSGBOX_NPC
+ 	end
+ 
++CinnabarIsland_EventScript_RedCinnabarRestraint::
++	lock
++	faceplayer
++	goto_if_set FLAG_BADGE07_GET, CinnabarIsland_EventScript_RedCinnabarRestraintAfterBlaine
++	msgbox CinnabarIsland_Text_RedCinnabarRestraint, MSGBOX_NPC
++	release
++	end
++
++CinnabarIsland_EventScript_RedCinnabarRestraintAfterBlaine::
++	msgbox CinnabarIsland_Text_RedCinnabarRestraintAfterBlaine, MSGBOX_NPC
++	release
++	end
++
+ CinnabarIsland_EventScript_IslandSign::
+ 	msgbox CinnabarIsland_Text_IslandSign, MSGBOX_SIGN
+ 	end
+@@ -357,21 +370,40 @@ CinnabarIsland_Text_DoorIsLocked::
+ CinnabarIsland_Text_BlaineLivedHereSinceBeforeLab::
+ 	.string "CINNABAR GYM's BLAINE is quite the\n"
+ 	.string "odd fellow.\p"
+-	.string "He's lived on the island since way\n"
+-	.string "before the LAB was built.$"
++	.string "He lived here before the LAB was\n"
++	.string "built, before Phoenix money, too.$"
+ 
+ CinnabarIsland_Text_ScientistsExperimentInMansion::
+-	.string "Scientists conduct experiments \n"
++	.string "Scientists conducted experiments\n"
+ 	.string "in the burned-out building.\p"
+-	.string "You know, the one they call the\n"
+-	.string "POKéMON MANSION.$"
++	.string "Now strangers ask about old data,\n"
++	.string "Mewtwo rumors, and rebirth.$"
++
++CinnabarIsland_Text_RedCinnabarRestraint::
++	.string "Red: Cinnabar feels different from\n"
++	.string "Saffron. Quieter. Hotter.\p"
++	.string "Rocket wanted control. Gold Dust\n"
++	.string "wanted price tags.\p"
++	.string "Phoenix talks like saving the past\n"
++	.string "means owning it.\p"
++	.string "Old fire, fossil revival, Mewtwo\n"
++	.string "rumors... We move carefully.$"
++
++CinnabarIsland_Text_RedCinnabarRestraintAfterBlaine::
++	.string "Red: Blaine tested more than fire.\p"
++	.string "He wanted to know if you could\n"
++	.string "stand near power and stay yourself.\p"
++	.string "That is what Phoenix keeps getting\n"
++	.string "wrong.$"
+ 
+ CinnabarIsland_Text_IslandSign::
+ 	.string "CINNABAR ISLAND\n"
+ 	.string "The Fiery Town of Burning Desire$"
+ 
+ CinnabarIsland_Text_PokemonLab::
+-	.string "POKéMON LAB$"
++	.string "POKéMON LAB\p"
++	.string "WorldLink note: Phoenix research\n"
++	.string "language detected inside.$"
+ 
+ CinnabarIsland_Text_GymSign::
+ 	.string "CINNABAR ISLAND POKéMON GYM\n"
+@@ -425,4 +457,3 @@ CinnabarIsland_Text_IfYouHaveTriPassYouCanGoAgain::
+ 	.string "always take a ferry there from\l"
+ 	.string "VERMILION PORT.\p"
+ 	.string "All right, thanks for your company!$"
+-
+diff --git a/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/map.json b/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/map.json
+index 3fa540bcfd..b6a6246951 100644
+--- a/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/map.json
++++ b/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/map.json
+@@ -43,6 +43,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "CinnabarIsland_PokemonLab_ResearchRoom_EventScript_Scientist",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST",
++      "x": 2,
++      "y": 6,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "CinnabarIsland_PokemonLab_ResearchRoom_EventScript_PhoenixResearcher",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/scripts.inc b/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/scripts.inc
+index f16d5427bd..0e65e3253c 100644
+--- a/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/scripts.inc
++++ b/data/maps/CinnabarIsland_PokemonLab_ResearchRoom_Frlg/scripts.inc
+@@ -9,6 +9,13 @@ CinnabarIsland_PokemonLab_ResearchRoom_EventScript_Scientist::
+ 	msgbox CinnabarIsland_PokemonLab_ResearchRoom_Text_EeveeCanEvolveIntroThreeMons, MSGBOX_NPC
+ 	end
+ 
++CinnabarIsland_PokemonLab_ResearchRoom_EventScript_PhoenixResearcher::
++	lock
++	faceplayer
++	msgbox CinnabarIsland_PokemonLab_ResearchRoom_Text_PhoenixResearcher, MSGBOX_NPC
++	release
++	end
++
+ CinnabarIsland_PokemonLab_ResearchRoom_EventScript_Computer::
+ 	msgbox CinnabarIsland_PokemonLab_ResearchRoom_Text_LegendaryBirdEmail, MSGBOX_SIGN
+ 	end
+@@ -18,8 +25,20 @@ CinnabarIsland_PokemonLab_ResearchRoom_EventScript_AmberPipe::
+ 	end
+ 
+ CinnabarIsland_PokemonLab_ResearchRoom_Text_EeveeCanEvolveIntroThreeMons::
+-	.string "EEVEE can evolve into one of three\n"
+-	.string "kinds of POKéMON.$"
++	.string "EEVEE can evolve into many paths\n"
++	.string "now.\p"
++	.string "Cinnabar taught us evolution is\n"
++	.string "not one door. Phoenix took notes.$"
++
++CinnabarIsland_PokemonLab_ResearchRoom_Text_PhoenixResearcher::
++	.string "Researcher: Team Phoenix funds\n"
++	.string "restoration matrices, not crime.\p"
++	.string "Extinct life should not remain\n"
++	.string "silent because older labs failed.\p"
++	.string "Rocket steals. Gold Dust sells.\n"
++	.string "Phoenix returns what time buried.\p"
++	.string "WorldLink may call it a threat.\n"
++	.string "We call it controlled rebirth.$"
+ 
+ CinnabarIsland_PokemonLab_ResearchRoom_Text_LegendaryBirdEmail::
+ 	.string "There's an e-mail message.\p"
+@@ -31,8 +50,11 @@ CinnabarIsland_PokemonLab_ResearchRoom_Text_LegendaryBirdEmail::
+ 	.string "Their whereabouts are unknown.\p"
+ 	.string "We plan to explore the cavern\n"
+ 	.string "close to CERULEAN.\p"
+-	.string "From: POKéMON RESEARCH TEAM…$"
++	.string "Phoenix request denied: Mewtwo\n"
++	.string "data remains sealed.\p"
++	.string "From: POKéMON RESEARCH TEAM...$"
+ 
+ CinnabarIsland_PokemonLab_ResearchRoom_Text_AnAmberPipe::
+-	.string "An amber pipe!$"
+-
++	.string "An amber pipe!\p"
++	.string "WorldLink reads fossil proteins,\n"
++	.string "old fire, and Phoenix interest.$"
+diff --git a/data/maps/PokemonMansion_1F_Frlg/map.json b/data/maps/PokemonMansion_1F_Frlg/map.json
+index f1370efadc..d8096d4c2a 100644
+--- a/data/maps/PokemonMansion_1F_Frlg/map.json
++++ b/data/maps/PokemonMansion_1F_Frlg/map.json
+@@ -171,6 +171,14 @@
+       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+       "script": "PokemonMansion_1F_EventScript_Statue"
+     },
++    {
++      "type": "sign",
++      "x": 7,
++      "y": 5,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "PokemonMansion_1F_EventScript_PhoenixMewtwoEcho"
++    },
+     {
+       "type": "hidden_item",
+       "x": 2,
+diff --git a/data/maps/PokemonMansion_1F_Frlg/scripts.inc b/data/maps/PokemonMansion_1F_Frlg/scripts.inc
+index 09c722d20d..9bf3dab01a 100644
+--- a/data/maps/PokemonMansion_1F_Frlg/scripts.inc
++++ b/data/maps/PokemonMansion_1F_Frlg/scripts.inc
+@@ -21,6 +21,10 @@ PokemonMansion_1F_EventScript_Statue::
+ 	releaseall
+ 	end
+ 
++PokemonMansion_1F_EventScript_PhoenixMewtwoEcho::
++	msgbox PokemonMansion_1F_Text_PhoenixMewtwoEcho, MSGBOX_SIGN
++	end
++
+ PokemonMansion_1F_EventScript_Ted::
+ 	trainerbattle_single TRAINER_SCIENTIST_TED, PokemonMansion_1F_Text_TedIntro, PokemonMansion_1F_Text_TedDefeat
+ 	msgbox PokemonMansion_1F_Text_TedPostBattle, MSGBOX_AUTOCLOSE
+@@ -33,14 +37,18 @@ PokemonMansion_1F_EventScript_Johnson::
+ 
+ PokemonMansion_1F_Text_TedIntro::
+ 	.string "Who are you?\n"
+-	.string "There shouldn't be anyone here.$"
++	.string "There shouldn't be anyone here.\p"
++	.string "Unless Phoenix sent you to ask\n"
++	.string "about the old creation logs.$"
+ 
+ PokemonMansion_1F_Text_TedDefeat::
+ 	.string "Ouch!$"
+ 
+ PokemonMansion_1F_Text_TedPostBattle::
+ 	.string "A key? I don't know what you're\n"
+-	.string "talking about.$"
++	.string "talking about.\p"
++	.string "Mewtwo was a rumor before it was\n"
++	.string "a warning. Remember that.$"
+ 
+ PokemonMansion_1F_Text_JohnsonIntro::
+ 	.string "W-w-waah! You startled me!\n"
+@@ -53,5 +61,13 @@ PokemonMansion_1F_Text_JohnsonDefeat::
+ PokemonMansion_1F_Text_JohnsonPostBattle::
+ 	.string "I was exploring here by myself,\n"
+ 	.string "but I feel spooked.\p"
+-	.string "I ought to go soon.$"
++	.string "I saw a note with a Phoenix stamp.\n"
++	.string "It called this place a cradle.$"
+ 
++PokemonMansion_1F_Text_PhoenixMewtwoEcho::
++	.string "WorldLink echo: Pokemon Mansion.\p"
++	.string "Old science burned here, but the\n"
++	.string "data did not all burn with it.\p"
++	.string "Mewtwo classification: sealed.\n"
++	.string "Phoenix classification: listening.\p"
++	.string "Proceed with restraint.$"
+diff --git a/data/maps/Route19_Frlg/map.json b/data/maps/Route19_Frlg/map.json
+index c7694be347..4f3e9683d7 100644
+--- a/data/maps/Route19_Frlg/map.json
++++ b/data/maps/Route19_Frlg/map.json
+@@ -194,6 +194,20 @@
+       "trainer_sight_or_berry_tree_id": "1",
+       "script": "Route19_EventScript_Luc",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 16,
++      "y": 12,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
++      "movement_range_x": 1,
++      "movement_range_y": 1,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "Route19_EventScript_RedSeaRoute",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [],
+@@ -206,6 +220,14 @@
+       "elevation": 0,
+       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+       "script": "Route19_EventScript_RouteSign"
++    },
++    {
++      "type": "sign",
++      "x": 15,
++      "y": 12,
++      "elevation": 0,
++      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
++      "script": "Route19_EventScript_TideRiderSign"
+     }
+   ]
+ }
+diff --git a/data/maps/Route19_Frlg/scripts.inc b/data/maps/Route19_Frlg/scripts.inc
+index a6a7fa10be..732ca49345 100644
+--- a/data/maps/Route19_Frlg/scripts.inc
++++ b/data/maps/Route19_Frlg/scripts.inc
+@@ -5,6 +5,23 @@ Route19_EventScript_RouteSign::
+ 	msgbox Route19_Text_RouteSign, MSGBOX_SIGN
+ 	end
+ 
++Route19_EventScript_TideRiderSign::
++	msgbox Route19_Text_TideRiderSign, MSGBOX_SIGN
++	end
++
++Route19_EventScript_RedSeaRoute::
++	lock
++	faceplayer
++	goto_if_unset FLAG_BADGE06_GET, Route19_EventScript_RedSeaRouteBeforeSabrina
++	msgbox Route19_Text_RedSeaRoute, MSGBOX_NPC
++	release
++	end
++
++Route19_EventScript_RedSeaRouteBeforeSabrina::
++	msgbox Route19_Text_RedSeaRouteBeforeSabrina, MSGBOX_NPC
++	release
++	end
++
+ Route19_Text_RichardIntro::
+ 	.string "I have to exercise and warm up\n"
+ 	.string "before going out for a swim.$"
+@@ -124,6 +141,28 @@ Route19_Text_RouteSign::
+ 	.string "SEA ROUTE 19\n"
+ 	.string "FUCHSIA CITY - SEAFOAM ISLANDS$"
+ 
++Route19_Text_TideRiderSign::
++	.string "WorldLink Tide Rider route\n"
++	.string "guidance: active.\p"
++	.string "Current destination: CINNABAR.\n"
++	.string "Region gate: Kanto locked.$"
++
++Route19_Text_RedSeaRouteBeforeSabrina::
++	.string "Red: Antman, the sea is open, but\n"
++	.string "WorldLink is still pulling backward.\p"
++	.string "SABRINA's signal has to settle\n"
++	.string "before Cinnabar makes sense.\p"
++	.string "One road at a time. I will wait\n"
++	.string "for you at the waterline.$"
++
++Route19_Text_RedSeaRoute::
++	.string "Red: Misty cleared the Tide Rider\n"
++	.string "safety check. The current is yours.\p"
++	.string "This is earned travel, not a\n"
++	.string "shortcut around Kanto.\p"
++	.string "Cinnabar is old fire and older\n"
++	.string "science. We go steady.$"
++
+ Route19_Text_LiaIntro::
+ 	.string "LIA: I'm looking after my brother.\n"
+ 	.string "He just became a TRAINER.$"

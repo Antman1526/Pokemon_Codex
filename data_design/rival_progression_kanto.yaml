@@ -524,6 +524,35 @@ progression_bands:
         event: dax_psychic_gym_warning
         notification: "Dax says he is brave enough for any Gym, then admits psychic mazes are worse than stairs because you cannot yell at them."
 
+  cinnabar_sea_phoenix_arrival:
+    player_range: "Route 19 Tide Rider handoff through first Cinnabar Lab visit"
+    companions:
+      red:
+        location: Route 19 and Cinnabar shore
+        event: red_route19_sea_route_support
+        notification: "Red met Antman at the Route 19 waterline and says the sea route is earned travel, not a shortcut around Kanto."
+      misty:
+        location: Fuchsia tide check
+        event: misty_tide_rider_safety_check
+        notification: "Misty cleared the Tide Rider safety check and warns that Cinnabar currents can look calm while pulling hard underneath."
+      brock:
+        location: Cinnabar fossil ethics note
+        event: brock_cinnabar_fossil_ethics
+        notification: "Brock says fossil revival is not just science; it is responsibility, consent, and knowing when old life should be left quiet."
+    rivals:
+      blue:
+        location: Cinnabar harbor rumor
+        event: blue_cinnabar_silent_return
+        notification: "Blue's profile pinged from Cinnabar without a boast. WorldLink marks this as focus sharpened by Silph and Sabrina."
+      ava:
+        location: Cinnabar Lab research room
+        event: ava_phoenix_lab_trace
+        notification: "Ava traced Phoenix language in Cinnabar Lab: restoration matrices, controlled rebirth, and fossil data that should not be for sale."
+      dax:
+        location: Route 19 sea route
+        event: dax_sea_route_training_report
+        notification: "Dax claims swimming beside a Tide Rider counts as leg day, water day, and survival training all at once."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

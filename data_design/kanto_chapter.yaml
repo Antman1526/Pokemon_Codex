@@ -151,8 +151,12 @@ acts:
     purpose: "Reveal Phoenix foreshadowing and bring Giovanni back."
     required_maps: [cinnabar_island, pokemon_mansion, cinnabar_lab, cinnabar_gym, viridian_gym]
     required_events:
+      - route19_tide_rider_handoff
+      - cinnabar_arrival_old_fire
       - cinnabar_mewtwo_echoes
       - phoenix_research_assistants
+      - phoenix_lab_first_contact
+      - pokemon_mansion_mewtwo_phoenix_echo
       - blaine_revival_warning
       - red_cinnabar_restraint_scene
       - giovanni_viridian_battle

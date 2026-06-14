@@ -276,6 +276,26 @@ messages:
     priority: major
     text: "Marsh Badge verified. WorldLink marks Saffron's psychic signal stabilized and flags a sea route toward old fire and Phoenix research."
 
+  - id: WL_KANTO_TIDE_RIDER_SEA_ROUTE
+    trigger: FLAG_BADGE06_GET
+    priority: major
+    text: "Tide Rider route guidance unlocked for Kanto sea travel. WorldLink remains Kanto-locked; the next destination is Cinnabar, not another region."
+
+  - id: WL_KANTO_CINNABAR_OLD_FIRE
+    trigger: FLAG_BADGE06_GET
+    priority: major
+    text: "Cinnabar Island registered: old fire, old science, and unstable revival records. Red recommends restraint before touching the mansion data."
+
+  - id: WL_KANTO_PHOENIX_FIRST_CONTACT
+    trigger: FLAG_BADGE06_GET
+    priority: major
+    text: "Team Phoenix signature detected in Cinnabar Lab research language: restoration, rebirth, and controlled ancient forms. Threat level: quiet, funded, patient."
+
+  - id: WL_KANTO_MANSION_MEWTWO_ECHO
+    trigger: FLAG_BADGE06_GET
+    priority: flavor
+    text: "Pokemon Mansion echo logged. Mewtwo is still a rumor in Kanto, but Phoenix is already studying the shape of failed creation."
+
   - id: WL_KANTO_ABILITY_CAPSULE_TRIAL
     trigger: FLAG_RESCUED_MR_FUJI
     priority: major
