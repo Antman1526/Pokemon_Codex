@@ -1,0 +1,35 @@
+red_tag_battle_policy:
+  design_status: approved_direction
+  principle: "Red is Antman's full-game friend and recurring battle partner, but he does not fight gyms for the player."
+  implementation_rule: "Use true partner/tag battle support for major villain and dungeon moments; use dialogue-only companion scenes for pacing, training, and emotional continuity."
+  region_cadence:
+    kanto:
+      early_seed: "Mt. Moon establishes that Red is scouting parallel routes and preparing to fight beside Antman."
+      first_true_tag_battle_candidate: "Rocket operation between Mt. Moon and Cerulean, or the S.S. Anne Rocket interruption if the engine support is not ready earlier."
+      late_tag_battle_candidate: "Silph Co. or Pokemon Tower Rocket escalation."
+    johto:
+      early_tag_battle_candidate: "Slowpoke Well Rocket rescue."
+      late_tag_battle_candidate: "Goldenrod Radio Tower takeover."
+    hoenn:
+      early_tag_battle_candidate: "Meteor Falls Magma/Aqua fracture."
+      late_tag_battle_candidate: "Seafloor Cavern or Sky Pillar crisis."
+    sinnoh_hisui:
+      early_tag_battle_candidate: "Valley Windworks/Galactic energy theft."
+      late_tag_battle_candidate: "Spear Pillar distortion breach."
+    unova:
+      early_tag_battle_candidate: "Nacrene relic theft."
+      late_tag_battle_candidate: "Plasma castle region-pull reveal."
+    kalos:
+      early_tag_battle_candidate: "Glittering Cave fossil weapon trace."
+      late_tag_battle_candidate: "Team Flare ultimate weapon Nexus inversion."
+    alola:
+      early_tag_battle_candidate: "Aether Foundation Ultra Wormhole probe."
+      late_tag_battle_candidate: "Ultra Space anchor fight."
+    galar:
+      early_tag_battle_candidate: "Galar Mine Dynamax particle instability."
+      late_tag_battle_candidate: "Hammerlocke/Eternatus power plant crisis."
+    paldea:
+      early_tag_battle_candidate: "Titan route Nexus tremor."
+      late_tag_battle_candidate: "Area Zero final convergence."
+  gym_rule: "Red may coach before and after gyms, but he never participates in gym battles."
+  nuzlocke_rule: "Tag battles with Red must not invalidate Nuzlocke encounter ownership; Red's Pokemon are partner-controlled and cannot be caught, boxed, or sacrificed by the player."

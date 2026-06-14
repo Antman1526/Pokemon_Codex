@@ -1,0 +1,228 @@
+diff --git a/data/maps/MtMoon_1F_Frlg/map.json b/data/maps/MtMoon_1F_Frlg/map.json
+index 06e56ca9f0..f9899aebc1 100644
+--- a/data/maps/MtMoon_1F_Frlg/map.json
++++ b/data/maps/MtMoon_1F_Frlg/map.json
+@@ -211,6 +211,20 @@
+       "trainer_sight_or_berry_tree_id": "0",
+       "script": "MtMoon_1F_EventScript_BaldingMan",
+       "flag": "0"
++    },
++    {
++      "type": "object",
++      "graphics_id": "OBJ_EVENT_GFX_RED",
++      "x": 23,
++      "y": 35,
++      "elevation": 3,
++      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
++      "movement_range_x": 0,
++      "movement_range_y": 0,
++      "trainer_type": "TRAINER_TYPE_NONE",
++      "trainer_sight_or_berry_tree_id": "0",
++      "script": "MtMoon_1F_EventScript_RedNexusBreak",
++      "flag": "0"
+     }
+   ],
+   "warp_events": [
+diff --git a/data/maps/MtMoon_1F_Frlg/scripts.inc b/data/maps/MtMoon_1F_Frlg/scripts.inc
+index 2149c42b44..6c2099f8d2 100644
+--- a/data/maps/MtMoon_1F_Frlg/scripts.inc
++++ b/data/maps/MtMoon_1F_Frlg/scripts.inc
+@@ -45,6 +45,19 @@ MtMoon_1F_EventScript_Robby::
+ 	msgbox MtMoon_1F_Text_RobbyPostBattle, MSGBOX_AUTOCLOSE
+ 	end
+ 
++MtMoon_1F_EventScript_RedNexusBreak::
++	lock
++	faceplayer
++	goto_if_set FLAG_GOT_FOSSIL_FROM_MT_MOON, MtMoon_1F_EventScript_RedNexusBreakPostFossil
++	msgbox MtMoon_1F_Text_RedNexusBreak, MSGBOX_NPC
++	release
++	end
++
++MtMoon_1F_EventScript_RedNexusBreakPostFossil::
++	msgbox MtMoon_1F_Text_RedNexusBreakPostFossil, MSGBOX_NPC
++	release
++	end
++
+ MtMoon_1F_Text_MarcosIntro::
+ 	.string "WHOA!\n"
+ 	.string "You shocked me!\l"
+@@ -128,6 +141,27 @@ MtMoon_1F_Text_RobbyPostBattle::
+ 	.string "But if you can catch one, you'll\l"
+ 	.string "be able to count on it.$"
+ 
++MtMoon_1F_Text_RedNexusBreak::
++	.string "RED: Antman, the museum scan led\n"
++	.string "straight into MT. MOON.\p"
++	.string "ROCKET isn't just digging for rare\n"
++	.string "bones. They're testing what old DNA\l"
++	.string "does to the WorldLink signal.\p"
++	.string "I'll watch the second route and cut\n"
++	.string "off anyone trying to run.\p"
++	.string "Soon we'll fight side by side.\n"
++	.string "For now, clear the main path and\l"
++	.string "keep your team healthy.$"
++
++MtMoon_1F_Text_RedNexusBreakPostFossil::
++	.string "RED: I felt the cave settle when\n"
++	.string "you chose that fossil.\p"
++	.string "That wasn't luck. The Nexus is\n"
++	.string "starting to answer you.\p"
++	.string "CERULEAN is next. MISTY's badge\n"
++	.string "network may show us where ROCKET\l"
++	.string "is sending the scan data.$"
++
+ MtMoon_1F_Text_ZubatIsABloodsucker::
+ 	.string "Beware!\n"
+ 	.string "ZUBAT is a bloodsucker!$"
+diff --git a/data/maps/MtMoon_B2F_Frlg/scripts.inc b/data/maps/MtMoon_B2F_Frlg/scripts.inc
+index 641dc07ea0..6288188f95 100644
+--- a/data/maps/MtMoon_B2F_Frlg/scripts.inc
++++ b/data/maps/MtMoon_B2F_Frlg/scripts.inc
+@@ -70,6 +70,7 @@ MtMoon_B2F_EventScript_DomeFossil::
+ 	removeobject LOCALID_HELIX_FOSSIL
+ 	setflag FLAG_GOT_DOME_FOSSIL
+ 	setflag FLAG_GOT_FOSSIL_FROM_MT_MOON
++	msgbox MtMoon_B2F_Text_NexusDomeLogged
+ 	release
+ 	end
+ 
+@@ -100,6 +101,7 @@ MtMoon_B2F_EventScript_HelixFossil::
+ 	removeobject LOCALID_DOME_FOSSIL
+ 	setflag FLAG_GOT_HELIX_FOSSIL
+ 	setflag FLAG_GOT_FOSSIL_FROM_MT_MOON
++	msgbox MtMoon_B2F_Text_NexusHelixLogged
+ 	release
+ 	end
+ 
+@@ -135,55 +137,68 @@ MtMoon_B2F_EventScript_Grunt4::
+ 
+ MtMoon_B2F_Text_MiguelIntro::
+ 	.string "Hey, stop!\p"
+-	.string "I found these fossils!\n"
+-	.string "They're both mine!$"
++	.string "Don't touch those fossils yet!\n"
++	.string "They started humming after ROCKET\l"
++	.string "ran a strange scan through here.$"
+ 
+ MtMoon_B2F_Text_MiguelDefeat::
+ 	.string "Okay!\n"
+-	.string "I'll share!$"
++	.string "You're not with them.$"
+ 
+ MtMoon_B2F_Text_WellEachTakeAFossil::
+-	.string "We'll each take a fossil!\n"
+-	.string "No being greedy!$"
++	.string "We'll each take a fossil.\p"
++	.string "If ROCKET wants both, splitting\n"
++	.string "them keeps one signal out of their\l"
++	.string "hands.$"
+ 
+ MtMoon_B2F_Text_ThenThisFossilIsMine::
+ 	.string "All right.\n"
+-	.string "Then this fossil is mine!$"
++	.string "I'll carry this one to CINNABAR.\p"
++	.string "If it reacts again, I'll send word\n"
++	.string "through the LEAGUE net.$"
+ 
+ MtMoon_B2F_Text_LabOnCinnabarRegeneratesFossils::
+ 	.string "Far away, on CINNABAR ISLAND,\n"
+ 	.string "there's a POKéMON LAB.\p"
+-	.string "They do research on regenerating\n"
+-	.string "fossils.$"
++	.string "They can regenerate fossils, but\n"
++	.string "they also track ancient energy.\p"
++	.string "Tell RED the cave reacted after\n"
++	.string "your choice.$"
+ 
+ MtMoon_B2F_Text_Grunt1Intro::
+-	.string "We, TEAM ROCKET, shall find the\n"
++	.string "TEAM ROCKET shall claim the\n"
+ 	.string "fossils!\p"
+-	.string "Reviving POKéMON from them will\n"
+-	.string "earn us huge riches!$"
++	.string "Ancient DNA makes a perfect anchor\n"
++	.string "for pulling power across regions!$"
+ 
+ MtMoon_B2F_Text_Grunt1Defeat::
+ 	.string "Urgh!\n"
+ 	.string "Now I'm mad!$"
+ 
+ MtMoon_B2F_Text_Grunt1PostBattle::
+-	.string "You made me mad!\n"
+-	.string "TEAM ROCKET will blacklist you!$"
++	.string "You made me mad!\p"
++	.string "The scan already found a pulse.\n"
++	.string "TEAM ROCKET will blacklist you\l"
++	.string "before CERULEAN!$"
+ 
+ MtMoon_B2F_Text_Grunt2Intro::
+ 	.string "We, TEAM ROCKET, are POKéMON\n"
+ 	.string "gangsters!\l"
+-	.string "We strike fear with our strength!$"
++	.string "We strike fear with our strength!\p"
++	.string "Now we strike through the LEAGUE\n"
++	.string "badge network, too!$"
+ 
+ MtMoon_B2F_Text_Grunt2Defeat::
+ 	.string "I blew it!$"
+ 
+ MtMoon_B2F_Text_Grunt2PostBattle::
+-	.string "Darn it all!\n"
+-	.string "My associates won't stand for this!$"
++	.string "Darn it all!\p"
++	.string "The boss said KANTO fossils are\n"
++	.string "only the first key.$"
+ 
+ MtMoon_B2F_Text_Grunt3Intro::
+-	.string "We're pulling a big job here!\n"
++	.string "We're pulling a big job here!\p"
++	.string "The museum scan woke the fossils.\n"
+ 	.string "Get lost, kid!$"
+ 
+ MtMoon_B2F_Text_Grunt3Defeat::
+@@ -191,19 +206,24 @@ MtMoon_B2F_Text_Grunt3Defeat::
+ 
+ MtMoon_B2F_Text_Grunt3PostBattle::
+ 	.string "If you find a fossil, give it to me\n"
+-	.string "and scram!$"
++	.string "and scram!\p"
++	.string "The Nexus signal belongs to TEAM\n"
++	.string "ROCKET!$"
+ 
+ MtMoon_B2F_Text_Grunt4Intro::
+ 	.string "Little kids shouldn't be messing\n"
+ 	.string "around with grown-ups!\p"
+-	.string "It could be bad news!$"
++	.string "It could be bad news when a cave\n"
++	.string "starts answering your badge!$"
+ 
+ MtMoon_B2F_Text_Grunt4Defeat::
+ 	.string "I'm steamed!$"
+ 
+ MtMoon_B2F_Text_Grunt4PostBattle::
+ 	.string "POKéMON lived here long before\n"
+-	.string "people came.$"
++	.string "people came.\p"
++	.string "That's why ancient power listens\n"
++	.string "better than modern machines.$"
+ 
+ MtMoon_B2F_Text_YouWantDomeFossil::
+ 	.string "Do you want the DOME FOSSIL?$"
+@@ -217,3 +237,16 @@ MtMoon_B2F_Text_ObtainedHelixFossil::
+ MtMoon_B2F_Text_ObtainedDomeFossil::
+ 	.string "Obtained the DOME FOSSIL!$"
+ 
++MtMoon_B2F_Text_NexusDomeLogged::
++	.string "WORLDLINK LOG\p"
++	.string "DOME FOSSIL registered as\n"
++	.string "Antman's first Nexus artifact.\p"
++	.string "RED: Good. Keep it safe until\n"
++	.string "CINNABAR can read it.$"
++
++MtMoon_B2F_Text_NexusHelixLogged::
++	.string "WORLDLINK LOG\p"
++	.string "HELIX FOSSIL registered as\n"
++	.string "Antman's first Nexus artifact.\p"
++	.string "RED: Good. Keep it safe until\n"
++	.string "CINNABAR can read it.$"
