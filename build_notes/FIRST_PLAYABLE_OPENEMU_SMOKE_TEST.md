@@ -324,6 +324,9 @@ Manual OpenEmu checklist still needed:
 - [ ] Champion Blue emotional finale frames Blue's solo road against Antman's trust-supported road.
 - [ ] Oak confirms Hall of Fame proof comes before the World Circuit Passport.
 - [ ] `0037-champion-blue-emotional-finale.patch` applies cleanly and `validate_champion_blue_emotional_finale.py` passes.
+- [ ] Oak awards the World Circuit Passport after Hall of Fame proof at Pallet Lab.
+- [ ] Johto travel opens through the World Circuit Gate, and Lyra's profile is live from New Bark Town.
+- [ ] `0038-world-circuit-passport-johto-unlock.patch` applies cleanly and `validate_world_circuit_passport_johto_unlock.py` passes.
 - [ ] Vermilion Misty-led Surge prep explains grounding the Gym's storm-current pressure.
 - [ ] Vermilion Gym sabotage payoff credits Misty's advice and Trail Cutter remains a prototype.
 - [ ] Fan Club clue uses the gold lapel pin, blank auction card, Celadon stamp, and dust mark.

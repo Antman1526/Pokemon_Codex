@@ -1,0 +1,85 @@
+diff --git a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+index 2de38c7..2960dfd 100644
+--- a/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
++++ b/data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+@@ -575,9 +575,9 @@ PalletTown_ProfessorOaksLab_EventScript_ProfOak::
+ 	lock
+ 	faceplayer
+ 	goto_if_set SHOWED_OAK_COMPLETE_DEX, PalletTown_ProfessorOaksLab_EventScript_OakJustShownCompleteDex
++	goto_if_set FLAG_SYS_GAME_CLEAR, PalletTown_ProfessorOaksLab_EventScript_CheckPostChampionPassport
+ 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 9, PalletTown_ProfessorOaksLab_EventScript_RatePokedex
+ 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_MonsAroundWorldWait
+-	goto_if_set FLAG_SYS_GAME_CLEAR, PalletTown_ProfessorOaksLab_EventScript_TryStartNationalDexScene
+ 	goto_if_eq VAR_MAP_SCENE_CERULEAN_CITY_RIVAL, 1, PalletTown_ProfessorOaksLab_EventScript_RatePokedex
+ 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 6, PalletTown_ProfessorOaksLab_EventScript_RatePokedexOrTryGiveBalls
+ 	goto_if_ge VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 1, PalletTown_ProfessorOaksLab_EventScript_ReceiveDexScene
+@@ -908,6 +908,27 @@ PalletTown_ProfessorOaksLab_Movement_VerticalPacing:
+ 	delay_16
+ 	step_end
+ 
++PalletTown_ProfessorOaksLab_EventScript_CheckPostChampionPassport::
++	goto_if_unset FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT, PalletTown_ProfessorOaksLab_EventScript_WorldCircuitPassport
++	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 9, PalletTown_ProfessorOaksLab_EventScript_RatePokedex
++	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_MonsAroundWorldWait
++	goto PalletTown_ProfessorOaksLab_EventScript_TryStartNationalDexScene
++	end
++
++PalletTown_ProfessorOaksLab_EventScript_WorldCircuitPassport::
++	textcolor NPC_TEXT_COLOR_MALE
++	msgbox PalletTown_ProfessorOaksLab_Text_OakWorldCircuitPassport
++	textcolor NPC_TEXT_COLOR_NEUTRAL
++	playfanfare MUS_RG_OBTAIN_KEY_ITEM
++	message PalletTown_ProfessorOaksLab_Text_ReceivedWorldCircuitPassport
++	waitmessage
++	waitfanfare
++	call EventScript_RestorePrevTextColor
++	setflag FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT
++	msgbox PalletTown_ProfessorOaksLab_Text_OakJohtoTravelLive
++	release
++	end
++
+ PalletTown_ProfessorOaksLab_EventScript_TryStartNationalDexScene::
+ 	call PokedexRating_EventScript_RateInPerson
+ 	closemessage
+@@ -1751,6 +1772,28 @@ PalletTown_ProfessorOaksLab_Text_OakComeSeeMeSometime::
+ 	.string "After all, I want to know how your\n"
+ 	.string "POKéDEX is coming along.$"
+ 
++PalletTown_ProfessorOaksLab_Text_OakWorldCircuitPassport::
++	.string "OAK: Hall of Fame record cleared.\p"
++	.string "Now the League can no longer call\n"
++	.string "this a local KANTO matter.\p"
++	.string "This is your World Circuit\n"
++	.string "Passport, {PLAYER}.\p"
++	.string "It does not skip the journey.\n"
++	.string "It opens the next road.\p"
++	.string "Red, Misty, and Brock are waiting\n"
++	.string "at the World Circuit Gate.$"
++
++PalletTown_ProfessorOaksLab_Text_ReceivedWorldCircuitPassport::
++	.string "{PLAYER} received the\n"
++	.string "World Circuit Passport!$"
++
++PalletTown_ProfessorOaksLab_Text_OakJohtoTravelLive::
++	.string "OAK: Johto travel is now live.\p"
++	.string "Lyra's profile is live from\n"
++	.string "New Bark Town.\p"
++	.string "Go carefully. Johto's towers are\n"
++	.string "older than our maps.$"
++
+ PalletTown_ProfessorOaksLab_Text_BlankEncyclopedia::
+ 	.string "It's like an encyclopedia, but the\n"
+ 	.string "pages are blank.$"
+diff --git a/include/constants/flags_frlg.h b/include/constants/flags_frlg.h
+index 957d266..e1c9060 100644
+--- a/include/constants/flags_frlg.h
++++ b/include/constants/flags_frlg.h
+@@ -2,7 +2,7 @@
+ #define GUARD_CONSTANTS_FLAGS_FRLG_H
+ 
+ 
+-#define FLAG_0x020               0x020
++#define FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT 0x020
+ #define FLAG_0x021               0x021
+ #define FLAG_0x022               0x022
+ #define FLAG_0x023               0x023

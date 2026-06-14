@@ -735,6 +735,39 @@ progression_bands:
         event: lyra_johto_locked_after_champion_tease
         notification: "Lyra's profile flashes after Blue falls, but Johto remains locked until Oak issues the World Circuit Passport."
 
+  world_circuit_passport_unlock:
+    player_range: "Oak's post-Hall of Fame passport ceremony through Johto gate activation"
+    companions:
+      red:
+        location: Pallet World Circuit Gate
+        event: red_pallet_sendoff
+        notification: "Red waits at the World Circuit Gate and tells Antman the next road belongs to him."
+      misty:
+        location: Pallet World Circuit Gate
+        event: misty_world_circuit_sendoff
+        notification: "Misty checks the sea route and says Johto's currents are steady enough for departure."
+      brock:
+        location: Pallet World Circuit Gate
+        event: brock_world_circuit_sendoff
+        notification: "Brock reviews supplies and warns that Johto's old towers reward patience more than power."
+    rivals:
+      blue:
+        location: Pallet outskirts
+        event: blue_after_champion_quiet_departure
+        notification: "Blue leaves quietly after the passport ceremony. He does not follow yet, but he does not mock the journey either."
+      ava:
+        location: WorldLink research line
+        event: ava_johto_route_live
+        notification: "Ava verifies the World Circuit Gate and uploads the first live New Bark route note."
+      dax:
+        location: Indigo training field
+        event: dax_kanto_champion_grind
+        notification: "Dax stays behind to train against Kanto rematches before chasing the Johto board."
+      lyra:
+        location: New Bark Town
+        event: lyra_profile_live_new_bark
+        notification: "Lyra's profile is live from New Bark Town. Johto is no longer a locked preview."
+
 relationship_changes:
   help_ava_at_museum:
     ava:

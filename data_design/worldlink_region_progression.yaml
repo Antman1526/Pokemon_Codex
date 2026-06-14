@@ -18,8 +18,8 @@ worldlink_region_progression:
       major_return_hooks: ["Pallet Town", "Cerulean", "Cinnabar", "Indigo Plateau"]
     - order: 2
       region: johto
-      unlock_state: locked
-      entry_method: "Story departure from Kanto after the Indigo Nexus gate stabilizes."
+      unlock_state: unlocked_after_kanto_passport
+      entry_method: "A committed departure through the Pallet World Circuit Gate toward New Bark Town after Oak issues the World Circuit Passport."
       lock_condition: "Johto unlocks after Kanto's core League/Rocket arc, not from an early map menu."
       major_return_hooks: ["New Bark Town", "Ecruteak", "Goldenrod Radio Tower"]
     - order: 3

@@ -192,6 +192,8 @@ acts:
       - champion_blue_emotional_finale
       - oak_hall_of_fame_before_passport
       - oak_world_circuit_passport
+      - world_circuit_gate_johto_unlock
+      - lyra_profile_goes_live
     unlocks: [world_circuit_passport, johto_travel, pokedex_readiness_beta, kanto_rematches_tier_2]
 
 gym_leaders:

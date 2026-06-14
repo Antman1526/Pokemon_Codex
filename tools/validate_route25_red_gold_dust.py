@@ -154,6 +154,12 @@ def validate_worldlink_progression() -> list[str]:
     if order and order[0].get("unlock_state") != "unlocked_at_new_game":
         errors.append("Kanto must be unlocked at new game")
     for region in order[1:]:
+        if region.get("region") == "johto":
+            if region.get("unlock_state") not in {"locked", "unlocked_after_kanto_passport"}:
+                errors.append("Johto must stay locked until Kanto passport clearance")
+            if "after Kanto" not in region.get("lock_condition", ""):
+                errors.append("Johto lock condition must remain tied to Kanto completion")
+            continue
         if region.get("unlock_state") != "locked":
             errors.append(f"{region.get('region')} must start locked")
 

@@ -394,4 +394,9 @@ messages:
   - id: WL_KANTO_WORLD_CIRCUIT_UNLOCKED
     trigger: FLAG_NEXUS_KANTO_LEAGUE_CLEARED
     priority: major
-    text: "World Circuit Passport approved. Johto travel is now available."
+    text: "World Circuit Passport approved. Johto travel is now available through the World Circuit Gate."
+
+  - id: WL_KANTO_LYRA_PROFILE_LIVE
+    trigger: FLAG_RECEIVED_WORLD_CIRCUIT_PASSPORT
+    priority: major
+    text: "Lyra's profile is live from New Bark Town. She can see Antman's Kanto clearance and is waiting on the Johto side."
