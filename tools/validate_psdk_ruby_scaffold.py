@@ -250,6 +250,8 @@ REQUIRED_MARKERS = (
     "blaine_volcano_badge_prep_cleared?",
     "complete_blaine_volcano_badge_battle",
     "blaine_volcano_badge_battle_cleared?",
+    "complete_viridian_gym_return",
+    "viridian_gym_return_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2545,6 +2547,39 @@ raise 'expected KantoStory Blaine battle unlocks Viridian return' unless blaine_
 second_blaine_battle = NexusRed::KantoStory.complete_blaine_volcano_badge_battle(kanto_story_state)
 raise 'expected KantoStory Blaine battle idempotent guard' unless second_blaine_battle['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Blaine battle history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blaine_volcano_badge_battle' } == 1
+pre_viridian_return = NexusRed::KantoStory.complete_viridian_gym_return(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Viridian return gated before Blaine battle' unless pre_viridian_return['status'] == 'blocked_missing_blaine_volcano_badge_battle'
+viridian_return = NexusRed::KantoStory.complete_viridian_gym_return(
+  kanto_story_state,
+  location: 'Viridian Gym',
+  area_type: 'city'
+)
+raise 'expected KantoStory Viridian return clear status' unless viridian_return['status'] == 'cleared'
+raise 'expected KantoStory Viridian return event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('viridian_gym_return')
+raise 'expected KantoStory Viridian return helper true' unless NexusRed::KantoStory.viridian_gym_return_cleared?(kanto_story_state)
+raise 'expected KantoStory Viridian gym return flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VIRIDIAN_GYM_RETURN')
+raise 'expected KantoStory Viridian gym reopened flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VIRIDIAN_GYM_REOPENED')
+raise 'expected KantoStory Red Viridian final warning flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_VIRIDIAN_FINAL_WARNING')
+raise 'expected KantoStory Blue Viridian standings flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_VIRIDIAN_STANDINGS')
+raise 'expected KantoStory Giovanni Earth Badge battle unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_EARTH_BADGE_BATTLE_UNLOCKED')
+raise 'expected KantoStory Nexus Viridian badge observer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_VIRIDIAN_BADGE_OBSERVER')
+raise 'expected KantoStory Red Viridian final warning scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('viridian_final_warning')
+raise 'expected KantoStory Bill Viridian badge signal scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('viridian_badge_signal_triangle')
+raise 'expected KantoStory Blue Viridian clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Giovanni')
+raise 'expected KantoStory Rocket Viridian lockdown activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Viridian Gym' && activity['operation'] == 'viridian_gym_lockdown_reopened' }
+raise 'expected KantoStory Nexus Viridian badge observer activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Viridian Gym' && activity['operation'] == 'earth_badge_signal_observer_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Viridian return' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Nexus Viridian conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'nexus_order' && conflict['location'] == 'Viridian Gym' }
+raise 'expected KantoStory Viridian return story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Viridian Gym') && message['text'].include?('Giovanni') && message['text'].include?('Earth Badge') }
+raise 'expected KantoStory Viridian return next hook Earth Badge battle' unless viridian_return['next_hook'] == 'giovanni_earth_badge_battle'
+raise 'expected KantoStory Viridian return gym leader Giovanni' unless viridian_return['gym_leader'] == 'Giovanni'
+raise 'expected KantoStory Viridian return badge Earth Badge' unless viridian_return['badge'] == 'Earth Badge'
+raise 'expected KantoStory Viridian return battle hook' unless viridian_return['battle_hook']['battle_id'] == 'giovanni_earth_badge_battle'
+raise 'expected KantoStory Viridian return standard team' unless viridian_return['battle_hook']['standard_team'].map { |slot| slot['species'] } == %w[Persian Nidoqueen Nidoking Rhydon]
+raise 'expected KantoStory Viridian return unlocks Earth battle' unless viridian_return['unlocks'].include?('giovanni_earth_badge_battle') && viridian_return['unlocks'].include?('viridian_gym_reopened')
+second_viridian_return = NexusRed::KantoStory.complete_viridian_gym_return(kanto_story_state)
+raise 'expected KantoStory Viridian return idempotent guard' unless second_viridian_return['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Viridian return history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'viridian_gym_return' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

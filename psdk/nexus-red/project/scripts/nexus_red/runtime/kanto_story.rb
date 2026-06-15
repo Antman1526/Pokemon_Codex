@@ -322,6 +322,12 @@ module NexusRed
     ROCKET_VIRIDIAN_RECALL_EVENT_ID = 'rocket_viridian_recall_signal'
     PHOENIX_CINNABAR_SETBACK_EVENT_ID = 'phoenix_cinnabar_setback'
     NEXUS_ORDER_VOLCANO_BADGE_SIGNAL_EVENT_ID = 'nexus_order_volcano_badge_energy_logged_hidden'
+    VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID = 'viridian_gym_return'
+    VIRIDIAN_GYM_REOPENED_EVENT_ID = 'viridian_gym_reopened'
+    RED_VIRIDIAN_FINAL_WARNING_EVENT_ID = 'red_viridian_final_warning'
+    BLUE_VIRIDIAN_STANDINGS_EVENT_ID = 'blue_viridian_standings'
+    GIOVANNI_EARTH_BADGE_BATTLE_ID = 'giovanni_earth_badge_battle'
+    NEXUS_ORDER_VIRIDIAN_BADGE_OBSERVER_EVENT_ID = 'nexus_order_viridian_badge_observer_hidden'
 
     module_function
 
@@ -4857,6 +4863,93 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLAINE_VOLCANO_BADGE_BATTLE_ID }
     end
 
+    def complete_viridian_gym_return(state, location: 'Viridian Gym', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_blaine_volcano_badge_battle', 'event_id' => VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID } unless blaine_volcano_badge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID } if viridian_gym_return_cleared?(state)
+
+      story['current_act'] = 'act_6_cinnabar_viridian'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_VIRIDIAN_GYM_RETURN')
+      add_story_flag(state, 'FLAG_NEXUS_VIRIDIAN_GYM_REOPENED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_VIRIDIAN_FINAL_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_VIRIDIAN_STANDINGS')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_EARTH_BADGE_BATTLE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_VIRIDIAN_BADGE_OBSERVER')
+      mark_cleared_event(story, VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID)
+      mark_cleared_event(story, VIRIDIAN_GYM_REOPENED_EVENT_ID)
+      mark_cleared_event(story, RED_VIRIDIAN_FINAL_WARNING_EVENT_ID)
+      mark_cleared_event(story, BLUE_VIRIDIAN_STANDINGS_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_EARTH_BADGE_BATTLE_ID)
+      mark_cleared_event(story, NEXUS_ORDER_VIRIDIAN_BADGE_OBSERVER_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'viridian_gym_lockdown_reopened',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'earth_badge_signal_observer_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'nexus_order',
+        location,
+        'Giovanni reopens Viridian Gym as a Rocket power play while a hidden badge signal observes the Earth Badge field',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'viridian_final_warning',
+        location: location,
+        summary: 'Red warns Antman that Giovanni is not another Gym Leader; this is Rocket testing whether the badge journey can be owned.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'viridian_badge_signal_triangle',
+        location: location,
+        summary: 'Bill triangulates the same hidden signal from Silph, Cinnabar, and Viridian around the Earth Badge field.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue reached Viridian Gym and says Giovanni is using the Earth Badge challenge to bait every serious rival at once.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Viridian Gym reopened under Giovanni; Red and Blue are outside, and the Earth Badge battle is ready.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = viridian_gym_return_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def viridian_gym_return_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6048,6 +6141,58 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_volcano_badge_energy_logged_unrevealed',
         'unlocks' => %w[volcano_badge fire_weather_mastery viridian_gym_return giovanni_earth_badge_lead],
         'next_hook' => 'viridian_gym_return'
+      }
+    end
+
+    def viridian_gym_return_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          VIRIDIAN_GYM_REOPENED_EVENT_ID,
+          RED_VIRIDIAN_FINAL_WARNING_EVENT_ID,
+          BLUE_VIRIDIAN_STANDINGS_EVENT_ID,
+          GIOVANNI_EARTH_BADGE_BATTLE_ID,
+          NEXUS_ORDER_VIRIDIAN_BADGE_OBSERVER_EVENT_ID
+        ],
+        'factions' => %w[team_rocket nexus_order],
+        'companions' => %w[red bill],
+        'rivals' => %w[blue],
+        'gym_leader' => 'Giovanni',
+        'badge' => 'Earth Badge',
+        'battle_hook' => {
+          'battle_id' => GIOVANNI_EARTH_BADGE_BATTLE_ID,
+          'battle_type' => 'gym_leader_giovanni',
+          'location' => 'viridian_gym',
+          'level_cap' => 55,
+          'companion_support' => 'companions_wait_outside_no_gym_assist',
+          'standard_team' => [
+            { 'species' => 'Persian', 'level' => 51, 'role' => 'signature_opener' },
+            { 'species' => 'Nidoqueen', 'level' => 52, 'role' => 'bulky_coverage' },
+            { 'species' => 'Nidoking', 'level' => 53, 'role' => 'offensive_coverage' },
+            { 'species' => 'Rhydon', 'level' => 55, 'role' => 'ace' }
+          ],
+          'hard_team' => [
+            { 'species' => 'Persian', 'level' => 53, 'role' => 'signature_opener' },
+            { 'species' => 'Nidoqueen', 'level' => 54, 'role' => 'bulky_coverage' },
+            { 'species' => 'Nidoking', 'level' => 55, 'role' => 'offensive_coverage' },
+            { 'species' => 'Krookodile', 'level' => 55, 'role' => 'smuggled_foreign_ace' },
+            { 'species' => 'Rhydon', 'level' => 57, 'role' => 'ace' }
+          ],
+          'expert_team' => [
+            { 'species' => 'Persian', 'level' => 54, 'role' => 'signature_opener' },
+            { 'species' => 'Nidoqueen', 'level' => 55, 'role' => 'bulky_coverage' },
+            { 'species' => 'Nidoking', 'level' => 56, 'role' => 'offensive_coverage' },
+            { 'species' => 'Excadrill', 'level' => 56, 'role' => 'smuggled_foreign_sweeper_if_available' },
+            { 'species' => 'Rhydon', 'level' => 58, 'role' => 'ace' }
+          ]
+        },
+        'gym_state' => 'viridian_gym_reopened_giovanni_waiting',
+        'giovanni_state' => 'earth_badge_challenge_active',
+        'hidden_meta_signal' => 'nexus_order_earth_badge_signal_unrevealed',
+        'unlocks' => %w[viridian_gym_reopened giovanni_earth_badge_battle blue_viridian_standings],
+        'next_hook' => 'giovanni_earth_badge_battle'
       }
     end
 
