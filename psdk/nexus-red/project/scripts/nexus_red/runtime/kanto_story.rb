@@ -70,6 +70,16 @@ module NexusRed
     TEAM_MOONLIGHT_CELADON_AD_EVENT_ID = 'team_moonlight_celadon_ad'
     ERIKA_GYM_TEASED_EVENT_ID = 'erika_gym_teased'
     GAME_CORNER_INVESTIGATION_EVENT_ID = 'game_corner_investigation_unlocked'
+    CELADON_GAME_CORNER_EXTERIOR_EVENT_ID = 'celadon_game_corner_exterior'
+    RED_GAME_CORNER_DOOR_GUARD_EVENT_ID = 'red_game_corner_door_guard'
+    BILL_COIN_CASE_SIGNAL_EVENT_ID = 'bill_coin_case_signal'
+    ROCKET_GAME_CORNER_GUARD_EVENT_ID = 'rocket_game_corner_guard_exposed'
+    TEAM_MOONLIGHT_SLEEP_COIN_EVENT_ID = 'team_moonlight_sleep_coin'
+    GAME_CORNER_GUARD_BATTLE_EVENT_ID = 'game_corner_guard_battle_unlocked'
+    ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID = 'rocket_game_corner_guard_battle'
+    ROCKET_HIDEOUT_SWITCH_LEAD_EVENT_ID = 'rocket_hideout_switch_lead_seen'
+    GAME_CORNER_HIDEOUT_ENTRY_EVENT_ID = 'game_corner_hideout_entry_unlocked'
+    ROCKET_GAME_CORNER_GUARD_BATTLE_ID = 'rocket_game_corner_guard'
 
     module_function
 
@@ -1414,6 +1424,132 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_CITY_EVENT_ID }
     end
 
+    def complete_celadon_game_corner_exterior(state, location: 'Celadon Game Corner Exterior', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_celadon_city_arrival', 'event_id' => CELADON_GAME_CORNER_EXTERIOR_EVENT_ID } unless celadon_city_arrival_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_GAME_CORNER_EXTERIOR_EVENT_ID } if celadon_game_corner_exterior_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_GAME_CORNER_EXTERIOR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_GAME_CORNER_DOOR_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_COIN_CASE_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GAME_CORNER_GUARD_EXPOSED')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_SLEEP_COIN')
+      add_story_flag(state, 'FLAG_NEXUS_GAME_CORNER_GUARD_BATTLE_UNLOCKED')
+      mark_cleared_event(story, CELADON_GAME_CORNER_EXTERIOR_EVENT_ID)
+      mark_cleared_event(story, RED_GAME_CORNER_DOOR_GUARD_EVENT_ID)
+      mark_cleared_event(story, BILL_COIN_CASE_SIGNAL_EVENT_ID)
+      mark_cleared_event(story, ROCKET_GAME_CORNER_GUARD_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_SLEEP_COIN_EVENT_ID)
+      mark_cleared_event(story, GAME_CORNER_GUARD_BATTLE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'game_corner_public_guard',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'sleep_coin_ad_signal',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket guards the poster switch while Moonlight sleep-coin ads distract Celadon from the Silph Scope echo',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'game_corner_door_guard',
+        location: location,
+        summary: 'Red blocks the public door while Antman studies the Rocket guard and poster switch pattern.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'coin_case_signal',
+        location: location,
+        summary: 'Bill detects the Silph Scope echo bouncing through a Coin Case signal at the Game Corner entrance.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Celadon Game Corner exterior exposed the Coin Case signal, Rocket guard battle, and Moonlight sleep coin ad.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_game_corner_exterior_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_game_corner_exterior_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_GAME_CORNER_EXTERIOR_EVENT_ID }
+    end
+
+    def complete_rocket_game_corner_guard_battle(state, location: 'Celadon Game Corner Exterior', result: 'placeholder_win', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_game_corner_exterior', 'event_id' => ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID } unless celadon_game_corner_exterior_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID } if rocket_game_corner_guard_battle_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GAME_CORNER_GUARD_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GAME_CORNER_GUARD_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_SWITCH_LEAD_SEEN')
+      add_story_flag(state, 'FLAG_NEXUS_GAME_CORNER_HIDEOUT_ENTRY_UNLOCKED')
+      mark_cleared_event(story, ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_HIDEOUT_SWITCH_LEAD_EVENT_ID)
+      mark_cleared_event(story, GAME_CORNER_HIDEOUT_ENTRY_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'game_corner_guard_defeated',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'game_corner_poster_switch',
+        location: location,
+        summary: 'Red spots the Rocket guard protecting the poster switch after Antman wins the public battle.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The Rocket Game Corner guard slipped after the battle, exposing the poster switch and the hideout-entry lead.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = rocket_game_corner_guard_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def rocket_game_corner_guard_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1705,6 +1841,47 @@ module NexusRed
         'city_objective' => 'game_corner_investigation',
         'gym_tease' => 'erika',
         'next_hook' => 'celadon_game_corner_exterior'
+      }
+    end
+
+    def celadon_game_corner_exterior_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_GAME_CORNER_EXTERIOR_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_GAME_CORNER_DOOR_GUARD_EVENT_ID,
+          BILL_COIN_CASE_SIGNAL_EVENT_ID,
+          ROCKET_GAME_CORNER_GUARD_EVENT_ID,
+          TEAM_MOONLIGHT_SLEEP_COIN_EVENT_ID,
+          GAME_CORNER_GUARD_BATTLE_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight],
+        'battle_hook' => {
+          'battle_id' => ROCKET_GAME_CORNER_GUARD_BATTLE_ID,
+          'battle_type' => 'villain_grunt',
+          'location' => 'celadon_game_corner_exterior',
+          'level_cap' => 31,
+          'opponent_species' => %w[Raticate Koffing],
+          'companion_support' => 'red_blocks_public_door'
+        },
+        'next_hook' => 'rocket_game_corner_guard_battle'
+      }
+    end
+
+    def rocket_game_corner_guard_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID,
+        'battle_id' => ROCKET_GAME_CORNER_GUARD_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'linked_events' => [
+          ROCKET_HIDEOUT_SWITCH_LEAD_EVENT_ID,
+          GAME_CORNER_HIDEOUT_ENTRY_EVENT_ID
+        ],
+        'factions' => %w[team_rocket],
+        'next_hook' => 'celadon_rocket_hideout_entry'
       }
     end
 

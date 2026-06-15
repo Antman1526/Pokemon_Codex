@@ -182,6 +182,10 @@ REQUIRED_MARKERS = (
     "celadon_underground_path_cleared?",
     "complete_celadon_city_arrival",
     "celadon_city_arrival_cleared?",
+    "complete_celadon_game_corner_exterior",
+    "celadon_game_corner_exterior_cleared?",
+    "complete_rocket_game_corner_guard_battle",
+    "rocket_game_corner_guard_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1411,6 +1415,56 @@ raise 'expected KantoStory Celadon City next hook Game Corner exterior' unless c
 second_celadon_city = NexusRed::KantoStory.complete_celadon_city_arrival(kanto_story_state)
 raise 'expected KantoStory Celadon City idempotent guard' unless second_celadon_city['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Celadon City history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_city_arrival' } == 1
+pre_city_game_corner = NexusRed::KantoStory.complete_celadon_game_corner_exterior(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Game Corner exterior gated before Celadon City' unless pre_city_game_corner['status'] == 'blocked_missing_celadon_city_arrival'
+game_corner_exterior = NexusRed::KantoStory.complete_celadon_game_corner_exterior(
+  kanto_story_state,
+  location: 'Celadon Game Corner Exterior',
+  area_type: 'city'
+)
+raise 'expected KantoStory Game Corner exterior clear status' unless game_corner_exterior['status'] == 'cleared'
+raise 'expected KantoStory Game Corner exterior event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('celadon_game_corner_exterior')
+raise 'expected KantoStory Game Corner exterior helper true' unless NexusRed::KantoStory.celadon_game_corner_exterior_cleared?(kanto_story_state)
+raise 'expected KantoStory Game Corner exterior reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GAME_CORNER_EXTERIOR_REACHED')
+raise 'expected KantoStory Red Game Corner door guard flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_GAME_CORNER_DOOR_GUARD')
+raise 'expected KantoStory Bill Coin Case signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_COIN_CASE_SIGNAL')
+raise 'expected KantoStory Rocket Game Corner guard exposed flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GAME_CORNER_GUARD_EXPOSED')
+raise 'expected KantoStory Moonlight sleep coin flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_SLEEP_COIN')
+raise 'expected KantoStory Game Corner guard battle unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GAME_CORNER_GUARD_BATTLE_UNLOCKED')
+raise 'expected KantoStory Rocket Game Corner guard activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Game Corner Exterior' && activity['operation'] == 'game_corner_public_guard' }
+raise 'expected KantoStory Moonlight sleep coin activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Game Corner Exterior' && activity['operation'] == 'sleep_coin_ad_signal' }
+raise 'expected KantoStory Rocket Moonlight Game Corner conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Celadon Game Corner Exterior' }
+raise 'expected KantoStory Red Game Corner door scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('game_corner_door_guard')
+raise 'expected KantoStory Bill Coin Case scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('coin_case_signal')
+raise 'expected KantoStory Game Corner story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Coin Case') && message['text'].include?('guard battle') }
+raise 'expected KantoStory Game Corner battle hook id' unless game_corner_exterior['battle_hook']['battle_id'] == 'rocket_game_corner_guard'
+raise 'expected KantoStory Game Corner next hook guard battle' unless game_corner_exterior['next_hook'] == 'rocket_game_corner_guard_battle'
+second_game_corner_exterior = NexusRed::KantoStory.complete_celadon_game_corner_exterior(kanto_story_state)
+raise 'expected KantoStory Game Corner exterior idempotent guard' unless second_game_corner_exterior['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Game Corner exterior history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_game_corner_exterior' } == 1
+pre_exterior_guard = NexusRed::KantoStory.complete_rocket_game_corner_guard_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Rocket Game Corner guard gated before exterior' unless pre_exterior_guard['status'] == 'blocked_missing_game_corner_exterior'
+guard_battle = NexusRed::KantoStory.complete_rocket_game_corner_guard_battle(
+  kanto_story_state,
+  location: 'Celadon Game Corner Exterior',
+  result: 'placeholder_win',
+  area_type: 'city'
+)
+raise 'expected KantoStory Rocket Game Corner guard clear status' unless guard_battle['status'] == 'cleared'
+raise 'expected KantoStory Rocket Game Corner guard battle event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('rocket_game_corner_guard_battle')
+raise 'expected KantoStory Rocket Game Corner guard helper true' unless NexusRed::KantoStory.rocket_game_corner_guard_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Rocket Game Corner guard battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GAME_CORNER_GUARD_BATTLE_STARTED')
+raise 'expected KantoStory Rocket Game Corner guard battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GAME_CORNER_GUARD_BATTLE_FINISHED')
+raise 'expected KantoStory Rocket hideout switch lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_HIDEOUT_SWITCH_LEAD_SEEN')
+raise 'expected KantoStory Game Corner hideout entry unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GAME_CORNER_HIDEOUT_ENTRY_UNLOCKED')
+raise 'expected KantoStory Rocket guard defeat activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Game Corner Exterior' && activity['operation'] == 'game_corner_guard_defeated' }
+raise 'expected KantoStory Red poster switch scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('game_corner_poster_switch')
+raise 'expected KantoStory Rocket guard WorldLink alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('poster switch') && message['text'].include?('hideout') }
+raise 'expected KantoStory Rocket guard result tracked' unless guard_battle['result'] == 'placeholder_win'
+raise 'expected KantoStory Rocket guard next hook hideout entry' unless guard_battle['next_hook'] == 'celadon_rocket_hideout_entry'
+second_guard_battle = NexusRed::KantoStory.complete_rocket_game_corner_guard_battle(kanto_story_state)
+raise 'expected KantoStory Rocket Game Corner guard idempotent guard' unless second_guard_battle['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Rocket Game Corner guard history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'rocket_game_corner_guard_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

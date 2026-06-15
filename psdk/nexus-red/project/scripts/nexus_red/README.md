@@ -67,6 +67,10 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_celadon_city_arrival(state, location:, area_type:)` resolves the first public Celadon City investigation beat. It requires the Celadon Underground Path, keeps Red as the active companion, records Bill's Game Corner exterior signal, Rocket's visible Game Corner front, Team Moonlight's city dream ads, Erika's gym tease, and unlocks the Game Corner exterior as the next story hook.
 
+`NexusRed::KantoStory.complete_celadon_game_corner_exterior(state, location:, area_type:)` resolves the public Game Corner scouting beat. It requires Celadon City arrival, records Red watching the door guard, Bill's Coin Case/Silph Scope signal, Rocket's exposed floor guard, Team Moonlight's sleep coin ad, and returns a `battle_hook` for the `rocket_game_corner_guard` villain battle.
+
+`NexusRed::KantoStory.complete_rocket_game_corner_guard_battle(state, location:, result:, area_type:)` records the Rocket Game Corner guard battle result after the map battle returns. It marks the battle started/finished flags, records Red spotting the guarded poster switch, unlocks the Game Corner hideout-entry lead, and points the next hook to `celadon_rocket_hideout_entry`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
