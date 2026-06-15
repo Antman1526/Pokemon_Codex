@@ -1,0 +1,38 @@
+{
+  "id": "mt_moon_gold_dust_right_path",
+  "display_title": "Mt. Moon - Gold Dust Right Path",
+  "status": "placeholder",
+  "battle_type": "faction_grunt",
+  "location": "mt_moon_interior_1",
+  "level_cap": 16,
+  "faction_pressure_pair": true,
+  "difficulty_note": "Paired with the Rocket left-path battle. Gold Dust uses mineral and ground pressure to feel distinct from Rocket's cave-crime team.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red covers the fossil table while Antman blocks Gold Dust from claiming the Helix signal."
+  },
+  "opponent": {
+    "id": "gold_dust_prospector_mt_moon_right",
+    "display_name": "Gold Dust Prospector",
+    "faction": "team_gold_dust",
+    "slots": [
+      {
+        "species": "Sandshrew",
+        "level": 13,
+        "role": "ground pressure"
+      },
+      {
+        "species": "Roggenrola",
+        "level": 14,
+        "role": "mineral wall"
+      }
+    ],
+    "intent": "shows Gold Dust as a resource-control faction that treats fossils, minerals, and rare signals as property"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": ["mt_moon_gold_dust_right_battle_started", "mt_moon_gold_dust_right_battle_finished", "gold_dust_helix_claim_blocked"]
+  }
+}

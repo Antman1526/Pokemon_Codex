@@ -493,6 +493,23 @@ python3 tools/validate_native_mt_moon_rocket_battle.py
 godot --headless --path native/nexus-red --script tests/mt_moon_rocket_battle_test.gd
 ```
 
+### Task 7.25: Add Mt. Moon Gold Dust right-path placeholder battle
+
+Acceptance:
+
+- Mt. Moon Interior 1 can start a Gold Dust Prospector placeholder battle after fossil split scouting.
+- Battle data documents a post-Brock level cap, Gold Dust faction identity, and mineral/ground opener team.
+- Save state records battle start, finish, and Gold Dust Helix claim blocked flags.
+- Placeholder battle return sends the player back to Mt. Moon Interior 1.
+- The battle pairs with the Rocket left-path fight so the fossil decision can require both factions to be pressured.
+
+Verification:
+
+```sh
+python3 tools/validate_native_mt_moon_gold_dust_battle.py
+godot --headless --path native/nexus-red --script tests/mt_moon_gold_dust_battle_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

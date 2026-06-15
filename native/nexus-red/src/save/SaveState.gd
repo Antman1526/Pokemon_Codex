@@ -92,6 +92,9 @@ func start_new_game(name: String) -> void:
 		"mt_moon_rocket_left_battle_started": false,
 		"mt_moon_rocket_left_battle_finished": false,
 		"red_mt_moon_tag_setup_seen": false,
+		"mt_moon_gold_dust_right_battle_started": false,
+		"mt_moon_gold_dust_right_battle_finished": false,
+		"gold_dust_helix_claim_blocked": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -326,6 +329,9 @@ func start_battle_placeholder(battle_id: String) -> void:
 	if battle_id == "mt_moon_rocket_left_path":
 		set_flag("mt_moon_rocket_left_battle_started", true)
 		set_flag("red_mt_moon_tag_setup_seen", true)
+	if battle_id == "mt_moon_gold_dust_right_path":
+		set_flag("mt_moon_gold_dust_right_battle_started", true)
+		set_flag("gold_dust_helix_claim_blocked", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -342,6 +348,9 @@ func finish_battle_placeholder(result: String) -> void:
 	if active_battle_id == "mt_moon_rocket_left_path":
 		set_flag("mt_moon_rocket_left_battle_finished", true)
 		queue_worldlink_id("mt_moon_rocket_left_battle_finished")
+	if active_battle_id == "mt_moon_gold_dust_right_path":
+		set_flag("mt_moon_gold_dust_right_battle_finished", true)
+		queue_worldlink_id("mt_moon_gold_dust_right_battle_finished")
 	active_battle_id = ""
 
 

@@ -19,6 +19,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_split_path_scouting()
 	if event.is_action_pressed("ui_left"):
 		trigger_rocket_left_path_battle()
+	if event.is_action_pressed("ui_right"):
+		trigger_gold_dust_right_path_battle()
 	if event.is_action_pressed("cancel"):
 		return_to_mt_moon_entrance()
 
@@ -120,9 +122,19 @@ func trigger_rocket_left_path_battle() -> void:
 	emit_signal("start_battle_placeholder", "mt_moon_rocket_left_path")
 
 
+func trigger_gold_dust_right_path_battle() -> void:
+	if save_state and not bool(save_state.story_flags.get("fossil_choice_setup_seen", false)):
+		dialogue_label.text = "Red: Scout the split first. Gold Dust is counting on us missing the Helix signal."
+		return
+	if save_state:
+		save_state.start_battle_placeholder("mt_moon_gold_dust_right_path")
+	dialogue_label.text = "Red: I will keep the fossil table clear. Stop that Gold Dust Prospector before they stake a claim on the Helix signal."
+	emit_signal("start_battle_placeholder", "mt_moon_gold_dust_right_path")
+
+
 func return_to_mt_moon_entrance() -> void:
 	emit_signal("go_to_mt_moon_entrance")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is the first split. Press Z/Enter to scout Rocket, Gold Dust, and the fossil table, Left for the Rocket runner, or X/Esc to return to the Mt. Moon entrance."
+	dialogue_label.text = "Red: This is the first split. Press Z/Enter to scout Rocket, Gold Dust, and the fossil table, Left for the Rocket runner, Right for Gold Dust, or X/Esc to return to the Mt. Moon entrance."
