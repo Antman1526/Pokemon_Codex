@@ -208,6 +208,8 @@ REQUIRED_MARKERS = (
     "pokemon_tower_fuji_rescue_cleared?",
     "complete_route_12_snorlax_wake",
     "route_12_snorlax_wake_cleared?",
+    "complete_route_12_fishing_pier",
+    "route_12_fishing_pier_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1787,6 +1789,37 @@ raise 'expected KantoStory Route 12 unlocks Super Rod' unless route_12_wake['unl
 second_route_12_wake = NexusRed::KantoStory.complete_route_12_snorlax_wake(kanto_story_state)
 raise 'expected KantoStory Route 12 idempotent guard' unless second_route_12_wake['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Route 12 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_12_snorlax_wake' } == 1
+pre_route_12_pier = NexusRed::KantoStory.complete_route_12_fishing_pier(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Route 12 fishing pier gated before Snorlax wake' unless pre_route_12_pier['status'] == 'blocked_missing_route_12_snorlax_wake'
+route_12_pier = NexusRed::KantoStory.complete_route_12_fishing_pier(
+  kanto_story_state,
+  location: 'Route 12 Fishing Pier',
+  area_type: 'route'
+)
+raise 'expected KantoStory Route 12 fishing pier clear status' unless route_12_pier['status'] == 'cleared'
+raise 'expected KantoStory Route 12 fishing pier event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('route_12_fishing_pier')
+raise 'expected KantoStory Route 12 fishing pier helper true' unless NexusRed::KantoStory.route_12_fishing_pier_cleared?(kanto_story_state)
+raise 'expected KantoStory Route 12 fishing pier reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE12_FISHING_PIER_REACHED')
+raise 'expected KantoStory Route 12 Fishing Guru flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE12_FISHING_GURU_MET')
+raise 'expected KantoStory Misty water route advice flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MISTY_ROUTE12_WATER_ROUTE_ADVICE')
+raise 'expected KantoStory Bill Safari anomaly flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_SAFARI_ANOMALY_TRACE')
+raise 'expected KantoStory Fuchsia approach flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FUCHSIA_APPROACH_UNLOCKED')
+raise 'expected KantoStory Safari Zone lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFARI_ZONE_ANOMALY_LEAD')
+raise 'expected KantoStory Team Clover Safari clue flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_CLOVER_SAFARI_CLUE')
+raise 'expected KantoStory Fishing Guru scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('route_12_water_route_advice')
+raise 'expected KantoStory Bill Safari trace scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('safari_anomaly_trace')
+raise 'expected KantoStory Red fishing pier scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('route_12_pier_guard')
+raise 'expected KantoStory Clover Safari activity' unless kanto_story_state['faction_progress']['team_clover']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 12 Fishing Pier' && activity['operation'] == 'safari_luck_lure_probe' }
+raise 'expected KantoStory Gold Dust rare-scale activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 12 Fishing Pier' && activity['operation'] == 'rare_scale_market_probe' }
+raise 'expected KantoStory Clover Gold Dust pier conflict' unless kanto_story_state['faction_progress']['team_clover']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Route 12 Fishing Pier' }
+raise 'expected KantoStory Route 12 fishing pier story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Fuchsia') && message['text'].include?('Safari') }
+raise 'expected KantoStory Route 12 fishing pier keeps Super Rod unlocked' unless kanto_story_state['encounter_world']['unlocked_fishing_rods'].include?('super_rod')
+raise 'expected KantoStory Route 12 fishing pier next hook Fuchsia' unless route_12_pier['next_hook'] == 'fuchsia_city_arrival'
+raise 'expected KantoStory Route 12 fishing pier encounter hooks' unless route_12_pier['encounter_hooks'].include?('super_rod_chain') && route_12_pier['encounter_hooks'].include?('safari_anomaly_rumor')
+raise 'expected KantoStory Route 12 fishing pier route unlock' unless route_12_pier['unlocks'].include?('fuchsia_approach')
+second_route_12_pier = NexusRed::KantoStory.complete_route_12_fishing_pier(kanto_story_state)
+raise 'expected KantoStory Route 12 fishing pier idempotent guard' unless second_route_12_pier['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Route 12 fishing pier history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_12_fishing_pier' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

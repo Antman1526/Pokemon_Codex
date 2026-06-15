@@ -144,6 +144,13 @@ module NexusRed
     TEAM_MOONLIGHT_SLEEP_ECHO_CLEARED_EVENT_ID = 'team_moonlight_sleep_echo_cleared'
     SNORLAX_ROADBLOCK_CLEARED_EVENT_ID = 'snorlax_roadblock_cleared'
     ROUTE_12_SOUTH_PATH_EVENT_ID = 'route_12_south_path_unlocked'
+    ROUTE_12_FISHING_PIER_EVENT_ID = 'route_12_fishing_pier'
+    ROUTE_12_FISHING_GURU_EVENT_ID = 'route_12_fishing_guru_met'
+    MISTY_ROUTE_12_WATER_ADVICE_EVENT_ID = 'misty_route_12_water_route_advice'
+    BILL_SAFARI_ANOMALY_TRACE_EVENT_ID = 'bill_safari_anomaly_trace'
+    FUCHSIA_APPROACH_EVENT_ID = 'fuchsia_approach_unlocked'
+    SAFARI_ZONE_ANOMALY_LEAD_EVENT_ID = 'safari_zone_anomaly_lead'
+    TEAM_CLOVER_SAFARI_CLUE_EVENT_ID = 'team_clover_safari_clue'
 
     module_function
 
@@ -2488,6 +2495,95 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_12_SNORLAX_WAKE_EVENT_ID }
     end
 
+    def complete_route_12_fishing_pier(state, location: 'Route 12 Fishing Pier', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_route_12_snorlax_wake', 'event_id' => ROUTE_12_FISHING_PIER_EVENT_ID } unless route_12_snorlax_wake_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROUTE_12_FISHING_PIER_EVENT_ID } if route_12_fishing_pier_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE12_FISHING_PIER_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE12_FISHING_GURU_MET')
+      add_story_flag(state, 'FLAG_NEXUS_MISTY_ROUTE12_WATER_ROUTE_ADVICE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_SAFARI_ANOMALY_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_FUCHSIA_APPROACH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_SAFARI_ZONE_ANOMALY_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_CLOVER_SAFARI_CLUE')
+      mark_cleared_event(story, ROUTE_12_FISHING_PIER_EVENT_ID)
+      mark_cleared_event(story, ROUTE_12_FISHING_GURU_EVENT_ID)
+      mark_cleared_event(story, MISTY_ROUTE_12_WATER_ADVICE_EVENT_ID)
+      mark_cleared_event(story, BILL_SAFARI_ANOMALY_TRACE_EVENT_ID)
+      mark_cleared_event(story, FUCHSIA_APPROACH_EVENT_ID)
+      mark_cleared_event(story, SAFARI_ZONE_ANOMALY_LEAD_EVENT_ID)
+      mark_cleared_event(story, TEAM_CLOVER_SAFARI_CLUE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_clover',
+        'kanto',
+        location,
+        'safari_luck_lure_probe',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'rare_scale_market_probe',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_clover',
+        'team_gold_dust',
+        location,
+        'Clover masks rare-encounter manipulation as good luck while Gold Dust prices the same Safari rumors',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'route_12_pier_guard',
+        location: location,
+        summary: 'Red keeps the newly opened south road calm while Antman checks the fishing pier.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'route_12_water_route_advice',
+        location: location,
+        summary: 'Misty explains Super Rod chains, water-route pacing, and why Fuchsia will test patience.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'safari_anomaly_trace',
+        location: location,
+        summary: 'Bill traces rare encounter spikes from the pier toward the Safari Zone preserve.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Route 12 Fishing Pier pointed Antman, Red, Misty, and Bill toward Fuchsia, where Safari anomalies are drawing Clover and Gold Dust interest.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = route_12_fishing_pier_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def route_12_fishing_pier_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_12_FISHING_PIER_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3042,6 +3138,26 @@ module NexusRed
         },
         'unlocks' => %w[super_rod route_12_south_path],
         'next_hook' => 'route_12_fishing_pier'
+      }
+    end
+
+    def route_12_fishing_pier_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ROUTE_12_FISHING_PIER_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          ROUTE_12_FISHING_GURU_EVENT_ID,
+          MISTY_ROUTE_12_WATER_ADVICE_EVENT_ID,
+          BILL_SAFARI_ANOMALY_TRACE_EVENT_ID,
+          FUCHSIA_APPROACH_EVENT_ID,
+          SAFARI_ZONE_ANOMALY_LEAD_EVENT_ID,
+          TEAM_CLOVER_SAFARI_CLUE_EVENT_ID
+        ],
+        'factions' => %w[team_clover team_gold_dust],
+        'encounter_hooks' => %w[super_rod_chain safari_anomaly_rumor],
+        'unlocks' => %w[fuchsia_approach safari_anomaly_lead],
+        'next_hook' => 'fuchsia_city_arrival'
       }
     end
 
