@@ -105,6 +105,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_saffron_city_arrival(state, location:, area_type:)` resolves the first Saffron City arrival beat after Koga. It turns Rocket into an infrastructure-scale threat through the Silph lockdown, upgrades Portable PC to full access through Bill's Silph relay, records Sabrina/Moonlight interference, keeps the Nexus Order as hidden sponsor static, logs Blue's rival check-in, and opens `silph_co_lobby_lockdown`.
 
+`NexusRed::KantoStory.complete_silph_co_lobby_lockdown(state, location:, area_type:)` resolves the first Silph Co infiltration checkpoint. It records Red holding the lobby, Bill tracing the Silph firewall, Rocket locking elevators and card-key doors, Gold Dust buyers chasing components, Moonlight dream static leaking through Sabrina's pressure, and a hidden Nexus Order boardroom sponsor trace while opening `silph_co_2f_key_search`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

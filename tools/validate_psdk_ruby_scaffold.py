@@ -220,6 +220,8 @@ REQUIRED_MARKERS = (
     "koga_soul_badge_battle_cleared?",
     "complete_saffron_city_arrival",
     "saffron_city_arrival_cleared?",
+    "complete_silph_co_lobby_lockdown",
+    "silph_co_lobby_lockdown_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1995,6 +1997,41 @@ raise 'expected KantoStory Saffron unlocks full PortablePC' unless saffron_arriv
 second_saffron_arrival = NexusRed::KantoStory.complete_saffron_city_arrival(kanto_story_state)
 raise 'expected KantoStory Saffron arrival idempotent guard' unless second_saffron_arrival['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Saffron arrival history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'saffron_city_arrival' } == 1
+pre_silph_lobby = NexusRed::KantoStory.complete_silph_co_lobby_lockdown(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Silph lobby gated before Saffron arrival' unless pre_silph_lobby['status'] == 'blocked_missing_saffron_city_arrival'
+silph_lobby = NexusRed::KantoStory.complete_silph_co_lobby_lockdown(
+  kanto_story_state,
+  location: 'Silph Co Lobby',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Silph lobby clear status' unless silph_lobby['status'] == 'cleared'
+raise 'expected KantoStory Silph lobby event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('silph_co_lobby_lockdown')
+raise 'expected KantoStory Silph lobby helper true' unless NexusRed::KantoStory.silph_co_lobby_lockdown_cleared?(kanto_story_state)
+raise 'expected KantoStory Silph lobby flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CO_LOBBY_LOCKDOWN')
+raise 'expected KantoStory Red Silph lobby guard flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SILPH_LOBBY_GUARD')
+raise 'expected KantoStory Bill Silph firewall flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_SILPH_FIREWALL_TRACE')
+raise 'expected KantoStory Rocket Silph elevator lock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_SILPH_ELEVATOR_LOCK')
+raise 'expected KantoStory Gold Dust Silph component buyers flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_SILPH_COMPONENT_BUYERS')
+raise 'expected KantoStory Moonlight Silph dream static flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_SILPH_DREAM_STATIC')
+raise 'expected KantoStory Nexus boardroom sponsor trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_BOARDROOM_SPONSOR_TRACE')
+raise 'expected KantoStory Silph employee rescue lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_EMPLOYEE_RESCUE_LEAD')
+raise 'expected KantoStory Silph 2F key search flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_2F_KEY_SEARCH_UNLOCKED')
+raise 'expected KantoStory Red Silph lobby scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('silph_lobby_guard')
+raise 'expected KantoStory Bill Silph firewall scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_firewall_trace')
+raise 'expected KantoStory Blue Silph lobby clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Silph')
+raise 'expected KantoStory Rocket Silph lobby activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Lobby' && activity['operation'] == 'silph_lobby_occupation' }
+raise 'expected KantoStory Gold Dust Silph component activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Lobby' && activity['operation'] == 'silph_component_buyers' }
+raise 'expected KantoStory Moonlight Silph dream activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Lobby' && activity['operation'] == 'silph_dream_static' }
+raise 'expected KantoStory Nexus boardroom sponsor activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Lobby' && activity['operation'] == 'boardroom_sponsor_trace' }
+raise 'expected KantoStory Nexus Order still hidden after Silph lobby' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Gold Dust Silph conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Silph Co Lobby' }
+raise 'expected KantoStory Silph lobby story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Silph Co lobby') && message['text'].include?('2F') }
+raise 'expected KantoStory Silph lobby next hook 2F key search' unless silph_lobby['next_hook'] == 'silph_co_2f_key_search'
+raise 'expected KantoStory Silph lobby factions' unless silph_lobby['factions'].include?('team_rocket') && silph_lobby['factions'].include?('nexus_order')
+raise 'expected KantoStory Silph lobby unlocks 2F key search' unless silph_lobby['unlocks'].include?('silph_co_2f_key_search')
+second_silph_lobby = NexusRed::KantoStory.complete_silph_co_lobby_lockdown(kanto_story_state)
+raise 'expected KantoStory Silph lobby idempotent guard' unless second_silph_lobby['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Silph lobby history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_lobby_lockdown' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

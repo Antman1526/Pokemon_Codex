@@ -187,6 +187,16 @@ module NexusRed
     BLUE_SAFFRON_CHECKIN_EVENT_ID = 'blue_saffron_checkin'
     PORTABLE_PC_FULL_ACCESS_EVENT_ID = 'portable_pc_full_access'
     STRONGER_MART_TIERS_EVENT_ID = 'stronger_mart_tiers_unlocked'
+    SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID = 'silph_co_lobby_lockdown'
+    RED_SILPH_LOBBY_GUARD_EVENT_ID = 'red_silph_lobby_guard'
+    BILL_SILPH_FIREWALL_EVENT_ID = 'bill_silph_firewall_trace'
+    ROCKET_SILPH_ELEVATOR_LOCK_EVENT_ID = 'rocket_silph_elevator_lock'
+    GOLD_DUST_SILPH_COMPONENT_EVENT_ID = 'gold_dust_silph_component_buyers'
+    MOONLIGHT_SILPH_DREAM_EVENT_ID = 'moonlight_silph_dream_static'
+    NEXUS_ORDER_BOARDROOM_SPONSOR_EVENT_ID = 'nexus_order_boardroom_sponsor_trace'
+    SILPH_EMPLOYEE_RESCUE_LEAD_EVENT_ID = 'silph_employee_rescue_lead'
+    SILPH_2F_KEY_SEARCH_EVENT_ID = 'silph_co_2f_key_search_unlocked'
+    ROCKET_SILPH_LOBBY_GUARD_BATTLE_ID = 'rocket_silph_lobby_guard'
 
     module_function
 
@@ -3099,6 +3109,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SAFFRON_CITY_ARRIVAL_EVENT_ID }
     end
 
+    def complete_silph_co_lobby_lockdown(state, location: 'Silph Co Lobby', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_saffron_city_arrival', 'event_id' => SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID } unless saffron_city_arrival_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID } if silph_co_lobby_lockdown_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_LOBBY_LOCKDOWN')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SILPH_LOBBY_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_SILPH_FIREWALL_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SILPH_ELEVATOR_LOCK')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_SILPH_COMPONENT_BUYERS')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_SILPH_DREAM_STATIC')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_BOARDROOM_SPONSOR_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_EMPLOYEE_RESCUE_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_2F_KEY_SEARCH_UNLOCKED')
+      mark_cleared_event(story, SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID)
+      mark_cleared_event(story, RED_SILPH_LOBBY_GUARD_EVENT_ID)
+      mark_cleared_event(story, BILL_SILPH_FIREWALL_EVENT_ID)
+      mark_cleared_event(story, ROCKET_SILPH_ELEVATOR_LOCK_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_SILPH_COMPONENT_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_SILPH_DREAM_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_BOARDROOM_SPONSOR_EVENT_ID)
+      mark_cleared_event(story, SILPH_EMPLOYEE_RESCUE_LEAD_EVENT_ID)
+      mark_cleared_event(story, SILPH_2F_KEY_SEARCH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'silph_lobby_occupation',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'silph_component_buyers',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'silph_dream_static',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'boardroom_sponsor_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket is locking down Silph while Gold Dust buyers try to price stolen components before the elevator grid reboots',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket wants clean security control, but Moonlight dream static is leaking through Sabrina and the lobby terminals',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'silph_lobby_guard',
+        location: location,
+        summary: 'Red holds the Silph lobby line so Antman can push toward the elevator lock without being surrounded.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_firewall_trace',
+        location: location,
+        summary: 'Bill traces the Silph firewall and finds a boardroom sponsor signal hidden behind Rocket credentials.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue entered Silph from a side stairwell and reported Rocket guards dragging employees toward the 2F key offices.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Silph Co lobby is under Rocket lockdown; Red is holding the entrance while Bill traces the firewall, and the 2F key search is now open.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = silph_co_lobby_lockdown_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def silph_co_lobby_lockdown_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3800,6 +3929,37 @@ module NexusRed
         'hidden_meta_signal' => 'sponsor_static_trace',
         'unlocks' => %w[portable_pc_full stronger_mart_tiers silph_co_lobby sabrina_pressure],
         'next_hook' => 'silph_co_lobby_lockdown'
+      }
+    end
+
+    def silph_co_lobby_lockdown_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_SILPH_LOBBY_GUARD_EVENT_ID,
+          BILL_SILPH_FIREWALL_EVENT_ID,
+          ROCKET_SILPH_ELEVATOR_LOCK_EVENT_ID,
+          GOLD_DUST_SILPH_COMPONENT_EVENT_ID,
+          MOONLIGHT_SILPH_DREAM_EVENT_ID,
+          NEXUS_ORDER_BOARDROOM_SPONSOR_EVENT_ID,
+          SILPH_EMPLOYEE_RESCUE_LEAD_EVENT_ID,
+          SILPH_2F_KEY_SEARCH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'dungeon_state' => 'lobby_lockdown',
+        'battle_hook' => {
+          'battle_id' => ROCKET_SILPH_LOBBY_GUARD_BATTLE_ID,
+          'battle_type' => 'villain_grunt',
+          'location' => 'silph_co_lobby',
+          'level_cap' => 40,
+          'opponent_species' => %w[Golbat Muk Persian],
+          'companion_support' => 'red_holds_lobby_reinforcements'
+        },
+        'locked_systems' => %w[elevators_card_key_doors_boardroom],
+        'unlocks' => %w[silph_co_2f_key_search employee_rescue_lead firewall_trace],
+        'next_hook' => 'silph_co_2f_key_search'
       }
     end
 
