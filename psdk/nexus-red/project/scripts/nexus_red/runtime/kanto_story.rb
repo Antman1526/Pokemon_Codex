@@ -291,6 +291,14 @@ module NexusRed
     RED_CINNABAR_RESTRAINT_EVENT_ID = 'red_cinnabar_restraint_scene'
     ROCKET_CINNABAR_SURVEILLANCE_EVENT_ID = 'rocket_cinnabar_lab_surveillance'
     NEXUS_ORDER_MANSION_GENEALOGY_EVENT_ID = 'nexus_order_mansion_genealogy_signal_hidden'
+    POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID = 'pokemon_mansion_mewtwo_echoes'
+    MANSION_GENE_LAB_RECORDS_EVENT_ID = 'mansion_gene_lab_records'
+    PHOENIX_REVIVAL_NOTES_EVENT_ID = 'phoenix_revival_notes'
+    ROCKET_MANSION_FILE_RAID_EVENT_ID = 'rocket_mansion_file_raid'
+    BLAINE_REVIVAL_WARNING_UNLOCKED_EVENT_ID = 'blaine_revival_warning_unlocked'
+    CINNABAR_GYM_KEY_RUMOR_EVENT_ID = 'cinnabar_gym_key_rumor'
+    NEXUS_ORDER_MEWTWO_GENEALOGY_EVENT_ID = 'nexus_order_mewtwo_genealogy_signal_hidden'
+    PHOENIX_MANSION_RESEARCH_BATTLE_ID = 'phoenix_mansion_research_assistant'
 
     module_function
 
@@ -4442,6 +4450,103 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CINNABAR_ISLAND_ARRIVAL_EVENT_ID }
     end
 
+    def complete_pokemon_mansion_mewtwo_echoes(state, location: 'Pokemon Mansion', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_cinnabar_island_arrival', 'event_id' => POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID } unless cinnabar_island_arrival_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID } if pokemon_mansion_mewtwo_echoes_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_MANSION_MEWTWO_ECHOES')
+      add_story_flag(state, 'FLAG_NEXUS_MANSION_GENE_LAB_RECORDS')
+      add_story_flag(state, 'FLAG_NEXUS_PHOENIX_REVIVAL_NOTES')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_MANSION_FILE_RAID')
+      add_story_flag(state, 'FLAG_NEXUS_BLAINE_REVIVAL_WARNING_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_GYM_KEY_RUMOR')
+      mark_cleared_event(story, POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID)
+      mark_cleared_event(story, MANSION_GENE_LAB_RECORDS_EVENT_ID)
+      mark_cleared_event(story, PHOENIX_REVIVAL_NOTES_EVENT_ID)
+      mark_cleared_event(story, ROCKET_MANSION_FILE_RAID_EVENT_ID)
+      mark_cleared_event(story, BLAINE_REVIVAL_WARNING_UNLOCKED_EVENT_ID)
+      mark_cleared_event(story, CINNABAR_GYM_KEY_RUMOR_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_MEWTWO_GENEALOGY_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'mansion_file_raid',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_phoenix',
+        'kanto',
+        location,
+        'revival_notes_recovered',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'mewtwo_genealogy_signal_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_phoenix',
+        location,
+        'Rocket raids Mansion files for control while Phoenix assistants copy revival notes for their rebirth doctrine',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'pokemon_mansion_restraint_warning',
+        location: location,
+        summary: 'Red keeps Antman focused inside the Mansion: learn what happened here before touching anything powerful.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'mansion_gene_lab_decode',
+        location: location,
+        summary: 'Bill decodes old gene-lab entries and confirms the Cinnabar records connect to Mewtwo-era research.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'mansion_revival_ethics',
+        location: location,
+        summary: 'Brock reads the revival notes as a warning: bringing life back is not the same as understanding it.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Pokemon Mansion exposed Mewtwo-era records, Phoenix revival notes, and a Blaine warning tied to the missing Gym key.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = pokemon_mansion_mewtwo_echoes_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def pokemon_mansion_mewtwo_echoes_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5491,6 +5596,36 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_mansion_genealogy_signal_unrevealed',
         'unlocks' => %w[pokemon_mansion cinnabar_lab_access blaine_revival_warning phoenix_research_rumors],
         'next_hook' => 'pokemon_mansion_mewtwo_echoes'
+      }
+    end
+
+    def pokemon_mansion_mewtwo_echoes_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          MANSION_GENE_LAB_RECORDS_EVENT_ID,
+          PHOENIX_REVIVAL_NOTES_EVENT_ID,
+          ROCKET_MANSION_FILE_RAID_EVENT_ID,
+          BLAINE_REVIVAL_WARNING_UNLOCKED_EVENT_ID,
+          CINNABAR_GYM_KEY_RUMOR_EVENT_ID,
+          NEXUS_ORDER_MEWTWO_GENEALOGY_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_phoenix nexus_order],
+        'dungeon_state' => 'mansion_records_recovered_key_rumor_active',
+        'battle_hook' => {
+          'battle_id' => PHOENIX_MANSION_RESEARCH_BATTLE_ID,
+          'battle_type' => 'villain_research_assistant',
+          'location' => 'pokemon_mansion',
+          'level_cap' => 48,
+          'opponent_species' => %w[Magmar Hypno Porygon],
+          'companion_support' => 'red_bill_brock_mansion_split'
+        },
+        'research_state' => 'mewtwo_genealogy_records_confirmed',
+        'hidden_meta_signal' => 'nexus_order_mewtwo_genealogy_signal_unrevealed',
+        'unlocks' => %w[blaine_revival_warning cinnabar_gym_key_rumor mansion_lab_records],
+        'next_hook' => 'blaine_revival_warning'
       }
     end
 

@@ -242,6 +242,8 @@ REQUIRED_MARKERS = (
     "sabrina_mind_badge_challenge_cleared?",
     "complete_cinnabar_island_arrival",
     "cinnabar_island_arrival_cleared?",
+    "complete_pokemon_mansion_mewtwo_echoes",
+    "pokemon_mansion_mewtwo_echoes_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2400,6 +2402,39 @@ raise 'expected KantoStory Cinnabar arrival encounter hooks' unless cinnabar_arr
 second_cinnabar_arrival = NexusRed::KantoStory.complete_cinnabar_island_arrival(kanto_story_state)
 raise 'expected KantoStory Cinnabar arrival idempotent guard' unless second_cinnabar_arrival['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Cinnabar arrival history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'cinnabar_island_arrival' } == 1
+pre_mansion_echoes = NexusRed::KantoStory.complete_pokemon_mansion_mewtwo_echoes(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Mansion echoes gated before Cinnabar arrival' unless pre_mansion_echoes['status'] == 'blocked_missing_cinnabar_island_arrival'
+mansion_echoes = NexusRed::KantoStory.complete_pokemon_mansion_mewtwo_echoes(
+  kanto_story_state,
+  location: 'Pokemon Mansion',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Mansion echoes clear status' unless mansion_echoes['status'] == 'cleared'
+raise 'expected KantoStory Mansion echoes event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('pokemon_mansion_mewtwo_echoes')
+raise 'expected KantoStory Mansion echoes helper true' unless NexusRed::KantoStory.pokemon_mansion_mewtwo_echoes_cleared?(kanto_story_state)
+raise 'expected KantoStory Mansion echoes flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_MANSION_MEWTWO_ECHOES')
+raise 'expected KantoStory Mansion gene lab records flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MANSION_GENE_LAB_RECORDS')
+raise 'expected KantoStory Phoenix revival notes flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PHOENIX_REVIVAL_NOTES')
+raise 'expected KantoStory Rocket mansion file raid flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_MANSION_FILE_RAID')
+raise 'expected KantoStory Blaine warning unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLAINE_REVIVAL_WARNING_UNLOCKED')
+raise 'expected KantoStory Cinnabar gym key rumor flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_GYM_KEY_RUMOR')
+raise 'expected KantoStory Red Mansion restraint scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('pokemon_mansion_restraint_warning')
+raise 'expected KantoStory Bill Mansion gene decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('mansion_gene_lab_decode')
+raise 'expected KantoStory Brock Mansion revival ethics scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('mansion_revival_ethics')
+raise 'expected KantoStory Rocket Mansion file raid activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Mansion' && activity['operation'] == 'mansion_file_raid' }
+raise 'expected KantoStory Phoenix Mansion revival notes activity' unless kanto_story_state['faction_progress']['team_phoenix']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Mansion' && activity['operation'] == 'revival_notes_recovered' }
+raise 'expected KantoStory Nexus Mansion genealogy echo activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Mansion' && activity['operation'] == 'mewtwo_genealogy_signal_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Mansion echoes' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Phoenix Mansion conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_phoenix' && conflict['location'] == 'Pokemon Mansion' }
+raise 'expected KantoStory Mansion echoes story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Mewtwo') && message['text'].include?('Phoenix') && message['text'].include?('Blaine') }
+raise 'expected KantoStory Mansion echoes next hook Blaine warning' unless mansion_echoes['next_hook'] == 'blaine_revival_warning'
+raise 'expected KantoStory Mansion echoes factions' unless mansion_echoes['factions'].include?('team_rocket') && mansion_echoes['factions'].include?('team_phoenix') && mansion_echoes['factions'].include?('nexus_order')
+raise 'expected KantoStory Mansion echoes unlocks Blaine warning and gym key rumor' unless mansion_echoes['unlocks'].include?('blaine_revival_warning') && mansion_echoes['unlocks'].include?('cinnabar_gym_key_rumor')
+raise 'expected KantoStory Mansion echoes battle hook' unless mansion_echoes['battle_hook']['battle_id'] == 'phoenix_mansion_research_assistant'
+raise 'expected KantoStory Mansion echoes level cap' unless mansion_echoes['battle_hook']['level_cap'] == 48
+second_mansion_echoes = NexusRed::KantoStory.complete_pokemon_mansion_mewtwo_echoes(kanto_story_state)
+raise 'expected KantoStory Mansion echoes idempotent guard' unless second_mansion_echoes['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Mansion echoes history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pokemon_mansion_mewtwo_echoes' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
