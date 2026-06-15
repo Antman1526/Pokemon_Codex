@@ -270,6 +270,8 @@ REQUIRED_MARKERS = (
     "ensure_johto_story",
     "complete_new_bark_arrival",
     "new_bark_arrival_cleared?",
+    "complete_violet_city_path",
+    "violet_city_path_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2868,6 +2870,52 @@ raise 'expected JohtoStory unlocks Violet and tower echo' unless johto_arrival['
 second_johto_arrival = NexusRed::JohtoStory.complete_new_bark_arrival(kanto_story_state)
 raise 'expected JohtoStory New Bark idempotent guard' unless second_johto_arrival['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate New Bark history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'johto_new_bark_arrival' } == 1
+pre_violet_path = NexusRed::JohtoStory.complete_violet_city_path(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Violet path gated before Johto unlock' unless pre_violet_path['status'] == 'blocked_missing_johto_region_unlock'
+johto_without_new_bark = NexusRed::RuntimeState.build
+johto_without_new_bark['current_region'] = 'johto'
+raise 'expected JohtoStory Violet path gated before New Bark' unless NexusRed::JohtoStory.complete_violet_city_path(johto_without_new_bark)['status'] == 'blocked_missing_new_bark_arrival'
+violet_path = NexusRed::JohtoStory.complete_violet_city_path(
+  kanto_story_state,
+  location: 'Route 29 / Cherrygrove Road',
+  area_type: 'route'
+)
+raise 'expected JohtoStory Violet path clear status' unless violet_path['status'] == 'cleared'
+raise 'expected JohtoStory Violet path event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('violet_city_path')
+raise 'expected JohtoStory Violet helper true' unless NexusRed::JohtoStory.violet_city_path_cleared?(kanto_story_state)
+raise 'expected JohtoStory Cherrygrove checkpoint event' unless kanto_story_state['johto_story']['cleared_events'].include?('cherrygrove_worldlink_checkpoint')
+raise 'expected JohtoStory Sprout Tower path event' unless kanto_story_state['johto_story']['cleared_events'].include?('sprout_tower_path_unlocked')
+raise 'expected JohtoStory Violet path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_JOHTO_VIOLET_CITY_PATH')
+raise 'expected JohtoStory Cherrygrove WorldLink flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CHERRYGROVE_WORLDLINK_CHECKPOINT')
+raise 'expected JohtoStory Red route training flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_JOHTO_ROUTE_TRAINING')
+raise 'expected JohtoStory Silver Route 29 pressure flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILVER_ROUTE29_PRESSURE')
+raise 'expected JohtoStory Rocket radio relay flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_JOHTO_RADIO_RELAY')
+raise 'expected JohtoStory Gold Dust Dark Cave buyer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_DARK_CAVE_BUYER')
+raise 'expected JohtoStory Moonlight Sprout Tower echo flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_SPROUT_TOWER_ECHO')
+raise 'expected JohtoStory Sprout Tower path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SPROUT_TOWER_PATH_UNLOCKED')
+raise 'expected JohtoStory Falkner gym tease flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FALKNER_GYM_TEASED')
+raise 'expected JohtoStory current act Sprout Tower' unless kanto_story_state['johto_story']['current_act'] == 'act_2_violet_city_and_sprout_tower'
+raise 'expected JohtoStory Red route training scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('johto_route_29_training')
+raise 'expected JohtoStory Bill Cherrygrove scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('cherrygrove_worldlink_checkpoint')
+raise 'expected JohtoStory Silver Route 29 activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Route 29')
+raise 'expected JohtoStory Silver moved into Johto' unless kanto_story_state['rival_progress']['silver']['current_region'] == 'johto'
+raise 'expected JohtoStory Rocket relay activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'radio_relay_rebuild' }
+raise 'expected JohtoStory Gold Dust Dark Cave activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'dark_cave_relic_buyer' }
+raise 'expected JohtoStory Moonlight Sprout Tower activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'sprout_tower_dream_echo' }
+raise 'expected JohtoStory Nexus Order Sprout Tower activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'sprout_tower_root_static_hidden' }
+raise 'expected JohtoStory Nexus Order still hidden after Violet path' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Rocket Moonlight Cherrygrove conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Cherrygrove Relay Shed' }
+raise 'expected JohtoStory Violet story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Violet') && message['text'].include?('Red') && message['text'].include?('Silver') && message['text'].include?('Rocket') && message['text'].include?('Moonlight') }
+raise 'expected JohtoStory Violet route chain' unless violet_path['route_chain'] == ['New Bark Town', 'Route 29', 'Cherrygrove City', 'Route 30', 'Violet City']
+raise 'expected JohtoStory Violet next hook Sprout Tower' unless violet_path['next_hook'] == 'sprout_tower_entry'
+raise 'expected JohtoStory Violet act result' unless violet_path['current_act'] == 'act_2_violet_city_and_sprout_tower'
+raise 'expected JohtoStory Falkner tease' unless violet_path['gym_leader_tease'] == 'Falkner'
+raise 'expected JohtoStory Sprout Tower signal active' unless violet_path['tower_signal'] == 'sprout_tower_echo_active'
+raise 'expected JohtoStory Violet factions' unless %w[team_rocket team_gold_dust team_moonlight nexus_order].all? { |faction| violet_path['factions'].include?(faction) }
+raise 'expected JohtoStory Violet unlocks' unless violet_path['unlocks'].include?('sprout_tower_entry') && violet_path['unlocks'].include?('violet_city_services')
+second_violet_path = NexusRed::JohtoStory.complete_violet_city_path(kanto_story_state)
+raise 'expected JohtoStory Violet path idempotent guard' unless second_violet_path['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Violet history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'violet_city_path' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

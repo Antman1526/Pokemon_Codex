@@ -153,6 +153,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_new_bark_arrival(state, location:, area_type:)` resolves the first Johto arrival after the World Circuit Passport. Professor Elm registers Antman in New Bark, Red remains the active full-game companion, Bill checks the tower echo against Lance's warning, Silver receives the first Johto WorldLink tease, Rocket and Gold Dust clash over relic leads, Moonlight pressure appears through tower/dream static, Nexus Order remains hidden, and `violet_city_path` opens as the next Johto hook.
 
+`NexusRed::JohtoStory.complete_violet_city_path(state, location:, area_type:)` resolves the first Johto road chain from New Bark through Route 29, Cherrygrove, Route 30, and Violet City. Red trains Antman on reading Johto's older terrain, Bill confirms the Cherrygrove WorldLink checkpoint, Silver pressures the route, Rocket rebuilds a radio relay, Gold Dust appears around Dark Cave relic rumors, Moonlight static leaks from Sprout Tower, Nexus Order remains hidden in the tower roots, and `sprout_tower_entry` opens before Falkner.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
