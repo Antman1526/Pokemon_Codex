@@ -77,6 +77,16 @@ module NexusRed
     NEXUS_ORDER_SLOWPOKE_WELL_PULSE_EVENT_ID = 'nexus_order_slowpoke_well_pulse_hidden'
     AZALEA_SERVICES_RESTORED_EVENT_ID = 'azalea_services_restored'
     BUGSY_HIVE_BADGE_PREP_EVENT_ID = 'bugsy_hive_badge_prep_unlocked'
+    BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID = 'bugsy_hive_badge_prep'
+    RED_BUGSY_PREP_EVENT_ID = 'red_bugsy_prep'
+    BROCK_BUG_COUNTER_ADVICE_EVENT_ID = 'brock_bug_counter_advice'
+    BILL_DREAM_SPORE_SCAN_EVENT_ID = 'bill_dream_spore_scan'
+    BUGSY_GYM_SCOUTING_EVENT_ID = 'bugsy_gym_scouting'
+    MOONLIGHT_BUGSY_DREAM_SPORE_EVENT_ID = 'moonlight_bugsy_dream_spore'
+    ROCKET_AZALEA_RETREAT_BURST_EVENT_ID = 'rocket_azalea_retreat_radio_burst'
+    GOLD_DUST_HIVE_CHARM_MARKET_EVENT_ID = 'gold_dust_hive_badge_charm_market'
+    NEXUS_ORDER_HIVE_PATTERN_EVENT_ID = 'nexus_order_hive_pattern_signal_hidden'
+    BUGSY_HIVE_BADGE_BATTLE_UNLOCKED_EVENT_ID = 'bugsy_hive_badge_battle_unlocked'
 
     module_function
 
@@ -1254,6 +1264,180 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_slowpoke_well_pulse_unrevealed',
         'unlocks' => %w[bugsy_hive_badge_prep kurt_apricorn_shop azalea_services_restored slowpoke_well_rematch_seed],
         'next_hook' => 'bugsy_hive_badge_prep'
+      }
+    end
+
+    def complete_bugsy_hive_badge_prep(state, location: 'Azalea Gym Grove', area_type: 'town')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_slowpoke_well_crisis', 'event_id' => BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID } unless slowpoke_well_crisis_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID } if bugsy_hive_badge_prep_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_BUGSY_HIVE_BADGE_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_RED_BUGSY_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_BUG_COUNTER_ADVICE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_DREAM_SPORE_SCAN')
+      add_story_flag(state, 'FLAG_NEXUS_BUGSY_GYM_SCOUTING')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_BUGSY_DREAM_SPORE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_AZALEA_RETREAT_RADIO_BURST')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_HIVE_BADGE_CHARM_MARKET')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_HIVE_PATTERN_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_BUGSY_HIVE_BADGE_BATTLE_UNLOCKED')
+
+      [
+        BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID,
+        RED_BUGSY_PREP_EVENT_ID,
+        BROCK_BUG_COUNTER_ADVICE_EVENT_ID,
+        BILL_DREAM_SPORE_SCAN_EVENT_ID,
+        BUGSY_GYM_SCOUTING_EVENT_ID,
+        MOONLIGHT_BUGSY_DREAM_SPORE_EVENT_ID,
+        ROCKET_AZALEA_RETREAT_BURST_EVENT_ID,
+        GOLD_DUST_HIVE_CHARM_MARKET_EVENT_ID,
+        NEXUS_ORDER_HIVE_PATTERN_EVENT_ID,
+        BUGSY_HIVE_BADGE_BATTLE_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'bugsy_prep_focus',
+        location: location,
+        summary: 'Red helps Antman reset after Slowpoke Well, then steps back so Bugsy remains a true solo gym challenge.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'bug_counter_advice',
+        location: location,
+        summary: 'Brock turns Bugsy prep into practical bug-type counterplay: status control, flying pressure, fire timing, and not underestimating Scyther.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'azalea_dream_spore_scan',
+        location: location,
+        summary: 'Bill scans dream-spore residue around Azalea Gym and proves Moonlight is trying to make the classic bug gym feel wrong.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver paced outside Azalea Gym, impatient to test Bugsy before Antman and irritated that everyone keeps studying the dream-spore anomaly.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'bugsy_dream_spore_anomaly',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Azalea Back Road',
+        'azalea_retreat_radio_burst',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        location,
+        'hive_badge_charm_market',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        location,
+        'hive_pattern_signal_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket retreat traffic scrambles in Moonlight dream-spore interference around Bugsy\'s grove.',
+        intensity: 1,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_6_bugsy_hive_badge'
+      event = bugsy_hive_badge_prep_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Bugsy opens the Hive Badge prep: Red steadies Antman, Brock reviews bug counters, and Bill confirms Moonlight dream-spore residue around Azalea Gym.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def bugsy_hive_badge_prep_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID }
+    end
+
+    def bugsy_hive_badge_prep_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => BUGSY_HIVE_BADGE_PREP_MAIN_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_6_bugsy_hive_badge',
+        'gym_leader' => 'Bugsy',
+        'badge' => 'Hive Badge',
+        'level_cap' => 22,
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          RED_BUGSY_PREP_EVENT_ID,
+          BROCK_BUG_COUNTER_ADVICE_EVENT_ID,
+          BILL_DREAM_SPORE_SCAN_EVENT_ID,
+          BUGSY_GYM_SCOUTING_EVENT_ID,
+          MOONLIGHT_BUGSY_DREAM_SPORE_EVENT_ID,
+          ROCKET_AZALEA_RETREAT_BURST_EVENT_ID,
+          GOLD_DUST_HIVE_CHARM_MARKET_EVENT_ID,
+          NEXUS_ORDER_HIVE_PATTERN_EVENT_ID,
+          BUGSY_HIVE_BADGE_BATTLE_UNLOCKED_EVENT_ID
+        ],
+        'battle_hook' => {
+          'battle_id' => 'bugsy_hive_badge_battle',
+          'battle_type' => 'johto_gym_leader_bugsy',
+          'location' => 'Azalea Gym',
+          'level_cap' => 22,
+          'companion_rule' => 'no_companion_assist_in_gym_battle',
+          'standard_team' => [
+            { 'species' => 'Spinarak', 'level' => 18, 'role' => 'web_status_intro' },
+            { 'species' => 'Metapod', 'level' => 18, 'role' => 'bulk_setup' },
+            { 'species' => 'Heracross', 'level' => 20, 'role' => 'azalea_power_hint' },
+            { 'species' => 'Scyther', 'level' => 22, 'role' => 'ace' }
+          ]
+        },
+        'anomaly' => 'moonlight_dream_spore_residue',
+        'hidden_meta_signal' => 'nexus_order_hive_pattern_signal_unrevealed',
+        'unlocks' => %w[bugsy_hive_badge_battle azalea_gym_services bugsy_rematch_seed],
+        'next_hook' => 'bugsy_hive_badge_battle'
       }
     end
   end

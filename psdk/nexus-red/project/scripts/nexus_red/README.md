@@ -165,6 +165,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_slowpoke_well_crisis(state, location:, result:, area_type:)` resolves Azalea's Rocket crisis while preserving the classic Johto order. Kurt is tracked as the local ally, Red backs Antman's raid without taking over, Brock handles injured Slowpoke care, Bill decodes Rocket's radio core, Rocket is forced out but remains globally dangerous, Gold Dust is tied to apricorn black-market pressure, Moonlight leaves dream echoes in the well, Nexus Order stays hidden in the pulse, WorldLink pauses inside the villain hideout, and `bugsy_hive_badge_prep` opens next instead of jumping straight to Ilex.
 
+`NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(state, location:, area_type:)` resolves the Azalea Gym setup after Slowpoke Well. The beat stays classic Johto in structure but adds the Nexus Red twist: Red steadies Antman outside the gym, Brock teaches bug-type counterplay, Bill scans Moonlight dream-spore residue, Silver pressures the badge race, Rocket retreat traffic clashes with Moonlight interference, Gold Dust sells Hive Badge charms, Nexus Order remains hidden in the hive-pattern signal, and the method returns a solo `bugsy_hive_badge_battle` hook.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
