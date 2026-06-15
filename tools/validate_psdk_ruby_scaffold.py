@@ -29,6 +29,11 @@ REQUIRED_MARKERS = (
     "record_badge",
     "record_capture",
     "record_region_entry",
+    "module CompanionProgress",
+    "ensure_companion",
+    "activate_companion",
+    "record_scene",
+    "tag_battle_ready?",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -187,6 +192,43 @@ raise 'expected Dax latest region objective' unless state['rival_progress']['dax
 rival_digest = NexusRed::WorldLink.release_digest(state)
 raise 'expected rival digest item released' unless rival_digest['items'].length == 1
 raise 'expected rival progress tracks three rivals' unless state['rival_progress'].keys.sort == %w[ava blue dax]
+
+red = NexusRed::CompanionProgress.ensure_companion(state, 'red')
+raise 'expected Red companion progress initialized' unless red['display_name'] == 'Red'
+raise 'expected Red active by default' unless red['active'] == true
+raise 'expected Red follows by default' unless red['following'] == true
+raise 'expected Red tag battle ready' unless NexusRed::CompanionProgress.tag_battle_ready?(state, 'red')
+raise 'expected Red blocked from gym partner role' if NexusRed::CompanionProgress.tag_battle_ready?(state, 'red', context: 'gym_battle')
+
+misty_message = NexusRed::CompanionProgress.activate_companion(
+  state,
+  'misty',
+  location: 'Route 25',
+  reason: 'joined after the Cerulean bridge crisis',
+  following: true,
+  area_type: 'route'
+)
+raise 'expected Misty activation immediate delivery' unless misty_message['delivery'] == 'immediate'
+raise 'expected Misty active companion progress' unless state['companion_progress']['misty']['active'] == true
+raise 'expected Misty following state' unless state['companion_progress']['misty']['following'] == true
+raise 'expected Misty active from Kanto' unless state['companion_progress']['misty']['active_from'] == 'kanto'
+
+scene_message = NexusRed::CompanionProgress.record_scene(
+  state,
+  'red',
+  'route_1_training',
+  location: 'Route 1',
+  summary: 'Red warmed up Antman before Viridian.',
+  area_type: 'route'
+)
+raise 'expected companion scene immediate delivery' unless scene_message['delivery'] == 'immediate'
+raise 'expected Red route scene recorded' unless state['companion_progress']['red']['scene_flags'].include?('route_1_training')
+raise 'expected Red latest scene activity' unless state['companion_progress']['red']['latest_activity']['scene_id'] == 'route_1_training'
+
+bill = NexusRed::CompanionProgress.ensure_companion(state, 'bill')
+raise 'expected Bill initialized as support companion' unless bill['display_name'] == 'Bill'
+raise 'expected Bill not tag battle ready' if NexusRed::CompanionProgress.tag_battle_ready?(state, 'bill')
+raise 'expected active companion remains Red' unless state['active_companion'] == 'red'
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
