@@ -101,6 +101,8 @@ REQUIRED_MARKERS = (
     "prepare_wild_battle_request",
     "pending_battle_request",
     "consume_pending_battle_request",
+    "module RouteMigrationEventAdapter",
+    "trigger_route",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -136,6 +138,7 @@ REQUIRED_RUNTIME_FILES = (
     "starter_selection.rb",
     "early_migration_encounters.rb",
     "map_event_bridge.rb",
+    "route_migration_event_adapter.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -792,6 +795,19 @@ raise 'expected Route 2 migration battle request prepared' unless route_2_reques
 raise 'expected Route 2 migration battle request species' unless route_2_request['species'] == 'Treecko'
 raise 'expected Route 2 migration battle request map id' unless route_2_request['psdk_map_id'] == 'kanto_route_2_forest_gate'
 raise 'expected Route 2 event history recorded' unless route_2_event_state['map_event_history'].any? { |event| event['event_id'] == 'route_2_migration_event' && event['species'] == 'Treecko' }
+direct_route_2_state = NexusRed::RuntimeState.build
+NexusRed::StarterSelection.select_partner(direct_route_2_state, 'Bulbasaur')
+direct_route_2_state['story_flags'] << 'route_2_forest_gate_reached'
+direct_route_2_request = NexusRed::RouteMigrationEventAdapter.trigger_route(
+  direct_route_2_state,
+  event_id: 'route_2_direct_migration_event',
+  route_id: 'route_2',
+  time: 'morning',
+  max_level: 6
+)
+raise 'expected shared route migration adapter to prepare Route 2' unless direct_route_2_request['status'] == 'prepared'
+raise 'expected shared route migration adapter event id' unless direct_route_2_request['event_id'] == 'route_2_direct_migration_event'
+raise 'expected shared route migration adapter species Treecko' unless direct_route_2_request['species'] == 'Treecko'
 
 route_3_event_state = NexusRed::RuntimeState.build
 NexusRed::StarterSelection.select_partner(route_3_event_state, 'Bulbasaur')
