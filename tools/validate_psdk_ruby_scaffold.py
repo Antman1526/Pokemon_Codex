@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "psdk" / "nexus-red" / "project" / "scripts" / "nexus_red" / "000_seed_loader.rb"
+RUNTIME_DIR = ROOT / "psdk" / "nexus-red" / "project" / "scripts" / "nexus_red" / "runtime"
 README = ROOT / "psdk" / "nexus-red" / "project" / "scripts" / "nexus_red" / "README.md"
 
 REQUIRED_MARKERS = (
@@ -87,6 +88,21 @@ REQUIRED_REGISTRY_FILES = (
     "core_companion_registry.json",
     "rival_worldlink_registry.json",
     "gameplay_systems_registry.json",
+)
+
+REQUIRED_RUNTIME_FILES = (
+    "seed_data.rb",
+    "runtime_state.rb",
+    "world_link.rb",
+    "rival_progress.rb",
+    "companion_progress.rb",
+    "faction_war.rb",
+    "region_progress.rb",
+    "gameplay_options.rb",
+    "field_tools.rb",
+    "pokedex_availability.rb",
+    "center_mart_services.rb",
+    "encounter_world.rb",
 )
 
 RUNTIME_SMOKE = r"""
@@ -601,24 +617,39 @@ def validate() -> list[str]:
     if not README.exists():
         errors.append(f"missing Ruby scaffold README: {README.relative_to(ROOT)}")
 
+    if not RUNTIME_DIR.exists():
+        errors.append(f"missing Ruby runtime directory: {RUNTIME_DIR.relative_to(ROOT)}")
+
+    runtime_files = [RUNTIME_DIR / filename for filename in REQUIRED_RUNTIME_FILES]
+    for runtime_file in runtime_files:
+        if not runtime_file.exists():
+            errors.append(f"missing Ruby runtime file: {runtime_file.relative_to(ROOT)}")
+
     content = SCRIPT.read_text(encoding="utf-8")
+    for runtime_file in runtime_files:
+        if runtime_file.exists():
+            content += "\n" + runtime_file.read_text(encoding="utf-8")
+
     for marker in REQUIRED_MARKERS:
         if marker not in content:
-            errors.append(f"Ruby seed loader missing marker: {marker}")
+            errors.append(f"Ruby scaffold missing marker: {marker}")
     for filename in REQUIRED_REGISTRY_FILES:
         if filename not in content:
-            errors.append(f"Ruby seed loader missing registry file: {filename}")
+            errors.append(f"Ruby scaffold missing registry file: {filename}")
 
-    result = subprocess.run(
-        ["ruby", "-c", str(SCRIPT)],
-        cwd=ROOT,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
-    )
-    if result.returncode != 0:
-        errors.append("Ruby syntax check failed:\n" + result.stdout)
+    for ruby_file in [SCRIPT, *runtime_files]:
+        if not ruby_file.exists():
+            continue
+        result = subprocess.run(
+            ["ruby", "-c", str(ruby_file)],
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        if result.returncode != 0:
+            errors.append(f"Ruby syntax check failed for {ruby_file.relative_to(ROOT)}:\n{result.stdout}")
 
     runtime = subprocess.run(
         ["ruby", "-e", RUNTIME_SMOKE],
