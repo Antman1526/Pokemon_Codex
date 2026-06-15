@@ -1067,6 +1067,28 @@ python3 tools/validate_native_celadon_rocket_hideout_entry.py
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_entry_test.gd
 ```
 
+### Task 7.55: Add Celadon Rocket Hideout B1F maze scout
+
+Acceptance:
+
+- The Rocket Hideout entry keeps B1F locked until the entry-floor scouting beat unlocks the B1F path.
+- After the entry-floor beat, Antman can transition into a playable Celadon Rocket Hideout B1F scene.
+- Red remains the active full-game companion and guards Antman through the first real Rocket maze floor without taking over the player's role.
+- Bill traces the Silph Scope machinery through B1F, connecting the Celadon dungeon to the Lavender/Pokemon Tower problem.
+- Rocket's classic spinner-tile maze is visible and recorded as the first hideout dungeon hazard.
+- Team Gold Dust has infiltrated B1F for a coin cache/relic ledger, keeping the custom faction war active inside Rocket territory.
+- Team Moonlight signal bleed interferes with Rocket's maze controls, keeping the Lavender/Celadon pressure blended.
+- The Lift Key trail points deeper, and the Hideout B2F path is unlocked as the next dungeon step while the actual B2F scene is deferred.
+- Save state and WorldLink record Rocket Hideout B1F reached, Red's maze guard beat, Bill's Silph Scope machine trace, Rocket spinner maze, Gold Dust infiltration, Team Moonlight signal bleed, Lift Key deeper trail, and Hideout B2F path unlock.
+- WorldLink checklist adds Reach Rocket Hideout B1F, Map Rocket spinner maze, Spot Gold Dust infiltration, Trace Moonlight hideout signal, and Unlock Hideout B2F path milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_rocket_hideout_b1f.py
+godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b1f_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

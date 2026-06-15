@@ -1,0 +1,45 @@
+{
+  "id": "celadon_rocket_hideout_b1f_batch",
+  "feed": [
+    {
+      "id": "wl_celadon_rocket_hideout_b1f_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Celadon Rocket Hideout B1F."
+    },
+    {
+      "id": "wl_red_hideout_b1f_maze_guard",
+      "speaker": "Red",
+      "text": "Red took point at the first spinner maze and warned that Rocket built B1F to separate partners."
+    },
+    {
+      "id": "wl_bill_silph_scope_machine_trace",
+      "speaker": "Bill",
+      "text": "Bill traced the Silph Scope machine pattern through the B1F equipment bank."
+    },
+    {
+      "id": "wl_rocket_spinner_maze",
+      "speaker": "WorldLink",
+      "text": "Rocket's spinner maze has been mapped as the first real Celadon hideout dungeon hazard."
+    },
+    {
+      "id": "wl_gold_dust_hideout_infiltration",
+      "speaker": "WorldLink",
+      "text": "Team Gold Dust has infiltrated Rocket's hideout, hunting for a hidden coin cache and stolen relic ledger."
+    },
+    {
+      "id": "wl_team_moonlight_hideout_signal_bleed",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight signal bleed is interfering with Rocket's maze controls."
+    },
+    {
+      "id": "wl_lift_key_deeper_trail",
+      "speaker": "WorldLink",
+      "text": "The Lift Key trail continues below B1F instead of resolving on the first hideout floor."
+    },
+    {
+      "id": "wl_rocket_hideout_b2f_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Rocket Hideout B2F is unlocked as the next dungeon step."
+    }
+  ]
+}

@@ -286,6 +286,15 @@ func start_new_game(name: String) -> void:
 		"team_moonlight_rocket_interference_seen": false,
 		"rocket_hideout_b1f_path_unlocked": false,
 		"worldlink_celadon_rocket_hideout_entry_batch_queued": false,
+		"celadon_rocket_hideout_b1f_reached": false,
+		"red_hideout_b1f_maze_guard_seen": false,
+		"bill_silph_scope_machine_trace_seen": false,
+		"rocket_spinner_maze_seen": false,
+		"gold_dust_hideout_infiltration_seen": false,
+		"team_moonlight_hideout_signal_bleed_seen": false,
+		"lift_key_deeper_trail_seen": false,
+		"rocket_hideout_b2f_path_unlocked": false,
+		"worldlink_celadon_rocket_hideout_b1f_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1154,6 +1163,39 @@ func queue_celadon_rocket_hideout_entry_batch() -> void:
 		"wl_giovanni_hideout_command",
 		"wl_team_moonlight_rocket_interference",
 		"wl_rocket_hideout_b1f_path_unlocked",
+	])
+
+
+func enter_celadon_rocket_hideout_b1f() -> void:
+	current_scene = "celadon_rocket_hideout_b1f"
+	active_companion = "red"
+	set_flag("celadon_rocket_hideout_b1f_reached", true)
+	queue_worldlink_id("wl_celadon_rocket_hideout_b1f_reached")
+
+
+func record_celadon_rocket_hideout_b1f_scene() -> void:
+	active_companion = "red"
+	set_flag("red_hideout_b1f_maze_guard_seen", true)
+	set_flag("bill_silph_scope_machine_trace_seen", true)
+	set_flag("rocket_spinner_maze_seen", true)
+	set_flag("gold_dust_hideout_infiltration_seen", true)
+	set_flag("team_moonlight_hideout_signal_bleed_seen", true)
+	set_flag("lift_key_deeper_trail_seen", true)
+	set_flag("rocket_hideout_b2f_path_unlocked", true)
+	queue_celadon_rocket_hideout_b1f_batch()
+
+
+func queue_celadon_rocket_hideout_b1f_batch() -> void:
+	set_flag("worldlink_celadon_rocket_hideout_b1f_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_rocket_hideout_b1f_reached",
+		"wl_red_hideout_b1f_maze_guard",
+		"wl_bill_silph_scope_machine_trace",
+		"wl_rocket_spinner_maze",
+		"wl_gold_dust_hideout_infiltration",
+		"wl_team_moonlight_hideout_signal_bleed",
+		"wl_lift_key_deeper_trail",
+		"wl_rocket_hideout_b2f_path_unlocked",
 	])
 
 
