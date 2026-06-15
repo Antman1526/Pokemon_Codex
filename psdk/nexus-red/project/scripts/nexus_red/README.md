@@ -157,6 +157,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_sprout_tower_entry(state, location:, area_type:)` resolves the first Johto tower/tradition beat. Elder Li opens the sage trial, Red frames the tower as a lesson in restraint, Brock explains Johto's living-tower history, Bill scans the deep root signal, Silver rejects the sages while chasing the same hidden pressure, Moonlight turns the tower into a dream ritual, Rocket hides radio antenna parts in the beams, Gold Dust tries to buy relic access, Nexus Order remains hidden below the roots, and `falkner_zephyr_badge_prep` opens.
 
+`NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(state, location:, area_type:)` resolves the pre-Zephyr Badge gym setup without awarding the badge. Red and Brock train Antman on wind reads and flying-type counterplay, Bill scans the Violet Gym roof signal, Silver pressures the rafters, Moonlight and Rocket fight over zephyr-current interference, Gold Dust sells feather charms, Nexus Order remains hidden in the air-current static, and the method returns a `battle_hook` for `falkner_zephyr_badge_battle`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

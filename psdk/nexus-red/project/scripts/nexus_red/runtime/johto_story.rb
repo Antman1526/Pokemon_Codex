@@ -31,6 +31,17 @@ module NexusRed
     GOLD_DUST_TOWER_RELIC_OFFER_EVENT_ID = 'gold_dust_tower_relic_offer'
     NEXUS_ORDER_SPROUT_ROOT_STATIC_EVENT_ID = 'nexus_order_sprout_root_static_hidden'
     FALKNER_ZEPHYR_BADGE_PREP_EVENT_ID = 'falkner_zephyr_badge_prep_unlocked'
+    FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID = 'falkner_zephyr_badge_prep'
+    FALKNER_WIND_DOJO_TRAINING_EVENT_ID = 'falkner_wind_dojo_training'
+    RED_FALKNER_PREP_EVENT_ID = 'red_falkner_prep'
+    BROCK_FLYING_COUNTER_ADVICE_EVENT_ID = 'brock_flying_counter_advice'
+    BILL_GYM_ROOF_SIGNAL_SCAN_EVENT_ID = 'bill_gym_roof_signal_scan'
+    SILVER_VIOLET_GYM_PRESSURE_EVENT_ID = 'silver_violet_gym_pressure'
+    MOONLIGHT_ZEPHYR_DRAFT_EVENT_ID = 'moonlight_zephyr_draft'
+    ROCKET_GYM_ROOF_RELAY_EVENT_ID = 'rocket_gym_roof_relay'
+    GOLD_DUST_FEATHER_CHARM_MARKET_EVENT_ID = 'gold_dust_feather_charm_market'
+    NEXUS_ORDER_ZEPHYR_AIR_CURRENT_EVENT_ID = 'nexus_order_zephyr_air_current_static_hidden'
+    ZEPHYR_BADGE_BATTLE_UNLOCKED_EVENT_ID = 'zephyr_badge_battle_unlocked'
 
     module_function
 
@@ -533,6 +544,180 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_sprout_tower_root_static_unrevealed',
         'unlocks' => %w[falkner_zephyr_badge_prep violet_gym_access elder_li_rematch_lead],
         'next_hook' => 'falkner_zephyr_badge_prep'
+      }
+    end
+
+    def complete_falkner_zephyr_badge_prep(state, location: 'Violet Gym Aerie', area_type: 'town')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_sprout_tower_entry', 'event_id' => FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID } unless sprout_tower_entry_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID } if falkner_zephyr_badge_prep_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_FALKNER_ZEPHYR_BADGE_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_FALKNER_WIND_DOJO_TRAINING')
+      add_story_flag(state, 'FLAG_NEXUS_RED_FALKNER_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_FLYING_COUNTER_ADVICE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_GYM_ROOF_SIGNAL_SCAN')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_VIOLET_GYM_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_ZEPHYR_DRAFT')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GYM_ROOF_RELAY')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_FEATHER_CHARM_MARKET')
+      add_story_flag(state, 'FLAG_NEXUS_ZEPHYR_BADGE_BATTLE_UNLOCKED')
+
+      [
+        FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID,
+        FALKNER_WIND_DOJO_TRAINING_EVENT_ID,
+        RED_FALKNER_PREP_EVENT_ID,
+        BROCK_FLYING_COUNTER_ADVICE_EVENT_ID,
+        BILL_GYM_ROOF_SIGNAL_SCAN_EVENT_ID,
+        SILVER_VIOLET_GYM_PRESSURE_EVENT_ID,
+        MOONLIGHT_ZEPHYR_DRAFT_EVENT_ID,
+        ROCKET_GYM_ROOF_RELAY_EVENT_ID,
+        GOLD_DUST_FEATHER_CHARM_MARKET_EVENT_ID,
+        NEXUS_ORDER_ZEPHYR_AIR_CURRENT_EVENT_ID,
+        ZEPHYR_BADGE_BATTLE_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'falkner_wind_prep',
+        location: location,
+        summary: 'Red runs Antman through patient wind reads before the first Johto gym, then steps back so the badge battle stays solo.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'flying_counter_advice',
+        location: location,
+        summary: 'Brock turns Falkner prep into practical counterplay: sturdy positioning, rock coverage, electric timing, and not chasing birds into bad trades.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'violet_gym_roof_signal_scan',
+        location: location,
+        summary: 'Bill finds the gym roof currents are carrying the same tower-root signal that Moonlight and Rocket keep contaminating.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver watched Falkner from the Violet Gym rafters, irritated that Antman is earning respect instead of forcing shortcuts.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'zephyr_draft_dream_static',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'violet_gym_roof_relay',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        location,
+        'feather_charm_market',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        location,
+        'zephyr_air_current_static_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket roof relay signals break apart in Moonlight zephyr-draft static above Falkner\'s gym.',
+        intensity: 1,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_3_falkner_zephyr_badge'
+      event = falkner_zephyr_badge_prep_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Falkner opens the Zephyr Badge trial: Red and Brock prep Antman outside the gym while Bill tracks roof-current static before the solo battle.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def falkner_zephyr_badge_prep_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID }
+    end
+
+    def falkner_zephyr_badge_prep_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => FALKNER_ZEPHYR_BADGE_PREP_MAIN_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_3_falkner_zephyr_badge',
+        'gym_leader' => 'Falkner',
+        'badge' => 'Zephyr Badge',
+        'level_cap' => 16,
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          FALKNER_WIND_DOJO_TRAINING_EVENT_ID,
+          RED_FALKNER_PREP_EVENT_ID,
+          BROCK_FLYING_COUNTER_ADVICE_EVENT_ID,
+          BILL_GYM_ROOF_SIGNAL_SCAN_EVENT_ID,
+          SILVER_VIOLET_GYM_PRESSURE_EVENT_ID,
+          MOONLIGHT_ZEPHYR_DRAFT_EVENT_ID,
+          ROCKET_GYM_ROOF_RELAY_EVENT_ID,
+          GOLD_DUST_FEATHER_CHARM_MARKET_EVENT_ID,
+          NEXUS_ORDER_ZEPHYR_AIR_CURRENT_EVENT_ID,
+          ZEPHYR_BADGE_BATTLE_UNLOCKED_EVENT_ID
+        ],
+        'battle_hook' => {
+          'battle_id' => 'falkner_zephyr_badge_battle',
+          'battle_type' => 'johto_gym_leader_falkner',
+          'location' => 'Violet Gym',
+          'level_cap' => 16,
+          'companion_rule' => 'no_companion_assist_in_gym_battle',
+          'standard_team' => [
+            { 'species' => 'Hoothoot', 'level' => 13, 'role' => 'sleep_pressure' },
+            { 'species' => 'Pidgey', 'level' => 14, 'role' => 'speed_intro' },
+            { 'species' => 'Pidgeotto', 'level' => 16, 'role' => 'ace' }
+          ]
+        },
+        'hidden_meta_signal' => 'nexus_order_zephyr_air_current_static_unrevealed',
+        'unlocks' => %w[zephyr_badge_battle violet_gym_air_current_trial falkner_rematch_seed],
+        'next_hook' => 'falkner_zephyr_badge_battle'
       }
     end
   end

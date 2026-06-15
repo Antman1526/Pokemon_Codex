@@ -274,6 +274,8 @@ REQUIRED_MARKERS = (
     "violet_city_path_cleared?",
     "complete_sprout_tower_entry",
     "sprout_tower_entry_cleared?",
+    "complete_falkner_zephyr_badge_prep",
+    "falkner_zephyr_badge_prep_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2968,6 +2970,55 @@ raise 'expected JohtoStory Sprout Tower unlocks' unless sprout_tower['unlocks'].
 second_sprout_tower = NexusRed::JohtoStory.complete_sprout_tower_entry(kanto_story_state)
 raise 'expected JohtoStory Sprout Tower idempotent guard' unless second_sprout_tower['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Sprout Tower history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'sprout_tower_entry' } == 1
+pre_falkner_prep = NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Falkner prep gated before Johto unlock' unless pre_falkner_prep['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_sprout_tower = NexusRed::RuntimeState.build
+johto_before_sprout_tower['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_sprout_tower)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_sprout_tower)
+raise 'expected JohtoStory Falkner prep gated before Sprout Tower' unless NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_sprout_tower)['status'] == 'blocked_missing_sprout_tower_entry'
+falkner_prep = NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(
+  kanto_story_state,
+  location: 'Violet Gym Aerie',
+  area_type: 'town'
+)
+raise 'expected JohtoStory Falkner prep clear status' unless falkner_prep['status'] == 'cleared'
+raise 'expected JohtoStory Falkner prep event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('falkner_zephyr_badge_prep')
+raise 'expected JohtoStory Falkner prep helper true' unless NexusRed::JohtoStory.falkner_zephyr_badge_prep_cleared?(kanto_story_state)
+raise 'expected JohtoStory wind dojo training event' unless kanto_story_state['johto_story']['cleared_events'].include?('falkner_wind_dojo_training')
+raise 'expected JohtoStory Zephyr battle unlock event' unless kanto_story_state['johto_story']['cleared_events'].include?('zephyr_badge_battle_unlocked')
+raise 'expected JohtoStory Falkner prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FALKNER_ZEPHYR_BADGE_PREP')
+raise 'expected JohtoStory wind dojo flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FALKNER_WIND_DOJO_TRAINING')
+raise 'expected JohtoStory Red Falkner prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_FALKNER_PREP')
+raise 'expected JohtoStory Brock flying counter flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_FLYING_COUNTER_ADVICE')
+raise 'expected JohtoStory Bill roof scan flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_GYM_ROOF_SIGNAL_SCAN')
+raise 'expected JohtoStory Silver Violet pressure flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILVER_VIOLET_GYM_PRESSURE')
+raise 'expected JohtoStory Moonlight Zephyr draft flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_ZEPHYR_DRAFT')
+raise 'expected JohtoStory Rocket gym roof relay flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GYM_ROOF_RELAY')
+raise 'expected JohtoStory Gold Dust feather charm flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_FEATHER_CHARM_MARKET')
+raise 'expected JohtoStory Zephyr battle unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ZEPHYR_BADGE_BATTLE_UNLOCKED')
+raise 'expected JohtoStory current act still Falkner' unless kanto_story_state['johto_story']['current_act'] == 'act_3_falkner_zephyr_badge'
+raise 'expected JohtoStory Red Falkner prep scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('falkner_wind_prep')
+raise 'expected JohtoStory Brock counter advice scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('flying_counter_advice')
+raise 'expected JohtoStory Bill gym roof scan scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('violet_gym_roof_signal_scan')
+raise 'expected JohtoStory Silver Violet gym activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Falkner')
+raise 'expected JohtoStory Moonlight Zephyr activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'zephyr_draft_dream_static' }
+raise 'expected JohtoStory Rocket roof relay activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'violet_gym_roof_relay' }
+raise 'expected JohtoStory Gold Dust feather charm activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'feather_charm_market' }
+raise 'expected JohtoStory Nexus Order air current activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'zephyr_air_current_static_hidden' }
+raise 'expected JohtoStory Nexus Order still hidden after Falkner prep' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Rocket Moonlight Violet Gym conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Violet Gym Aerie' }
+raise 'expected JohtoStory Falkner prep story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Falkner') && message['text'].include?('Red') && message['text'].include?('Brock') && message['text'].include?('Zephyr') }
+raise 'expected JohtoStory Falkner prep result leader' unless falkner_prep['gym_leader'] == 'Falkner'
+raise 'expected JohtoStory Falkner prep next hook battle' unless falkner_prep['next_hook'] == 'falkner_zephyr_badge_battle'
+raise 'expected JohtoStory Falkner prep level cap' unless falkner_prep['level_cap'] == 16
+raise 'expected JohtoStory Falkner prep battle hook id' unless falkner_prep['battle_hook']['battle_id'] == 'falkner_zephyr_badge_battle'
+raise 'expected JohtoStory Falkner no companion gym assist' unless falkner_prep['battle_hook']['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected JohtoStory Falkner standard team Pidgeotto' unless falkner_prep['battle_hook']['standard_team'].any? { |member| member['species'] == 'Pidgeotto' && member['role'] == 'ace' }
+raise 'expected JohtoStory Falkner prep unlocks' unless falkner_prep['unlocks'].include?('zephyr_badge_battle') && falkner_prep['unlocks'].include?('violet_gym_air_current_trial')
+second_falkner_prep = NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(kanto_story_state)
+raise 'expected JohtoStory Falkner prep idempotent guard' unless second_falkner_prep['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Falkner prep history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'falkner_zephyr_badge_prep' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
