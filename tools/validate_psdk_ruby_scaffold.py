@@ -240,6 +240,8 @@ REQUIRED_MARKERS = (
     "sabrina_gym_prep_cleared?",
     "complete_sabrina_mind_badge_challenge",
     "sabrina_mind_badge_challenge_cleared?",
+    "complete_cinnabar_island_arrival",
+    "cinnabar_island_arrival_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2363,6 +2365,41 @@ raise 'expected KantoStory Sabrina badge unlocks Cinnabar' unless sabrina_badge[
 second_sabrina_badge = NexusRed::KantoStory.complete_sabrina_mind_badge_challenge(kanto_story_state)
 raise 'expected KantoStory Sabrina badge idempotent guard' unless second_sabrina_badge['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Sabrina badge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'sabrina_mind_badge_challenge' } == 1
+pre_cinnabar_arrival = NexusRed::KantoStory.complete_cinnabar_island_arrival(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Cinnabar arrival gated before Sabrina badge' unless pre_cinnabar_arrival['status'] == 'blocked_missing_sabrina_mind_badge_challenge'
+cinnabar_arrival = NexusRed::KantoStory.complete_cinnabar_island_arrival(
+  kanto_story_state,
+  location: 'Cinnabar Island',
+  area_type: 'city'
+)
+raise 'expected KantoStory Cinnabar arrival clear status' unless cinnabar_arrival['status'] == 'cleared'
+raise 'expected KantoStory Cinnabar arrival event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('cinnabar_island_arrival')
+raise 'expected KantoStory Cinnabar arrival helper true' unless NexusRed::KantoStory.cinnabar_island_arrival_cleared?(kanto_story_state)
+raise 'expected KantoStory Cinnabar arrival flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_ISLAND_ARRIVAL')
+raise 'expected KantoStory Pokemon Mansion lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_MANSION_LEAD')
+raise 'expected KantoStory Cinnabar lab access flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_LAB_ACCESS_UNLOCKED')
+raise 'expected KantoStory Phoenix research assistants flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PHOENIX_RESEARCH_ASSISTANTS')
+raise 'expected KantoStory Blaine revival warning flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLAINE_REVIVAL_WARNING')
+raise 'expected KantoStory Red Cinnabar restraint flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_CINNABAR_RESTRAINT_SCENE')
+raise 'expected KantoStory Rocket Cinnabar surveillance flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_CINNABAR_LAB_SURVEILLANCE')
+raise 'expected KantoStory current act stays Cinnabar Viridian' unless kanto_story_state['kanto_story']['current_act'] == 'act_6_cinnabar_viridian'
+raise 'expected KantoStory Red Cinnabar restraint scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('cinnabar_restraint_scene')
+raise 'expected KantoStory Bill Cinnabar lab entry scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('cinnabar_lab_entry_trace')
+raise 'expected KantoStory Brock Cinnabar fossil ethics scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('cinnabar_fossil_ethics')
+raise 'expected KantoStory Rocket Cinnabar surveillance activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Island' && activity['operation'] == 'cinnabar_lab_surveillance' }
+raise 'expected KantoStory Phoenix Cinnabar assistants activity' unless kanto_story_state['faction_progress']['team_phoenix']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Island' && activity['operation'] == 'revival_research_assistants' }
+raise 'expected KantoStory Nexus Cinnabar hidden activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Island' && activity['operation'] == 'mansion_genealogy_signal_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Cinnabar arrival' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Phoenix Cinnabar conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_phoenix' && conflict['location'] == 'Cinnabar Island' }
+raise 'expected KantoStory Cinnabar arrival story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Cinnabar') && message['text'].include?('Mansion') && message['text'].include?('Phoenix') }
+raise 'expected KantoStory Cinnabar arrival next hook Mansion' unless cinnabar_arrival['next_hook'] == 'pokemon_mansion_mewtwo_echoes'
+raise 'expected KantoStory Cinnabar arrival gym leader Blaine' unless cinnabar_arrival['gym_leader'] == 'Blaine'
+raise 'expected KantoStory Cinnabar arrival badge Volcano Badge' unless cinnabar_arrival['badge'] == 'Volcano Badge'
+raise 'expected KantoStory Cinnabar arrival unlocks Mansion and lab' unless cinnabar_arrival['unlocks'].include?('pokemon_mansion') && cinnabar_arrival['unlocks'].include?('cinnabar_lab_access')
+raise 'expected KantoStory Cinnabar arrival encounter hooks' unless cinnabar_arrival['encounter_hooks'].include?('mansion_genealogy_echoes') && cinnabar_arrival['encounter_hooks'].include?('revival_research_rumors')
+second_cinnabar_arrival = NexusRed::KantoStory.complete_cinnabar_island_arrival(kanto_story_state)
+raise 'expected KantoStory Cinnabar arrival idempotent guard' unless second_cinnabar_arrival['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Cinnabar arrival history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'cinnabar_island_arrival' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

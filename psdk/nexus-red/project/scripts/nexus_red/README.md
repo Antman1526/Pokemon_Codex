@@ -125,6 +125,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_sabrina_mind_badge_challenge(state, location:, result:, area_type:)` resolves Sabrina's Gym battle. It awards the canonical Marsh Badge, breaks Moonlight pressure over Saffron, keeps Nexus Order hidden, records Red/Sabrina/Bill exit scenes, and opens `cinnabar_island_arrival`.
 
+`NexusRed::KantoStory.complete_cinnabar_island_arrival(state, location:, area_type:)` resolves the first Cinnabar step after Saffron. It opens Pokemon Mansion and Cinnabar Lab access, introduces Phoenix research assistants, records Red's restraint scene plus Bill/Brock lab ethics support, keeps Nexus Order hidden, and opens `pokemon_mansion_mewtwo_echoes`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

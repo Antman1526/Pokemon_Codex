@@ -283,6 +283,14 @@ module NexusRed
     BILL_CINNABAR_LAB_TRACE_EVENT_ID = 'bill_cinnabar_lab_trace'
     ROCKET_CINNABAR_LAB_PIVOT_EVENT_ID = 'rocket_cinnabar_lab_pivot'
     NEXUS_ORDER_BADGE_ENERGY_OBSERVER_EVENT_ID = 'nexus_order_badge_energy_observer_hidden'
+    CINNABAR_ISLAND_ARRIVAL_EVENT_ID = 'cinnabar_island_arrival'
+    POKEMON_MANSION_LEAD_EVENT_ID = 'pokemon_mansion_lead'
+    CINNABAR_LAB_ACCESS_EVENT_ID = 'cinnabar_lab_access_unlocked'
+    PHOENIX_RESEARCH_ASSISTANTS_EVENT_ID = 'phoenix_research_assistants'
+    BLAINE_REVIVAL_WARNING_EVENT_ID = 'blaine_revival_warning'
+    RED_CINNABAR_RESTRAINT_EVENT_ID = 'red_cinnabar_restraint_scene'
+    ROCKET_CINNABAR_SURVEILLANCE_EVENT_ID = 'rocket_cinnabar_lab_surveillance'
+    NEXUS_ORDER_MANSION_GENEALOGY_EVENT_ID = 'nexus_order_mansion_genealogy_signal_hidden'
 
     module_function
 
@@ -4334,6 +4342,106 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID }
     end
 
+    def complete_cinnabar_island_arrival(state, location: 'Cinnabar Island', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_sabrina_mind_badge_challenge', 'event_id' => CINNABAR_ISLAND_ARRIVAL_EVENT_ID } unless sabrina_mind_badge_challenge_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CINNABAR_ISLAND_ARRIVAL_EVENT_ID } if cinnabar_island_arrival_cleared?(state)
+
+      story['current_act'] = 'act_6_cinnabar_viridian'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_ISLAND_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_MANSION_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_LAB_ACCESS_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_PHOENIX_RESEARCH_ASSISTANTS')
+      add_story_flag(state, 'FLAG_NEXUS_BLAINE_REVIVAL_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_RED_CINNABAR_RESTRAINT_SCENE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_CINNABAR_LAB_SURVEILLANCE')
+      mark_cleared_event(story, CINNABAR_ISLAND_ARRIVAL_EVENT_ID)
+      mark_cleared_event(story, POKEMON_MANSION_LEAD_EVENT_ID)
+      mark_cleared_event(story, CINNABAR_LAB_ACCESS_EVENT_ID)
+      mark_cleared_event(story, PHOENIX_RESEARCH_ASSISTANTS_EVENT_ID)
+      mark_cleared_event(story, BLAINE_REVIVAL_WARNING_EVENT_ID)
+      mark_cleared_event(story, RED_CINNABAR_RESTRAINT_EVENT_ID)
+      mark_cleared_event(story, ROCKET_CINNABAR_SURVEILLANCE_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_MANSION_GENEALOGY_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'cinnabar_lab_surveillance',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_phoenix',
+        'kanto',
+        location,
+        'revival_research_assistants',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'mansion_genealogy_signal_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_phoenix',
+        location,
+        'Rocket wants old lab records for control while Phoenix assistants treat the same research as a rebirth ritual',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'cinnabar_restraint_scene',
+        location: location,
+        summary: 'Red warns Antman that Cinnabar rewards patience: the mansion and lab are full of power people tried to rush.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'cinnabar_lab_entry_trace',
+        location: location,
+        summary: 'Bill finds the same old lab metadata he traced from Saffron and points Antman toward the Mansion records.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'cinnabar_fossil_ethics',
+        location: location,
+        summary: 'Brock pushes for caution around revival machines, fossils, and any lab promising life without consequences.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Cinnabar Island opened the Mansion lead, Cinnabar Lab access, Phoenix research rumors, and Blaine revival warnings.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = cinnabar_island_arrival_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def cinnabar_island_arrival_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CINNABAR_ISLAND_ARRIVAL_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5358,6 +5466,31 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_observes_badge_energy_unrevealed',
         'unlocks' => %w[marsh_badge cinnabar_island_path psychic_warp_mastery cinnabar_lab_trace],
         'next_hook' => 'cinnabar_island_arrival'
+      }
+    end
+
+    def cinnabar_island_arrival_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CINNABAR_ISLAND_ARRIVAL_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          POKEMON_MANSION_LEAD_EVENT_ID,
+          CINNABAR_LAB_ACCESS_EVENT_ID,
+          PHOENIX_RESEARCH_ASSISTANTS_EVENT_ID,
+          BLAINE_REVIVAL_WARNING_EVENT_ID,
+          RED_CINNABAR_RESTRAINT_EVENT_ID,
+          ROCKET_CINNABAR_SURVEILLANCE_EVENT_ID,
+          NEXUS_ORDER_MANSION_GENEALOGY_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_phoenix nexus_order],
+        'gym_leader' => 'Blaine',
+        'badge' => 'Volcano Badge',
+        'encounter_hooks' => %w[mansion_genealogy_echoes revival_research_rumors fire_route_pressure],
+        'lab_state' => 'cinnabar_lab_open_mansion_records_needed',
+        'hidden_meta_signal' => 'nexus_order_mansion_genealogy_signal_unrevealed',
+        'unlocks' => %w[pokemon_mansion cinnabar_lab_access blaine_revival_warning phoenix_research_rumors],
+        'next_hook' => 'pokemon_mansion_mewtwo_echoes'
       }
     end
 
