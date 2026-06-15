@@ -231,6 +231,20 @@ module NexusRed
     MOONLIGHT_VOICE_LOOP_COLLAPSE_EVENT_ID = 'moonlight_voice_loop_collapse'
     NEXUS_ORDER_TOWER_LATTICE_ECHO_EVENT_ID = 'nexus_order_tower_lattice_echo_hidden'
     ECRUTEAK_CITY_PATH_UNLOCKED_EVENT_ID = 'ecruteak_city_path_unlocked'
+    ECRUTEAK_CITY_PATH_EVENT_ID = 'ecruteak_city_path'
+    ECRUTEAK_CITY_ARRIVAL_EVENT_ID = 'ecruteak_city_arrival'
+    BURNED_TOWER_SIGNAL_EVENT_ID = 'burned_tower_signal'
+    RED_ECRUTEAK_ARRIVAL_EVENT_ID = 'red_ecruteak_arrival'
+    BROCK_ECRUTEAK_TOWER_LORE_EVENT_ID = 'brock_ecruteak_tower_lore'
+    BILL_BURNED_TOWER_ECHO_EVENT_ID = 'bill_burned_tower_echo_decode'
+    SILVER_BURNED_TOWER_PRESSURE_EVENT_ID = 'silver_burned_tower_pressure'
+    AVA_ECRUTEAK_TOWER_ECHO_EVENT_ID = 'ava_ecruteak_tower_echo'
+    ROCKET_ECRUTEAK_RETREAT_TRACE_EVENT_ID = 'rocket_ecruteak_retreat_trace'
+    GOLD_DUST_BURNED_TOWER_RELIC_EVENT_ID = 'gold_dust_burned_tower_relic_buyer'
+    TEAM_GAS_ROUTE37_CLEANUP_EVENT_ID = 'team_gas_route37_coolant_cleanup'
+    MOONLIGHT_BURNED_TOWER_DREAM_ECHO_EVENT_ID = 'moonlight_burned_tower_dream_echo'
+    NEXUS_ORDER_BURNED_TOWER_LATTICE_EVENT_ID = 'nexus_order_burned_tower_lattice_hidden'
+    BURNED_TOWER_ENTRY_UNLOCKED_EVENT_ID = 'burned_tower_entry_unlocked'
 
     module_function
 
@@ -3698,6 +3712,194 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_tower_lattice_echo_unrevealed',
         'unlocks' => %w[ecruteak_city_path goldenrod_recovery_services radio_tower_rematch_board tower_clear_digest_after_exit],
         'next_hook' => 'ecruteak_city_path'
+      }
+    end
+
+    def complete_ecruteak_city_path(state, location: 'Route 37 / Ecruteak Road', area_type: 'route')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => ECRUTEAK_CITY_PATH_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_radio_tower_transmitter_shutdown', 'event_id' => ECRUTEAK_CITY_PATH_EVENT_ID } unless radio_tower_transmitter_shutdown_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ECRUTEAK_CITY_PATH_EVENT_ID } if ecruteak_city_path_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ECRUTEAK_CITY_PATH')
+      add_story_flag(state, 'FLAG_NEXUS_ECRUTEAK_CITY_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_BURNED_TOWER_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ECRUTEAK_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_ECRUTEAK_TOWER_LORE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_BURNED_TOWER_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_BURNED_TOWER_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_ECRUTEAK_TOWER_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ECRUTEAK_RETREAT_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_BURNED_TOWER_RELIC')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_ROUTE37_CLEANUP')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_BURNED_TOWER_DREAM_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_BURNED_TOWER_LATTICE')
+      add_story_flag(state, 'FLAG_NEXUS_BURNED_TOWER_ENTRY_UNLOCKED')
+
+      [
+        ECRUTEAK_CITY_PATH_EVENT_ID,
+        ECRUTEAK_CITY_ARRIVAL_EVENT_ID,
+        BURNED_TOWER_SIGNAL_EVENT_ID,
+        RED_ECRUTEAK_ARRIVAL_EVENT_ID,
+        BROCK_ECRUTEAK_TOWER_LORE_EVENT_ID,
+        BILL_BURNED_TOWER_ECHO_EVENT_ID,
+        SILVER_BURNED_TOWER_PRESSURE_EVENT_ID,
+        AVA_ECRUTEAK_TOWER_ECHO_EVENT_ID,
+        ROCKET_ECRUTEAK_RETREAT_TRACE_EVENT_ID,
+        GOLD_DUST_BURNED_TOWER_RELIC_EVENT_ID,
+        TEAM_GAS_ROUTE37_CLEANUP_EVENT_ID,
+        MOONLIGHT_BURNED_TOWER_DREAM_ECHO_EVENT_ID,
+        NEXUS_ORDER_BURNED_TOWER_LATTICE_EVENT_ID,
+        BURNED_TOWER_ENTRY_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'ecruteak_arrival',
+        location: 'Ecruteak City',
+        summary: 'Red slows down at Ecruteak, telling Antman this city feels less like a checkpoint and more like Johto asking what kind of trainer he is becoming.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'ecruteak_tower_lore',
+        location: 'Burned Tower Exterior',
+        summary: 'Brock explains that Ecruteak history treats towers as promises, warnings, and wounds, not just old buildings.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'burned_tower_echo_decode',
+        location: 'Burned Tower Exterior',
+        summary: 'Bill decodes the clean Goldenrod echo and finds it resonating through the Burned Tower floorboards toward the legendary beasts.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Burned Tower Exterior',
+        'Silver pressured locals near Burned Tower while chasing a Rocket retreat trace that should have ended in Goldenrod.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Ecruteak City',
+        'Ava followed the Ecruteak tower echo from the Goldenrod recovery bulletin and warned WorldLink that the signal now feels legendary.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'ecruteak_retreat_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Burned Tower Exterior',
+        'burned_tower_relic_buyer',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Route 37 Recovery Camp',
+        'route37_coolant_cleanup',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Burned Tower Exterior',
+        'burned_tower_dream_echo',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Burned Tower Foundation',
+        'burned_tower_lattice_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        'Burned Tower Exterior',
+        'Rocket retreat scouts and Gold Dust relic buyers collide while both search for the same tower echo.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_18_burned_tower_entry'
+      event = ecruteak_city_path_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Ecruteak opens after Goldenrod recovery: Red, Brock, and Bill trace the clean tower echo toward Burned Tower and the legendary beasts.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def ecruteak_city_path_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == ECRUTEAK_CITY_PATH_EVENT_ID }
+    end
+
+    def ecruteak_city_path_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ECRUTEAK_CITY_PATH_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_18_burned_tower_entry',
+        'route_chain' => ['Goldenrod Recovery', 'Route 37', 'Ecruteak City', 'Burned Tower Exterior'],
+        'companions' => %w[red brock bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          ECRUTEAK_CITY_ARRIVAL_EVENT_ID,
+          BURNED_TOWER_SIGNAL_EVENT_ID,
+          RED_ECRUTEAK_ARRIVAL_EVENT_ID,
+          BROCK_ECRUTEAK_TOWER_LORE_EVENT_ID,
+          BILL_BURNED_TOWER_ECHO_EVENT_ID,
+          SILVER_BURNED_TOWER_PRESSURE_EVENT_ID,
+          AVA_ECRUTEAK_TOWER_ECHO_EVENT_ID,
+          ROCKET_ECRUTEAK_RETREAT_TRACE_EVENT_ID,
+          GOLD_DUST_BURNED_TOWER_RELIC_EVENT_ID,
+          TEAM_GAS_ROUTE37_CLEANUP_EVENT_ID,
+          MOONLIGHT_BURNED_TOWER_DREAM_ECHO_EVENT_ID,
+          NEXUS_ORDER_BURNED_TOWER_LATTICE_EVENT_ID,
+          BURNED_TOWER_ENTRY_UNLOCKED_EVENT_ID
+        ],
+        'legendary_signals' => %w[Raikou Entei Suicune Ho-Oh],
+        'hidden_meta_signal' => 'nexus_order_burned_tower_lattice_unrevealed',
+        'unlocks' => %w[burned_tower_entry ecruteak_services morty_gym_tease legendary_beast_roaming_setup],
+        'next_hook' => 'burned_tower_entry'
       }
     end
   end

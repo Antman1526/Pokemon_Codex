@@ -189,6 +189,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(state, location:, result:, area_type:)` closes the Goldenrod Radio Tower crisis after the executive-floor gauntlet. Antman, Red, and Blue shut down Rocket command traffic, Bill purges the tower signal, Goldenrod's clean broadcast returns, Silver chases Rocket retreat toward Ecruteak, Ava posts the recovery bulletin, Gold Dust payout caches are seized, Team Gas stabilizes transmitter coolant, Moonlight voice loops collapse, Nexus Order remains hidden as a tower-lattice echo, and the method opens `ecruteak_city_path`.
 
+`NexusRed::JohtoStory.complete_ecruteak_city_path(state, location:, area_type:)` moves Johto from Goldenrod recovery into the Ecruteak/Burned Tower arc. Red slows the journey down in Ecruteak, Brock explains the old tower lore, Bill decodes the Goldenrod tower echo through Burned Tower, Silver pressures locals while chasing Rocket's retreat, Ava warns WorldLink that the signal feels legendary, Rocket and Gold Dust collide over relic leads, Team Gas cleanup winds down on Route 37, Moonlight dream echoes return, Nexus Order remains hidden in the Burned Tower lattice, and the method opens `burned_tower_entry`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

@@ -306,6 +306,8 @@ REQUIRED_MARKERS = (
     "radio_tower_executive_floor_cleared?",
     "complete_radio_tower_transmitter_shutdown",
     "radio_tower_transmitter_shutdown_cleared?",
+    "complete_ecruteak_city_path",
+    "ecruteak_city_path_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3899,6 +3901,67 @@ raise 'expected JohtoStory transmitter shutdown factions' unless %w[team_rocket 
 second_transmitter_shutdown = NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(kanto_story_state)
 raise 'expected JohtoStory transmitter shutdown idempotent guard' unless second_transmitter_shutdown['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate transmitter shutdown history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_transmitter_shutdown' } == 1
+pre_ecruteak_path = NexusRed::JohtoStory.complete_ecruteak_city_path(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Ecruteak path gated before Johto unlock' unless pre_ecruteak_path['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_transmitter_shutdown = NexusRed::RuntimeState.build
+johto_before_transmitter_shutdown['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_goldenrod_road(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_whitney_plain_badge_prep(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_whitney_plain_badge_battle(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_goldenrod_radio_tower_shadow(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_radio_tower_lobby_battle(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_radio_tower_director_rescue(johto_before_transmitter_shutdown)
+NexusRed::JohtoStory.complete_radio_tower_executive_floor(johto_before_transmitter_shutdown)
+raise 'expected JohtoStory Ecruteak path gated before transmitter shutdown' unless NexusRed::JohtoStory.complete_ecruteak_city_path(johto_before_transmitter_shutdown)['status'] == 'blocked_missing_radio_tower_transmitter_shutdown'
+ecruteak_path = NexusRed::JohtoStory.complete_ecruteak_city_path(
+  kanto_story_state,
+  location: 'Route 37 / Ecruteak Road',
+  area_type: 'route'
+)
+raise 'expected JohtoStory Ecruteak path clear status' unless ecruteak_path['status'] == 'cleared'
+raise 'expected JohtoStory Ecruteak path event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('ecruteak_city_path')
+raise 'expected JohtoStory Ecruteak path helper true' unless NexusRed::JohtoStory.ecruteak_city_path_cleared?(kanto_story_state)
+raise 'expected JohtoStory Ecruteak arrival event' unless kanto_story_state['johto_story']['cleared_events'].include?('ecruteak_city_arrival')
+raise 'expected JohtoStory Burned Tower entry unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('burned_tower_entry_unlocked')
+raise 'expected JohtoStory Ecruteak path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ECRUTEAK_CITY_PATH')
+raise 'expected JohtoStory Burned Tower signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BURNED_TOWER_SIGNAL')
+raise 'expected JohtoStory Burned Tower entry unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BURNED_TOWER_ENTRY_UNLOCKED')
+raise 'expected JohtoStory current act Burned Tower' unless kanto_story_state['johto_story']['current_act'] == 'act_18_burned_tower_entry'
+raise 'expected JohtoStory Red Ecruteak arrival scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('ecruteak_arrival')
+raise 'expected JohtoStory Brock Ecruteak lore scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('ecruteak_tower_lore')
+raise 'expected JohtoStory Bill Burned Tower echo scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('burned_tower_echo_decode')
+raise 'expected JohtoStory Silver Burned Tower pressure activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Burned Tower') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Rocket')
+raise 'expected JohtoStory Ava Ecruteak recovery activity' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Ecruteak') && kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('tower echo')
+raise 'expected JohtoStory Rocket Ecruteak retreat trace activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ecruteak_retreat_trace' && activity['location'] == 'Route 37 / Ecruteak Road' }
+raise 'expected JohtoStory Gold Dust Burned Tower relic activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'burned_tower_relic_buyer' }
+raise 'expected JohtoStory Team Gas Route 37 cleanup activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'route37_coolant_cleanup' }
+raise 'expected JohtoStory Moonlight Burned Tower dream echo activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'burned_tower_dream_echo' }
+raise 'expected JohtoStory Nexus Order Burned Tower lattice activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'burned_tower_lattice_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust Burned Tower conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Burned Tower Exterior' }
+raise 'expected JohtoStory Moonlight Nexus not revealed after Ecruteak' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Ecruteak path story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Ecruteak') && message['text'].include?('Burned Tower') && message['delivery'] == 'immediate' }
+raise 'expected JohtoStory Ecruteak route chain' unless ecruteak_path['route_chain'] == ['Goldenrod Recovery', 'Route 37', 'Ecruteak City', 'Burned Tower Exterior']
+raise 'expected JohtoStory Ecruteak hidden meta signal' unless ecruteak_path['hidden_meta_signal'] == 'nexus_order_burned_tower_lattice_unrevealed'
+raise 'expected JohtoStory Ecruteak legendary signals' unless ecruteak_path['legendary_signals'] == %w[Raikou Entei Suicune Ho-Oh]
+raise 'expected JohtoStory Ecruteak unlocks Burned Tower' unless ecruteak_path['unlocks'].include?('burned_tower_entry') && ecruteak_path['unlocks'].include?('ecruteak_services')
+raise 'expected JohtoStory Ecruteak next hook Burned Tower' unless ecruteak_path['next_hook'] == 'burned_tower_entry'
+raise 'expected JohtoStory Ecruteak companions' unless %w[red brock bill].all? { |companion| ecruteak_path['companions'].include?(companion) }
+raise 'expected JohtoStory Ecruteak rivals' unless %w[ava silver].all? { |rival| ecruteak_path['rivals'].include?(rival) }
+raise 'expected JohtoStory Ecruteak factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| ecruteak_path['factions'].include?(faction) }
+second_ecruteak_path = NexusRed::JohtoStory.complete_ecruteak_city_path(kanto_story_state)
+raise 'expected JohtoStory Ecruteak path idempotent guard' unless second_ecruteak_path['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Ecruteak path history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'ecruteak_city_path' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
