@@ -7,6 +7,7 @@ module NexusRed
     MT_MOON_EVENT_ID = 'mt_moon_rocket_moon_stone_operation'
     GOLD_DUST_INVOICE_EVENT_ID = 'gold_dust_invoice_hint'
     AVA_CLEFAIRY_EVENT_ID = 'ava_clefairy_night_notes'
+    NUGGET_BRIDGE_EVENT_ID = 'nugget_bridge_world_circuit_qualifier'
 
     module_function
 
@@ -183,6 +184,66 @@ module NexusRed
       ensure_kanto_story(state)['cleared_events'].include?(GOLD_DUST_INVOICE_EVENT_ID)
     end
 
+    def complete_nugget_bridge_qualifier(state, location: 'Nugget Bridge', area_type: 'route', rival_ids: %w[blue ava dax])
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_mt_moon_clear', 'event_id' => NUGGET_BRIDGE_EVENT_ID } unless mt_moon_operation_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => NUGGET_BRIDGE_EVENT_ID } if nugget_bridge_qualifier_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_NUGGET_BRIDGE_WORLD_CIRCUIT')
+      add_story_flag(state, 'FLAG_NEXUS_CERULEAN_BRIDGE_CRISIS_DONE')
+      mark_cleared_event(story, NUGGET_BRIDGE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'bridge_recruitment_probe',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      rival_ids.each do |rival_id|
+        record_rival_story_clue(
+          state,
+          rival_id,
+          location,
+          "#{rival_display_name(rival_id)} cleared the Nugget Bridge World Circuit qualifier.",
+          area_type
+        )
+      end
+      CompanionProgress.activate_companion(
+        state,
+        'misty',
+        location: 'Cerulean City',
+        reason: 'she is investigating the bridge crisis before the gym battle',
+        following: false,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'cerulean_bridge_crisis',
+        location: location,
+        summary: 'Misty challenges Antman to prove the bridge crisis is handled before Route 25.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        "Nugget Bridge became Antman's first World Circuit qualifier and exposed a Rocket recruitment probe.",
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = nugget_bridge_event_result(location, rival_ids)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def nugget_bridge_qualifier_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == NUGGET_BRIDGE_EVENT_ID }
+    end
+
     def field_healing_charges_for(state)
       case FieldHealing.policy(state)
       when 'full'
@@ -242,6 +303,17 @@ module NexusRed
       }
     end
 
+    def nugget_bridge_event_result(location, rival_ids)
+      {
+        'status' => 'cleared',
+        'event_id' => NUGGET_BRIDGE_EVENT_ID,
+        'location' => location.to_s,
+        'rival_ids' => rival_ids.map(&:to_s),
+        'companion_setup' => 'misty_cerulean_bridge_crisis',
+        'next_hook' => 'misty_battle'
+      }
+    end
+
     def record_rival_story_clue(state, rival_id, location, summary, area_type)
       rival = RivalProgress.ensure_rival(state, rival_id)
       activity = {
@@ -251,6 +323,10 @@ module NexusRed
       }
       RivalProgress.record_activity(rival, activity)
       WorldLink.queue_message(state, activity['category'], activity['summary'], source: rival['rival_id'], area_type: area_type)
+    end
+
+    def rival_display_name(rival_id)
+      RivalProgress.rival_seed(rival_id)['display_name']
     end
 
     def companion_display_name(companion_id)

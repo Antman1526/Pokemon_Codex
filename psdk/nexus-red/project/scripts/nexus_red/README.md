@@ -35,6 +35,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_mt_moon_operation(state, location:, area_type:, rival_id:)` resolves the Act 2 Mt. Moon story bridge. It requires the museum clue, records Rocket Moon Stone extraction, marks the Gold Dust invoice hint and Ava Clefairy night notes, logs the Rocket/Gold Dust double-cross, records Ava as a rival story clue, and pauses the story alert while the player is inside the cave.
 
+`NexusRed::KantoStory.complete_nugget_bridge_qualifier(state, location:, area_type:, rival_ids:)` resolves the Nugget Bridge World Circuit qualifier. It requires Mt. Moon completion, records the Rocket bridge recruitment probe, updates rival World Circuit movement, activates Misty in Cerulean without following yet, records her bridge crisis scene, and leaves the story in Act 2 for the Misty battle.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

@@ -149,6 +149,8 @@ REQUIRED_MARKERS = (
     "complete_mt_moon_operation",
     "mt_moon_operation_cleared?",
     "gold_dust_invoice_found?",
+    "complete_nugget_bridge_qualifier",
+    "nugget_bridge_qualifier_cleared?",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
@@ -946,6 +948,30 @@ raise 'expected KantoStory Mt Moon story alert paused in cave' unless kanto_stor
 second_mt_moon_clear = NexusRed::KantoStory.complete_mt_moon_operation(kanto_story_state)
 raise 'expected KantoStory Mt Moon idempotent guard' unless second_mt_moon_clear['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Mt Moon history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'mt_moon_rocket_moon_stone_operation' } == 1
+pre_mt_moon_bridge = NexusRed::KantoStory.complete_nugget_bridge_qualifier(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Nugget Bridge gated before Mt Moon' unless pre_mt_moon_bridge['status'] == 'blocked_missing_mt_moon_clear'
+nugget_bridge = NexusRed::KantoStory.complete_nugget_bridge_qualifier(
+  kanto_story_state,
+  location: 'Nugget Bridge',
+  area_type: 'route',
+  rival_ids: %w[blue ava dax]
+)
+raise 'expected KantoStory Nugget Bridge clear status' unless nugget_bridge['status'] == 'cleared'
+raise 'expected KantoStory Nugget Bridge event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('nugget_bridge_world_circuit_qualifier')
+raise 'expected KantoStory Nugget Bridge helper true' unless NexusRed::KantoStory.nugget_bridge_qualifier_cleared?(kanto_story_state)
+raise 'expected KantoStory World Circuit flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NUGGET_BRIDGE_WORLD_CIRCUIT')
+raise 'expected KantoStory Cerulean crisis flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CERULEAN_BRIDGE_CRISIS_DONE')
+raise 'expected KantoStory Rocket bridge activity recorded' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Nugget Bridge' && activity['operation'] == 'bridge_recruitment_probe' }
+raise 'expected KantoStory Blue qualifier update' unless kanto_story_state['rival_progress']['blue']['latest_activity']['category'] == 'rival_story_clue'
+raise 'expected KantoStory Dax qualifier update' unless kanto_story_state['rival_progress']['dax']['latest_activity']['summary'].include?('World Circuit')
+raise 'expected KantoStory Misty activated' unless kanto_story_state['companion_progress']['misty']['active'] == true
+raise 'expected KantoStory Misty not following before Route 25' if kanto_story_state['companion_progress']['misty']['following']
+raise 'expected KantoStory Misty bridge scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('cerulean_bridge_crisis')
+raise 'expected KantoStory current act remains Act 2 before Misty battle' unless kanto_story_state['kanto_story']['current_act'] == 'act_2_pewter_to_cerulean'
+raise 'expected KantoStory Nugget Bridge story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Nugget Bridge') }
+second_nugget_bridge = NexusRed::KantoStory.complete_nugget_bridge_qualifier(kanto_story_state)
+raise 'expected KantoStory Nugget Bridge idempotent guard' unless second_nugget_bridge['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Nugget Bridge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'nugget_bridge_world_circuit_qualifier' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
