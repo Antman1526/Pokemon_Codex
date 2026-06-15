@@ -1,0 +1,31 @@
+{
+  "id": "mt_moon_interior_split_batch",
+  "name": "Mt. Moon Interior Split Batch",
+  "trigger": "mt_moon_interior_split_path_fossil_setup",
+  "feed": [
+    {
+      "id": "wl_red_mt_moon_interior_support",
+      "category": "companion",
+      "rival": "red",
+      "text": "Red entered Mt. Moon with Antman and started mapping faction movement inside the cave."
+    },
+    {
+      "id": "wl_rocket_mt_moon_left_path",
+      "category": "faction",
+      "faction": "team_rocket",
+      "text": "Team Rocket took the left Mt. Moon tunnel with a Dome Fossil crate and a stolen museum scanner."
+    },
+    {
+      "id": "wl_gold_dust_mt_moon_right_path",
+      "category": "faction",
+      "faction": "team_gold_dust",
+      "text": "Team Gold Dust pushed into the right tunnel, following Helix Fossil readings and rare mineral dust."
+    },
+    {
+      "id": "wl_fossil_choice_setup",
+      "category": "story",
+      "artifact": "fossil_choice",
+      "text": "Dome and Helix are now faction targets, but the Nexus Fossil signal is still deeper under both paths."
+    }
+  ]
+}

@@ -458,6 +458,24 @@ python3 tools/validate_native_mt_moon_entrance_slice.py
 godot --headless --path native/nexus-red --script tests/mt_moon_entrance_test.gd
 ```
 
+### Task 7.23: Add Mt. Moon first interior fossil split setup
+
+Acceptance:
+
+- Mt. Moon entrance can transition into the first interior room after the faction conflict.
+- Red remains the active companion and starts mapping the cave.
+- Team Rocket takes the left path with the Dome Fossil crate.
+- Team Gold Dust takes the right path after the Helix Fossil signal.
+- The Nexus Fossil remains a deeper unresolved signal.
+- Save state and WorldLink record the first interior room and fossil split.
+
+Verification:
+
+```sh
+python3 tools/validate_native_mt_moon_interior_slice.py
+godot --headless --path native/nexus-red --script tests/mt_moon_interior_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

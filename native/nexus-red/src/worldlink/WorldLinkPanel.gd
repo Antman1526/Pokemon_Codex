@@ -5,6 +5,7 @@ const ROUTE_1_BATCH_PATH := "res://content/worldlink/route_1_rival_batch.json"
 const VIRIDIAN_BATCH_PATH := "res://content/worldlink/viridian_story_batch.json"
 const PEWTER_MUSEUM_BATCH_PATH := "res://content/worldlink/pewter_museum_anomaly_batch.json"
 const MT_MOON_BATCH_PATH := "res://content/worldlink/mt_moon_faction_conflict_batch.json"
+const MT_MOON_INTERIOR_BATCH_PATH := "res://content/worldlink/mt_moon_interior_split_batch.json"
 const ROUTE_1_RUMORS_PATH := "res://content/encounters/route_1_rumors.json"
 
 var save_state
@@ -66,7 +67,7 @@ func _build_feed_text() -> String:
 
 
 func _build_checklist_text() -> String:
-	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash" % [
+	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths" % [
 		_checkmark(_flag("mom_opening_scene_seen")),
 		_checkmark(_flag("starter_chosen")),
 		_checkmark(_flag("route_1_reached")),
@@ -80,6 +81,8 @@ func _build_checklist_text() -> String:
 		_checkmark(_flag("pewter_museum_anomaly_seen")),
 		_checkmark(_flag("mt_moon_entrance_reached")),
 		_checkmark(_flag("rocket_gold_dust_mt_moon_conflict_seen")),
+		_checkmark(_flag("mt_moon_interior_1_reached")),
+		_checkmark(_flag("fossil_choice_setup_seen")),
 	]
 
 
@@ -113,6 +116,7 @@ func _build_item_index() -> Dictionary:
 	_add_feed_items(index, VIRIDIAN_BATCH_PATH, "feed")
 	_add_feed_items(index, PEWTER_MUSEUM_BATCH_PATH, "feed")
 	_add_feed_items(index, MT_MOON_BATCH_PATH, "feed")
+	_add_feed_items(index, MT_MOON_INTERIOR_BATCH_PATH, "feed")
 	_add_feed_items(index, ROUTE_1_RUMORS_PATH, "rumors")
 	return index
 

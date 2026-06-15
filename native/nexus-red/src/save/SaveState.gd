@@ -83,6 +83,12 @@ func start_new_game(name: String) -> void:
 		"rocket_gold_dust_mt_moon_conflict_seen": false,
 		"nexus_fossil_hint_seen": false,
 		"worldlink_mt_moon_faction_batch_queued": false,
+		"mt_moon_interior_1_reached": false,
+		"red_mt_moon_interior_support_seen": false,
+		"rocket_mt_moon_left_path_seen": false,
+		"gold_dust_mt_moon_right_path_seen": false,
+		"fossil_choice_setup_seen": false,
+		"worldlink_mt_moon_interior_split_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -202,6 +208,32 @@ func queue_mt_moon_faction_batch() -> void:
 		"wl_rocket_mt_moon_fossil_grab",
 		"wl_gold_dust_mt_moon_arrival",
 		"wl_nexus_fossil_hint",
+	])
+
+
+func enter_mt_moon_interior_1() -> void:
+	current_scene = "mt_moon_interior_1"
+	active_companion = "red"
+	set_flag("mt_moon_interior_1_reached", true)
+	set_flag("red_mt_moon_interior_support_seen", true)
+	queue_worldlink_id("wl_red_mt_moon_interior_support")
+
+
+func record_mt_moon_split_path_scouting() -> void:
+	active_companion = "red"
+	set_flag("rocket_mt_moon_left_path_seen", true)
+	set_flag("gold_dust_mt_moon_right_path_seen", true)
+	set_flag("fossil_choice_setup_seen", true)
+	queue_mt_moon_interior_split_batch()
+
+
+func queue_mt_moon_interior_split_batch() -> void:
+	set_flag("worldlink_mt_moon_interior_split_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_red_mt_moon_interior_support",
+		"wl_rocket_mt_moon_left_path",
+		"wl_gold_dust_mt_moon_right_path",
+		"wl_fossil_choice_setup",
 	])
 
 

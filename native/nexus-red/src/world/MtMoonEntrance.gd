@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_pewter_city
+signal go_to_mt_moon_interior_1
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_faction_conflict()
+	if event.is_action_pressed("ui_up"):
+		trigger_cave_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_pewter_city()
 
@@ -87,9 +90,17 @@ func trigger_faction_conflict() -> void:
 	dialogue_label.text = "Team Rocket shoves a fossil crate toward the cave, but Team Gold Dust cuts them off with hired miners. Red pulls Antman back as both sides argue over a third reading: the Nexus Fossil."
 
 
+func trigger_cave_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("rocket_gold_dust_mt_moon_conflict_seen", false)):
+		dialogue_label.text = "Red: Watch the entrance conflict first. If we walk in blind, both teams can pin the fossil theft on us."
+		return
+	dialogue_label.text = "Red: Inside, Rocket is taking the left tunnel and Team Gold Dust is cutting right. We move before they find the third signal."
+	emit_signal("go_to_mt_moon_interior_1")
+
+
 func return_to_pewter_city() -> void:
 	emit_signal("go_to_pewter_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Mt. Moon is louder than it should be. Press Z/Enter to watch the fossil conflict, or X/Esc to return to Pewter City."
+	dialogue_label.text = "Red: Mt. Moon is louder than it should be. Press Z/Enter to watch the fossil conflict, Up to enter the cave, or X/Esc to return to Pewter City."
