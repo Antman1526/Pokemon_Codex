@@ -1,0 +1,40 @@
+{
+  "id": "celadon_city_arrival_batch",
+  "feed": [
+    {
+      "id": "wl_celadon_city_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Celadon City, turning the Lavender Silph Scope thread into a public city investigation."
+    },
+    {
+      "id": "wl_red_celadon_city_arrival",
+      "speaker": "Red",
+      "text": "Red stayed close in Celadon and warned that Rocket is most dangerous when nobody is running."
+    },
+    {
+      "id": "wl_bill_game_corner_exterior_signal",
+      "speaker": "Bill",
+      "text": "Bill traced the Silph Scope signal to the Game Corner exterior instead of a hidden dungeon entrance."
+    },
+    {
+      "id": "wl_rocket_game_corner_front",
+      "speaker": "WorldLink",
+      "text": "Rocket's Game Corner front is operating in plain sight while smugglers keep the underpass route active."
+    },
+    {
+      "id": "wl_team_moonlight_celadon_ad",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight dream ads have appeared around Celadon, linking city nightlife to Lavender's haunting pressure."
+    },
+    {
+      "id": "wl_erika_gym_teased",
+      "speaker": "WorldLink",
+      "text": "Erika's gym is visible, but the immediate pressure points toward the Game Corner investigation."
+    },
+    {
+      "id": "wl_game_corner_investigation_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Game Corner investigation is unlocked as the next Celadon story beat."
+    }
+  ]
+}

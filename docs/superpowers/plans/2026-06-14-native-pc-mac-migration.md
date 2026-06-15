@@ -1001,6 +1001,28 @@ python3 tools/validate_native_celadon_underground_path.py
 godot --headless --path native/nexus-red --script tests/celadon_underground_path_test.gd
 ```
 
+### Task 7.52: Add Celadon City arrival and Game Corner exterior setup
+
+Acceptance:
+
+- Celadon Underground Path keeps Celadon City locked until the underpass scene records the arrival unlock.
+- After the underpass scene, Antman can enter a playable Celadon City arrival scene.
+- Red remains the active full-game companion and frames Celadon as Rocket hiding in public.
+- Bill traces the Silph Scope signal to the Game Corner exterior, setting up the next investigation without entering the dungeon yet.
+- Rocket's Game Corner front is visible as a public city-facing operation.
+- Team Moonlight follows the Lavender pressure into Celadon through a city dream ad.
+- Erika and Celadon Gym are visible and teased, but the immediate story pressure remains the Game Corner.
+- Game Corner investigation is unlocked as the next story beat.
+- Save state and WorldLink record Celadon City reached, Red's city arrival beat, Bill's Game Corner exterior signal, Rocket Game Corner front, Team Moonlight Celadon ad, Erika gym tease, and Game Corner investigation unlock.
+- WorldLink checklist adds Reach Celadon City, Scout Game Corner exterior, Spot Moonlight city ad, Tease Erika's gym, and Unlock Game Corner investigation milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_city_arrival.py
+godot --headless --path native/nexus-red --script tests/celadon_city_arrival_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

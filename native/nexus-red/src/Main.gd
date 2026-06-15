@@ -29,6 +29,7 @@ const LavenderOutskirtsScene := preload("res://scenes/world/LavenderOutskirts.ts
 const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFirstFloor.tscn")
 const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.tscn")
 const CeladonUndergroundPathScene := preload("res://scenes/world/CeladonUndergroundPath.tscn")
+const CeladonCityScene := preload("res://scenes/world/CeladonCity.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -394,7 +395,19 @@ func _show_celadon_underground_path() -> void:
 	var path := CeladonUndergroundPathScene.instantiate()
 	path.save_state = save_state
 	path.go_to_route_8_celadon_road.connect(_on_go_to_route_8_celadon_road)
+	path.go_to_celadon_city.connect(_on_go_to_celadon_city)
 	_replace_screen(path)
+
+
+func _on_go_to_celadon_city() -> void:
+	_show_celadon_city()
+
+
+func _show_celadon_city() -> void:
+	var city := CeladonCityScene.instantiate()
+	city.save_state = save_state
+	city.go_to_celadon_underground_path.connect(_on_go_to_celadon_underground_path)
+	_replace_screen(city)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:

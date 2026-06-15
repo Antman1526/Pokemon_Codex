@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_8_celadon_road
+signal go_to_celadon_city
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_celadon_underground_path_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_celadon_city_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_8_celadon_road()
 
@@ -127,5 +130,13 @@ func return_to_route_8_celadon_road() -> void:
 	emit_signal("go_to_route_8_celadon_road")
 
 
+func trigger_celadon_city_entry() -> void:
+	if save_state == null or not save_state.story_flags.get("celadon_city_arrival_unlocked", false):
+		dialogue_label.text = "Red: Celadon City is right above us, but we need Bill's Game Corner signal trace before we step into Rocket's public front."
+		return
+	dialogue_label.text = "Red: Celadon City is open. Stay close; the Game Corner looks public, and that is exactly why Rocket chose it."
+	emit_signal("go_to_celadon_city")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This Underground Path connects Route 8 to Celadon without breaking the journey. Press Z/Enter to trace Bill's Game Corner signal, Rocket's smuggler route, Team Moonlight's dream poster, and the Silph Scope lead, or X/Esc to return to Route 8."
+	dialogue_label.text = "Red: This Underground Path connects Route 8 to Celadon without breaking the journey. Press Z/Enter to trace Bill's Game Corner signal, Rocket's smuggler route, Team Moonlight's dream poster, and the Silph Scope lead. Press Right for Celadon City or X/Esc to return to Route 8."

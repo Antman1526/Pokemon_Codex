@@ -259,6 +259,14 @@ func start_new_game(name: String) -> void:
 		"silph_scope_game_corner_confirmed": false,
 		"celadon_city_arrival_unlocked": false,
 		"worldlink_celadon_underground_path_batch_queued": false,
+		"celadon_city_reached": false,
+		"red_celadon_city_arrival_seen": false,
+		"bill_game_corner_exterior_signal_seen": false,
+		"rocket_game_corner_front_seen": false,
+		"team_moonlight_celadon_ad_seen": false,
+		"erika_gym_teased_seen": false,
+		"game_corner_investigation_unlocked": false,
+		"worldlink_celadon_city_arrival_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1036,6 +1044,37 @@ func queue_celadon_underground_path_batch() -> void:
 		"wl_team_moonlight_dream_poster",
 		"wl_silph_scope_game_corner_confirmed",
 		"wl_celadon_city_arrival_unlocked",
+	])
+
+
+func enter_celadon_city() -> void:
+	current_scene = "celadon_city"
+	active_companion = "red"
+	set_flag("celadon_city_reached", true)
+	queue_worldlink_id("wl_celadon_city_reached")
+
+
+func record_celadon_city_arrival_scene() -> void:
+	active_companion = "red"
+	set_flag("red_celadon_city_arrival_seen", true)
+	set_flag("bill_game_corner_exterior_signal_seen", true)
+	set_flag("rocket_game_corner_front_seen", true)
+	set_flag("team_moonlight_celadon_ad_seen", true)
+	set_flag("erika_gym_teased_seen", true)
+	set_flag("game_corner_investigation_unlocked", true)
+	queue_celadon_city_arrival_batch()
+
+
+func queue_celadon_city_arrival_batch() -> void:
+	set_flag("worldlink_celadon_city_arrival_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_city_reached",
+		"wl_red_celadon_city_arrival",
+		"wl_bill_game_corner_exterior_signal",
+		"wl_rocket_game_corner_front",
+		"wl_team_moonlight_celadon_ad",
+		"wl_erika_gym_teased",
+		"wl_game_corner_investigation_unlocked",
 	])
 
 
