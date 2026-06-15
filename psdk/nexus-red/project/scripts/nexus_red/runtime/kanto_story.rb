@@ -116,6 +116,14 @@ module NexusRed
     ROCKET_LIFT_KEY_OBTAINED_EVENT_ID = 'rocket_lift_key_obtained'
     ROCKET_HIDEOUT_ELEVATOR_PATH_EVENT_ID = 'rocket_hideout_elevator_path_unlocked'
     ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_ID = 'rocket_hideout_b3f_admin'
+    CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID = 'celadon_rocket_hideout_elevator'
+    RED_HIDEOUT_ELEVATOR_GUARD_EVENT_ID = 'red_hideout_elevator_guard'
+    BILL_NEXUS_ORDER_ELEVATOR_OVERRIDE_EVENT_ID = 'bill_nexus_order_elevator_override'
+    ROCKET_ELEVATOR_PANEL_RESTORED_EVENT_ID = 'rocket_elevator_panel_restored'
+    GOLD_DUST_ELEVATOR_LEDGER_DECODED_EVENT_ID = 'gold_dust_elevator_ledger_decoded'
+    TEAM_MOONLIGHT_ELEVATOR_SLEEP_SIGNAL_EVENT_ID = 'team_moonlight_elevator_sleep_signal'
+    GIOVANNI_COMMAND_FLOOR_ROUTE_EVENT_ID = 'giovanni_command_floor_route_seen'
+    ROCKET_COMMAND_FLOOR_PATH_EVENT_ID = 'rocket_command_floor_path_unlocked'
 
     module_function
 
@@ -2105,6 +2113,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID }
     end
 
+    def complete_celadon_rocket_hideout_elevator(state, location: 'Celadon Rocket Hideout Elevator', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_b3f_admin', 'event_id' => CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID } unless rocket_hideout_b3f_admin_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID } if celadon_rocket_hideout_elevator_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_ELEVATOR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_HIDEOUT_ELEVATOR_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_NEXUS_ORDER_ELEVATOR_OVERRIDE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ELEVATOR_PANEL_RESTORED')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_ELEVATOR_LEDGER_DECODED')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_ELEVATOR_SLEEP_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_COMMAND_FLOOR_ROUTE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_COMMAND_FLOOR_PATH_UNLOCKED')
+      mark_cleared_event(story, CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID)
+      mark_cleared_event(story, RED_HIDEOUT_ELEVATOR_GUARD_EVENT_ID)
+      mark_cleared_event(story, BILL_NEXUS_ORDER_ELEVATOR_OVERRIDE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_ELEVATOR_PANEL_RESTORED_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_ELEVATOR_LEDGER_DECODED_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_ELEVATOR_SLEEP_SIGNAL_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_COMMAND_FLOOR_ROUTE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_COMMAND_FLOOR_PATH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'elevator_panel_restored',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'giovanni_command_floor_route',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'elevator_ledger_decoded',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'elevator_sleep_signal',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'elevator_override',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        "Gold Dust's decoded elevator ledger points directly toward Giovanni's command floor route",
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        "Moonlight's sleep signal is hidden inside Rocket's elevator shaft alarms",
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_elevator_guard',
+        location: location,
+        summary: 'Red guards the elevator line while Antman and Bill work the restored Rocket panel.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'nexus_order_elevator_override',
+        location: location,
+        summary: "Bill decodes a Nexus Order override hidden below Rocket's elevator wiring.",
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rocket Hideout elevator decoded the Nexus Order override, restored the Rocket panel, traced Gold Dust and Moonlight interference, and opened Giovanni command floor routing.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_rocket_hideout_elevator_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_rocket_hideout_elevator_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -2564,6 +2691,27 @@ module NexusRed
         'factions' => %w[team_rocket],
         'key_item_reward' => 'rocket_lift_key',
         'next_hook' => 'celadon_rocket_hideout_elevator'
+      }
+    end
+
+    def celadon_rocket_hideout_elevator_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_HIDEOUT_ELEVATOR_GUARD_EVENT_ID,
+          BILL_NEXUS_ORDER_ELEVATOR_OVERRIDE_EVENT_ID,
+          ROCKET_ELEVATOR_PANEL_RESTORED_EVENT_ID,
+          GOLD_DUST_ELEVATOR_LEDGER_DECODED_EVENT_ID,
+          TEAM_MOONLIGHT_ELEVATOR_SLEEP_SIGNAL_EVENT_ID,
+          GIOVANNI_COMMAND_FLOOR_ROUTE_EVENT_ID,
+          ROCKET_COMMAND_FLOOR_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'key_item_required' => 'rocket_lift_key',
+        'unlocks_path' => 'rocket_command_floor',
+        'next_hook' => 'celadon_rocket_command_floor'
       }
     end
 

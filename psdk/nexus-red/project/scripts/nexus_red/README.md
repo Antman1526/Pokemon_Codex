@@ -83,6 +83,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_rocket_hideout_b3f_admin_battle(state, location:, result:, area_type:)` records the Rocket B3F Admin battle result after the map battle returns. It marks the admin started/finished flags, grants the Rocket Lift Key story flag, opens the Rocket Hideout elevator path, records Red holding the corridor, and points the next hook to `celadon_rocket_hideout_elevator`.
 
+`NexusRed::KantoStory.complete_celadon_rocket_hideout_elevator(state, location:, area_type:)` resolves the restored elevator route after the Rocket Lift Key is obtained. It records Red guarding the elevator line, Bill decoding the Nexus Order override, Rocket's panel restoration, Gold Dust ledger decoding, Team Moonlight's elevator sleep signal, Giovanni's command-floor route, and unlocks the next hook `celadon_rocket_command_floor`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
