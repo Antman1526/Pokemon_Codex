@@ -192,6 +192,7 @@ func _show_cerulean_city() -> void:
 	cerulean.save_state = save_state
 	cerulean.go_to_route_4_cerulean_approach.connect(_on_go_to_route_4_cerulean_approach)
 	cerulean.go_to_nugget_bridge.connect(_on_go_to_nugget_bridge)
+	cerulean.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(cerulean)
 
 
@@ -225,6 +226,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_mt_moon_interior_1()
 	elif battle_return_scene == "nugget_bridge":
 		_show_nugget_bridge()
+	elif battle_return_scene == "cerulean_city":
+		_show_cerulean_city()
 	else:
 		_on_go_to_route_1()
 

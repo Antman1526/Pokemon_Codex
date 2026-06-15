@@ -1,0 +1,38 @@
+{
+  "id": "misty_cerulean_gym",
+  "display_title": "Cerulean Gym - Misty",
+  "status": "placeholder",
+  "battle_type": "gym_leader",
+  "location": "cerulean_city",
+  "level_cap": 21,
+  "badge": "Cascade Badge",
+  "difficulty_note": "Mainline-hard Misty fight after the Nugget Bridge crisis. Starmie creates the first real speed and type-pressure check without becoming a Radical Red wall.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red watches from the stands and helps Antman review strategy before the match; gym battles remain one-on-one."
+  },
+  "opponent": {
+    "id": "misty_cerulean",
+    "display_name": "Misty",
+    "type_specialty": "water",
+    "slots": [
+      {
+        "species": "Staryu",
+        "level": 19,
+        "role": "speed opener"
+      },
+      {
+        "species": "Starmie",
+        "level": 21,
+        "role": "signature ace"
+      }
+    ],
+    "intent": "post-crisis gym test after Misty sees Antman and Red stop Rocket and Gold Dust on Nugget Bridge"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": ["misty_cerulean_gym_started", "misty_cerulean_gym_finished", "cascade_badge_earned"]
+  }
+}

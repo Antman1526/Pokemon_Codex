@@ -9,6 +9,7 @@ const BATTLE_DATA_PATHS := {
 	"mt_moon_gold_dust_right_path": "res://content/battles/mt_moon_gold_dust_right_path.json",
 	"nugget_bridge_recruiter_1": "res://content/battles/nugget_bridge_recruiter_1.json",
 	"nugget_bridge_captain": "res://content/battles/nugget_bridge_captain.json",
+	"misty_cerulean_gym": "res://content/battles/misty_cerulean_gym.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

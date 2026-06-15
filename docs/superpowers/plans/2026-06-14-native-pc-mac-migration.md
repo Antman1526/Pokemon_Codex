@@ -598,6 +598,24 @@ python3 tools/validate_native_nugget_bridge_resolution.py
 godot --headless --path native/nexus-red --script tests/nugget_bridge_resolution_test.gd
 ```
 
+### Task 7.31: Add Misty Cerulean Gym placeholder battle
+
+Acceptance:
+
+- Misty's gym remains locked until the Nugget Bridge crisis is cleared.
+- Cerulean City can start the Misty placeholder gym battle after the bridge captain is defeated.
+- Battle data documents a Cerulean-appropriate level cap, Water specialty, Staryu/Starmie team, and Cascade Badge reward.
+- Placeholder battle return sends the player back to Cerulean City.
+- Save state and WorldLink record Misty's gym start, completion, and Cascade Badge status.
+- WorldLink checklist adds the Misty gym and Cascade Badge steps before the Route 25/Bill thread.
+
+Verification:
+
+```sh
+python3 tools/validate_native_misty_gym_placeholder.py
+godot --headless --path native/nexus-red --script tests/misty_gym_placeholder_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

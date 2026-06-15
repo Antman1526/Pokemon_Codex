@@ -2,6 +2,7 @@ extends Control
 
 signal go_to_route_4_cerulean_approach
 signal go_to_nugget_bridge
+signal start_battle_placeholder(battle_id)
 
 var save_state
 var dialogue_label: Label
@@ -19,6 +20,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_misty_intro()
 	if event.is_action_pressed("ui_up"):
 		trigger_nugget_bridge_entry()
+	if event.is_action_pressed("ui_right"):
+		trigger_misty_gym_battle()
 	if event.is_action_pressed("cancel"):
 		return_to_route_4_cerulean_approach()
 
@@ -120,5 +123,15 @@ func trigger_nugget_bridge_entry() -> void:
 	emit_signal("go_to_nugget_bridge")
 
 
+func trigger_misty_gym_battle() -> void:
+	if save_state and not bool(save_state.story_flags.get("misty_gym_unlocked", false)):
+		dialogue_label.text = "Misty: Nugget Bridge comes first. Clear Rocket and Gold Dust out of Cerulean, then I will battle you for the Cascade Badge."
+		return
+	if save_state:
+		save_state.start_battle_placeholder("misty_cerulean_gym")
+	dialogue_label.text = "Misty: You protected Cerulean. Now show me your own style, Antman. Win, and the Cascade Badge is yours."
+	emit_signal("start_battle_placeholder", "misty_cerulean_gym")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, Up for Nugget Bridge, or X/Esc to step back to Route 4."
+	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, or X/Esc to step back to Route 4."

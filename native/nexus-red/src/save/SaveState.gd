@@ -117,6 +117,9 @@ func start_new_game(name: String) -> void:
 		"nugget_bridge_captain_battle_finished": false,
 		"nugget_bridge_crisis_cleared": false,
 		"misty_gym_unlocked": false,
+		"misty_cerulean_gym_started": false,
+		"misty_cerulean_gym_finished": false,
+		"cascade_badge_earned": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -455,6 +458,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("nugget_bridge_recruiter_1_battle_started", true)
 	if battle_id == "nugget_bridge_captain":
 		set_flag("nugget_bridge_captain_battle_started", true)
+	if battle_id == "misty_cerulean_gym":
+		set_flag("misty_cerulean_gym_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -484,6 +489,11 @@ func finish_battle_placeholder(result: String) -> void:
 		set_flag("misty_gym_unlocked", true)
 		queue_worldlink_id("wl_nugget_bridge_captain_battle_finished")
 		queue_worldlink_id("wl_nugget_bridge_crisis_cleared")
+	if active_battle_id == "misty_cerulean_gym":
+		set_flag("misty_cerulean_gym_finished", true)
+		set_flag("cascade_badge_earned", true)
+		queue_worldlink_id("wl_misty_cerulean_gym_finished")
+		queue_worldlink_id("wl_misty_cascade_badge_earned")
 	active_battle_id = ""
 
 
