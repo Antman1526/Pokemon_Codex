@@ -1,0 +1,40 @@
+{
+  "id": "route_9_rock_tunnel_approach_batch",
+  "feed": [
+    {
+      "id": "wl_route_9_rock_tunnel_approach_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Route 9, the physical trainer road toward Rock Tunnel."
+    },
+    {
+      "id": "wl_red_route_9_trainer_lane",
+      "speaker": "Red",
+      "text": "Red marked Route 9 as a trainer lane and told Antman to treat it as preparation, not filler."
+    },
+    {
+      "id": "wl_bill_rock_tunnel_darkness_warning",
+      "speaker": "Bill",
+      "text": "Bill warned that Rock Tunnel will need darkness planning before the Lavender signal can be followed safely."
+    },
+    {
+      "id": "wl_team_moonlight_route_9_debut",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight stepped into the open on Route 9, connecting sleep signals to the Lavender tower frequency."
+    },
+    {
+      "id": "wl_rocket_route_9_supply_cache",
+      "speaker": "WorldLink",
+      "text": "A Rocket supply cache was found near Moonlight's mark, suggesting both groups are probing the same tunnel route."
+    },
+    {
+      "id": "wl_lavender_tower_signal_confirmed",
+      "speaker": "Bill",
+      "text": "Bill confirmed the Echo Flute trace bends through Rock Tunnel toward Lavender Tower."
+    },
+    {
+      "id": "wl_rock_tunnel_entry_unlocked",
+      "speaker": "WorldLink",
+      "text": "Rock Tunnel entry is now unlocked as the next story route."
+    }
+  ]
+}

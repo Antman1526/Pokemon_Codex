@@ -23,6 +23,7 @@ const VermilionPowerSabotageScene := preload("res://scenes/world/VermilionPowerS
 const Route11Scene := preload("res://scenes/world/Route11.tscn")
 const DiglettCaveDetourScene := preload("res://scenes/world/DiglettCaveDetour.tscn")
 const Route2EastFieldLabScene := preload("res://scenes/world/Route2EastFieldLab.tscn")
+const Route9RockTunnelApproachScene := preload("res://scenes/world/Route9RockTunnelApproach.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -316,7 +317,19 @@ func _show_route_2_east_field_lab() -> void:
 	var lab := Route2EastFieldLabScene.instantiate()
 	lab.save_state = save_state
 	lab.go_to_diglett_cave_detour.connect(_on_go_to_diglett_cave_detour)
+	lab.go_to_route_9_rock_tunnel_approach.connect(_on_go_to_route_9_rock_tunnel_approach)
 	_replace_screen(lab)
+
+
+func _on_go_to_route_9_rock_tunnel_approach() -> void:
+	_show_route_9_rock_tunnel_approach()
+
+
+func _show_route_9_rock_tunnel_approach() -> void:
+	var route9 := Route9RockTunnelApproachScene.instantiate()
+	route9.save_state = save_state
+	route9.go_to_route_2_east_field_lab.connect(_on_go_to_route_2_east_field_lab)
+	_replace_screen(route9)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:

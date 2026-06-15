@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_diglett_cave_detour
+signal go_to_route_9_rock_tunnel_approach
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_route_2_field_lab_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_route_9_rock_tunnel_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_diglett_cave_detour()
 
@@ -105,9 +108,17 @@ func trigger_route_2_field_lab_scene() -> void:
 	dialogue_label.text = "Red: Route 2 proves we are still walking Kanto the real way. Bill and Oak's aide tuned the Echo Flute decoder, Rocket and Team Moonlight left a sleep signal pointed at Lavender, and the next physical road is back through Route 9 toward Rock Tunnel."
 
 
+func trigger_route_9_rock_tunnel_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("route_9_rock_tunnel_path_unlocked", false)):
+		dialogue_label.text = "Red: Decode the Echo Flute frequency first. Bill needs the Rock Tunnel path marked before we leave Route 2."
+		return
+	dialogue_label.text = "Red: Route 9 toward Rock Tunnel is open. We walk it, train through it, and follow the Lavender signal."
+	emit_signal("go_to_route_9_rock_tunnel_approach")
+
+
 func return_to_diglett_cave_detour() -> void:
 	emit_signal("go_to_diglett_cave_detour")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This Route 2 field lab is where Bill turns the Echo Flute lead into a plan. Press Z/Enter to decode the signal, or X/Esc to return to Diglett's Cave."
+	dialogue_label.text = "Red: This Route 2 field lab is where Bill turns the Echo Flute lead into a plan. Press Z/Enter to decode the signal, Right for Route 9 toward Rock Tunnel, or X/Esc to return to Diglett's Cave."

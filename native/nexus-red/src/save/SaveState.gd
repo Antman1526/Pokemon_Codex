@@ -210,6 +210,14 @@ func start_new_game(name: String) -> void:
 		"lavender_signal_path_teased": false,
 		"route_9_rock_tunnel_path_unlocked": false,
 		"worldlink_route_2_east_field_lab_batch_queued": false,
+		"route_9_rock_tunnel_approach_reached": false,
+		"red_route_9_trainer_lane_seen": false,
+		"bill_rock_tunnel_darkness_warning_seen": false,
+		"team_moonlight_route_9_debut_seen": false,
+		"rocket_route_9_supply_cache_seen": false,
+		"lavender_tower_signal_confirmed": false,
+		"rock_tunnel_entry_unlocked": false,
+		"worldlink_route_9_rock_tunnel_approach_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -799,6 +807,37 @@ func queue_route_2_east_field_lab_batch() -> void:
 		"wl_rocket_moonlight_sleep_signal",
 		"wl_lavender_signal_path_teased",
 		"wl_route_9_rock_tunnel_path_unlocked",
+	])
+
+
+func enter_route_9_rock_tunnel_approach() -> void:
+	current_scene = "route_9_rock_tunnel_approach"
+	active_companion = "red"
+	set_flag("route_9_rock_tunnel_approach_reached", true)
+	queue_worldlink_id("wl_route_9_rock_tunnel_approach_reached")
+
+
+func record_route_9_approach_scene() -> void:
+	active_companion = "red"
+	set_flag("red_route_9_trainer_lane_seen", true)
+	set_flag("bill_rock_tunnel_darkness_warning_seen", true)
+	set_flag("team_moonlight_route_9_debut_seen", true)
+	set_flag("rocket_route_9_supply_cache_seen", true)
+	set_flag("lavender_tower_signal_confirmed", true)
+	set_flag("rock_tunnel_entry_unlocked", true)
+	queue_route_9_rock_tunnel_approach_batch()
+
+
+func queue_route_9_rock_tunnel_approach_batch() -> void:
+	set_flag("worldlink_route_9_rock_tunnel_approach_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_9_rock_tunnel_approach_reached",
+		"wl_red_route_9_trainer_lane",
+		"wl_bill_rock_tunnel_darkness_warning",
+		"wl_team_moonlight_route_9_debut",
+		"wl_rocket_route_9_supply_cache",
+		"wl_lavender_tower_signal_confirmed",
+		"wl_rock_tunnel_entry_unlocked",
 	])
 
 

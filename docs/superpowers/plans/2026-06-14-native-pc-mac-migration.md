@@ -873,6 +873,26 @@ python3 tools/validate_native_route2_east_field_lab.py
 godot --headless --path native/nexus-red --script tests/route2_east_field_lab_test.gd
 ```
 
+### Task 7.46: Add Route 9 Rock Tunnel approach
+
+Acceptance:
+
+- Route 2 east field lab keeps Route 9 locked until the lab decodes and unlocks the Rock Tunnel path.
+- After the lab scene, Antman can transition to a playable Route 9 Rock Tunnel approach scene.
+- Route 9 records Red as the active full-game companion and frames the route as a meaningful trainer-lane preparation beat.
+- Bill warns that Rock Tunnel needs darkness planning before the Lavender tower signal can be followed safely.
+- Team Moonlight visibly debuts on Route 9 while Rocket's supply cache shows the faction conflict is converging on the same tunnel route.
+- The scene confirms the Lavender tower signal and unlocks Rock Tunnel entry as the next story route without entering the dungeon yet.
+- Save state and WorldLink record Route 9 reached, Red's trainer-lane beat, Bill's darkness warning, Team Moonlight's Route 9 debut, Rocket's supply cache, Lavender tower signal confirmation, and Rock Tunnel entry unlock.
+- WorldLink checklist adds Route 9, Rock Tunnel preparation, Team Moonlight Route 9 exposure, and Rock Tunnel entry milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route9_rock_tunnel_approach.py
+godot --headless --path native/nexus-red --script tests/route9_rock_tunnel_approach_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
