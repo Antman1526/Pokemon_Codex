@@ -50,6 +50,12 @@ REQUIRED_MARKERS = (
     "toggle_option",
     "unlock_qol",
     "rare_candy_mart_available?",
+    "module FieldTools",
+    "ensure_tools",
+    "unlock_tool",
+    "has_tool?",
+    "can_use_replacement?",
+    "expanded_dig_actions",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -370,6 +376,50 @@ raise 'expected nuzlocke enabled flag' unless nuzlocke['nuzlocke_enabled'] == tr
 raise 'expected level caps enforced by nuzlocke' unless nuzlocke['level_caps_enabled'] == true
 raise 'expected nuzlocke first encounter rule' unless nuzlocke['nuzlocke_rules'].include?('first_encounter_rule')
 raise 'expected nuzlocke item rules copied' unless nuzlocke['difficulty_profile']['item_rules'] == 'configurable_default_banned'
+
+tools = NexusRed::FieldTools.ensure_tools(state)
+raise 'expected no field tools at runtime start' unless tools['unlocked_tools'].empty?
+raise 'expected trail cutter known replacement' unless tools['known_replacements']['trail_cutter'] == 'Cut'
+raise 'expected Trail Cutter missing before unlock' if NexusRed::FieldTools.has_tool?(state, 'trail_cutter')
+raise 'expected Cut replacement blocked before Trail Cutter' if NexusRed::FieldTools.can_use_replacement?(state, 'Cut')
+
+trail_message = NexusRed::FieldTools.unlock_tool(
+  state,
+  'trail_cutter',
+  source: 'S.S. Anne Captain',
+  area_type: 'route'
+)
+raise 'expected Trail Cutter unlock immediate delivery' unless trail_message['delivery'] == 'immediate'
+raise 'expected Trail Cutter unlocked' unless NexusRed::FieldTools.has_tool?(state, 'trail_cutter')
+raise 'expected Cut replacement available with Trail Cutter' unless NexusRed::FieldTools.can_use_replacement?(state, 'Cut')
+raise 'expected Surf replacement still blocked' if NexusRed::FieldTools.can_use_replacement?(state, 'Surf')
+raise 'expected Trail Cutter unlock source recorded' unless state['field_tools']['tool_sources']['trail_cutter'] == 'S.S. Anne Captain'
+
+dig_message = NexusRed::FieldTools.unlock_tool(
+  state,
+  'dig_kit',
+  source: 'Rock Tunnel field cache',
+  area_type: 'cave'
+)
+raise 'expected Dig Kit unlock paused in cave' unless dig_message['delivery'] == 'paused'
+raise 'expected Dig replacement available with Dig Kit' unless NexusRed::FieldTools.can_use_replacement?(state, 'Dig')
+raise 'expected expanded Dig actions available' unless NexusRed::FieldTools.expanded_dig_actions(state).include?('find_fossils')
+
+sky_message = NexusRed::FieldTools.unlock_tool(
+  state,
+  'sky_pass',
+  source: 'late Kanto airport pass',
+  area_type: 'route'
+)
+raise 'expected Sky Pass immediate delivery' unless sky_message['delivery'] == 'immediate'
+raise 'expected Fly replacement available with Sky Pass' unless NexusRed::FieldTools.can_use_replacement?(state, 'Fly')
+raise 'expected expanded Fly actions available' unless NexusRed::FieldTools.expanded_fly_actions(state).include?('story_gated_inter_region_transit')
+raise 'expected unknown field tool rejected' unless begin
+  NexusRed::FieldTools.unlock_tool(state, 'rocket_warp_glove')
+  false
+rescue ArgumentError
+  true
+end
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
