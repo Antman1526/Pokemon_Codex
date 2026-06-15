@@ -218,10 +218,12 @@ The starter system is acceptable when:
 - all 39 starters can be selected,
 - all starters are level 5,
 - all starters have legal usable moves,
+- the same 39 species are catchable across Routes 1-3 before Brock,
+- Route 1 and Route 2 normal grass surfaces migration species after their tutorial catches,
+- Route 3's main route interaction opens the final early migration group,
 - Blue gets a valid non-duplicate starter/counter,
 - Ava and Dax get valid non-duplicate starters,
 - starter species/category/power band are stored,
 - Blue lab battle works after every starter choice,
 - save/load after starter choice preserves data,
 - OpenEmu smoke test passes.
-

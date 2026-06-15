@@ -87,6 +87,16 @@ func _init() -> void:
 		quit(1)
 		return
 
+	var migration_encounter: Dictionary = service.pick_route_2_encounter(save_state)
+	if migration_encounter.get("id", "") != "route_2_migration_treecko":
+		push_error("Route 2 normal grass did not surface the first migration starter after the catch tutorial.")
+		quit(1)
+		return
+	if migration_encounter.get("species", "") != "Treecko":
+		push_error("Route 2 normal grass migration encounter was not Treecko.")
+		quit(1)
+		return
+
 	encounter_screen.free()
 	route2.free()
 	print("Native Route 2 catch tutorial smoke test passed.")

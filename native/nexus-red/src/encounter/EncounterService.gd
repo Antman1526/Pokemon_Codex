@@ -16,6 +16,11 @@ func pick_route_1_encounter(save_state = null) -> Dictionary:
 		if not first.is_empty():
 			return first
 
+	if save_state and save_state.story_flags.get("route_1_first_wild_caught", false):
+		var migration := pick_early_migration_encounter("route_1", save_state)
+		if not migration.is_empty():
+			return migration
+
 	var fallback := _find_encounter(encounters, "route_1_common_rattata")
 	if not fallback.is_empty():
 		return fallback
@@ -32,6 +37,11 @@ func pick_route_2_encounter(save_state = null) -> Dictionary:
 		var first := _find_encounter(encounters, "route_2_red_catch_tutorial_pidgey")
 		if not first.is_empty():
 			return first
+
+	if save_state and save_state.story_flags.get("route_2_catch_tutorial_caught", false):
+		var migration := pick_early_migration_encounter("route_2", save_state)
+		if not migration.is_empty():
+			return migration
 
 	var fallback := _find_encounter(encounters, "route_2_common_caterpie")
 	if not fallback.is_empty():

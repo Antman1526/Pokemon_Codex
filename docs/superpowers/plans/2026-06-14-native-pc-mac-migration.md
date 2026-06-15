@@ -352,6 +352,8 @@ Acceptance:
 - EncounterService can pick the next uncaught early migration species for a route.
 - Route 1 can trigger its migration encounter pool from the playable scene.
 - Route 2 / Viridian Forest Gate can trigger its migration encounter pool from the playable scene.
+- Route 1 normal grass surfaces migration starters after the first deterministic wild catch.
+- Route 2 normal grass surfaces migration starters after the Red catch tutorial catch.
 - Captured migration species are skipped on later migration picks.
 
 Verification:

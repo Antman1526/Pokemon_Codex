@@ -54,9 +54,19 @@ def validate_files() -> list[str]:
             "start_wild_encounter",
             "finish_wild_encounter",
         ),
-        "service": ("route_1_wild_encounters.json", "pick_route_1_encounter", "route_1_first_wild"),
+        "service": (
+            "route_1_wild_encounters.json",
+            "pick_route_1_encounter",
+            "route_1_first_wild",
+            "pick_early_migration_encounter",
+        ),
         "script": ("encounter_finished", "placeholder_catch", "wild encounter placeholder"),
-        "test": ("route1_wild_encounter_test", "placeholder_catch", "Rattata"),
+        "test": (
+            "route1_wild_encounter_test",
+            "placeholder_catch",
+            "Rattata",
+            "route_1_migration_bulbasaur",
+        ),
     }
     for name, expected_markers in markers.items():
         for marker in expected_markers:

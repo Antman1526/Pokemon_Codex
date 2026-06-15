@@ -78,6 +78,16 @@ func _init() -> void:
 		quit(1)
 		return
 
+	var migration_encounter: Dictionary = service.pick_route_1_encounter(save_state)
+	if migration_encounter.get("id", "") != "route_1_migration_bulbasaur":
+		push_error("Route 1 normal grass did not surface the first migration starter after the first wild catch.")
+		quit(1)
+		return
+	if migration_encounter.get("species", "") != "Bulbasaur":
+		push_error("Route 1 normal grass migration encounter was not Bulbasaur.")
+		quit(1)
+		return
+
 	encounter_screen.free()
 	route.free()
 	print("Native Route 1 wild encounter smoke test passed.")

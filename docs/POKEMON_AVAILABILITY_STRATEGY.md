@@ -47,6 +47,8 @@ Each region should unlock Pokemon that fit its identity, plus a controlled numbe
 - Paldea: open-world species, Titans, paradox/anomaly species, Tera shard hunts.
 - World Nexus Championship pre-final: final missing species, mythicals, and legendary guardian access.
 
+Early Kanto implementation rule: Routes 1-3 carry the opening 39-species starter promise directly. Route 1 and Route 2 keep their deterministic tutorial encounters first, then their normal grass picker should surface the next uncaught migration starter/bonus species. Route 3 uses its main route interaction as the final early migration group before Pewter, keeping all levels in the pre-Brock band.
+
 ## 4. Legendary and Mythical Policy
 
 Legendaries should be obtainable before final boss, but not casually.

@@ -52,6 +52,7 @@ def validate_files() -> list[str]:
             "route_2_wild_encounters.json",
             "pick_route_2_encounter",
             "route_2_red_catch_tutorial_pidgey",
+            "pick_early_migration_encounter",
         ),
         "route2": (
             "start_wild_encounter",
@@ -64,6 +65,7 @@ def validate_files() -> list[str]:
             "pick_route_2_encounter",
             "route_2_red_catch_tutorial_pidgey",
             "route_2_catch_tutorial_caught",
+            "route_2_migration_treecko",
         ),
     }
     for name, expected_markers in markers.items():
