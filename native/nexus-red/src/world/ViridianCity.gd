@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_1
+signal go_to_route_2_forest_gate
 
 var save_state
 var dialogue_label: Label
@@ -21,7 +22,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("worldlink"):
 		interact_red_companion()
 	if event.is_action_pressed("ui_up"):
-		investigate_rocket_clue()
+		if save_state and save_state.story_flags.get("viridian_rocket_clue_found", false):
+			trigger_route_2_gate_entry()
+		else:
+			investigate_rocket_clue()
 	if event.is_action_pressed("cancel"):
 		emit_signal("go_to_route_1")
 
@@ -130,5 +134,12 @@ func investigate_rocket_clue() -> void:
 	dialogue_label.text = "A supply slip behind the Mart has a Rocket stamp pressed into the corner. Red folds it carefully: first clue, not the last."
 
 
+func trigger_route_2_gate_entry() -> void:
+	if save_state and not save_state.story_flags.get("viridian_rocket_clue_found", false):
+		save_state.record_viridian_rocket_clue()
+	dialogue_label.text = "Red: Route 2 is the next step. If Rocket activity is already touching Viridian, the Viridian Forest Gate is where we start tracking it."
+	emit_signal("go_to_route_2_forest_gate")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Nurse Joy waves from the Pokemon Center while the Poke Mart clerk stocks early-route supplies. Press Z/Enter for Center, Tab for Mart, W for Red, Up for Rocket clue, X/Esc to return south."
+	dialogue_label.text = "Nurse Joy waves from the Pokemon Center while the Poke Mart clerk stocks early-route supplies. Press Z/Enter for Center, Tab for Mart, W for Red, Up for Rocket clue or north gate, X/Esc to return south."

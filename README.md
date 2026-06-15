@@ -55,6 +55,7 @@ python3 tools/validate_native_wild_command_menu_slice.py
 python3 tools/validate_native_route1_party_panel_slice.py
 python3 tools/validate_native_viridian_city_slice.py
 python3 tools/validate_native_viridian_story_slice.py
+python3 tools/validate_native_route2_gate_slice.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -67,6 +68,7 @@ godot --headless --path native/nexus-red --script tests/wild_command_menu_test.g
 godot --headless --path native/nexus-red --script tests/route1_party_panel_test.gd
 godot --headless --path native/nexus-red --script tests/viridian_city_test.gd
 godot --headless --path native/nexus-red --script tests/viridian_story_test.gd
+godot --headless --path native/nexus-red --script tests/route2_forest_gate_test.gd
 ```
 
 ## Legal Rule

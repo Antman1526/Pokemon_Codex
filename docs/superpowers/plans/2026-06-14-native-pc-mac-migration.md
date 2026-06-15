@@ -297,6 +297,22 @@ python3 tools/validate_native_viridian_story_slice.py
 godot --headless --path native/nexus-red --script tests/viridian_story_test.gd
 ```
 
+### Task 7.13: Add Route 2 / Viridian Forest gate shell
+
+Acceptance:
+
+- Viridian City can transition north into a Route 2 / Viridian Forest Gate scene after the Rocket clue.
+- Red remains the active companion and warns Antman about Rocket activity beyond Viridian.
+- Save state records the Route 2 forest gate and Red warning flags.
+- The gate can return to Viridian City for the first playable route loop.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route2_gate_slice.py
+godot --headless --path native/nexus-red --script tests/route2_forest_gate_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

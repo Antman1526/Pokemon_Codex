@@ -59,6 +59,8 @@ func start_new_game(name: String) -> void:
 		"viridian_red_scene_seen": false,
 		"viridian_rocket_clue_found": false,
 		"worldlink_viridian_story_batch_queued": false,
+		"route_2_forest_gate_reached": false,
+		"red_route_2_warning_seen": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -92,6 +94,14 @@ func enter_viridian_city() -> void:
 	current_scene = "viridian_city"
 	set_flag("viridian_city_reached", true)
 	queue_worldlink_id("viridian_city_reached")
+
+
+func enter_route_2_forest_gate() -> void:
+	current_scene = "route_2_forest_gate"
+	active_companion = "red"
+	set_flag("route_2_forest_gate_reached", true)
+	set_flag("red_route_2_warning_seen", true)
+	queue_worldlink_id("route_2_forest_gate_reached")
 
 
 func record_viridian_center_visit() -> void:
