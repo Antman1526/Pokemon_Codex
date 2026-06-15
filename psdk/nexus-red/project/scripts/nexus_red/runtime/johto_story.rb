@@ -167,6 +167,18 @@ module NexusRed
     NEXUS_ORDER_RADIO_TRANSMITTER_PATTERN_EVENT_ID = 'nexus_order_radio_tower_transmitter_pattern_hidden'
     RADIO_TOWER_LOBBY_BATTLE_UNLOCKED_EVENT_ID = 'radio_tower_lobby_battle_unlocked'
     GOLDENROD_UNDERGROUND_WAREHOUSE_LEAD_EVENT_ID = 'goldenrod_underground_warehouse_lead'
+    RADIO_TOWER_LOBBY_BATTLE_EVENT_ID = 'radio_tower_lobby_battle'
+    RADIO_TOWER_LOBBY_CLEARED_EVENT_ID = 'radio_tower_lobby_cleared'
+    RED_BLUE_RADIO_TOWER_TAG_EVENT_ID = 'red_blue_radio_tower_tag'
+    BILL_LOBBY_SIGNAL_CACHE_EVENT_ID = 'bill_lobby_signal_cache'
+    SILVER_UNDERGROUND_WAREHOUSE_RACE_EVENT_ID = 'silver_underground_warehouse_race'
+    AVA_ROCKET_BROADCAST_ARCHIVE_EVENT_ID = 'ava_rocket_broadcast_archive'
+    ROCKET_EXECUTIVE_ELEVATOR_LOCK_EVENT_ID = 'rocket_executive_elevator_lock'
+    GOLD_DUST_AD_LEDGER_DROP_EVENT_ID = 'gold_dust_ad_ledger_drop'
+    TEAM_GAS_GENERATOR_SMOKE_EVENT_ID = 'team_gas_generator_smoke'
+    MOONLIGHT_LOBBY_SIGNAL_FADE_EVENT_ID = 'moonlight_lobby_signal_fade'
+    NEXUS_ORDER_ELEVATOR_PATTERN_EVENT_ID = 'nexus_order_elevator_pattern_hidden'
+    GOLDENROD_UNDERGROUND_WAREHOUSE_UNLOCKED_EVENT_ID = 'goldenrod_underground_warehouse_unlocked'
 
     module_function
 
@@ -2649,6 +2661,191 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_radio_transmitter_pattern_unrevealed',
         'unlocks' => %w[radio_tower_lobby_battle goldenrod_underground_warehouse_lead radio_tower_digest_after_exit],
         'next_hook' => 'radio_tower_lobby_battle'
+      }
+    end
+
+    def complete_radio_tower_lobby_battle(state, location: 'Goldenrod Radio Tower Lobby', result: 'won', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => RADIO_TOWER_LOBBY_BATTLE_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_goldenrod_radio_tower_shadow', 'event_id' => RADIO_TOWER_LOBBY_BATTLE_EVENT_ID } unless goldenrod_radio_tower_shadow_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => RADIO_TOWER_LOBBY_BATTLE_EVENT_ID } if radio_tower_lobby_battle_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_LOBBY_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_LOBBY_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_LOBBY_CLEARED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_BLUE_RADIO_TOWER_TAG')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_LOBBY_SIGNAL_CACHE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_UNDERGROUND_WAREHOUSE_RACE')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_ROCKET_BROADCAST_ARCHIVE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_EXECUTIVE_ELEVATOR_LOCK')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_AD_LEDGER_DROP')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_GENERATOR_SMOKE')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_LOBBY_SIGNAL_FADE')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_ELEVATOR_PATTERN')
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_UNDERGROUND_WAREHOUSE_UNLOCKED')
+
+      [
+        RADIO_TOWER_LOBBY_BATTLE_EVENT_ID,
+        RADIO_TOWER_LOBBY_CLEARED_EVENT_ID,
+        RED_BLUE_RADIO_TOWER_TAG_EVENT_ID,
+        BILL_LOBBY_SIGNAL_CACHE_EVENT_ID,
+        SILVER_UNDERGROUND_WAREHOUSE_RACE_EVENT_ID,
+        AVA_ROCKET_BROADCAST_ARCHIVE_EVENT_ID,
+        ROCKET_EXECUTIVE_ELEVATOR_LOCK_EVENT_ID,
+        GOLD_DUST_AD_LEDGER_DROP_EVENT_ID,
+        TEAM_GAS_GENERATOR_SMOKE_EVENT_ID,
+        MOONLIGHT_LOBBY_SIGNAL_FADE_EVENT_ID,
+        NEXUS_ORDER_ELEVATOR_PATTERN_EVENT_ID,
+        GOLDENROD_UNDERGROUND_WAREHOUSE_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'radio_tower_lobby_tag_cleanup',
+        location: location,
+        summary: 'Red battles beside Antman long enough to break the Rocket lobby line, then points the team toward the underground route instead of celebrating.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'blue',
+        'radio_tower_lobby_tag_cleanup',
+        location: location,
+        summary: 'Blue covers the exit after the tag battle, calling the win sloppy but admitting Antman and Red opened the only path Rocket did not expect.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'lobby_signal_cache',
+        location: location,
+        summary: 'Bill copies the lobby transmitter cache and finds elevator lock data pointing below Goldenrod instead of up the tower.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Goldenrod Underground Warehouse',
+        'Silver raced toward the Underground Warehouse after the Rocket lobby battle, chasing the executive elevator lock before Antman could question him.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Goldenrod Radio Tower Archive',
+        'Ava recovered a broadcast archive from Goldenrod that proves Rocket edited the public signal after the lobby fight.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Goldenrod Radio Tower Elevator',
+        'executive_elevator_lock',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Radio Tower Ad Office',
+        'ad_ledger_drop',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Radio Tower Generator Room',
+        'generator_smoke_leak',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower Lobby',
+        'lobby_signal_fade',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower Elevator',
+        'elevator_pattern_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gas',
+        'Goldenrod Radio Tower Generator Room',
+        'Rocket locks the executive elevator while Team Gas smoke from the generator room threatens to expose both operations.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_13_goldenrod_underground_warehouse'
+      event = radio_tower_lobby_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The Radio Tower lobby battle is won, but Rocket sealed the elevator and the Underground Warehouse is now the only live lead.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def radio_tower_lobby_battle_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == RADIO_TOWER_LOBBY_BATTLE_EVENT_ID }
+    end
+
+    def radio_tower_lobby_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => RADIO_TOWER_LOBBY_BATTLE_EVENT_ID,
+        'battle_id' => 'radio_tower_lobby_battle',
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_13_goldenrod_underground_warehouse',
+        'result' => result.to_s,
+        'companion_rule' => 'red_and_blue_tag_allowed_outside_gym',
+        'companions' => %w[red blue bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          RADIO_TOWER_LOBBY_CLEARED_EVENT_ID,
+          RED_BLUE_RADIO_TOWER_TAG_EVENT_ID,
+          BILL_LOBBY_SIGNAL_CACHE_EVENT_ID,
+          SILVER_UNDERGROUND_WAREHOUSE_RACE_EVENT_ID,
+          AVA_ROCKET_BROADCAST_ARCHIVE_EVENT_ID,
+          ROCKET_EXECUTIVE_ELEVATOR_LOCK_EVENT_ID,
+          GOLD_DUST_AD_LEDGER_DROP_EVENT_ID,
+          TEAM_GAS_GENERATOR_SMOKE_EVENT_ID,
+          MOONLIGHT_LOBBY_SIGNAL_FADE_EVENT_ID,
+          NEXUS_ORDER_ELEVATOR_PATTERN_EVENT_ID,
+          GOLDENROD_UNDERGROUND_WAREHOUSE_UNLOCKED_EVENT_ID
+        ],
+        'route_chain' => ['Goldenrod Radio Tower Lobby', 'Goldenrod Underground', 'Goldenrod Underground Warehouse'],
+        'hidden_meta_signal' => 'nexus_order_elevator_pattern_unrevealed',
+        'unlocks' => %w[goldenrod_underground_warehouse rocket_elevator_lock_clue radio_tower_digest_after_exit],
+        'next_hook' => 'goldenrod_underground_warehouse'
       }
     end
   end

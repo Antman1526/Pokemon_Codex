@@ -296,6 +296,8 @@ REQUIRED_MARKERS = (
     "whitney_plain_badge_battle_cleared?",
     "complete_goldenrod_radio_tower_shadow",
     "goldenrod_radio_tower_shadow_cleared?",
+    "complete_radio_tower_lobby_battle",
+    "radio_tower_lobby_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3581,6 +3583,66 @@ raise 'expected JohtoStory Radio Tower factions' unless %w[team_rocket team_gold
 second_radio_tower_shadow = NexusRed::JohtoStory.complete_goldenrod_radio_tower_shadow(kanto_story_state)
 raise 'expected JohtoStory Radio Tower shadow idempotent guard' unless second_radio_tower_shadow['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Radio Tower shadow history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'goldenrod_radio_tower_shadow' } == 1
+pre_radio_lobby_battle = NexusRed::JohtoStory.complete_radio_tower_lobby_battle(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Radio Tower lobby battle gated before Johto unlock' unless pre_radio_lobby_battle['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_radio_shadow = NexusRed::RuntimeState.build
+johto_before_radio_shadow['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_goldenrod_road(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_whitney_plain_badge_prep(johto_before_radio_shadow)
+NexusRed::JohtoStory.complete_whitney_plain_badge_battle(johto_before_radio_shadow)
+raise 'expected JohtoStory Radio Tower lobby battle gated before shadow' unless NexusRed::JohtoStory.complete_radio_tower_lobby_battle(johto_before_radio_shadow)['status'] == 'blocked_missing_goldenrod_radio_tower_shadow'
+radio_lobby_battle = NexusRed::JohtoStory.complete_radio_tower_lobby_battle(
+  kanto_story_state,
+  location: 'Goldenrod Radio Tower Lobby',
+  result: 'won',
+  area_type: 'villain_hideout'
+)
+raise 'expected JohtoStory Radio Tower lobby battle clear status' unless radio_lobby_battle['status'] == 'cleared'
+raise 'expected JohtoStory Radio Tower lobby battle event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_lobby_battle')
+raise 'expected JohtoStory Radio Tower lobby battle helper true' unless NexusRed::JohtoStory.radio_tower_lobby_battle_cleared?(kanto_story_state)
+raise 'expected JohtoStory Radio Tower lobby cleared event' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_lobby_cleared')
+raise 'expected JohtoStory Goldenrod warehouse unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_underground_warehouse_unlocked')
+raise 'expected JohtoStory Radio Tower lobby battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_LOBBY_BATTLE_STARTED')
+raise 'expected JohtoStory Radio Tower lobby battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_LOBBY_BATTLE_FINISHED')
+raise 'expected JohtoStory Radio Tower lobby cleared flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_LOBBY_CLEARED')
+raise 'expected JohtoStory Goldenrod warehouse unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_UNDERGROUND_WAREHOUSE_UNLOCKED')
+raise 'expected JohtoStory current act Goldenrod warehouse' unless kanto_story_state['johto_story']['current_act'] == 'act_13_goldenrod_underground_warehouse'
+raise 'expected JohtoStory Red lobby tag scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('radio_tower_lobby_tag_cleanup')
+raise 'expected JohtoStory Blue lobby tag scene' unless kanto_story_state['companion_progress']['blue']['scene_flags'].include?('radio_tower_lobby_tag_cleanup')
+raise 'expected JohtoStory Bill lobby cache scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('lobby_signal_cache')
+raise 'expected JohtoStory Silver warehouse race activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Underground Warehouse') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Rocket')
+raise 'expected JohtoStory Ava broadcast archive activity' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('broadcast archive') && kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Goldenrod')
+raise 'expected JohtoStory Rocket elevator lock activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'executive_elevator_lock' && activity['location'] == 'Goldenrod Radio Tower Elevator' }
+raise 'expected JohtoStory Gold Dust ad ledger activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ad_ledger_drop' }
+raise 'expected JohtoStory Team Gas generator smoke activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'generator_smoke_leak' }
+raise 'expected JohtoStory Moonlight lobby signal fade activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'lobby_signal_fade' }
+raise 'expected JohtoStory Nexus Order elevator pattern activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'elevator_pattern_hidden' }
+raise 'expected JohtoStory Rocket Team Gas generator conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gas' && conflict['location'] == 'Goldenrod Radio Tower Generator Room' }
+raise 'expected JohtoStory Nexus Order still hidden after lobby battle' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Radio Tower lobby story alert paused in hideout' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Radio Tower') && message['text'].include?('Rocket') && message['text'].include?('Underground Warehouse') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory Radio Tower lobby battle id' unless radio_lobby_battle['battle_id'] == 'radio_tower_lobby_battle'
+raise 'expected JohtoStory Radio Tower lobby battle result' unless radio_lobby_battle['result'] == 'won'
+raise 'expected JohtoStory Radio Tower lobby battle companion rule' unless radio_lobby_battle['companion_rule'] == 'red_and_blue_tag_allowed_outside_gym'
+raise 'expected JohtoStory Radio Tower lobby route chain' unless radio_lobby_battle['route_chain'] == ['Goldenrod Radio Tower Lobby', 'Goldenrod Underground', 'Goldenrod Underground Warehouse']
+raise 'expected JohtoStory Radio Tower lobby hidden meta signal' unless radio_lobby_battle['hidden_meta_signal'] == 'nexus_order_elevator_pattern_unrevealed'
+raise 'expected JohtoStory Radio Tower lobby unlocks warehouse and elevator clue' unless radio_lobby_battle['unlocks'].include?('goldenrod_underground_warehouse') && radio_lobby_battle['unlocks'].include?('rocket_elevator_lock_clue')
+raise 'expected JohtoStory Radio Tower lobby next hook warehouse' unless radio_lobby_battle['next_hook'] == 'goldenrod_underground_warehouse'
+raise 'expected JohtoStory Radio Tower lobby companions' unless %w[red blue bill].all? { |companion| radio_lobby_battle['companions'].include?(companion) }
+raise 'expected JohtoStory Radio Tower lobby rivals' unless %w[ava silver].all? { |rival| radio_lobby_battle['rivals'].include?(rival) }
+raise 'expected JohtoStory Radio Tower lobby factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| radio_lobby_battle['factions'].include?(faction) }
+second_radio_lobby_battle = NexusRed::JohtoStory.complete_radio_tower_lobby_battle(kanto_story_state)
+raise 'expected JohtoStory Radio Tower lobby battle idempotent guard' unless second_radio_lobby_battle['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Radio Tower lobby battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_lobby_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
