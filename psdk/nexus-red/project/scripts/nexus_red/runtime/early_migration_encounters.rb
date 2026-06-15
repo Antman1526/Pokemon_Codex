@@ -38,6 +38,33 @@ module NexusRed
         .uniq
     end
 
+    def next_uncaught_for_route(state, route_id, time: 'any', max_level: nil)
+      caught_species = PokedexAvailability.ensure_pokedex(state)['caught_species']
+      available_for_route(state, route_id, time: time, max_level: max_level)
+        .find { |encounter| !caught_species.key?(encounter['species']) }
+    end
+
+    def prepare_map_event_encounter(state, route_id, time: 'any', max_level: nil, channel: 'wild_grass', area_type: 'route')
+      route = route_target(route_id)
+      return nil if route.nil?
+
+      encounter = next_uncaught_for_route(state, route_id, time: time, max_level: max_level)
+      return nil if encounter.nil?
+
+      record_migration_seen(state, encounter, route, channel: channel, area_type: area_type)
+      map_event_payload(route_id, route, encounter, channel)
+    end
+
+    def record_migration_seen(state, encounter, route, channel: 'wild_grass', area_type: 'route')
+      PokedexAvailability.record_seen(
+        state,
+        encounter['species'],
+        location: route['display_name'],
+        channel: channel,
+        area_type: area_type
+      )
+    end
+
     def build_migration
       seed = SeedData.early_encounters
       {
@@ -62,6 +89,22 @@ module NexusRed
 
     def level_allowed?(encounter, max_level)
       max_level.nil? || encounter['level'].to_i <= max_level.to_i
+    end
+
+    def map_event_payload(route_id, route, encounter, channel)
+      {
+        'route_id' => route_id.to_s,
+        'route_name' => route['display_name'],
+        'psdk_map_id' => route['psdk_map_id'],
+        'species' => encounter['species'],
+        'psdk_species_key' => encounter['psdk_species_key'],
+        'level' => encounter['level'],
+        'weight' => encounter['weight'],
+        'time' => encounter['time'],
+        'channel' => channel.to_s,
+        'encounter_id' => encounter['id'],
+        'tags' => encounter['tags'].dup
+      }
     end
   end
 end

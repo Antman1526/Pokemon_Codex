@@ -94,6 +94,9 @@ REQUIRED_MARKERS = (
     "available_for_route",
     "catchable_species",
     "rare_power_species",
+    "next_uncaught_for_route",
+    "prepare_map_event_encounter",
+    "record_migration_seen",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -720,6 +723,31 @@ story_flags << 'boulder_badge_obtained'
 raise 'expected Route 2 night Dratini available after forest gate' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_2', time: 'night').any? { |encounter| encounter['species'] == 'Dratini' }
 raise 'expected Route 3 day Kubfu available after Boulder Badge' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_3', time: 'day').any? { |encounter| encounter['species'] == 'Kubfu' }
 raise 'expected over-level migration encounters filtered out' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_3', max_level: 6).none? { |encounter| encounter['species'] == 'Grookey' }
+
+event_state = NexusRed::RuntimeState.build
+NexusRed::StarterSelection.select_partner(event_state, 'Bulbasaur')
+event_payload = NexusRed::EarlyMigrationEncounters.prepare_map_event_encounter(
+  event_state,
+  'route_1',
+  time: 'morning',
+  max_level: 5
+)
+raise 'expected map event payload for Route 1 migration' if event_payload.nil?
+raise 'expected map event payload species Bulbasaur' unless event_payload['species'] == 'Bulbasaur'
+raise 'expected map event PSDK species key' unless event_payload['psdk_species_key'] == 'BULBASAUR'
+raise 'expected map event route id' unless event_payload['route_id'] == 'route_1'
+raise 'expected map event map id' unless event_payload['psdk_map_id'] == 'kanto_route_1'
+raise 'expected map event channel wild grass' unless event_payload['channel'] == 'wild_grass'
+raise 'expected migration seen entry recorded' unless event_state['pokedex']['seen_species']['Bulbasaur'].first['location'] == 'Route 1'
+raise 'expected migration seen WorldLink message' unless event_state['worldlink_recent_messages'].any? { |message| message['category'] == 'pokedex_update' && message['text'].include?('Bulbasaur') }
+NexusRed::PokedexAvailability.record_caught(event_state, 'Bulbasaur', location: 'Route 1', channel: 'wild_grass', area_type: 'route')
+next_payload = NexusRed::EarlyMigrationEncounters.prepare_map_event_encounter(
+  event_state,
+  'route_1',
+  time: 'morning',
+  max_level: 5
+)
+raise 'expected caught migration species skipped' unless next_payload['species'] == 'Chikorita'
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
