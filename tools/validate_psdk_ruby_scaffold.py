@@ -106,6 +106,9 @@ REQUIRED_MARKERS = (
     "module WildBattleLauncher",
     "launch_pending_request",
     "build_launch_payload",
+    "build_psdk_script_lines",
+    "species_symbol",
+    "psdk_runtime_available?",
     "launch_history",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
@@ -801,6 +804,15 @@ raise 'expected wild battle launch species key' unless launch_payload['species_k
 raise 'expected wild battle launch level' unless launch_payload['level'] == 4
 raise 'expected wild battle launch source event id' unless launch_payload['source_event_id'] == 'route_1_migration_event'
 raise 'expected wild battle launch command family' unless launch_payload['psdk_command_family'] == 'wild_battle'
+raise 'expected wild battle launch PSDK BattleInfo strategy' unless launch_payload['psdk_binding_strategy'] == 'battle_info_wild_party'
+raise 'expected wild battle launch species symbol' unless launch_payload['psdk_species_symbol'] == 'bulbasaur'
+raise 'expected scaffold PSDK runtime unavailable in smoke test' if launch_payload['psdk_runtime_available']
+raise 'expected wild battle launch script initializes BattleInfo' unless launch_payload['psdk_script_lines'].include?('bi = Battle::Logic::BattleInfo.new')
+raise 'expected wild battle launch script feeds player party' unless launch_payload['psdk_script_lines'].include?('bi.add_party(0, *bi.player_basic_info)')
+raise 'expected wild battle launch script generates wild Pokemon' unless launch_payload['psdk_script_lines'].include?('party << PFM::Pokemon.generate_from_hash(id: :bulbasaur, level: 4)')
+raise 'expected wild battle launch script feeds wild party' unless launch_payload['psdk_script_lines'].include?('bi.add_party(1, party)')
+raise 'expected wild battle launch script calls Battle Scene' unless launch_payload['psdk_script_lines'].include?('$scene.call_scene(Battle::Scene, bi)')
+raise 'expected WildBattleLauncher species symbol helper' unless NexusRed::WildBattleLauncher.species_symbol('BULBASAUR') == 'bulbasaur'
 raise 'expected wild battle launch history recorded' unless NexusRed::WildBattleLauncher.launch_history(route_1_launch_state).last == launch_payload
 
 route_2_event_state = NexusRed::RuntimeState.build

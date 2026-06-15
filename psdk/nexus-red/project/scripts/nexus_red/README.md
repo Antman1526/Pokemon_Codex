@@ -17,7 +17,7 @@ Route 1-3 migration map events should call `NexusRed::EarlyMigrationEncounters.p
 
 Route 1-3 can use `NexusRed::Route1MigrationEvent.trigger`, `NexusRed::Route2MigrationEvent.trigger`, and `NexusRed::Route3MigrationEvent.trigger` as their first concrete adapters. They delegate to `NexusRed::RouteMigrationEventAdapter.trigger_route`, which stores a pending wild-migration battle request through `NexusRed::MapEventBridge.pending_battle_request(state)`; the later PSDK map command should consume that request and hand its species key and level to the final wild battle launcher.
 
-`NexusRed::WildBattleLauncher.launch_pending_request(state)` consumes the pending request and builds the validated wild-battle launch payload. It records launch history and exposes `species_key`, `level`, map id, route id, and source event id for the engine-specific PSDK battle call that still needs to be attached.
+`NexusRed::WildBattleLauncher.launch_pending_request(state)` consumes the pending request and builds the validated wild-battle launch payload. It records launch history and exposes `species_key`, `level`, map id, route id, and source event id. The payload now includes PSDK BattleInfo script lines based on the official scripted battle flow: create `Battle::Logic::BattleInfo`, add the player party, generate a wild `PFM::Pokemon`, add it to enemy bank 1 without trainer metadata, then call `$scene.call_scene(Battle::Scene, bi)`.
 
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
