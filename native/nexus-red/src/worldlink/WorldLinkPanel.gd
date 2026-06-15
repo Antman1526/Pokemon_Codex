@@ -71,7 +71,7 @@ func _build_feed_text() -> String:
 
 
 func _build_checklist_text() -> String:
-	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat\n%s Reach Nugget Bridge\n%s Scout bridge recruiters\n%s Defeat first bridge recruiter" % [
+	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat\n%s Reach Nugget Bridge\n%s Scout bridge recruiters\n%s Defeat first bridge recruiter\n%s Defeat bridge captain\n%s Clear Nugget Bridge crisis" % [
 		_checkmark(_flag("mom_opening_scene_seen")),
 		_checkmark(_flag("starter_chosen")),
 		_checkmark(_flag("route_1_reached")),
@@ -97,6 +97,8 @@ func _build_checklist_text() -> String:
 		_checkmark(_flag("nugget_bridge_reached")),
 		_checkmark(_flag("red_misty_nugget_bridge_scout_seen")),
 		_checkmark(_flag("nugget_bridge_recruiter_1_battle_finished")),
+		_checkmark(_flag("nugget_bridge_captain_battle_finished")),
+		_checkmark(_flag("nugget_bridge_crisis_cleared")),
 	]
 
 

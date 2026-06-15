@@ -113,6 +113,10 @@ func start_new_game(name: String) -> void:
 		"red_misty_nugget_bridge_scout_seen": false,
 		"nugget_bridge_recruiter_1_battle_started": false,
 		"nugget_bridge_recruiter_1_battle_finished": false,
+		"nugget_bridge_captain_battle_started": false,
+		"nugget_bridge_captain_battle_finished": false,
+		"nugget_bridge_crisis_cleared": false,
+		"misty_gym_unlocked": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -449,6 +453,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("gold_dust_helix_claim_blocked", true)
 	if battle_id == "nugget_bridge_recruiter_1":
 		set_flag("nugget_bridge_recruiter_1_battle_started", true)
+	if battle_id == "nugget_bridge_captain":
+		set_flag("nugget_bridge_captain_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -472,6 +478,12 @@ func finish_battle_placeholder(result: String) -> void:
 		set_flag("nugget_bridge_recruiter_1_battle_finished", true)
 		queue_worldlink_id("nugget_bridge_recruiter_1_battle_finished")
 		queue_worldlink_id("wl_nugget_bridge_recruiter_1_battle_finished")
+	if active_battle_id == "nugget_bridge_captain":
+		set_flag("nugget_bridge_captain_battle_finished", true)
+		set_flag("nugget_bridge_crisis_cleared", true)
+		set_flag("misty_gym_unlocked", true)
+		queue_worldlink_id("wl_nugget_bridge_captain_battle_finished")
+		queue_worldlink_id("wl_nugget_bridge_crisis_cleared")
 	active_battle_id = ""
 
 

@@ -17,6 +17,16 @@
       "id": "wl_nugget_bridge_recruiter_1_battle_finished",
       "category": "battle",
       "text": "Antman defeated the first bridge recruiter, disrupting the shared Rocket and Gold Dust recruitment screen."
+    },
+    {
+      "id": "wl_nugget_bridge_captain_battle_finished",
+      "category": "battle",
+      "text": "Antman defeated the bridge captain running the Rocket and Gold Dust recruitment front."
+    },
+    {
+      "id": "wl_nugget_bridge_crisis_cleared",
+      "category": "story",
+      "text": "Misty reopened the path toward her gym after Nugget Bridge recruiters lost control of the crowd."
     }
   ]
 }

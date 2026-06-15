@@ -1,0 +1,44 @@
+{
+  "id": "nugget_bridge_captain",
+  "display_title": "Nugget Bridge - Recruiter Captain",
+  "status": "placeholder",
+  "battle_type": "faction_recruiter_captain",
+  "location": "nugget_bridge",
+  "level_cap": 21,
+  "tag_story_setup": true,
+  "difficulty_note": "Cerulean bridge capstone before Misty's gym. Uses mixed Rocket/Gold Dust pressure without becoming a hard-mode wall.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "support_ids": ["misty"],
+    "slots": ["party"],
+    "story_support": "Red keeps the recruiter line from collapsing onto Antman while Misty cuts off the Gold Dust payout runner."
+  },
+  "opponent": {
+    "id": "bridge_captain_cerulean",
+    "display_name": "Bridge Captain",
+    "faction": "rocket_gold_dust_front",
+    "slots": [
+      {
+        "species": "Sandile",
+        "level": 19,
+        "role": "Gold Dust ground pressure"
+      },
+      {
+        "species": "Zubat",
+        "level": 18,
+        "role": "Rocket disruption"
+      }
+    ],
+    "intent": "cap the first Cerulean villain escalation and unlock Misty's gym once the bridge recruitment cover is broken"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "nugget_bridge_captain_battle_started",
+      "nugget_bridge_captain_battle_finished",
+      "nugget_bridge_crisis_cleared",
+      "misty_gym_unlocked"
+    ]
+  }
+}

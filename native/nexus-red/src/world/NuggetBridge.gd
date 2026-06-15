@@ -4,6 +4,7 @@ signal go_to_cerulean_city
 signal start_battle_placeholder(battle_id)
 
 const FIRST_RECRUITER_BATTLE_ID := "nugget_bridge_recruiter_1"
+const CAPTAIN_BATTLE_ID := "nugget_bridge_captain"
 
 var save_state
 var dialogue_label: Label
@@ -21,6 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_bridge_scouting()
 	if event.is_action_pressed("ui_up"):
 		trigger_recruiter_battle()
+	if event.is_action_pressed("ui_right"):
+		trigger_bridge_captain_battle()
 	if event.is_action_pressed("cancel"):
 		return_to_cerulean_city()
 
@@ -107,9 +110,23 @@ func trigger_recruiter_battle() -> void:
 	emit_signal("start_battle_placeholder", FIRST_RECRUITER_BATTLE_ID)
 
 
+func trigger_bridge_captain_battle() -> void:
+	if save_state and not bool(save_state.story_flags.get("nugget_bridge_recruiter_1_battle_finished", false)):
+		dialogue_label.text = "Misty: Clear the first recruiter before we push the captain. Rocket and Gold Dust are watching how Antman handles pressure."
+		return
+	if save_state:
+		save_state.start_battle_placeholder(CAPTAIN_BATTLE_ID)
+	dialogue_label.text = "Bridge Captain: Rocket pays for control. Gold Dust pays for results. Show me which offer scares you more."
+	emit_signal("start_battle_placeholder", CAPTAIN_BATTLE_ID)
+
+
+func show_bridge_resolution() -> void:
+	dialogue_label.text = "Misty: The bridge is clear enough for now. Rocket and Gold Dust lost their cover, so my gym is open when Antman is ready."
+
+
 func return_to_cerulean_city() -> void:
 	emit_signal("go_to_cerulean_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Misty: Nugget Bridge is packed. Press Z/Enter to scout with Red and Misty, Up to challenge the first recruiter, or X/Esc to return to Cerulean City."
+	dialogue_label.text = "Misty: Nugget Bridge is packed. Press Z/Enter to scout with Red and Misty, Up for the first recruiter, Right for the bridge captain, or X/Esc to return to Cerulean City."

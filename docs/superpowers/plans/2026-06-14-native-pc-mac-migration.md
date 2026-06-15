@@ -580,6 +580,24 @@ python3 tools/validate_native_nugget_bridge_recruiter.py
 godot --headless --path native/nexus-red --script tests/nugget_bridge_recruiter_test.gd
 ```
 
+### Task 7.30: Resolve Nugget Bridge and unlock Misty's gym
+
+Acceptance:
+
+- Nugget Bridge captain battle stays locked until the first bridge recruiter is defeated.
+- The bridge captain can start a placeholder battle after the first recruiter is cleared.
+- Battle data documents a Cerulean-appropriate level cap, mixed Rocket/Gold Dust captain identity, and bridge capstone team.
+- Placeholder battle return sends the player back to Nugget Bridge.
+- Defeating the bridge captain clears the Nugget Bridge crisis and unlocks Misty's gym as the next story target.
+- Save state and WorldLink record bridge captain completion and crisis cleared status.
+
+Verification:
+
+```sh
+python3 tools/validate_native_nugget_bridge_resolution.py
+godot --headless --path native/nexus-red --script tests/nugget_bridge_resolution_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
