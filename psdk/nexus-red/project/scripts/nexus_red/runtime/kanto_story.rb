@@ -27,6 +27,12 @@ module NexusRed
     ROUTE_9_EVENT_ID = 'route_9_rock_tunnel_approach'
     TEAM_MOONLIGHT_ROUTE_9_EVENT_ID = 'team_moonlight_route_9_debut'
     ROCKET_ROUTE_9_CACHE_EVENT_ID = 'rocket_route_9_supply_cache'
+    ROCK_TUNNEL_EVENT_ID = 'rock_tunnel_interior'
+    BILL_LAVENDER_ECHO_EVENT_ID = 'bill_lavender_echo_trace'
+    TEAM_MOONLIGHT_CAVE_EVENT_ID = 'team_moonlight_cave_pressure'
+    ROCKET_DARK_CACHE_EVENT_ID = 'rocket_dark_cache'
+    FLASH_LANTERN_EVENT_ID = 'flash_lantern_needed'
+    LAVENDER_EXIT_EVENT_ID = 'lavender_exit_path_unlocked'
 
     module_function
 
@@ -872,6 +878,92 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_9_EVENT_ID }
     end
 
+    def complete_rock_tunnel_interior(state, location: 'Rock Tunnel', area_type: 'cave')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_route_9_approach', 'event_id' => ROCK_TUNNEL_EVENT_ID } unless route_9_rock_tunnel_approach_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROCK_TUNNEL_EVENT_ID } if rock_tunnel_interior_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ROCK_TUNNEL_INTERIOR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ROCK_TUNNEL_GUIDANCE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_LAVENDER_ECHO_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_CAVE_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_DARK_CACHE')
+      add_story_flag(state, 'FLAG_NEXUS_FLASH_LANTERN_NEEDED')
+      add_story_flag(state, 'FLAG_NEXUS_CAVE_LANTERN_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_LAVENDER_EXIT_PATH_UNLOCKED')
+      mark_cleared_event(story, ROCK_TUNNEL_EVENT_ID)
+      mark_cleared_event(story, BILL_LAVENDER_ECHO_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_CAVE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_DARK_CACHE_EVENT_ID)
+      mark_cleared_event(story, FLASH_LANTERN_EVENT_ID)
+      mark_cleared_event(story, LAVENDER_EXIT_EVENT_ID)
+      FieldTools.unlock_tool(
+        state,
+        'cave_lantern',
+        source: 'Rock Tunnel dark cache',
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'cave_dream_pressure',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'dark_cache_surveillance',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket dark cache exposes Giovanni watching Team Moonlight pressure the tunnel',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'rock_tunnel_guidance',
+        location: location,
+        summary: 'Red stays with Antman through a brief blackout and guides the Rock Tunnel trainer path.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'lavender_echo_trace',
+        location: location,
+        summary: 'Bill traces the Echo Flute frequency through Rock Tunnel toward Lavender.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rock Tunnel exposed Moonlight cave pressure, a Rocket dark cache, and the Lavender exit path after the Cave Lantern came online.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = rock_tunnel_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def rock_tunnel_interior_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCK_TUNNEL_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1049,6 +1141,24 @@ module NexusRed
         ],
         'factions' => %w[team_moonlight team_rocket],
         'next_hook' => 'rock_tunnel_interior'
+      }
+    end
+
+    def rock_tunnel_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ROCK_TUNNEL_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          BILL_LAVENDER_ECHO_EVENT_ID,
+          TEAM_MOONLIGHT_CAVE_EVENT_ID,
+          ROCKET_DARK_CACHE_EVENT_ID,
+          FLASH_LANTERN_EVENT_ID,
+          LAVENDER_EXIT_EVENT_ID
+        ],
+        'factions' => %w[team_moonlight team_rocket],
+        'unlocks' => %w[cave_lantern lavender_exit_path],
+        'next_hook' => 'lavender_outskirts'
       }
     end
 

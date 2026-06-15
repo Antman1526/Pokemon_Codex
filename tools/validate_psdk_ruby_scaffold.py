@@ -170,6 +170,8 @@ REQUIRED_MARKERS = (
     "route_2_east_field_lab_cleared?",
     "complete_route_9_rock_tunnel_approach",
     "route_9_rock_tunnel_approach_cleared?",
+    "complete_rock_tunnel_interior",
+    "rock_tunnel_interior_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1227,6 +1229,38 @@ raise 'expected KantoStory Route 9 next hook Rock Tunnel' unless route_9_approac
 second_route_9_approach = NexusRed::KantoStory.complete_route_9_rock_tunnel_approach(kanto_story_state)
 raise 'expected KantoStory Route 9 idempotent guard' unless second_route_9_approach['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Route 9 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_9_rock_tunnel_approach' } == 1
+pre_route_9_rock_tunnel = NexusRed::KantoStory.complete_rock_tunnel_interior(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Rock Tunnel gated before Route 9' unless pre_route_9_rock_tunnel['status'] == 'blocked_missing_route_9_approach'
+rock_tunnel = NexusRed::KantoStory.complete_rock_tunnel_interior(
+  kanto_story_state,
+  location: 'Rock Tunnel',
+  area_type: 'cave'
+)
+raise 'expected KantoStory Rock Tunnel clear status' unless rock_tunnel['status'] == 'cleared'
+raise 'expected KantoStory Rock Tunnel event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('rock_tunnel_interior')
+raise 'expected KantoStory Rock Tunnel helper true' unless NexusRed::KantoStory.rock_tunnel_interior_cleared?(kanto_story_state)
+raise 'expected KantoStory Rock Tunnel reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCK_TUNNEL_INTERIOR_REACHED')
+raise 'expected KantoStory Red Rock Tunnel guidance flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_ROCK_TUNNEL_GUIDANCE')
+raise 'expected KantoStory Bill Lavender echo trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_LAVENDER_ECHO_TRACE')
+raise 'expected KantoStory Moonlight cave pressure flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_CAVE_PRESSURE')
+raise 'expected KantoStory Rocket dark cache flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_DARK_CACHE')
+raise 'expected KantoStory Flash Lantern needed flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FLASH_LANTERN_NEEDED')
+raise 'expected KantoStory Cave Lantern unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CAVE_LANTERN_UNLOCKED')
+raise 'expected KantoStory Lavender exit path unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LAVENDER_EXIT_PATH_UNLOCKED')
+raise 'expected KantoStory Cave Lantern field tool unlocked' unless NexusRed::FieldTools.has_tool?(kanto_story_state, 'cave_lantern')
+raise 'expected KantoStory Flash replacement available' unless NexusRed::FieldTools.can_use_replacement?(kanto_story_state, 'Flash')
+raise 'expected KantoStory Cave Lantern source recorded' unless kanto_story_state['field_tools']['tool_sources']['cave_lantern'] == 'Rock Tunnel dark cache'
+raise 'expected KantoStory Moonlight cave pressure activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Rock Tunnel' && activity['operation'] == 'cave_dream_pressure' }
+raise 'expected KantoStory Rocket dark cache activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Rock Tunnel' && activity['operation'] == 'dark_cache_surveillance' }
+raise 'expected KantoStory Rocket Moonlight Rock Tunnel conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Rock Tunnel' }
+raise 'expected KantoStory Red Rock Tunnel scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('rock_tunnel_guidance')
+raise 'expected KantoStory Bill Lavender echo trace scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('lavender_echo_trace')
+raise 'expected KantoStory Rock Tunnel story alert paused in cave' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Lavender') }
+raise 'expected KantoStory Cave Lantern unlock paused in cave' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'field_tools' && message['text'].include?('Cave Lantern') }
+raise 'expected KantoStory Rock Tunnel next hook Lavender' unless rock_tunnel['next_hook'] == 'lavender_outskirts'
+second_rock_tunnel = NexusRed::KantoStory.complete_rock_tunnel_interior(kanto_story_state)
+raise 'expected KantoStory Rock Tunnel idempotent guard' unless second_rock_tunnel['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Rock Tunnel history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'rock_tunnel_interior' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
