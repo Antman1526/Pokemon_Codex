@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_mt_moon_entrance
+signal start_battle_placeholder(battle_id)
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_split_path_scouting()
+	if event.is_action_pressed("ui_left"):
+		trigger_rocket_left_path_battle()
 	if event.is_action_pressed("cancel"):
 		return_to_mt_moon_entrance()
 
@@ -107,9 +110,19 @@ func trigger_split_path_scouting() -> void:
 	dialogue_label.text = "Red marks the split: Team Rocket drags the Dome Fossil crate down the left tunnel, Team Gold Dust chases the Helix Fossil signal to the right, and the Nexus Fossil pulse keeps coming from below both paths."
 
 
+func trigger_rocket_left_path_battle() -> void:
+	if save_state and not bool(save_state.story_flags.get("fossil_choice_setup_seen", false)):
+		dialogue_label.text = "Red: Scout the split first. Rocket wants us to rush left before we understand the cave."
+		return
+	if save_state:
+		save_state.start_battle_placeholder("mt_moon_rocket_left_path")
+	dialogue_label.text = "Red: I will hold the second Rocket here. Take the left-path runner before that Dome Fossil crate disappears."
+	emit_signal("start_battle_placeholder", "mt_moon_rocket_left_path")
+
+
 func return_to_mt_moon_entrance() -> void:
 	emit_signal("go_to_mt_moon_entrance")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is the first split. Press Z/Enter to scout Rocket, Gold Dust, and the fossil table, or X/Esc to return to the Mt. Moon entrance."
+	dialogue_label.text = "Red: This is the first split. Press Z/Enter to scout Rocket, Gold Dust, and the fossil table, Left for the Rocket runner, or X/Esc to return to the Mt. Moon entrance."

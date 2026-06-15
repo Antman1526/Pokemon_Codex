@@ -66,6 +66,7 @@ python3 tools/validate_native_brock_gym_placeholder.py
 python3 tools/validate_native_pewter_museum_anomaly.py
 python3 tools/validate_native_mt_moon_entrance_slice.py
 python3 tools/validate_native_mt_moon_interior_slice.py
+python3 tools/validate_native_mt_moon_rocket_battle.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -89,6 +90,7 @@ godot --headless --path native/nexus-red --script tests/brock_gym_placeholder_te
 godot --headless --path native/nexus-red --script tests/pewter_museum_anomaly_test.gd
 godot --headless --path native/nexus-red --script tests/mt_moon_entrance_test.gd
 godot --headless --path native/nexus-red --script tests/mt_moon_interior_test.gd
+godot --headless --path native/nexus-red --script tests/mt_moon_rocket_battle_test.gd
 ```
 
 ## Legal Rule

@@ -476,6 +476,23 @@ python3 tools/validate_native_mt_moon_interior_slice.py
 godot --headless --path native/nexus-red --script tests/mt_moon_interior_test.gd
 ```
 
+### Task 7.24: Add Mt. Moon Rocket left-path placeholder battle
+
+Acceptance:
+
+- Mt. Moon Interior 1 can start a Rocket Grunt placeholder battle after fossil split scouting.
+- Red is present as story support and blocks the second Rocket, but true tag combat remains deferred.
+- Battle data documents a post-Brock level cap, Rocket faction identity, and Zubat/Rattata opener team.
+- Save state records battle start, finish, and Red tag setup flags.
+- Placeholder battle return sends the player back to Mt. Moon Interior 1.
+
+Verification:
+
+```sh
+python3 tools/validate_native_mt_moon_rocket_battle.py
+godot --headless --path native/nexus-red --script tests/mt_moon_rocket_battle_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

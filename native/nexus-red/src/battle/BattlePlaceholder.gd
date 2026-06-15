@@ -5,6 +5,7 @@ signal battle_finished(result)
 const BATTLE_DATA_PATHS := {
 	"blue_route_1": "res://content/battles/blue_route_1.json",
 	"brock_pewter_gym": "res://content/battles/brock_pewter_gym.json",
+	"mt_moon_rocket_left_path": "res://content/battles/mt_moon_rocket_left_path.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

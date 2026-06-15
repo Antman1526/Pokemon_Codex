@@ -1,0 +1,38 @@
+{
+  "id": "mt_moon_rocket_left_path",
+  "display_title": "Mt. Moon - Rocket Left Path",
+  "status": "placeholder",
+  "battle_type": "faction_grunt",
+  "location": "mt_moon_interior_1",
+  "level_cap": 16,
+  "tag_story_setup": true,
+  "difficulty_note": "First post-Brock villain battle. Red is present as story support, but true tag combat is deferred to the battle engine milestone.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red blocks the second Rocket so Antman can take the fossil runner."
+  },
+  "opponent": {
+    "id": "rocket_grunt_mt_moon_left",
+    "display_name": "Rocket Grunt",
+    "faction": "team_rocket",
+    "slots": [
+      {
+        "species": "Zubat",
+        "level": 13,
+        "role": "fast cave opener"
+      },
+      {
+        "species": "Rattata",
+        "level": 13,
+        "role": "physical cleanup"
+      }
+    ],
+    "intent": "early villain pressure that proves Rocket is no longer only stealing from towns; they are racing rival factions for Nexus artifacts"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": ["mt_moon_rocket_left_battle_started", "mt_moon_rocket_left_battle_finished", "red_mt_moon_tag_setup_seen"]
+  }
+}

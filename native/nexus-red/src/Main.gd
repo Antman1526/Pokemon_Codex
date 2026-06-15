@@ -150,6 +150,7 @@ func _show_mt_moon_interior_1() -> void:
 	var interior := MtMoonInterior1Scene.instantiate()
 	interior.save_state = save_state
 	interior.go_to_mt_moon_entrance.connect(_on_go_to_mt_moon_entrance)
+	interior.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(interior)
 
 
@@ -167,6 +168,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 	save_state.finish_battle_placeholder(result)
 	if battle_return_scene == "pewter_city":
 		_show_pewter_city()
+	elif battle_return_scene == "mt_moon_interior_1":
+		_show_mt_moon_interior_1()
 	else:
 		_on_go_to_route_1()
 
