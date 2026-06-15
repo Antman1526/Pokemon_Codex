@@ -7,6 +7,7 @@
     {"id": "brock", "display_name": "Brock", "role": "long-term survival mentor companion", "active_from": "kanto"},
     {"id": "blue", "display_name": "Blue", "role": "rival to anti-hero ally", "active_from": "kanto"},
     {"id": "may", "display_name": "May", "role": "Hoenn ecology and field research companion", "active_from": "hoenn"},
-    {"id": "bill", "display_name": "Bill", "role": "technical network ally", "active_from": "kanto"}
+    {"id": "bill", "display_name": "Bill", "role": "technical network ally", "active_from": "kanto", "tag_battle_eligible": false},
+    {"id": "sabrina", "display_name": "Sabrina", "role": "Saffron psychic gym ally and Moonlight residue specialist", "active_from": "kanto", "tag_battle_eligible": false}
   ]
 }

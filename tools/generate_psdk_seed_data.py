@@ -172,7 +172,7 @@ def build_companion_seed(entry: dict) -> dict:
                 "display_name": companion["display_name"],
                 "role": companion["role"],
                 "active_from": companion["active_from"],
-                "tag_battle_eligible": companion["id"] != "bill",
+                "tag_battle_eligible": companion.get("tag_battle_eligible", companion["id"] != "bill"),
                 "gym_battle_partner": False,
             }
             for companion in source["companions"]

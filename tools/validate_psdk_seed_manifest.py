@@ -70,7 +70,7 @@ DROPPED_ACTIVE_CANONICAL_FACTIONS = {
     "macro_cosmos",
     "team_star",
 }
-REQUIRED_COMPANIONS = ["red", "ash", "misty", "brock", "blue", "may", "bill"]
+REQUIRED_COMPANIONS = ["red", "ash", "misty", "brock", "blue", "may", "bill", "sabrina"]
 REQUIRED_RIVALS = [
     "blue",
     "ava",
@@ -380,14 +380,14 @@ def validate_companion_import(entry: dict) -> list[str]:
     if entry.get("primary_companion") != "red":
         errors.append("companion import primary_companion must be red")
     if entry.get("required_companions") != REQUIRED_COMPANIONS:
-        errors.append("companion import required_companions must preserve the core companion cast")
+        errors.append("companion import required_companions must preserve the core companion cast and Saffron support ally")
     if data.get("primary_companion") != "red":
         errors.append("companion source primary_companion must be red")
     if companion_ids != REQUIRED_COMPANIONS:
-        errors.append("companion source must preserve Red, Ash, Misty, Brock, Blue, May, Bill")
+        errors.append("companion source must preserve Red, Ash, Misty, Brock, Blue, May, Bill, and Sabrina")
 
     rules = set(entry.get("preserve_rules", []))
-    for rule in ("red_is_primary_full_game_companion", "companions_help_in_story_and_tag_battles_but_not_gym_battles"):
+    for rule in ("red_is_primary_full_game_companion", "sabrina_supports_saffron_psychic_and_moonlight_residue_arcs", "companions_help_in_story_and_tag_battles_but_not_gym_battles"):
         if rule not in rules:
             errors.append(f"companion import preserve_rules missing {rule}")
 
@@ -397,10 +397,12 @@ def validate_companion_import(entry: dict) -> list[str]:
     if generated.get("primary_companion") != "red":
         errors.append("generated companion seed primary_companion must be red")
     if generated_ids != REQUIRED_COMPANIONS:
-        errors.append("generated companion seed must preserve the core companion cast")
+        errors.append("generated companion seed must preserve the core companion cast and Saffron support ally")
     for companion in generated.get("companions", []):
         if companion.get("gym_battle_partner") is not False:
             errors.append(f"{companion.get('companion_id')} must not be a gym battle partner")
+        if companion.get("companion_id") in {"bill", "sabrina"} and companion.get("tag_battle_eligible") is not False:
+            errors.append(f"{companion.get('companion_id')} must remain a non-tag-battle support companion")
 
     return errors
 

@@ -10,6 +10,7 @@
     "blue_is_rival_to_anti_hero_ally",
     "may_joins_in_hoenn",
     "bill_supports_worldlink_and_network_mystery",
+    "sabrina_supports_saffron_psychic_and_moonlight_residue_arcs",
     "companions_help_in_story_and_tag_battles_but_not_gym_battles"
   ],
   "companions": [
@@ -65,6 +66,14 @@
       "companion_id": "bill",
       "display_name": "Bill",
       "role": "technical network ally",
+      "active_from": "kanto",
+      "tag_battle_eligible": false,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "sabrina",
+      "display_name": "Sabrina",
+      "role": "Saffron psychic gym ally and Moonlight residue specialist",
       "active_from": "kanto",
       "tag_battle_eligible": false,
       "gym_battle_partner": false

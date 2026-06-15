@@ -109,6 +109,19 @@ companions:
       paldea: [academy_energy_decode]
       nexus_island: [convergence_analysis, rocket_network_countermeasure]
 
+  sabrina:
+    role: saffron_psychic_gym_ally_moonlight_specialist
+    frequency: kanto_arc_recurring
+    can_follow: situational
+    can_tag_battle: false
+    can_train_player: true
+    can_help_gym_battles: false
+    personality: calm_intense_guarded_protective
+    scene_focus: [psychic_residue, moonlight_warnings, saffron_cleanup, gym_prep, nexus_signal_sensing]
+    regional_presence:
+      kanto: [saffron_aftermath, gym_prep, mind_badge_pressure]
+      nexus_island: [psychic_signal_decode]
+
 global_rules:
   - "Companions cannot fight Antman's gym battles."
   - "Companions can join villain tag battles and route/dungeon skirmishes."

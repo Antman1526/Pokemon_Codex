@@ -234,6 +234,8 @@ REQUIRED_MARKERS = (
     "silph_co_10f_president_suite_cleared?",
     "complete_silph_co_giovanni_boardroom",
     "silph_co_giovanni_boardroom_cleared?",
+    "complete_saffron_sabrina_aftermath",
+    "saffron_sabrina_aftermath_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -318,9 +320,10 @@ raise 'expected hidden_meta_villain helper' unless NexusRed::SeedData.hidden_met
 
 companions = NexusRed::SeedData.companions
 raise 'expected Red primary companion' unless companions['primary_companion'] == 'red'
-raise 'expected 7 companions' unless companions['companions'].length == 7
+raise 'expected 8 companions' unless companions['companions'].length == 8
+raise 'expected Sabrina companion seed' unless NexusRed::SeedData.companion_ids.include?('sabrina')
 raise 'expected red_primary_companion? helper' unless NexusRed::SeedData.red_primary_companion?
-raise 'expected companion_ids helper' unless NexusRed::SeedData.companion_ids == %w[red ash misty brock blue may bill]
+raise 'expected companion_ids helper' unless NexusRed::SeedData.companion_ids == %w[red ash misty brock blue may bill sabrina]
 
 rivals = NexusRed::SeedData.rivals_worldlink
 raise 'expected 10 rivals' unless rivals['rivals'].length == 10
@@ -2255,6 +2258,41 @@ raise 'expected KantoStory Giovanni escapes full arc' unless giovanni_boardroom[
 second_giovanni_boardroom = NexusRed::KantoStory.complete_silph_co_giovanni_boardroom(kanto_story_state)
 raise 'expected KantoStory Giovanni boardroom idempotent guard' unless second_giovanni_boardroom['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Giovanni boardroom history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_giovanni_boardroom' } == 1
+pre_saffron_aftermath = NexusRed::KantoStory.complete_saffron_sabrina_aftermath(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Saffron aftermath gated before Giovanni boardroom' unless pre_saffron_aftermath['status'] == 'blocked_missing_silph_co_giovanni_boardroom'
+saffron_aftermath = NexusRed::KantoStory.complete_saffron_sabrina_aftermath(
+  kanto_story_state,
+  location: 'Saffron City',
+  area_type: 'city'
+)
+raise 'expected KantoStory Saffron aftermath clear status' unless saffron_aftermath['status'] == 'cleared'
+raise 'expected KantoStory Saffron aftermath event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('saffron_sabrina_aftermath')
+raise 'expected KantoStory Saffron aftermath helper true' unless NexusRed::KantoStory.saffron_sabrina_aftermath_cleared?(kanto_story_state)
+raise 'expected KantoStory Saffron aftermath flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFFRON_SABRINA_AFTER_MATH')
+raise 'expected KantoStory Silph cleanup patrol flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CLEANUP_PATROL')
+raise 'expected KantoStory Red Saffron cleanup flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SAFFRON_STREET_CLEANUP')
+raise 'expected KantoStory Bill signal analysis flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_SILPH_SIGNAL_ANALYSIS')
+raise 'expected KantoStory Sabrina Moonlight residue flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_MOONLIGHT_RESIDUE')
+raise 'expected KantoStory Moonlight psychic aftershock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_PSYCHIC_AFTERSHOCK')
+raise 'expected KantoStory Nexus Order still hidden after Saffron flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_SIGNAL_STILL_HIDDEN_AFTER_SILPH')
+raise 'expected KantoStory Sabrina gym prep unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_GYM_PREP_UNLOCKED')
+raise 'expected KantoStory Red Saffron aftermath scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('saffron_street_cleanup')
+raise 'expected KantoStory Bill Saffron aftermath scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_signal_analysis')
+raise 'expected KantoStory Sabrina aftermath scene' unless kanto_story_state['companion_progress']['sabrina']['scene_flags'].include?('moonlight_residue_warning')
+raise 'expected KantoStory Blue Saffron aftermath clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Sabrina')
+raise 'expected KantoStory Rocket Saffron aftermath activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'silph_retreat_cleanup' }
+raise 'expected KantoStory Moonlight Saffron aftermath activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'psychic_aftershock' }
+raise 'expected KantoStory Gold Dust Saffron aftermath activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'failed_silph_buyout_retreat' }
+raise 'expected KantoStory Nexus Saffron aftermath activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'hidden_signal_residue' }
+raise 'expected KantoStory Nexus Order still hidden after Saffron aftermath' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Moonlight Saffron aftermath conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Saffron City' }
+raise 'expected KantoStory Saffron aftermath story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Sabrina') && message['text'].include?('Moonlight') && message['text'].include?('Gym') }
+raise 'expected KantoStory Saffron aftermath next hook Sabrina gym prep' unless saffron_aftermath['next_hook'] == 'sabrina_gym_prep'
+raise 'expected KantoStory Saffron aftermath factions' unless saffron_aftermath['factions'].include?('team_moonlight') && saffron_aftermath['factions'].include?('nexus_order')
+raise 'expected KantoStory Saffron aftermath unlocks Sabrina gym prep' unless saffron_aftermath['unlocks'].include?('sabrina_gym_prep') && saffron_aftermath['unlocks'].include?('saffron_city_cleanup')
+second_saffron_aftermath = NexusRed::KantoStory.complete_saffron_sabrina_aftermath(kanto_story_state)
+raise 'expected KantoStory Saffron aftermath idempotent guard' unless second_saffron_aftermath['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Saffron aftermath history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'saffron_sabrina_aftermath' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

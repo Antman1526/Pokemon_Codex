@@ -134,13 +134,14 @@
       "psdk_target": "project/Data/nexus_red_seed/generated/core_companion_registry.json",
       "psdk_system": "psdk_companion_state_plus_tag_battle_hooks",
       "primary_companion": "red",
-      "required_companions": ["red", "ash", "misty", "brock", "blue", "may", "bill"],
+      "required_companions": ["red", "ash", "misty", "brock", "blue", "may", "bill", "sabrina"],
       "preserve_rules": [
         "red_is_primary_full_game_companion",
         "ash_misty_brock_are_long_term_recurring_companions",
         "blue_is_rival_to_anti_hero_ally",
         "may_joins_in_hoenn",
         "bill_supports_worldlink_and_network_mystery",
+        "sabrina_supports_saffron_psychic_and_moonlight_residue_arcs",
         "companions_help_in_story_and_tag_battles_but_not_gym_battles"
       ]
     },

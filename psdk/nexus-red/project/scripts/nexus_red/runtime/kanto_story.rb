@@ -257,6 +257,16 @@ module NexusRed
     NEXUS_ORDER_SILPH_SIGNAL_HIDDEN_EVENT_ID = 'nexus_order_silph_signal_still_hidden'
     SAFFRON_AFTER_MATH_UNLOCKED_EVENT_ID = 'saffron_sabrina_aftermath_unlocked'
     GIOVANNI_SILPH_BOARDROOM_BATTLE_ID = 'giovanni_silph_boardroom'
+    SAFFRON_SABRINA_AFTER_MATH_EVENT_ID = 'saffron_sabrina_aftermath'
+    SILPH_CLEANUP_PATROL_EVENT_ID = 'silph_cleanup_patrol'
+    RED_SAFFRON_STREET_CLEANUP_EVENT_ID = 'red_saffron_street_cleanup'
+    BILL_SILPH_SIGNAL_ANALYSIS_EVENT_ID = 'bill_silph_signal_analysis'
+    SABRINA_MOONLIGHT_RESIDUE_EVENT_ID = 'sabrina_moonlight_residue'
+    MOONLIGHT_PSYCHIC_AFTERSHOCK_EVENT_ID = 'moonlight_psychic_aftershock'
+    NEXUS_ORDER_SIGNAL_STILL_HIDDEN_EVENT_ID = 'nexus_order_signal_still_hidden_after_silph'
+    SABRINA_GYM_PREP_EVENT_ID = 'sabrina_gym_prep_unlocked'
+    GOLD_DUST_FAILED_SILPH_BUYOUT_EVENT_ID = 'gold_dust_failed_silph_buyout'
+    SABRINA_GYM_PREP_BATTLE_ID = 'sabrina_gym_prep'
 
     module_function
 
@@ -4002,6 +4012,132 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID }
     end
 
+    def complete_saffron_sabrina_aftermath(state, location: 'Saffron City', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_co_giovanni_boardroom', 'event_id' => SAFFRON_SABRINA_AFTER_MATH_EVENT_ID } unless silph_co_giovanni_boardroom_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SAFFRON_SABRINA_AFTER_MATH_EVENT_ID } if saffron_sabrina_aftermath_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SAFFRON_SABRINA_AFTER_MATH')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CLEANUP_PATROL')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SAFFRON_STREET_CLEANUP')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_SILPH_SIGNAL_ANALYSIS')
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_MOONLIGHT_RESIDUE')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_PSYCHIC_AFTERSHOCK')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_SIGNAL_STILL_HIDDEN_AFTER_SILPH')
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_GYM_PREP_UNLOCKED')
+      mark_cleared_event(story, SAFFRON_SABRINA_AFTER_MATH_EVENT_ID)
+      mark_cleared_event(story, SILPH_CLEANUP_PATROL_EVENT_ID)
+      mark_cleared_event(story, RED_SAFFRON_STREET_CLEANUP_EVENT_ID)
+      mark_cleared_event(story, BILL_SILPH_SIGNAL_ANALYSIS_EVENT_ID)
+      mark_cleared_event(story, SABRINA_MOONLIGHT_RESIDUE_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_PSYCHIC_AFTERSHOCK_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_SIGNAL_STILL_HIDDEN_EVENT_ID)
+      mark_cleared_event(story, SABRINA_GYM_PREP_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_FAILED_SILPH_BUYOUT_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'silph_retreat_cleanup',
+        threat_delta: -2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'psychic_aftershock',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'failed_silph_buyout_retreat',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'hidden_signal_residue',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket cleanup crews cannot explain why Sabrina still detects Moonlight residue in the streets after Silph is secured',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_moonlight',
+        'nexus_order',
+        location,
+        'Moonlight psychic residue reacts to a hidden sponsor signal that nobody in Saffron can name yet',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'saffron_street_cleanup',
+        location: location,
+        summary: 'Red helps Antman stabilize Saffron streets after Silph while keeping Rocket stragglers away from civilians.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_signal_analysis',
+        location: location,
+        summary: 'Bill studies the cached Silph signal and confirms it is not pure Rocket technology.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'sabrina',
+        'moonlight_residue_warning',
+        location: location,
+        summary: 'Sabrina warns Antman that Moonlight psychic residue still bends the city around her Gym.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue cleared a Rocket straggler route and said Sabrina is the only one in Saffron who can read the remaining signal.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Sabrina senses Moonlight residue across Saffron after Silph; the city is safe enough to regroup, and Gym prep is open.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = saffron_sabrina_aftermath_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def saffron_sabrina_aftermath_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SAFFRON_SABRINA_AFTER_MATH_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -4935,6 +5071,38 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_still_unrevealed',
         'unlocks' => %w[saffron_sabrina_aftermath master_ball_prototype silph_employee_rematches],
         'next_hook' => 'saffron_sabrina_aftermath'
+      }
+    end
+
+    def saffron_sabrina_aftermath_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SAFFRON_SABRINA_AFTER_MATH_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          SILPH_CLEANUP_PATROL_EVENT_ID,
+          RED_SAFFRON_STREET_CLEANUP_EVENT_ID,
+          BILL_SILPH_SIGNAL_ANALYSIS_EVENT_ID,
+          SABRINA_MOONLIGHT_RESIDUE_EVENT_ID,
+          MOONLIGHT_PSYCHIC_AFTERSHOCK_EVENT_ID,
+          NEXUS_ORDER_SIGNAL_STILL_HIDDEN_EVENT_ID,
+          SABRINA_GYM_PREP_EVENT_ID,
+          GOLD_DUST_FAILED_SILPH_BUYOUT_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'city_state' => 'silph_cleanup_sabrina_pressure',
+        'gym_tease' => 'sabrina_moonlight_residue',
+        'battle_hook' => {
+          'battle_id' => SABRINA_GYM_PREP_BATTLE_ID,
+          'battle_type' => 'gym_prep_psychic_trial',
+          'location' => 'saffron_city',
+          'level_cap' => 46,
+          'opponent_species' => %w[MrMime Hypno Kadabra],
+          'companion_support' => 'red_handles_rocket_stragglers'
+        },
+        'hidden_meta_signal' => 'nexus_order_still_unrevealed',
+        'unlocks' => %w[sabrina_gym_prep saffron_city_cleanup psychic_residue_reading],
+        'next_hook' => 'sabrina_gym_prep'
       }
     end
 

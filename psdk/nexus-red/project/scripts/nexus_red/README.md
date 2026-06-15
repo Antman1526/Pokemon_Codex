@@ -119,6 +119,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_silph_co_giovanni_boardroom(state, location:, area_type:)` resolves the Silph takeover. Giovanni retreats with enough signal data to remain the long-game antagonist, Red and Blue block Rocket reinforcements, Bill caches the hidden sponsor signal, the Master Ball prototype is secured, and `saffron_sabrina_aftermath` opens while Nexus Order stays hidden.
 
+`NexusRed::KantoStory.complete_saffron_sabrina_aftermath(state, location:, area_type:)` resolves Saffron's post-Silph cleanup. It records Red stabilizing the streets, Bill analyzing the cached signal, Sabrina identifying Moonlight psychic residue, Rocket and Gold Dust retreat fallout, and opens `sabrina_gym_prep`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
