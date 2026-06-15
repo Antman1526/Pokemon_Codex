@@ -724,6 +724,24 @@ python3 tools/validate_native_ss_anne_boarding.py
 godot --headless --path native/nexus-red --script tests/ss_anne_boarding_test.gd
 ```
 
+### Task 7.38: Add Blue S.S. Anne rival battle placeholder
+
+Acceptance:
+
+- The S.S. Anne main deck keeps Blue's ship battle locked until the main deck scouting scene has identified Blue aboard.
+- After deck scouting, the main deck can start a `blue_ss_anne` placeholder battle.
+- Blue's S.S. Anne battle data uses the dynamic Blue starter plus classic ship-era pressure picks.
+- Save state and WorldLink record Blue's ship battle started, finished, and a small rival-respect beat.
+- Battle completion returns the player to the S.S. Anne main deck.
+- WorldLink checklist adds Blue's S.S. Anne battle and ship-respect milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_ss_anne_blue_battle.py
+godot --headless --path native/nexus-red --script tests/ss_anne_blue_battle_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

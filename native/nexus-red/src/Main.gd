@@ -284,6 +284,7 @@ func _show_ss_anne_main_deck() -> void:
 	var deck := SSAnneMainDeckScene.instantiate()
 	deck.save_state = save_state
 	deck.go_to_ss_anne_ticket_office.connect(_on_go_to_ss_anne_ticket_office)
+	deck.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(deck)
 
 
@@ -309,6 +310,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_cerulean_city()
 	elif battle_return_scene == "cerulean_rocket_house":
 		_show_cerulean_rocket_house()
+	elif battle_return_scene == "ss_anne_main_deck":
+		_show_ss_anne_main_deck()
 	else:
 		_on_go_to_route_1()
 

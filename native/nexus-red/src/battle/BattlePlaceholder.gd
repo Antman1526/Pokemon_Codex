@@ -11,6 +11,7 @@ const BATTLE_DATA_PATHS := {
 	"nugget_bridge_captain": "res://content/battles/nugget_bridge_captain.json",
 	"misty_cerulean_gym": "res://content/battles/misty_cerulean_gym.json",
 	"cerulean_rocket_house_thief": "res://content/battles/cerulean_rocket_house_thief.json",
+	"blue_ss_anne": "res://content/battles/blue_ss_anne.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 
@@ -139,7 +140,14 @@ func _opponent_summary() -> String:
 	var names: Array[String] = []
 	for slot in slots:
 		if typeof(slot) == TYPE_DICTIONARY:
-			names.append("%s Lv. %d" % [slot.get("species", "creature"), int(slot.get("level", 1))])
+			names.append("%s Lv. %d" % [_resolve_slot_species(slot), int(slot.get("level", 1))])
 	if names.is_empty():
 		return "placeholder team"
 	return ", ".join(names)
+
+
+func _resolve_slot_species(slot: Dictionary) -> String:
+	var species := str(slot.get("species", "creature"))
+	if species == "blue_starter":
+		return _blue_starter()
+	return species

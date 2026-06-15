@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_ss_anne_ticket_office
+signal start_battle_placeholder(battle_id)
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_deck_boarding_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_blue_ship_battle()
 	if event.is_action_pressed("cancel"):
 		return_to_ticket_office()
 
@@ -105,9 +108,19 @@ func trigger_deck_boarding_scene() -> void:
 	dialogue_label.text = "Red: We made it onto the S.S. Anne. Misty says the tide feels wrong, Bill found Rocket cargo edits below deck, and Blue is already aboard looking for a battle. The Captain may have the Trail Cutter prototype."
 
 
+func trigger_blue_ship_battle() -> void:
+	if save_state and not bool(save_state.story_flags.get("blue_ship_rival_teased", false)):
+		dialogue_label.text = "Red: Scout the main deck first. Blue is aboard, but we need to know where the passengers and Rocket watchers are standing."
+		return
+	if save_state:
+		save_state.start_battle_placeholder("blue_ss_anne")
+	dialogue_label.text = "Blue: Took you long enough to board. I heard Rocket is sniffing around cargo, but first I want to see if you can still keep up."
+	emit_signal("start_battle_placeholder", "blue_ss_anne")
+
+
 func return_to_ticket_office() -> void:
 	emit_signal("go_to_ss_anne_ticket_office")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Stay sharp on the S.S. Anne Main Deck. Press Z/Enter to scout with Red, Misty, and Bill, or X/Esc to return to the ticket office."
+	dialogue_label.text = "Red: Stay sharp on the S.S. Anne Main Deck. Press Z/Enter to scout with Red, Misty, and Bill, Right to answer Blue's challenge, or X/Esc to return to the ticket office."

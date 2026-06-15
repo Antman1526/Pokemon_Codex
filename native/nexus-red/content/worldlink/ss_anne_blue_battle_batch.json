@@ -1,0 +1,21 @@
+{
+  "id": "ss_anne_blue_battle_batch",
+  "title": "Blue Aboard the S.S. Anne",
+  "feed": [
+    {
+      "id": "wl_blue_ss_anne_battle_started",
+      "type": "rival",
+      "text": "Blue challenged Antman on the S.S. Anne main deck while Red, Misty, and Bill watched the ship for Rocket movement."
+    },
+    {
+      "id": "wl_blue_ss_anne_battle_finished",
+      "type": "battle",
+      "text": "Antman defeated Blue's S.S. Anne team and proved the expanded journey has not slowed him down."
+    },
+    {
+      "id": "wl_blue_ss_anne_rival_respect",
+      "type": "rival",
+      "text": "Blue brushed off the loss, but he warned Antman that Rocket cargo activity is real before heading deeper into the ship."
+    }
+  ]
+}

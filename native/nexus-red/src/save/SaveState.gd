@@ -157,6 +157,10 @@ func start_new_game(name: String) -> void:
 		"rocket_cargo_hold_clue_seen": false,
 		"captain_trail_cutter_lead_seen": false,
 		"worldlink_ss_anne_boarding_batch_queued": false,
+		"blue_ss_anne_battle_started": false,
+		"blue_ss_anne_battle_finished": false,
+		"blue_ss_anne_rival_respect_seen": false,
+		"worldlink_ss_anne_blue_battle_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -553,6 +557,15 @@ func queue_ss_anne_boarding_batch() -> void:
 	])
 
 
+func queue_ss_anne_blue_battle_batch() -> void:
+	set_flag("worldlink_ss_anne_blue_battle_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_blue_ss_anne_battle_started",
+		"wl_blue_ss_anne_battle_finished",
+		"wl_blue_ss_anne_rival_respect",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -634,6 +647,9 @@ func start_battle_placeholder(battle_id: String) -> void:
 	last_battle_result = ""
 	if battle_id == "blue_route_1":
 		set_flag("blue_route_1_battle_started", true)
+	if battle_id == "blue_ss_anne":
+		set_flag("blue_ss_anne_battle_started", true)
+		queue_worldlink_id("wl_blue_ss_anne_battle_started")
 	if battle_id == "brock_pewter_gym":
 		set_flag("brock_pewter_gym_started", true)
 	if battle_id == "mt_moon_rocket_left_path":
@@ -659,6 +675,10 @@ func finish_battle_placeholder(result: String) -> void:
 		queue_worldlink_id("blue_route_1_battle_finished")
 		unlock_route_1_rumors()
 		queue_route_1_rival_batch()
+	if active_battle_id == "blue_ss_anne":
+		set_flag("blue_ss_anne_battle_finished", true)
+		set_flag("blue_ss_anne_rival_respect_seen", true)
+		queue_ss_anne_blue_battle_batch()
 	if active_battle_id == "brock_pewter_gym":
 		set_flag("brock_pewter_gym_finished", true)
 		set_flag("brock_pewter_badge_earned", true)

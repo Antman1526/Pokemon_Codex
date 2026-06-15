@@ -1,0 +1,53 @@
+{
+  "id": "blue_ss_anne",
+  "display_title": "S.S. Anne - Blue Rival Battle",
+  "status": "placeholder",
+  "battle_type": "single_trainer_rival",
+  "location": "ss_anne_main_deck",
+  "level_cap": 24,
+  "difficulty_note": "Mainline-hard rival spike after Misty and before Lt. Surge. Blue tests Antman's expanded team without becoming Radical Red-punishing.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "support_ids": ["misty", "bill"],
+    "slots": ["party"],
+    "story_support": "Red stays close but lets Antman handle Blue alone, while Misty and Bill keep watch for Rocket cargo movement."
+  },
+  "opponent": {
+    "id": "blue",
+    "display_name": "Blue",
+    "rival_id": "blue",
+    "slots": [
+      {
+        "species": "blue_starter",
+        "level": 24,
+        "role": "dynamic starter counter"
+      },
+      {
+        "species": "Pidgeotto",
+        "level": 22,
+        "role": "classic Kanto pressure"
+      },
+      {
+        "species": "Raticate",
+        "level": 21,
+        "role": "ship-era callback"
+      },
+      {
+        "species": "Kadabra",
+        "level": 21,
+        "role": "special attacker preview"
+      }
+    ],
+    "intent": "prove Blue is still chasing Antman while the wider Rocket investigation grows around them"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "blue_ss_anne_battle_started",
+      "blue_ss_anne_battle_finished",
+      "blue_ss_anne_rival_respect_seen"
+    ],
+    "unlocks": ["ss_anne_cargo_hold_path"]
+  }
+}
