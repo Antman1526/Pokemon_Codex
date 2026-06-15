@@ -266,6 +266,10 @@ REQUIRED_MARKERS = (
     "lance_legendary_energy_warning_cleared?",
     "complete_oak_world_circuit_passport",
     "oak_world_circuit_passport_cleared?",
+    "module JohtoStory",
+    "ensure_johto_story",
+    "complete_new_bark_arrival",
+    "new_bark_arrival_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -310,6 +314,7 @@ REQUIRED_RUNTIME_FILES = (
     "portable_pc.rb",
     "field_healing.rb",
     "kanto_story.rb",
+    "johto_story.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -2822,6 +2827,47 @@ raise 'expected KantoStory Oak passport unlocks' unless oak_passport['unlocks'].
 second_oak_passport = NexusRed::KantoStory.complete_oak_world_circuit_passport(kanto_story_state)
 raise 'expected KantoStory Oak passport idempotent guard' unless second_oak_passport['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Oak passport history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'oak_world_circuit_passport' } == 1
+pre_johto_arrival = NexusRed::JohtoStory.complete_new_bark_arrival(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory New Bark gated before Johto unlock' unless pre_johto_arrival['status'] == 'blocked_missing_johto_region_unlock'
+johto_arrival = NexusRed::JohtoStory.complete_new_bark_arrival(
+  kanto_story_state,
+  location: 'New Bark Town',
+  area_type: 'town'
+)
+raise 'expected JohtoStory New Bark arrival clear status' unless johto_arrival['status'] == 'cleared'
+raise 'expected JohtoStory New Bark event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('johto_new_bark_arrival')
+raise 'expected JohtoStory New Bark helper true' unless NexusRed::JohtoStory.new_bark_arrival_cleared?(kanto_story_state)
+raise 'expected JohtoStory New Bark flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_JOHTO_NEW_BARK_ARRIVAL')
+raise 'expected JohtoStory Elm World Circuit flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ELM_WORLD_CIRCUIT_REGISTRATION')
+raise 'expected JohtoStory Red active flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_JOHTO_COMPANION_ACTIVE')
+raise 'expected JohtoStory Silver tease flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILVER_WORLDLINK_TEASE')
+raise 'expected JohtoStory Rocket radio probe flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_JOHTO_RADIO_PROBE')
+raise 'expected JohtoStory Gold Dust ruins buyer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_RUINS_BUYER')
+raise 'expected JohtoStory Moonlight tower echo flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_TOWER_ECHO')
+raise 'expected JohtoStory Nexus Order tower static flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_JOHTO_TOWER_STATIC')
+raise 'expected JohtoStory Violet path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VIOLET_CITY_PATH_UNLOCKED')
+raise 'expected JohtoStory active companion remains Red' unless kanto_story_state['active_companion'] == 'red'
+raise 'expected JohtoStory Red first steps scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('johto_first_steps')
+raise 'expected JohtoStory Bill route check scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('johto_worldlink_route_check')
+raise 'expected JohtoStory Silver latest activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('New Bark')
+raise 'expected JohtoStory Rocket radio probe activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'radio_probe_remnants' }
+raise 'expected JohtoStory Gold Dust ruins buyer activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ruins_relic_buyer_arrival' }
+raise 'expected JohtoStory Moonlight tower echo activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'tower_echo_dream_static' }
+raise 'expected JohtoStory Nexus Order tower static activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'johto_tower_static_hidden' }
+raise 'expected JohtoStory Nexus Order still hidden' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Rocket Gold Dust New Bark conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'New Bark Town' }
+raise 'expected JohtoStory New Bark story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('New Bark') && message['text'].include?('Red') && message['text'].include?('Silver') && message['text'].include?('Rocket') && message['text'].include?('Gold Dust') }
+raise 'expected JohtoStory result region Johto' unless johto_arrival['region'] == 'johto'
+raise 'expected JohtoStory professor Elm' unless johto_arrival['professor'] == 'Elm'
+raise 'expected JohtoStory next hook Violet City' unless johto_arrival['next_hook'] == 'violet_city_path'
+raise 'expected JohtoStory current act New Bark to Violet' unless johto_arrival['current_act'] == 'act_1_new_bark_to_violet'
+raise 'expected JohtoStory companions Red and Bill' unless johto_arrival['companions'].include?('red') && johto_arrival['companions'].include?('bill')
+raise 'expected JohtoStory rival Silver' unless johto_arrival['rivals'].include?('silver')
+raise 'expected JohtoStory factions' unless %w[team_rocket team_gold_dust team_moonlight nexus_order].all? { |faction| johto_arrival['factions'].include?(faction) }
+raise 'expected JohtoStory unlocks Violet and tower echo' unless johto_arrival['unlocks'].include?('violet_city_path') && johto_arrival['unlocks'].include?('johto_tower_echo')
+second_johto_arrival = NexusRed::JohtoStory.complete_new_bark_arrival(kanto_story_state)
+raise 'expected JohtoStory New Bark idempotent guard' unless second_johto_arrival['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate New Bark history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'johto_new_bark_arrival' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
