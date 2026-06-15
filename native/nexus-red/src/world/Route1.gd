@@ -3,6 +3,7 @@ extends Control
 const PlayerAvatar := preload("res://src/world/PlayerAvatar.gd")
 const WorldLinkPanel := preload("res://src/worldlink/WorldLinkPanel.gd")
 const EncounterService := preload("res://src/encounter/EncounterService.gd")
+const PartyStatusPanel := preload("res://src/ui/PartyStatusPanel.gd")
 const RED_ROUTE_FLAG := "red_route_1_companion_scene_seen"
 const BLUE_BATTLE_FLAG := "blue_battle_placeholder_seen"
 
@@ -13,6 +14,7 @@ var save_state
 var dialogue_label: Label
 var player: ColorRect
 var worldlink_panel: PanelContainer
+var party_panel: PanelContainer
 var encounter_service := EncounterService.new()
 
 
@@ -32,6 +34,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_route_1_wild_encounter()
 	if event.is_action_pressed("worldlink"):
 		_toggle_worldlink()
+	if event.is_action_pressed("menu"):
+		_toggle_party_panel()
 
 
 func _build_route() -> void:
@@ -82,7 +86,7 @@ func _build_route() -> void:
 	add_child(player)
 
 	dialogue_label = Label.new()
-	dialogue_label.text = "Route 1 opens north. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press W for WorldLink."
+	dialogue_label.text = "Route 1 opens north. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press W for WorldLink. Press Tab for party."
 	dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	dialogue_label.anchor_left = 0.06
 	dialogue_label.anchor_top = 0.82
@@ -128,3 +132,18 @@ func _toggle_worldlink() -> void:
 	worldlink_panel.anchor_bottom = 0.76
 	worldlink_panel.save_state = save_state
 	add_child(worldlink_panel)
+
+
+func _toggle_party_panel() -> void:
+	if party_panel:
+		party_panel.visible = not party_panel.visible
+		if party_panel.visible and party_panel.has_method("refresh"):
+			party_panel.refresh()
+		return
+	party_panel = PartyStatusPanel.new()
+	party_panel.anchor_left = 0.04
+	party_panel.anchor_top = 0.12
+	party_panel.anchor_right = 0.38
+	party_panel.anchor_bottom = 0.48
+	party_panel.save_state = save_state
+	add_child(party_panel)

@@ -248,6 +248,22 @@ python3 tools/validate_native_wild_command_menu_slice.py
 godot --headless --path native/nexus-red --script tests/wild_command_menu_test.gd
 ```
 
+### Task 7.10: Add Route 1 party status panel
+
+Acceptance:
+
+- Route 1 can show/hide a small field party panel from the menu input.
+- The panel reads the actual save-state party roster.
+- The panel shows Antman's starter and the first caught Route 1 creature after capture.
+- The panel also summarizes captured creatures, giving a base for the later full party menu.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route1_party_panel_slice.py
+godot --headless --path native/nexus-red --script tests/route1_party_panel_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
