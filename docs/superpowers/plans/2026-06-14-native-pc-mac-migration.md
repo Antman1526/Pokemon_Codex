@@ -329,6 +329,22 @@ python3 tools/validate_native_route2_catch_tutorial_slice.py
 godot --headless --path native/nexus-red --script tests/route2_catch_tutorial_test.gd
 ```
 
+### Task 7.15: Add Routes 1-3 full starter and bonus migration pool
+
+Acceptance:
+
+- Routes 1-3 have a data contract for all 27 official regional starters.
+- Routes 1-3 include the 12 bonus early choices: Eevee, Pikachu, Dratini, Abra, Gastly, Larvitar, Sandile, Kubfu, Staryu, Shroomish, Rockruff, and Ralts.
+- The migration pool stays in a pre-Brock level band and distributes 13 entries per route.
+- EncounterService exposes query helpers for the full pool, per-route entries, and individual species.
+
+Verification:
+
+```sh
+python3 tools/validate_native_early_migration_pool.py
+godot --headless --path native/nexus-red --script tests/early_migration_pool_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

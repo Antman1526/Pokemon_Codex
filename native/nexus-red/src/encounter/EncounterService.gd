@@ -2,6 +2,7 @@ extends RefCounted
 
 const ROUTE_1_WILD_PATH := "res://content/encounters/route_1_wild_encounters.json"
 const ROUTE_2_WILD_PATH := "res://content/encounters/route_2_wild_encounters.json"
+const EARLY_MIGRATION_PATH := "res://content/encounters/route_1_to_3_migration_encounters.json"
 
 
 func pick_route_1_encounter(save_state = null) -> Dictionary:
@@ -36,6 +37,26 @@ func pick_route_2_encounter(save_state = null) -> Dictionary:
 	if not fallback.is_empty():
 		return fallback
 	return encounters[0]
+
+
+func get_early_migration_pool() -> Array:
+	var data := _load_json(EARLY_MIGRATION_PATH)
+	return data.get("encounters", [])
+
+
+func get_early_migration_encounters_for_route(route_id: String) -> Array:
+	var matches: Array = []
+	for encounter in get_early_migration_pool():
+		if typeof(encounter) == TYPE_DICTIONARY and encounter.get("route_id", "") == route_id:
+			matches.append(encounter)
+	return matches
+
+
+func find_early_migration_species(species_name: String) -> Dictionary:
+	for encounter in get_early_migration_pool():
+		if typeof(encounter) == TYPE_DICTIONARY and encounter.get("species", "") == species_name:
+			return encounter
+	return {}
 
 
 func _find_encounter(encounters: Array, encounter_id: String) -> Dictionary:
