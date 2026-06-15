@@ -112,6 +112,10 @@ REQUIRED_MARKERS = (
     "species_symbol",
     "psdk_runtime_available?",
     "launch_history",
+    "module WildBattleResults",
+    "record_result",
+    "result_history",
+    "last_launch",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -149,6 +153,7 @@ REQUIRED_RUNTIME_FILES = (
     "map_event_bridge.rb",
     "route_migration_event_adapter.rb",
     "wild_battle_launcher.rb",
+    "wild_battle_results.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -816,6 +821,23 @@ raise 'expected wild battle launch script feeds wild party' unless launch_payloa
 raise 'expected wild battle launch script calls Battle Scene' unless launch_payload['psdk_script_lines'].include?('$scene.call_scene(Battle::Scene, bi)')
 raise 'expected WildBattleLauncher species symbol helper' unless NexusRed::WildBattleLauncher.species_symbol('BULBASAUR') == 'bulbasaur'
 raise 'expected wild battle launch history recorded' unless NexusRed::WildBattleLauncher.launch_history(route_1_launch_state).last == launch_payload
+capture_result = NexusRed::WildBattleResults.record_result(route_1_launch_state, outcome: 'caught')
+raise 'expected captured battle result status' unless capture_result['status'] == 'recorded'
+raise 'expected captured battle result outcome' unless capture_result['outcome'] == 'caught'
+raise 'expected captured battle result species' unless capture_result['species'] == 'Bulbasaur'
+raise 'expected captured battle result recorded in history' unless NexusRed::WildBattleResults.result_history(route_1_launch_state).last == capture_result
+raise 'expected captured species in Pokedex caught state' unless route_1_launch_state['pokedex']['caught_species'].key?('Bulbasaur')
+next_after_capture = NexusRed::Route1MigrationEvent.trigger(route_1_launch_state, time: 'morning', max_level: 5)
+raise 'expected Route 1 migration result handler advances to Chikorita after caught Bulbasaur' unless next_after_capture['species'] == 'Chikorita'
+seen_result_state = NexusRed::RuntimeState.build
+NexusRed::StarterSelection.select_partner(seen_result_state, 'Bulbasaur')
+NexusRed::Route1MigrationEvent.trigger(seen_result_state, time: 'morning', max_level: 5)
+NexusRed::WildBattleLauncher.launch_pending_request(seen_result_state)
+seen_result = NexusRed::WildBattleResults.record_result(seen_result_state, outcome: 'fled')
+raise 'expected non-capture battle result recorded' unless seen_result['status'] == 'recorded'
+raise 'expected non-capture result not caught' if seen_result_state['pokedex']['caught_species'].key?('Bulbasaur')
+no_launch_result = NexusRed::WildBattleResults.record_result(NexusRed::RuntimeState.build, outcome: 'caught')
+raise 'expected no launch result guarded' unless no_launch_result['status'] == 'no_launch'
 
 stub_route_1_state = NexusRed::RuntimeState.build
 NexusRed::StarterSelection.select_partner(stub_route_1_state, 'Bulbasaur')
