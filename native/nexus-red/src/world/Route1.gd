@@ -39,6 +39,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_toggle_party_panel()
 	if event.is_action_pressed("ui_up"):
 		trigger_viridian_city_entry()
+	if event.is_action_pressed("ui_down"):
+		trigger_route_1_migration_encounter()
 
 
 func _build_route() -> void:
@@ -89,7 +91,7 @@ func _build_route() -> void:
 	add_child(player)
 
 	dialogue_label = Label.new()
-	dialogue_label.text = "Route 1 opens north toward Viridian City. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press W for WorldLink. Press Tab for party."
+	dialogue_label.text = "Route 1 opens north toward Viridian City. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press Down for Route 1 migration. Press W for WorldLink. Press Tab for party."
 	dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	dialogue_label.anchor_left = 0.06
 	dialogue_label.anchor_top = 0.82
@@ -121,6 +123,17 @@ func trigger_route_1_wild_encounter() -> void:
 	if save_state:
 		save_state.start_wild_encounter(encounter)
 	dialogue_label.text = "The grass shakes. Red raises a hand: first wild encounter incoming."
+	emit_signal("start_wild_encounter", encounter)
+
+
+func trigger_route_1_migration_encounter() -> void:
+	var encounter := encounter_service.pick_early_migration_encounter("route_1", save_state)
+	if encounter.is_empty():
+		dialogue_label.text = "Red checks Oak's migration scanner, but Route 1 migration data is not ready yet."
+		return
+	if save_state:
+		save_state.start_wild_encounter(encounter)
+	dialogue_label.text = "Red: Route 1 migration signal found. This is how the first few routes will carry every starter choice into the wild."
 	emit_signal("start_wild_encounter", encounter)
 
 

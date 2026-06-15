@@ -20,6 +20,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_route_2_catch_tutorial()
+	if event.is_action_pressed("ui_down"):
+		trigger_route_2_migration_encounter()
 	if event.is_action_pressed("cancel"):
 		return_to_viridian_city()
 
@@ -101,9 +103,20 @@ func trigger_route_2_catch_tutorial() -> void:
 	emit_signal("start_wild_encounter", encounter)
 
 
+func trigger_route_2_migration_encounter() -> void:
+	var encounter := encounter_service.pick_early_migration_encounter("route_2", save_state)
+	if encounter.is_empty():
+		dialogue_label.text = "Red checks Oak's migration scanner, but Route 2 migration data is not ready yet."
+		return
+	if save_state:
+		save_state.start_wild_encounter(encounter)
+	dialogue_label.text = "Red: Route 2 migration signal found. These sightings keep the expanded starter pool catchable without breaking Brock's level curve."
+	emit_signal("start_wild_encounter", encounter)
+
+
 func return_to_viridian_city() -> void:
 	emit_signal("go_to_viridian_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is Route 2 and the Viridian Forest Gate. The trees are too quiet, and Rocket activity this close to town means somebody is testing the road ahead. Press Z/Enter for the catch tutorial."
+	dialogue_label.text = "Red: This is Route 2 and the Viridian Forest Gate. The trees are too quiet, and Rocket activity this close to town means somebody is testing the road ahead. Press Z/Enter for the catch tutorial or Down for Route 2 migration."

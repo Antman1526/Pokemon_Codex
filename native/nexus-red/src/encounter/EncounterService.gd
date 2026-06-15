@@ -59,6 +59,19 @@ func find_early_migration_species(species_name: String) -> Dictionary:
 	return {}
 
 
+func pick_early_migration_encounter(route_id: String, save_state = null) -> Dictionary:
+	var encounters := get_early_migration_encounters_for_route(route_id)
+	if encounters.is_empty():
+		return {}
+	for encounter in encounters:
+		if typeof(encounter) != TYPE_DICTIONARY:
+			continue
+		var species := str(encounter.get("species", ""))
+		if save_state == null or not save_state.captured_creatures.has(species):
+			return encounter
+	return encounters[0]
+
+
 func _find_encounter(encounters: Array, encounter_id: String) -> Dictionary:
 	for encounter in encounters:
 		if typeof(encounter) == TYPE_DICTIONARY and encounter.get("id", "") == encounter_id:

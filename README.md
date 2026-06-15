@@ -58,6 +58,7 @@ python3 tools/validate_native_viridian_story_slice.py
 python3 tools/validate_native_route2_gate_slice.py
 python3 tools/validate_native_route2_catch_tutorial_slice.py
 python3 tools/validate_native_early_migration_pool.py
+python3 tools/validate_native_playable_migration_triggers.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -73,6 +74,7 @@ godot --headless --path native/nexus-red --script tests/viridian_story_test.gd
 godot --headless --path native/nexus-red --script tests/route2_forest_gate_test.gd
 godot --headless --path native/nexus-red --script tests/route2_catch_tutorial_test.gd
 godot --headless --path native/nexus-red --script tests/early_migration_pool_test.gd
+godot --headless --path native/nexus-red --script tests/playable_migration_triggers_test.gd
 ```
 
 ## Legal Rule

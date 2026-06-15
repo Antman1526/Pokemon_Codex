@@ -345,6 +345,22 @@ python3 tools/validate_native_early_migration_pool.py
 godot --headless --path native/nexus-red --script tests/early_migration_pool_test.gd
 ```
 
+### Task 7.16: Make Route 1 and Route 2 migration encounters playable
+
+Acceptance:
+
+- EncounterService can pick the next uncaught early migration species for a route.
+- Route 1 can trigger its migration encounter pool from the playable scene.
+- Route 2 / Viridian Forest Gate can trigger its migration encounter pool from the playable scene.
+- Captured migration species are skipped on later migration picks.
+
+Verification:
+
+```sh
+python3 tools/validate_native_playable_migration_triggers.py
+godot --headless --path native/nexus-red --script tests/playable_migration_triggers_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
