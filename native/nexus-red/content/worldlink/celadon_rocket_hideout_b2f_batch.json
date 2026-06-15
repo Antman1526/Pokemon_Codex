@@ -1,0 +1,50 @@
+{
+  "id": "celadon_rocket_hideout_b2f_batch",
+  "feed": [
+    {
+      "id": "wl_celadon_rocket_hideout_b2f_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Celadon Rocket Hideout B2F."
+    },
+    {
+      "id": "wl_red_hideout_b2f_patrol_warning",
+      "speaker": "Red",
+      "text": "Red marked the Rocket patrol route and warned Antman that B2F is the first floor built to call reinforcements."
+    },
+    {
+      "id": "wl_bill_stolen_silph_scope_crate",
+      "speaker": "Bill",
+      "text": "Bill identified a stolen Silph Scope crate whose signal matches Lavender and Pokemon Tower."
+    },
+    {
+      "id": "wl_rocket_hideout_b2f_patrol_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Rocket Hideout B2F patrol battle is unlocked."
+    },
+    {
+      "id": "wl_rocket_gold_dust_b2f_conflict",
+      "speaker": "WorldLink",
+      "text": "Team Gold Dust is clashing with Rocket over a hidden ledger and coin cache on B2F."
+    },
+    {
+      "id": "wl_team_moonlight_control_room_interference",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight control-room interference is disrupting Rocket's lower-floor route system."
+    },
+    {
+      "id": "wl_lift_key_b3f_route_seen",
+      "speaker": "WorldLink",
+      "text": "The Lift Key route points toward B3F instead of resolving on B2F."
+    },
+    {
+      "id": "wl_rocket_hideout_b2f_patrol_finished",
+      "speaker": "WorldLink",
+      "text": "The B2F Rocket patrol has been cleared."
+    },
+    {
+      "id": "wl_rocket_hideout_b3f_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Rocket Hideout B3F is unlocked as the next Celadon dungeon step."
+    }
+  ]
+}

@@ -295,6 +295,17 @@ func start_new_game(name: String) -> void:
 		"lift_key_deeper_trail_seen": false,
 		"rocket_hideout_b2f_path_unlocked": false,
 		"worldlink_celadon_rocket_hideout_b1f_batch_queued": false,
+		"celadon_rocket_hideout_b2f_reached": false,
+		"red_hideout_b2f_patrol_warning_seen": false,
+		"bill_stolen_silph_scope_crate_seen": false,
+		"rocket_hideout_b2f_patrol_battle_unlocked": false,
+		"rocket_hideout_b2f_patrol_battle_started": false,
+		"rocket_hideout_b2f_patrol_battle_finished": false,
+		"rocket_gold_dust_b2f_conflict_seen": false,
+		"team_moonlight_control_room_interference_seen": false,
+		"lift_key_b3f_route_seen": false,
+		"rocket_hideout_b3f_path_unlocked": false,
+		"worldlink_celadon_rocket_hideout_b2f_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1199,6 +1210,37 @@ func queue_celadon_rocket_hideout_b1f_batch() -> void:
 	])
 
 
+func enter_celadon_rocket_hideout_b2f() -> void:
+	current_scene = "celadon_rocket_hideout_b2f"
+	active_companion = "red"
+	set_flag("celadon_rocket_hideout_b2f_reached", true)
+	queue_worldlink_id("wl_celadon_rocket_hideout_b2f_reached")
+
+
+func record_celadon_rocket_hideout_b2f_scene() -> void:
+	active_companion = "red"
+	set_flag("red_hideout_b2f_patrol_warning_seen", true)
+	set_flag("bill_stolen_silph_scope_crate_seen", true)
+	set_flag("rocket_hideout_b2f_patrol_battle_unlocked", true)
+	set_flag("rocket_gold_dust_b2f_conflict_seen", true)
+	set_flag("team_moonlight_control_room_interference_seen", true)
+	set_flag("lift_key_b3f_route_seen", true)
+	queue_celadon_rocket_hideout_b2f_batch()
+
+
+func queue_celadon_rocket_hideout_b2f_batch() -> void:
+	set_flag("worldlink_celadon_rocket_hideout_b2f_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_rocket_hideout_b2f_reached",
+		"wl_red_hideout_b2f_patrol_warning",
+		"wl_bill_stolen_silph_scope_crate",
+		"wl_rocket_hideout_b2f_patrol_unlocked",
+		"wl_rocket_gold_dust_b2f_conflict",
+		"wl_team_moonlight_control_room_interference",
+		"wl_lift_key_b3f_route_seen",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -1304,6 +1346,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		queue_worldlink_id("wl_surge_vermilion_gym_started")
 	if battle_id == "rocket_game_corner_guard":
 		set_flag("rocket_game_corner_guard_battle_started", true)
+	if battle_id == "rocket_hideout_b2f_patrol":
+		set_flag("rocket_hideout_b2f_patrol_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -1363,6 +1407,11 @@ func finish_battle_placeholder(result: String) -> void:
 		queue_worldlink_id("wl_rocket_game_corner_guard_battle_finished")
 		queue_worldlink_id("wl_rocket_hideout_switch_lead_seen")
 		queue_worldlink_id("wl_game_corner_hideout_entry_unlocked")
+	if active_battle_id == "rocket_hideout_b2f_patrol":
+		set_flag("rocket_hideout_b2f_patrol_battle_finished", true)
+		set_flag("rocket_hideout_b3f_path_unlocked", true)
+		queue_worldlink_id("wl_rocket_hideout_b2f_patrol_finished")
+		queue_worldlink_id("wl_rocket_hideout_b3f_path_unlocked")
 	active_battle_id = ""
 
 

@@ -1089,6 +1089,28 @@ python3 tools/validate_native_celadon_rocket_hideout_b1f.py
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b1f_test.gd
 ```
 
+### Task 7.56: Add Celadon Rocket Hideout B2F patrol and Silph Scope crate
+
+Acceptance:
+
+- Rocket Hideout B1F keeps B2F locked until the B1F scouting beat unlocks the B2F path.
+- After B1F scouting, Antman can transition into a playable Celadon Rocket Hideout B2F scene.
+- Red remains the active full-game companion and blocks the corridor while Antman handles the B2F patrol.
+- Bill identifies a stolen Silph Scope crate on B2F, tying the Celadon dungeon directly back to Lavender and Pokemon Tower.
+- A Rocket patrol battle is unlocked from the B2F scene using placeholder battle data and returns to B2F after completion.
+- Team Gold Dust is actively breaching B2F for a ledger/coin cache, creating a live faction conflict inside Rocket territory.
+- Team Moonlight control-room interference disrupts Rocket's lower-floor route system.
+- The Lift Key route points deeper toward B3F, but B3F remains locked until the B2F patrol battle is finished.
+- Save state and WorldLink record Rocket Hideout B2F reached, Red's patrol warning, Bill's stolen Silph Scope crate, B2F patrol unlock/start/finish, Rocket and Gold Dust B2F conflict, Team Moonlight control-room interference, Lift Key B3F route, and Hideout B3F path unlock.
+- WorldLink checklist adds Reach Rocket Hideout B2F, Find stolen Silph Scope crate, Battle B2F Rocket patrol, Spot B2F faction conflict, and Unlock Hideout B3F path milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_rocket_hideout_b2f.py
+godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b2f_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

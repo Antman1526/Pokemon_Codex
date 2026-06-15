@@ -1,0 +1,46 @@
+{
+  "id": "rocket_hideout_b2f_patrol",
+  "display_title": "Celadon Rocket Hideout B2F - Patrol",
+  "status": "placeholder",
+  "battle_type": "villain_grunt",
+  "location": "celadon_rocket_hideout_b2f",
+  "level_cap": 32,
+  "difficulty_note": "A sharper Rocket patrol fight that teaches the hideout is now a dungeon, but default difficulty remains mainline-hard rather than Radical Red punishing.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red blocks the corridor so the B2F patrol cannot alert the lower floors while Antman battles."
+  },
+  "opponent": {
+    "id": "rocket_hideout_b2f_patrol",
+    "display_name": "Rocket B2F Patrol",
+    "faction": "rocket",
+    "slots": [
+      {
+        "species": "Golbat",
+        "level": 31,
+        "role": "fast cave-pressure scout"
+      },
+      {
+        "species": "Raticate",
+        "level": 31,
+        "role": "classic Rocket cleanup pressure"
+      },
+      {
+        "species": "Koffing",
+        "level": 32,
+        "role": "smoke-screen control and hideout hazard clue"
+      }
+    ],
+    "intent": "block the Lift Key route, protect the stolen Silph Scope crate, and show Rocket responding to Gold Dust and Moonlight interference"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "rocket_hideout_b2f_patrol_battle_started",
+      "rocket_hideout_b2f_patrol_battle_finished",
+      "rocket_hideout_b3f_path_unlocked"
+    ]
+  }
+}

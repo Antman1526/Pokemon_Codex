@@ -14,6 +14,7 @@ const BATTLE_DATA_PATHS := {
 	"blue_ss_anne": "res://content/battles/blue_ss_anne.json",
 	"lt_surge_vermilion_gym": "res://content/battles/lt_surge_vermilion_gym.json",
 	"rocket_game_corner_guard": "res://content/battles/rocket_game_corner_guard.json",
+	"rocket_hideout_b2f_patrol": "res://content/battles/rocket_hideout_b2f_patrol.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 
