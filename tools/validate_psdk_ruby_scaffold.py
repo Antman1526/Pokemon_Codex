@@ -44,6 +44,12 @@ REQUIRED_MARKERS = (
     "advance_to_next_region",
     "current_region_seed",
     "can_enter_region?",
+    "module GameplayOptions",
+    "ensure_options",
+    "set_difficulty",
+    "toggle_option",
+    "unlock_qol",
+    "rare_candy_mart_available?",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -335,6 +341,35 @@ final_message = NexusRed::RegionProgress.complete_current_region(
 raise 'expected final completion paused in story dungeon' unless final_message['delivery'] == 'paused'
 raise 'expected journey complete after Nexus Island clear' unless NexusRed::RegionProgress.journey_complete?(state)
 raise 'expected Nexus Island completed at journey end' unless state['region_progress']['completed_regions'].last == 'nexus_island'
+
+options = NexusRed::GameplayOptions.ensure_options(state)
+raise 'expected standard gameplay difficulty default' unless options['difficulty_mode'] == 'standard'
+raise 'expected standard AI profile' unless options['difficulty_profile']['ai_profile'] == 'smart'
+raise 'expected level caps enabled by default' unless NexusRed::GameplayOptions.level_caps_enabled?(state)
+raise 'expected starting money runtime option' unless options['starting_money'] == 100000
+raise 'expected running shoes start enabled' unless options['unlocked_qol'].include?('running_shoes')
+raise 'expected rare candy mart locked before Brock' if NexusRed::GameplayOptions.rare_candy_mart_available?(state)
+
+hard = NexusRed::GameplayOptions.set_difficulty(state, 'hard')
+raise 'expected hard difficulty selected' unless hard['difficulty_mode'] == 'hard'
+raise 'expected hard cap type' unless hard['difficulty_profile']['cap_type'] == 'hard'
+raise 'expected hard AI profile' unless hard['difficulty_profile']['ai_profile'] == 'strong'
+
+repel = NexusRed::GameplayOptions.toggle_option(state, 'infinite_repel_toggle', true)
+raise 'expected infinite repel toggle enabled' unless repel['infinite_repel_enabled'] == true
+raise 'expected infinite repel unavailable marker absent' if repel['disabled_options'].include?('infinite_repel_toggle')
+
+after_brock = NexusRed::GameplayOptions.unlock_qol(state, 'after_brock')
+raise 'expected rare candy mart unlocked after Brock' unless after_brock['unlocked_qol'].include?('rare_candy_mart')
+raise 'expected portable PC lite unlocked after Brock' unless after_brock['unlocked_qol'].include?('portable_pc_lite')
+raise 'expected rare candy mart available after Brock' unless NexusRed::GameplayOptions.rare_candy_mart_available?(state)
+
+nuzlocke = NexusRed::GameplayOptions.set_difficulty(state, 'nuzlocke')
+raise 'expected nuzlocke difficulty selected' unless nuzlocke['difficulty_mode'] == 'nuzlocke'
+raise 'expected nuzlocke enabled flag' unless nuzlocke['nuzlocke_enabled'] == true
+raise 'expected level caps enforced by nuzlocke' unless nuzlocke['level_caps_enabled'] == true
+raise 'expected nuzlocke first encounter rule' unless nuzlocke['nuzlocke_rules'].include?('first_encounter_rule')
+raise 'expected nuzlocke item rules copied' unless nuzlocke['difficulty_profile']['item_rules'] == 'configurable_default_banned'
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
