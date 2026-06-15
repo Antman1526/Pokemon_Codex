@@ -252,6 +252,8 @@ REQUIRED_MARKERS = (
     "blaine_volcano_badge_battle_cleared?",
     "complete_viridian_gym_return",
     "viridian_gym_return_cleared?",
+    "complete_giovanni_earth_badge_battle",
+    "giovanni_earth_badge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2580,6 +2582,43 @@ raise 'expected KantoStory Viridian return unlocks Earth battle' unless viridian
 second_viridian_return = NexusRed::KantoStory.complete_viridian_gym_return(kanto_story_state)
 raise 'expected KantoStory Viridian return idempotent guard' unless second_viridian_return['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Viridian return history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'viridian_gym_return' } == 1
+pre_giovanni_badge = NexusRed::KantoStory.complete_giovanni_earth_badge_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Giovanni Earth Badge gated before Viridian return' unless pre_giovanni_badge['status'] == 'blocked_missing_viridian_gym_return'
+giovanni_badge = NexusRed::KantoStory.complete_giovanni_earth_badge_battle(
+  kanto_story_state,
+  location: 'Viridian Gym',
+  result: 'badge_win',
+  area_type: 'gym'
+)
+raise 'expected KantoStory Giovanni Earth Badge clear status' unless giovanni_badge['status'] == 'cleared'
+raise 'expected KantoStory Giovanni Earth Badge event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('giovanni_earth_badge_battle')
+raise 'expected KantoStory Giovanni Earth Badge helper true' unless NexusRed::KantoStory.giovanni_earth_badge_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Giovanni battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_EARTH_BADGE_BATTLE_STARTED')
+raise 'expected KantoStory Giovanni battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_EARTH_BADGE_BATTLE_FINISHED')
+raise 'expected KantoStory Earth Badge obtained flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_EARTH_BADGE_OBTAINED')
+raise 'expected KantoStory Victory Road path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VICTORY_ROAD_PATH_UNLOCKED')
+raise 'expected KantoStory Indigo Plateau lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_INDIGO_PLATEAU_LEAD')
+raise 'expected KantoStory Rocket Kanto Gym collapse flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_KANTO_GYM_COLLAPSE')
+raise 'expected KantoStory Giovanni global shadow flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_GLOBAL_SHADOW')
+raise 'expected KantoStory Nexus Indigo observer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_INDIGO_OBSERVER')
+raise 'expected KantoStory current act Indigo after Giovanni' unless kanto_story_state['kanto_story']['current_act'] == 'act_7_indigo'
+raise 'expected KantoStory Red Giovanni badge exit scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('giovanni_badge_exit')
+raise 'expected KantoStory Bill eight badge signal scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('eight_badge_signal_decode')
+raise 'expected KantoStory Blue Victory Road challenge clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Victory Road')
+raise 'expected KantoStory Rocket Gym collapse activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Viridian Gym' && activity['operation'] == 'kanto_gym_cover_collapsed' }
+raise 'expected KantoStory Nexus Indigo observer activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Viridian Gym' && activity['operation'] == 'eight_badge_indigo_signal_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Earth Badge' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Nexus Earth Badge conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'nexus_order' && conflict['location'] == 'Viridian Gym' }
+raise 'expected KantoStory Giovanni Earth Badge story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Earth Badge') && message['text'].include?('Victory Road') && message['text'].include?('Indigo') }
+raise 'expected KantoStory Giovanni Earth Badge next hook Victory Road' unless giovanni_badge['next_hook'] == 'victory_road_rival_standings'
+raise 'expected KantoStory Giovanni Earth Badge badge' unless giovanni_badge['badge'] == 'Earth Badge'
+raise 'expected KantoStory Giovanni Earth Badge result propagated' unless giovanni_badge['result'] == 'badge_win'
+raise 'expected KantoStory Giovanni Earth Badge team species' unless giovanni_badge['opponent_species'] == %w[Persian Nidoqueen Nidoking Rhydon]
+raise 'expected KantoStory Giovanni Earth Badge companion rule' unless giovanni_badge['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected KantoStory Giovanni Earth Badge unlocks Victory Road' unless giovanni_badge['unlocks'].include?('earth_badge') && giovanni_badge['unlocks'].include?('victory_road_path')
+second_giovanni_badge = NexusRed::KantoStory.complete_giovanni_earth_badge_battle(kanto_story_state)
+raise 'expected KantoStory Giovanni Earth Badge idempotent guard' unless second_giovanni_badge['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Giovanni Earth Badge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'giovanni_earth_badge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

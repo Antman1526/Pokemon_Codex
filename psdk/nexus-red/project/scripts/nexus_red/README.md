@@ -137,6 +137,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_viridian_gym_return(state, location:, area_type:)` resolves the return to Viridian Gym after Blaine. It reopens Giovanni's Gym, records Red's final warning, gives Bill a Silph/Cinnabar/Viridian signal triangle scene, lets Blue mark rival standings outside the Gym, keeps Nexus Order hidden, and opens `giovanni_earth_badge_battle`.
 
+`NexusRed::KantoStory.complete_giovanni_earth_badge_battle(state, location:, result:, area_type:)` resolves Giovanni's solo Earth Badge battle. It awards the Earth Badge, collapses Rocket's public Kanto Gym cover, keeps Giovanni active as a global shadow, logs the hidden Indigo signal, and opens `victory_road_rival_standings`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

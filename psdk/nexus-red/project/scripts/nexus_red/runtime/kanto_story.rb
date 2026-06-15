@@ -328,6 +328,12 @@ module NexusRed
     BLUE_VIRIDIAN_STANDINGS_EVENT_ID = 'blue_viridian_standings'
     GIOVANNI_EARTH_BADGE_BATTLE_ID = 'giovanni_earth_badge_battle'
     NEXUS_ORDER_VIRIDIAN_BADGE_OBSERVER_EVENT_ID = 'nexus_order_viridian_badge_observer_hidden'
+    EARTH_BADGE_OBTAINED_EVENT_ID = 'earth_badge_obtained'
+    VICTORY_ROAD_PATH_EVENT_ID = 'victory_road_path_unlocked'
+    INDIGO_PLATEAU_LEAD_EVENT_ID = 'indigo_plateau_lead'
+    ROCKET_KANTO_GYM_COLLAPSE_EVENT_ID = 'rocket_kanto_gym_collapse'
+    GIOVANNI_GLOBAL_SHADOW_EVENT_ID = 'giovanni_global_shadow'
+    NEXUS_ORDER_INDIGO_OBSERVER_EVENT_ID = 'nexus_order_indigo_observer_hidden'
 
     module_function
 
@@ -4950,6 +4956,96 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == VIRIDIAN_GYM_RETURN_SCENE_EVENT_ID }
     end
 
+    def complete_giovanni_earth_badge_battle(state, location: 'Viridian Gym', result: 'badge_win', area_type: 'gym')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_viridian_gym_return', 'event_id' => GIOVANNI_EARTH_BADGE_BATTLE_ID } unless viridian_gym_return_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => GIOVANNI_EARTH_BADGE_BATTLE_ID } if giovanni_earth_badge_battle_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_EARTH_BADGE_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_EARTH_BADGE_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_EARTH_BADGE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_VICTORY_ROAD_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_INDIGO_PLATEAU_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_KANTO_GYM_COLLAPSE')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_GLOBAL_SHADOW')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_INDIGO_OBSERVER')
+      mark_cleared_event(story, GIOVANNI_EARTH_BADGE_BATTLE_ID)
+      mark_cleared_event(story, EARTH_BADGE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, VICTORY_ROAD_PATH_EVENT_ID)
+      mark_cleared_event(story, INDIGO_PLATEAU_LEAD_EVENT_ID)
+      mark_cleared_event(story, ROCKET_KANTO_GYM_COLLAPSE_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_GLOBAL_SHADOW_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_INDIGO_OBSERVER_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'kanto_gym_cover_collapsed',
+        threat_delta: -3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'eight_badge_indigo_signal_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'nexus_order',
+        location,
+        'Giovanni loses the public Kanto Gym cover while the hidden eight-badge signal redirects toward Indigo',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'giovanni_badge_exit',
+        location: location,
+        summary: 'Red meets Antman after the Earth Badge win and says the road to Indigo is now a different kind of test.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'eight_badge_signal_decode',
+        location: location,
+        summary: 'Bill decodes the eight-badge signal and confirms it now points past Victory Road toward Indigo Plateau.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue saw Giovanni retreat after the Earth Badge battle and is racing Antman toward Victory Road.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman earned the Earth Badge from Giovanni; Victory Road is open, Indigo is calling, and Rocket lost its Kanto Gym cover.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = giovanni_earth_badge_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def giovanni_earth_badge_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == GIOVANNI_EARTH_BADGE_BATTLE_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6193,6 +6289,35 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_earth_badge_signal_unrevealed',
         'unlocks' => %w[viridian_gym_reopened giovanni_earth_badge_battle blue_viridian_standings],
         'next_hook' => 'giovanni_earth_badge_battle'
+      }
+    end
+
+    def giovanni_earth_badge_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => GIOVANNI_EARTH_BADGE_BATTLE_ID,
+        'battle_id' => GIOVANNI_EARTH_BADGE_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'gym_leader' => 'Giovanni',
+        'badge' => 'Earth Badge',
+        'level_cap' => 55,
+        'opponent_species' => %w[Persian Nidoqueen Nidoking Rhydon],
+        'companion_rule' => 'no_companion_assist_in_gym_battle',
+        'linked_events' => [
+          EARTH_BADGE_OBTAINED_EVENT_ID,
+          VICTORY_ROAD_PATH_EVENT_ID,
+          INDIGO_PLATEAU_LEAD_EVENT_ID,
+          ROCKET_KANTO_GYM_COLLAPSE_EVENT_ID,
+          GIOVANNI_GLOBAL_SHADOW_EVENT_ID,
+          NEXUS_ORDER_INDIGO_OBSERVER_EVENT_ID
+        ],
+        'factions' => %w[team_rocket nexus_order],
+        'gym_state' => 'earth_badge_obtained_victory_road_open',
+        'giovanni_state' => 'defeated_in_kanto_gym_shadow_continues',
+        'hidden_meta_signal' => 'nexus_order_indigo_signal_unrevealed',
+        'unlocks' => %w[earth_badge victory_road_path indigo_plateau_lead kanto_badge_set_complete],
+        'next_hook' => 'victory_road_rival_standings'
       }
     end
 
