@@ -178,6 +178,8 @@ REQUIRED_MARKERS = (
     "pokemon_tower_first_floor_cleared?",
     "complete_route_8_celadon_road",
     "route_8_celadon_road_cleared?",
+    "complete_celadon_underground_path",
+    "celadon_underground_path_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1353,6 +1355,33 @@ raise 'expected KantoStory Route 8 next hook Celadon Underground Path' unless ro
 second_route_8_celadon = NexusRed::KantoStory.complete_route_8_celadon_road(kanto_story_state)
 raise 'expected KantoStory Route 8 idempotent guard' unless second_route_8_celadon['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Route 8 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_8_celadon_road' } == 1
+pre_route_8_underpass = NexusRed::KantoStory.complete_celadon_underground_path(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Celadon Underground gated before Route 8' unless pre_route_8_underpass['status'] == 'blocked_missing_route_8_celadon_road'
+celadon_underpass = NexusRed::KantoStory.complete_celadon_underground_path(
+  kanto_story_state,
+  location: 'Celadon Underground Path',
+  area_type: 'route'
+)
+raise 'expected KantoStory Celadon Underground clear status' unless celadon_underpass['status'] == 'cleared'
+raise 'expected KantoStory Celadon Underground event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('celadon_underground_path')
+raise 'expected KantoStory Celadon Underground helper true' unless NexusRed::KantoStory.celadon_underground_path_cleared?(kanto_story_state)
+raise 'expected KantoStory Celadon Underground reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_UNDERGROUND_PATH_REACHED')
+raise 'expected KantoStory Red Celadon underpass guard flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_CELADON_UNDERPASS_GUARD')
+raise 'expected KantoStory Bill Game Corner signal trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_GAME_CORNER_SIGNAL_TRACE')
+raise 'expected KantoStory Rocket underpass smuggler flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_UNDERPASS_SMUGGLER')
+raise 'expected KantoStory Moonlight dream poster flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_DREAM_POSTER')
+raise 'expected KantoStory Silph Scope Game Corner confirmed flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_SCOPE_GAME_CORNER_CONFIRMED')
+raise 'expected KantoStory Celadon City arrival unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_CITY_ARRIVAL_UNLOCKED')
+raise 'expected KantoStory Rocket underpass smuggler activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Underground Path' && activity['operation'] == 'underpass_smuggler' }
+raise 'expected KantoStory Moonlight dream poster activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Underground Path' && activity['operation'] == 'dream_poster_lure' }
+raise 'expected KantoStory Rocket Moonlight underpass conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Celadon Underground Path' }
+raise 'expected KantoStory Red Celadon underpass scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('celadon_underpass_guard')
+raise 'expected KantoStory Bill Game Corner signal scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('game_corner_signal_trace')
+raise 'expected KantoStory Celadon Underground story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('dream poster') }
+raise 'expected KantoStory Celadon Underground next hook city arrival' unless celadon_underpass['next_hook'] == 'celadon_city_arrival'
+second_celadon_underpass = NexusRed::KantoStory.complete_celadon_underground_path(kanto_story_state)
+raise 'expected KantoStory Celadon Underground idempotent guard' unless second_celadon_underpass['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Celadon Underground history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_underground_path' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

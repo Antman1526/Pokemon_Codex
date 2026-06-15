@@ -63,6 +63,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_route_8_celadon_road(state, location:, area_type:, rival_id:)` resolves the westbound Route 8 bridge after Pokemon Tower. It records Red keeping Antman on the physical road to Celadon, Bill tracing the Silph Scope signal, Rocket's Game Corner lead, Team Moonlight's spreading shadow, Blue crossing paths on the same clue, and unlocks the Celadon Underground Path hook.
 
+`NexusRed::KantoStory.complete_celadon_underground_path(state, location:, area_type:)` resolves the quiet underpass scene before Celadon City. It requires Route 8 completion, records Red guarding the underpass stairs, Bill confirming the Game Corner signal, Rocket using the corridor as a smuggler route, Team Moonlight planting a dream poster clue, confirms the Silph Scope lead, and unlocks the Celadon City arrival hook.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

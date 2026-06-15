@@ -56,6 +56,13 @@ module NexusRed
     UNDERGROUND_PATH_CELADON_EVENT_ID = 'underground_path_to_celadon_unlocked'
     CELADON_CITY_TEASED_EVENT_ID = 'celadon_city_teased'
     BLUE_ROUTE_8_CROSSING_EVENT_ID = 'blue_route_8_silph_scope_crossing'
+    CELADON_UNDERGROUND_EVENT_ID = 'celadon_underground_path'
+    RED_CELADON_UNDERPASS_EVENT_ID = 'red_celadon_underpass_guard'
+    BILL_GAME_CORNER_SIGNAL_EVENT_ID = 'bill_game_corner_signal_trace'
+    ROCKET_UNDERPASS_SMUGGLER_EVENT_ID = 'rocket_underpass_smuggler'
+    TEAM_MOONLIGHT_DREAM_POSTER_EVENT_ID = 'team_moonlight_dream_poster'
+    SILPH_SCOPE_GAME_CORNER_EVENT_ID = 'silph_scope_game_corner_confirmed'
+    CELADON_CITY_ARRIVAL_EVENT_ID = 'celadon_city_arrival_unlocked'
 
     module_function
 
@@ -1239,6 +1246,86 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_8_CELADON_EVENT_ID }
     end
 
+    def complete_celadon_underground_path(state, location: 'Celadon Underground Path', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_route_8_celadon_road', 'event_id' => CELADON_UNDERGROUND_EVENT_ID } unless route_8_celadon_road_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_UNDERGROUND_EVENT_ID } if celadon_underground_path_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_UNDERGROUND_PATH_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_CELADON_UNDERPASS_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_GAME_CORNER_SIGNAL_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_UNDERPASS_SMUGGLER')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_DREAM_POSTER')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_SCOPE_GAME_CORNER_CONFIRMED')
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_CITY_ARRIVAL_UNLOCKED')
+      mark_cleared_event(story, CELADON_UNDERGROUND_EVENT_ID)
+      mark_cleared_event(story, RED_CELADON_UNDERPASS_EVENT_ID)
+      mark_cleared_event(story, BILL_GAME_CORNER_SIGNAL_EVENT_ID)
+      mark_cleared_event(story, ROCKET_UNDERPASS_SMUGGLER_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_DREAM_POSTER_EVENT_ID)
+      mark_cleared_event(story, SILPH_SCOPE_GAME_CORNER_EVENT_ID)
+      mark_cleared_event(story, CELADON_CITY_ARRIVAL_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'underpass_smuggler',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'dream_poster_lure',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket smugglers use the underpass while Moonlight dream posters pull attention toward Celadon nightlife',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'celadon_underpass_guard',
+        location: location,
+        summary: 'Red guards the underpass stairs while Antman follows the Silph Scope lead into Celadon.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'game_corner_signal_trace',
+        location: location,
+        summary: 'Bill confirms the Silph Scope signal is coming from the Game Corner side of Celadon.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Celadon Underground Path confirmed the Game Corner signal, a Rocket smuggler route, and a Moonlight dream poster before the city arrival.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_underground_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_underground_path_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_UNDERGROUND_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1492,6 +1579,24 @@ module NexusRed
         ],
         'factions' => %w[team_rocket team_moonlight],
         'next_hook' => 'celadon_underground_path'
+      }
+    end
+
+    def celadon_underground_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_UNDERGROUND_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_CELADON_UNDERPASS_EVENT_ID,
+          BILL_GAME_CORNER_SIGNAL_EVENT_ID,
+          ROCKET_UNDERPASS_SMUGGLER_EVENT_ID,
+          TEAM_MOONLIGHT_DREAM_POSTER_EVENT_ID,
+          SILPH_SCOPE_GAME_CORNER_EVENT_ID,
+          CELADON_CITY_ARRIVAL_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight],
+        'next_hook' => 'celadon_city_arrival'
       }
     end
 
