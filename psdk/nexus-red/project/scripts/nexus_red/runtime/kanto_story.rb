@@ -354,6 +354,11 @@ module NexusRed
     LANCE_LEGENDARY_WARNING_UNLOCKED_EVENT_ID = 'lance_legendary_energy_warning_unlocked'
     OAK_WORLD_CIRCUIT_PASSPORT_LEAD_EVENT_ID = 'oak_world_circuit_passport_lead'
     NEXUS_ORDER_CHAMPION_SIGNAL_EVENT_ID = 'nexus_order_champion_signal_hidden'
+    LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID = 'lance_legendary_energy_warning'
+    KANTO_LEGENDARY_BIRD_RESONANCE_EVENT_ID = 'kanto_legendary_bird_resonance'
+    JOHTO_TOWER_ECHO_DETECTED_EVENT_ID = 'johto_tower_echo_detected'
+    OAK_WORLD_CIRCUIT_PASSPORT_UNLOCKED_EVENT_ID = 'oak_world_circuit_passport_unlocked'
+    NEXUS_ORDER_INTERREGIONAL_SIGNAL_EVENT_ID = 'nexus_order_interregional_signal_hidden'
 
     module_function
 
@@ -5340,6 +5345,66 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ELITE_FOUR_EVENT_ID }
     end
 
+    def complete_lance_legendary_energy_warning(state, location: 'Champion Room', area_type: 'league')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_elite_four', 'event_id' => LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID } unless elite_four_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID } if lance_legendary_energy_warning_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_LANCE_LEGENDARY_ENERGY_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_KANTO_LEGENDARY_BIRD_RESONANCE')
+      add_story_flag(state, 'FLAG_NEXUS_JOHTO_TOWER_ECHO_DETECTED')
+      add_story_flag(state, 'FLAG_NEXUS_OAK_WORLD_CIRCUIT_PASSPORT_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_INTERREGIONAL_SIGNAL')
+      mark_cleared_event(story, LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID)
+      mark_cleared_event(story, KANTO_LEGENDARY_BIRD_RESONANCE_EVENT_ID)
+      mark_cleared_event(story, JOHTO_TOWER_ECHO_DETECTED_EVENT_ID)
+      mark_cleared_event(story, OAK_WORLD_CIRCUIT_PASSPORT_UNLOCKED_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_INTERREGIONAL_SIGNAL_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'interregional_legendary_signal_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'lance_warning_response',
+        location: location,
+        summary: 'Red listens as Lance warns Antman that the League signal is resonating with legendary power beyond Kanto.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'interregional_legendary_signal',
+        location: location,
+        summary: 'Bill matches the Champion room static to the Kanto birds and a Johto tower echo that Oak must authorize.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Lance warned Antman that Kanto legendary energy is echoing toward Johto; Oak is preparing the World Circuit passport.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = lance_legendary_energy_warning_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def lance_legendary_energy_warning_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6791,6 +6856,31 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_champion_signal_unrevealed',
         'unlocks' => %w[champion_room lance_legendary_energy_warning oak_world_circuit_passport_lead],
         'next_hook' => 'lance_legendary_energy_warning'
+      }
+    end
+
+    def lance_legendary_energy_warning_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID,
+        'location' => location.to_s,
+        'speaker' => 'Lance',
+        'warning_focus' => 'interregional_legendary_energy',
+        'legendary_signals' => %w[Articuno Zapdos Moltres Lugia Ho-Oh],
+        'linked_events' => [
+          KANTO_LEGENDARY_BIRD_RESONANCE_EVENT_ID,
+          JOHTO_TOWER_ECHO_DETECTED_EVENT_ID,
+          OAK_WORLD_CIRCUIT_PASSPORT_UNLOCKED_EVENT_ID,
+          NEXUS_ORDER_INTERREGIONAL_SIGNAL_EVENT_ID
+        ],
+        'companions' => %w[red bill],
+        'factions' => %w[nexus_order],
+        'lance_state' => 'warned_antman_about_interregional_legendary_energy',
+        'oak_state' => 'world_circuit_passport_ready_to_issue',
+        'johto_state' => 'tower_echo_detected_but_region_locked_until_passport',
+        'hidden_meta_signal' => 'nexus_order_interregional_signal_unrevealed',
+        'unlocks' => %w[oak_world_circuit_passport johto_tower_echo_lead kanto_legendary_bird_readiness],
+        'next_hook' => 'oak_world_circuit_passport'
       }
     end
 

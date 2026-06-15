@@ -147,6 +147,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_elite_four(state, location:, result:, area_type:)` resolves the Kanto Elite Four gauntlet across Lorelei, Bruno, Agatha, and Lance. Companions watch without assisting, Bill sees the Champion room signal spike after Lance, Nexus Order remains hidden, and the hook opens `lance_legendary_energy_warning`.
 
+`NexusRed::KantoStory.complete_lance_legendary_energy_warning(state, location:, area_type:)` resolves Lance's post-League warning that the Champion room signal is interregional legendary energy. Bill ties Kanto's birds to Johto tower echoes, Red stays with Antman for the handoff, Nexus Order remains hidden, and the hook opens `oak_world_circuit_passport`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

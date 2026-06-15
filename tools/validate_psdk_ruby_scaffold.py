@@ -262,6 +262,8 @@ REQUIRED_MARKERS = (
     "red_watches_league_cleared?",
     "complete_elite_four",
     "elite_four_cleared?",
+    "complete_lance_legendary_energy_warning",
+    "lance_legendary_energy_warning_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2756,6 +2758,34 @@ raise 'expected KantoStory Elite Four unlocks' unless elite_four['unlocks'].incl
 second_elite_four = NexusRed::KantoStory.complete_elite_four(kanto_story_state)
 raise 'expected KantoStory Elite Four idempotent guard' unless second_elite_four['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Elite Four history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'elite_four' } == 1
+pre_lance_warning = NexusRed::KantoStory.complete_lance_legendary_energy_warning(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Lance warning gated before Elite Four' unless pre_lance_warning['status'] == 'blocked_missing_elite_four'
+lance_warning = NexusRed::KantoStory.complete_lance_legendary_energy_warning(
+  kanto_story_state,
+  location: 'Champion Room',
+  area_type: 'league'
+)
+raise 'expected KantoStory Lance warning clear status' unless lance_warning['status'] == 'cleared'
+raise 'expected KantoStory Lance warning event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('lance_legendary_energy_warning')
+raise 'expected KantoStory Lance warning helper true' unless NexusRed::KantoStory.lance_legendary_energy_warning_cleared?(kanto_story_state)
+raise 'expected KantoStory Lance warning scene flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LANCE_LEGENDARY_ENERGY_WARNING')
+raise 'expected KantoStory legendary bird resonance flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KANTO_LEGENDARY_BIRD_RESONANCE')
+raise 'expected KantoStory Johto tower echo flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_JOHTO_TOWER_ECHO_DETECTED')
+raise 'expected KantoStory Oak World Circuit passport unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_OAK_WORLD_CIRCUIT_PASSPORT_UNLOCKED')
+raise 'expected KantoStory Nexus interregional signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_INTERREGIONAL_SIGNAL')
+raise 'expected KantoStory Red Lance warning scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('lance_warning_response')
+raise 'expected KantoStory Bill interregional signal scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('interregional_legendary_signal')
+raise 'expected KantoStory Nexus interregional signal activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Champion Room' && activity['operation'] == 'interregional_legendary_signal_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Lance warning' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Lance warning story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Lance') && message['text'].include?('Johto') && message['text'].include?('Oak') }
+raise 'expected KantoStory Lance warning speaker' unless lance_warning['speaker'] == 'Lance'
+raise 'expected KantoStory Lance warning focus' unless lance_warning['warning_focus'] == 'interregional_legendary_energy'
+raise 'expected KantoStory Lance warning legendary set' unless lance_warning['legendary_signals'] == %w[Articuno Zapdos Moltres Lugia Ho-Oh]
+raise 'expected KantoStory Lance warning next hook Oak passport' unless lance_warning['next_hook'] == 'oak_world_circuit_passport'
+raise 'expected KantoStory Lance warning unlocks Oak and Johto lead' unless lance_warning['unlocks'].include?('oak_world_circuit_passport') && lance_warning['unlocks'].include?('johto_tower_echo_lead')
+second_lance_warning = NexusRed::KantoStory.complete_lance_legendary_energy_warning(kanto_story_state)
+raise 'expected KantoStory Lance warning idempotent guard' unless second_lance_warning['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Lance warning history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'lance_legendary_energy_warning' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
