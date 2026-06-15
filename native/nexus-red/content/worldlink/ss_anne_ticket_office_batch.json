@@ -1,0 +1,31 @@
+{
+  "id": "ss_anne_ticket_office_batch",
+  "title": "S.S. Anne Ticket Office",
+  "feed": [
+    {
+      "id": "wl_ss_anne_ticket_office_reached",
+      "type": "story",
+      "text": "Antman, Red, Misty, and Bill entered the S.S. Anne ticket office instead of skipping ahead by WorldLink."
+    },
+    {
+      "id": "wl_ss_anne_manifest_checked",
+      "type": "clue",
+      "text": "Bill checked the S.S. Anne manifest and found late passenger edits tied to Rocket shell accounts."
+    },
+    {
+      "id": "wl_bill_manifest_decode_seen",
+      "type": "nexus",
+      "text": "Bill decoded a second Nexus network pulse hidden inside the ship manifest timestamps."
+    },
+    {
+      "id": "wl_red_harbor_guard_scene",
+      "type": "companion",
+      "text": "Red guarded the harbor doors while Misty watched the waterline for Rocket movement."
+    },
+    {
+      "id": "wl_ss_anne_boarding_pass_earned",
+      "type": "reward",
+      "text": "Antman earned an S.S. Anne boarding pass. The ship chapter can begin from Vermilion harbor."
+    }
+  ]
+}

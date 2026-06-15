@@ -19,6 +19,7 @@ const Route25BillScene := preload("res://scenes/world/Route25Bill.tscn")
 const CeruleanRocketHouseScene := preload("res://scenes/world/CeruleanRocketHouse.tscn")
 const Route5UndergroundPathScene := preload("res://scenes/world/Route5UndergroundPath.tscn")
 const VermilionCityScene := preload("res://scenes/world/VermilionCity.tscn")
+const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -258,7 +259,19 @@ func _show_vermilion_city() -> void:
 	var vermilion := VermilionCityScene.instantiate()
 	vermilion.save_state = save_state
 	vermilion.go_to_route_5_underground_path.connect(_on_go_to_route_5_underground_path)
+	vermilion.go_to_ss_anne_ticket_office.connect(_on_go_to_ss_anne_ticket_office)
 	_replace_screen(vermilion)
+
+
+func _on_go_to_ss_anne_ticket_office() -> void:
+	_show_ss_anne_ticket_office()
+
+
+func _show_ss_anne_ticket_office() -> void:
+	var ticket_office := SSAnneTicketOfficeScene.instantiate()
+	ticket_office.save_state = save_state
+	ticket_office.go_to_vermilion_city.connect(_on_go_to_vermilion_city)
+	_replace_screen(ticket_office)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

@@ -688,6 +688,24 @@ python3 tools/validate_native_vermilion_city_arrival.py
 godot --headless --path native/nexus-red --script tests/vermilion_city_arrival_test.gd
 ```
 
+### Task 7.36: Add S.S. Anne ticket office and harbor manifest setup
+
+Acceptance:
+
+- Vermilion keeps the S.S. Anne ticket office locked until the harbor is scouted and the ticket lead is found.
+- After Vermilion scouting, Vermilion can transition to a playable S.S. Anne ticket office scene.
+- The ticket office scene records Red guarding the harbor, Misty watching the waterline, and Bill decoding the edited ship manifest.
+- Save state and WorldLink record S.S. Anne ticket office reached, manifest checked, Bill's manifest anomaly decode, Red's harbor guard scene, and boarding pass earned.
+- WorldLink checklist adds the ticket office, manifest, Bill decode, and S.S. Anne boarding pass milestones.
+- The slice sets up the next S.S. Anne ship chapter without implementing the ship interior yet.
+
+Verification:
+
+```sh
+python3 tools/validate_native_ss_anne_ticket_office.py
+godot --headless --path native/nexus-red --script tests/ss_anne_ticket_office_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

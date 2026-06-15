@@ -144,6 +144,12 @@ func start_new_game(name: String) -> void:
 		"ss_anne_ticket_lead_seen": false,
 		"surge_power_sabotage_teased": false,
 		"worldlink_vermilion_city_arrival_batch_queued": false,
+		"ss_anne_ticket_office_reached": false,
+		"ss_anne_manifest_checked": false,
+		"bill_manifest_decode_seen": false,
+		"red_harbor_guard_scene_seen": false,
+		"ss_anne_boarding_pass_earned": false,
+		"worldlink_ss_anne_ticket_office_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -482,6 +488,33 @@ func queue_vermilion_city_arrival_batch() -> void:
 		"wl_vermilion_harbor_scouted",
 		"wl_ss_anne_ticket_lead",
 		"wl_surge_power_sabotage_teased",
+	])
+
+
+func enter_ss_anne_ticket_office() -> void:
+	current_scene = "ss_anne_ticket_office"
+	active_companion = "red"
+	set_flag("ss_anne_ticket_office_reached", true)
+	queue_worldlink_id("wl_ss_anne_ticket_office_reached")
+
+
+func record_ss_anne_ticket_office_scene() -> void:
+	active_companion = "red"
+	set_flag("ss_anne_manifest_checked", true)
+	set_flag("bill_manifest_decode_seen", true)
+	set_flag("red_harbor_guard_scene_seen", true)
+	set_flag("ss_anne_boarding_pass_earned", true)
+	queue_ss_anne_ticket_office_batch()
+
+
+func queue_ss_anne_ticket_office_batch() -> void:
+	set_flag("worldlink_ss_anne_ticket_office_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_ss_anne_ticket_office_reached",
+		"wl_ss_anne_manifest_checked",
+		"wl_bill_manifest_decode_seen",
+		"wl_red_harbor_guard_scene",
+		"wl_ss_anne_boarding_pass_earned",
 	])
 
 

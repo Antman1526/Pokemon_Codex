@@ -78,6 +78,7 @@ python3 tools/validate_native_route25_bill_intro.py
 python3 tools/validate_native_cerulean_rocket_house.py
 python3 tools/validate_native_route5_underground_path.py
 python3 tools/validate_native_vermilion_city_arrival.py
+python3 tools/validate_native_ss_anne_ticket_office.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -113,6 +114,7 @@ godot --headless --path native/nexus-red --script tests/route25_bill_intro_test.
 godot --headless --path native/nexus-red --script tests/cerulean_rocket_house_test.gd
 godot --headless --path native/nexus-red --script tests/route5_underground_path_test.gd
 godot --headless --path native/nexus-red --script tests/vermilion_city_arrival_test.gd
+godot --headless --path native/nexus-red --script tests/ss_anne_ticket_office_test.gd
 ```
 
 ## Legal Rule

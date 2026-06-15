@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_5_underground_path
+signal go_to_ss_anne_ticket_office
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_vermilion_arrival_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_ss_anne_ticket_office_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_5_underground_path()
 
@@ -110,7 +113,16 @@ func _build_city() -> void:
 func trigger_vermilion_arrival_scene() -> void:
 	if save_state:
 		save_state.record_vermilion_arrival_scene()
-	dialogue_label.text = "Red: Vermilion is busier than Cerulean. Misty is checking the harbor, Bill is chasing an S.S. Anne ticket lead, and Surge's gym power is flickering like Rocket touched the wiring."
+	dialogue_label.text = "Red: Vermilion is busier than Cerulean. Misty is checking the harbor, Bill is chasing an S.S. Anne ticket lead, and Surge's gym power is flickering like Rocket touched the wiring. Press Right to follow the ticket office lead."
+
+
+func trigger_ss_anne_ticket_office_entry() -> void:
+	if save_state == null:
+		return
+	if not bool(save_state.story_flags.get("vermilion_harbor_scouted", false)) or not bool(save_state.story_flags.get("ss_anne_ticket_lead_seen", false)):
+		dialogue_label.text = "Red: We should scout the harbor first. Misty saw Rocket uniforms near the S.S. Anne ticket counter, but we need Bill's lead before we walk in."
+		return
+	emit_signal("go_to_ss_anne_ticket_office")
 
 
 func return_to_route_5_underground_path() -> void:
@@ -118,4 +130,4 @@ func return_to_route_5_underground_path() -> void:
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Vermilion City. The harbor, S.S. Anne, and Lt. Surge all matter here. Press Z/Enter to scout with Red, Misty, and Bill, or X/Esc to return to Route 5."
+	dialogue_label.text = "Red: Vermilion City. The harbor, S.S. Anne, and Lt. Surge all matter here. Press Z/Enter to scout with Red, Misty, and Bill, Right for the ticket lead, or X/Esc to return to Route 5."
