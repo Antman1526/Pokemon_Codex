@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_vermilion_city
+signal go_to_route_11
 signal start_battle_placeholder(battle_id)
 
 var save_state
@@ -19,6 +20,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_power_sabotage_scene()
 	if event.is_action_pressed("ui_right"):
 		trigger_surge_gym_battle()
+	if event.is_action_pressed("ui_down"):
+		trigger_route_11_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_vermilion_city()
 
@@ -128,9 +131,17 @@ func trigger_surge_gym_battle() -> void:
 	emit_signal("start_battle_placeholder", "lt_surge_vermilion_gym")
 
 
+func trigger_route_11_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("route_11_path_unlocked", false)):
+		dialogue_label.text = "Red: Route 11 stays blocked until you earn the Thunder Badge. Surge controls the east checkpoint, and we need his clearance before following Rocket and Team Gas."
+		return
+	dialogue_label.text = "Red: Route 11 is open. Misty will walk us to the split, Bill is tracking the Nexus relay, and Rocket and Team Gas are already blaming each other east of Vermilion."
+	emit_signal("go_to_route_11")
+
+
 func return_to_vermilion_city() -> void:
 	emit_signal("go_to_vermilion_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Trail Cutter got us behind Surge's gym. Press Z/Enter to expose the Rocket and Team Gas power sabotage with Misty and Bill, Right for Lt. Surge's gym, or X/Esc to return to Vermilion."
+	dialogue_label.text = "Red: Trail Cutter got us behind Surge's gym. Press Z/Enter to expose the Rocket and Team Gas power sabotage with Misty and Bill, Right for Lt. Surge's gym, Down for Route 11 after the Thunder Badge, or X/Esc to return to Vermilion."

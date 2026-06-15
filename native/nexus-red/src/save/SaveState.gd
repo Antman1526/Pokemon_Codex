@@ -188,6 +188,13 @@ func start_new_game(name: String) -> void:
 		"surge_respect_scene_seen": false,
 		"route_11_path_unlocked": false,
 		"worldlink_vermilion_surge_gym_batch_queued": false,
+		"route_11_reached": false,
+		"red_route_11_eastbound_scene_seen": false,
+		"misty_route_11_farewell_seen": false,
+		"bill_route_11_signal_decode_seen": false,
+		"rocket_gas_route_11_fallout_seen": false,
+		"snorlax_roadblock_teased": false,
+		"worldlink_route_11_handoff_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -688,6 +695,35 @@ func queue_vermilion_surge_gym_batch() -> void:
 		"wl_thunder_badge_earned",
 		"wl_surge_respect_scene",
 		"wl_route_11_path_unlocked",
+	])
+
+
+func enter_route_11() -> void:
+	current_scene = "route_11"
+	active_companion = "red"
+	set_flag("route_11_reached", true)
+	queue_worldlink_id("wl_route_11_reached")
+
+
+func record_route_11_handoff_scene() -> void:
+	active_companion = "red"
+	set_flag("red_route_11_eastbound_scene_seen", true)
+	set_flag("misty_route_11_farewell_seen", true)
+	set_flag("bill_route_11_signal_decode_seen", true)
+	set_flag("rocket_gas_route_11_fallout_seen", true)
+	set_flag("snorlax_roadblock_teased", true)
+	queue_route_11_handoff_batch()
+
+
+func queue_route_11_handoff_batch() -> void:
+	set_flag("worldlink_route_11_handoff_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_11_reached",
+		"wl_red_route_11_eastbound_scene",
+		"wl_misty_route_11_farewell",
+		"wl_bill_route_11_signal_decode",
+		"wl_rocket_gas_route_11_fallout",
+		"wl_snorlax_roadblock_teased",
 	])
 
 

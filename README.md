@@ -85,6 +85,7 @@ python3 tools/validate_native_ss_anne_cargo_hold.py
 python3 tools/validate_native_ss_anne_captain_cabin.py
 python3 tools/validate_native_vermilion_power_sabotage.py
 python3 tools/validate_native_lt_surge_gym_placeholder.py
+python3 tools/validate_native_route11_handoff.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -127,6 +128,7 @@ godot --headless --path native/nexus-red --script tests/ss_anne_cargo_hold_test.
 godot --headless --path native/nexus-red --script tests/ss_anne_captain_cabin_test.gd
 godot --headless --path native/nexus-red --script tests/vermilion_power_sabotage_test.gd
 godot --headless --path native/nexus-red --script tests/lt_surge_gym_placeholder_test.gd
+godot --headless --path native/nexus-red --script tests/route11_handoff_test.gd
 ```
 
 ## Legal Rule

@@ -1,0 +1,35 @@
+{
+  "id": "route_11_handoff_batch",
+  "feed": [
+    {
+      "id": "wl_route_11_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Route 11 after the Thunder Badge opened Vermilion's east checkpoint."
+    },
+    {
+      "id": "wl_red_route_11_eastbound_scene",
+      "speaker": "Red",
+      "text": "Red confirmed he is staying with Antman as the main travel companion while the road bends toward Diglett's Cave."
+    },
+    {
+      "id": "wl_misty_route_11_farewell",
+      "speaker": "Misty",
+      "text": "Misty logged a temporary handoff: she will keep scouting water routes and return for major ocean and harbor crises."
+    },
+    {
+      "id": "wl_bill_route_11_signal_decode",
+      "speaker": "Bill",
+      "text": "Bill decoded a new Nexus relay pulse from Route 11, proving the signal is following the physical route network."
+    },
+    {
+      "id": "wl_rocket_gas_route_11_fallout",
+      "speaker": "WorldLink",
+      "text": "Rocket and Team Gas are arguing east of Vermilion after the failed power sabotage exposed both factions."
+    },
+    {
+      "id": "wl_snorlax_roadblock_teased",
+      "speaker": "WorldLink",
+      "text": "A sleeping roadblock has been reported ahead, pushing travelers toward the Diglett's Cave detour."
+    }
+  ]
+}

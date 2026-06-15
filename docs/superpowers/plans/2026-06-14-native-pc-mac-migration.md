@@ -815,6 +815,25 @@ python3 tools/validate_native_lt_surge_gym_placeholder.py
 godot --headless --path native/nexus-red --script tests/lt_surge_gym_placeholder_test.gd
 ```
 
+### Task 7.43: Add Route 11 eastbound handoff
+
+Acceptance:
+
+- The Vermilion power sabotage scene keeps Route 11 locked until Antman earns the Thunder Badge and the Route 11 path flag is unlocked.
+- After Lt. Surge, Antman can leave the Vermilion service yard for a playable Route 11 shell.
+- Route 11 records Red as the active full-game companion while Misty rotates to water-route support and Bill decodes a new Nexus relay.
+- Rocket and Team Gas fallout continues east of Vermilion instead of ending at Surge's gym.
+- A Snorlax roadblock is teased as the next classic Kanto obstacle, pushing the player toward Diglett's Cave without quick-jumping regions.
+- Save state and WorldLink record Route 11 reached, Red's eastbound scene, Misty's handoff, Bill's signal decode, Rocket/Team Gas fallout, and the Snorlax roadblock.
+- WorldLink checklist adds Route 11, faction fallout, Route 11 Nexus signal, and Snorlax roadblock milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route11_handoff.py
+godot --headless --path native/nexus-red --script tests/route11_handoff_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
