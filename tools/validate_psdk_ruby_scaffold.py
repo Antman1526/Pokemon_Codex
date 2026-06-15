@@ -144,6 +144,8 @@ REQUIRED_MARKERS = (
     "ensure_kanto_story",
     "complete_brock",
     "brock_rewards_applied?",
+    "complete_pewter_museum_anomaly",
+    "museum_anomaly_cleared?",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
@@ -898,6 +900,26 @@ raise 'expected KantoStory Brock rewards applied helper' unless NexusRed::KantoS
 second_brock_clear = NexusRed::KantoStory.complete_brock(kanto_story_state, location: 'Pewter Gym', area_type: 'route')
 raise 'expected KantoStory Brock rewards idempotent guard' unless second_brock_clear['status'] == 'already_applied'
 raise 'expected KantoStory no duplicate reward history' unless kanto_story_state['kanto_story']['reward_history'].length == 1
+pre_brock_museum = NexusRed::KantoStory.complete_pewter_museum_anomaly(NexusRed::RuntimeState.build)
+raise 'expected KantoStory museum gated before Brock' unless pre_brock_museum['status'] == 'blocked_missing_boulder_badge'
+museum_clear = NexusRed::KantoStory.complete_pewter_museum_anomaly(
+  kanto_story_state,
+  location: 'Pewter Museum Service Tunnel',
+  area_type: 'villain_hideout',
+  partner_id: 'red'
+)
+raise 'expected KantoStory museum clear status' unless museum_clear['status'] == 'cleared'
+raise 'expected KantoStory museum flag recorded' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MUSEUM_ROCKET_EVENT_DONE')
+raise 'expected KantoStory museum cleared event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('pewter_rocket_fossil_scan_theft')
+raise 'expected KantoStory museum helper true' unless NexusRed::KantoStory.museum_anomaly_cleared?(kanto_story_state)
+raise 'expected KantoStory Rocket activity recorded' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pewter Museum Service Tunnel' && activity['operation'] == 'fossil_scan_theft' }
+raise 'expected KantoStory Phoenix conflict recorded' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_phoenix' && conflict['location'] == 'Pewter Museum Service Tunnel' }
+raise 'expected KantoStory Phoenix foreshadowed' unless kanto_story_state['faction_progress']['team_phoenix']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_rocket' }
+raise 'expected KantoStory Red museum backup scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('pewter_museum_backup')
+raise 'expected KantoStory museum WorldLink paused in hideout' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' }
+second_museum_clear = NexusRed::KantoStory.complete_pewter_museum_anomaly(kanto_story_state)
+raise 'expected KantoStory museum clear idempotent guard' unless second_museum_clear['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate museum history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pewter_rocket_fossil_scan_theft' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

@@ -31,6 +31,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_brock(state, location:, area_type:)` is the first integrated Kanto map-script reward bundle. It marks the Boulder Badge flags, records the Pewter Rocket alert, unlocks the after-Brock QoL tier, enables Pewter rare candies, unlocks portable PC lite and field healing, records the Red/Brock post-gym scenes, and advances the Kanto story to Act 2. The method is idempotent so repeated map triggers do not duplicate rewards or reset charges.
 
+`NexusRed::KantoStory.complete_pewter_museum_anomaly(state, location:, area_type:, partner_id:)` resolves the post-Brock museum service tunnel event. It requires the Boulder Badge, marks the museum Rocket event flag, records Team Rocket fossil-scanner theft activity, adds an early Team Phoenix conflict clue, records the partner backup scene, and queues a paused story alert when called from a villain hideout area.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
