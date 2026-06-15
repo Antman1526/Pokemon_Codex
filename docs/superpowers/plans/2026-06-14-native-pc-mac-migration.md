@@ -527,6 +527,23 @@ python3 tools/validate_native_mt_moon_fossil_decision.py
 godot --headless --path native/nexus-red --script tests/mt_moon_fossil_decision_test.gd
 ```
 
+### Task 7.27: Add Route 4 Cerulean approach bridge
+
+Acceptance:
+
+- Mt. Moon fossil decision can transition forward to Route 4 only after Dome or Helix is chosen.
+- Route 4 becomes the first playable step toward Cerulean after Mt. Moon.
+- Red stays as the active companion and warns that Misty, Rocket, Gold Dust, and Cerulean Bridge are about to converge.
+- Save state and WorldLink record Route 4 arrival, Red's Cerulean warning, and the Cerulean Bridge threat tease.
+- Route 4 can return to the fossil decision scene for now until the Cerulean City slice exists.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route4_cerulean_approach.py
+godot --headless --path native/nexus-red --script tests/route4_cerulean_approach_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

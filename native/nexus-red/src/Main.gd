@@ -12,6 +12,7 @@ const PewterCityScene := preload("res://scenes/world/PewterCity.tscn")
 const MtMoonEntranceScene := preload("res://scenes/world/MtMoonEntrance.tscn")
 const MtMoonInterior1Scene := preload("res://scenes/world/MtMoonInterior1.tscn")
 const MtMoonFossilDecisionScene := preload("res://scenes/world/MtMoonFossilDecision.tscn")
+const Route4CeruleanApproachScene := preload("res://scenes/world/Route4CeruleanApproach.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -164,7 +165,19 @@ func _show_mt_moon_fossil_decision() -> void:
 	var decision := MtMoonFossilDecisionScene.instantiate()
 	decision.save_state = save_state
 	decision.go_to_mt_moon_interior_1.connect(_on_go_to_mt_moon_interior_1)
+	decision.go_to_route_4_cerulean_approach.connect(_on_go_to_route_4_cerulean_approach)
 	_replace_screen(decision)
+
+
+func _on_go_to_route_4_cerulean_approach() -> void:
+	_show_route_4_cerulean_approach()
+
+
+func _show_route_4_cerulean_approach() -> void:
+	var route4 := Route4CeruleanApproachScene.instantiate()
+	route4.save_state = save_state
+	route4.go_to_mt_moon_fossil_decision.connect(_on_go_to_mt_moon_fossil_decision)
+	_replace_screen(route4)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

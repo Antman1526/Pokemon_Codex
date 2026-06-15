@@ -1,0 +1,22 @@
+{
+  "id": "route_4_cerulean_approach_batch",
+  "name": "Route 4 Cerulean Approach Batch",
+  "trigger": "route_4_after_mt_moon_fossil_choice",
+  "feed": [
+    {
+      "id": "wl_route_4_cerulean_approach",
+      "category": "story",
+      "text": "Antman and Red exited Mt. Moon onto Route 4 after securing one stable fossil."
+    },
+    {
+      "id": "wl_red_route_4_cerulean_warning",
+      "category": "companion",
+      "text": "Red warned that Cerulean's bridge crowd feels staged, with Rocket and Gold Dust both moving east."
+    },
+    {
+      "id": "wl_cerulean_bridge_threat_tease",
+      "category": "faction",
+      "text": "WorldLink chatter points toward Cerulean Bridge as the next pressure point before Misty's gym."
+    }
+  ]
+}

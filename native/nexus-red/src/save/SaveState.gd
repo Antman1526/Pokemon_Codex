@@ -101,6 +101,10 @@ func start_new_game(name: String) -> void:
 		"helix_fossil_chosen": false,
 		"nexus_fossil_deeper_signal_seen": false,
 		"worldlink_mt_moon_fossil_decision_batch_queued": false,
+		"route_4_cerulean_approach_reached": false,
+		"red_route_4_cerulean_warning_seen": false,
+		"cerulean_bridge_threat_teased": false,
+		"worldlink_route_4_cerulean_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -275,6 +279,29 @@ func queue_mt_moon_fossil_decision_batch() -> void:
 	queue_worldlink_ids([
 		"wl_mt_moon_fossil_decision_reached",
 		"wl_nexus_fossil_deeper_signal",
+	])
+
+
+func enter_route_4_cerulean_approach() -> void:
+	current_scene = "route_4_cerulean_approach"
+	active_companion = "red"
+	set_flag("route_4_cerulean_approach_reached", true)
+	queue_worldlink_id("wl_route_4_cerulean_approach")
+
+
+func record_red_route_4_cerulean_warning() -> void:
+	active_companion = "red"
+	set_flag("red_route_4_cerulean_warning_seen", true)
+	set_flag("cerulean_bridge_threat_teased", true)
+	queue_route_4_cerulean_batch()
+
+
+func queue_route_4_cerulean_batch() -> void:
+	set_flag("worldlink_route_4_cerulean_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_4_cerulean_approach",
+		"wl_red_route_4_cerulean_warning",
+		"wl_cerulean_bridge_threat_tease",
 	])
 
 

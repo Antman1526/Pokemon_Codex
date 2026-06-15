@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_mt_moon_interior_1
+signal go_to_route_4_cerulean_approach
 
 var save_state
 var dialogue_label: Label
@@ -18,6 +19,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		choose_dome_fossil()
 	if event.is_action_pressed("ui_right"):
 		choose_helix_fossil()
+	if event.is_action_pressed("ui_down"):
+		proceed_to_route_4_cerulean_approach()
 	if event.is_action_pressed("cancel"):
 		return_to_mt_moon_interior_1()
 
@@ -117,5 +120,13 @@ func return_to_mt_moon_interior_1() -> void:
 	emit_signal("go_to_mt_moon_interior_1")
 
 
+func proceed_to_route_4_cerulean_approach() -> void:
+	if save_state and not bool(save_state.story_flags.get("mt_moon_fossil_choice_made", false)):
+		dialogue_label.text = "Red: We need to choose one fossil before leaving this table. Dome or Helix first, then Cerulean."
+		return
+	dialogue_label.text = "Red: Route 4 opens east. Cerulean is next, and if Rocket and Gold Dust are both moving, Misty needs to know."
+	emit_signal("go_to_route_4_cerulean_approach")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Choose one now: Left for Dome Fossil, Right for Helix Fossil. The Nexus Fossil is not on this table; it is deeper."
+	dialogue_label.text = "Red: Choose one now: Left for Dome Fossil, Right for Helix Fossil. Press Down for Route 4 after the choice. The Nexus Fossil is not on this table; it is deeper."
