@@ -54,6 +54,18 @@ module NexusRed
     NEXUS_ORDER_ZEPHYR_BADGE_RESONANCE_EVENT_ID = 'nexus_order_zephyr_badge_resonance_hidden'
     UNION_CAVE_ROAD_EVENT_ID = 'union_cave_road_unlocked'
     AZALEA_SLOWPOKE_WELL_LEAD_EVENT_ID = 'azalea_slowpoke_well_lead'
+    UNION_CAVE_ROAD_MAIN_EVENT_ID = 'union_cave_road'
+    RED_UNION_CAVE_TRAVEL_EVENT_ID = 'red_union_cave_travel'
+    BROCK_UNION_CAVE_SURVIVAL_EVENT_ID = 'brock_union_cave_survival'
+    BILL_UNION_CAVE_RADIO_SCAN_EVENT_ID = 'bill_union_cave_radio_scan'
+    SILVER_UNION_CAVE_AMBUSH_EVENT_ID = 'silver_union_cave_ambush'
+    ROCKET_SLOWPOKE_WELL_SUPPLY_EVENT_ID = 'rocket_slowpoke_well_supply_line'
+    GOLD_DUST_UNION_CAVE_RELIC_EVENT_ID = 'gold_dust_union_cave_relic_auction'
+    MOONLIGHT_UNION_CAVE_ECHO_EVENT_ID = 'moonlight_union_cave_echo'
+    NEXUS_ORDER_UNION_CAVE_FAULT_EVENT_ID = 'nexus_order_union_cave_fault_line_hidden'
+    AZALEA_TOWN_UNLOCKED_EVENT_ID = 'azalea_town_unlocked'
+    SLOWPOKE_WELL_CRISIS_UNLOCKED_EVENT_ID = 'slowpoke_well_crisis_unlocked'
+    KURT_APRICORN_LEAD_EVENT_ID = 'kurt_apricorn_lead'
 
     module_function
 
@@ -888,6 +900,186 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_zephyr_badge_resonance_unrevealed',
         'unlocks' => %w[union_cave_road azalea_slowpoke_well_lead johto_rematch_board_tier_1],
         'next_hook' => 'union_cave_road'
+      }
+    end
+
+    def complete_union_cave_road(state, location: 'Union Cave', area_type: 'cave')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => UNION_CAVE_ROAD_MAIN_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_falkner_zephyr_badge_battle', 'event_id' => UNION_CAVE_ROAD_MAIN_EVENT_ID } unless falkner_zephyr_badge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => UNION_CAVE_ROAD_MAIN_EVENT_ID } if union_cave_road_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_UNION_CAVE_ROAD')
+      add_story_flag(state, 'FLAG_NEXUS_RED_UNION_CAVE_TRAVEL')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_UNION_CAVE_SURVIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_UNION_CAVE_RADIO_SCAN')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_UNION_CAVE_AMBUSH')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SLOWPOKE_WELL_SUPPLY_LINE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_UNION_CAVE_RELIC_AUCTION')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_UNION_CAVE_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_UNION_CAVE_FAULT_LINE')
+      add_story_flag(state, 'FLAG_NEXUS_AZALEA_TOWN_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_SLOWPOKE_WELL_CRISIS_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_KURT_APRICORN_LEAD')
+
+      [
+        UNION_CAVE_ROAD_MAIN_EVENT_ID,
+        RED_UNION_CAVE_TRAVEL_EVENT_ID,
+        BROCK_UNION_CAVE_SURVIVAL_EVENT_ID,
+        BILL_UNION_CAVE_RADIO_SCAN_EVENT_ID,
+        SILVER_UNION_CAVE_AMBUSH_EVENT_ID,
+        ROCKET_SLOWPOKE_WELL_SUPPLY_EVENT_ID,
+        GOLD_DUST_UNION_CAVE_RELIC_EVENT_ID,
+        MOONLIGHT_UNION_CAVE_ECHO_EVENT_ID,
+        NEXUS_ORDER_UNION_CAVE_FAULT_EVENT_ID,
+        AZALEA_TOWN_UNLOCKED_EVENT_ID,
+        SLOWPOKE_WELL_CRISIS_UNLOCKED_EVENT_ID,
+        KURT_APRICORN_LEAD_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'union_cave_travel',
+        location: location,
+        summary: 'Red keeps pace beside Antman through Union Cave, reminding him that Johto rewards trainers who listen before they charge ahead.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'union_cave_survival',
+        location: location,
+        summary: 'Brock turns Union Cave into a field lesson on water pockets, rockfall paths, and why Azalea will need supplies before a long crisis.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'union_cave_radio_scan',
+        location: location,
+        summary: 'Bill tracks Rocket radio parts through Union Cave and confirms the signal runs toward Azalea and Slowpoke Well.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver ambushed Antman near the Union Cave exit, furious that Red and Brock keep turning hard roads into lessons.',
+        area_type,
+        region: 'johto'
+      )
+      state.dig('rival_progress', 'silver', 'latest_activity')['battle_hook'] = {
+        'battle_id' => SILVER_UNION_CAVE_AMBUSH_EVENT_ID,
+        'battle_type' => 'johto_rival_silver',
+        'location' => location.to_s,
+        'level_cap' => 18,
+        'theme' => 'speed_and_spite'
+      }
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Slowpoke Well Supply Line',
+        'slowpoke_well_supply_line',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        location,
+        'union_cave_relic_auction',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'union_cave_dream_echo',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        location,
+        'union_cave_fault_line_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket radio crates and Gold Dust relic buyers collide under Union Cave while Moonlight static makes both sides paranoid.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_5_azalea_slowpoke_well_crisis'
+      event = union_cave_road_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Union Cave opens the road to Azalea: Red keeps Antman steady, Silver attacks near the exit, and Bill traces Rocket supplies into the Slowpoke Well crisis.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def union_cave_road_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == UNION_CAVE_ROAD_MAIN_EVENT_ID }
+    end
+
+    def union_cave_road_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => UNION_CAVE_ROAD_MAIN_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_5_azalea_slowpoke_well_crisis',
+        'route_chain' => ['Violet City', 'Route 32', 'Union Cave', 'Route 33', 'Azalea Town'],
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          RED_UNION_CAVE_TRAVEL_EVENT_ID,
+          BROCK_UNION_CAVE_SURVIVAL_EVENT_ID,
+          BILL_UNION_CAVE_RADIO_SCAN_EVENT_ID,
+          SILVER_UNION_CAVE_AMBUSH_EVENT_ID,
+          ROCKET_SLOWPOKE_WELL_SUPPLY_EVENT_ID,
+          GOLD_DUST_UNION_CAVE_RELIC_EVENT_ID,
+          MOONLIGHT_UNION_CAVE_ECHO_EVENT_ID,
+          NEXUS_ORDER_UNION_CAVE_FAULT_EVENT_ID,
+          AZALEA_TOWN_UNLOCKED_EVENT_ID,
+          SLOWPOKE_WELL_CRISIS_UNLOCKED_EVENT_ID,
+          KURT_APRICORN_LEAD_EVENT_ID
+        ],
+        'battle_hooks' => [
+          {
+            'battle_id' => SILVER_UNION_CAVE_AMBUSH_EVENT_ID,
+            'battle_type' => 'johto_rival_silver',
+            'location' => location.to_s,
+            'level_cap' => 18,
+            'theme' => 'speed_and_spite'
+          }
+        ],
+        'hidden_meta_signal' => 'nexus_order_union_cave_fault_line_unrevealed',
+        'unlocks' => %w[azalea_town slowpoke_well_crisis kurt_apricorn_lead route_33],
+        'next_hook' => 'slowpoke_well_crisis'
       }
     end
   end

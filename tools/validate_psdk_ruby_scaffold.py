@@ -278,6 +278,8 @@ REQUIRED_MARKERS = (
     "falkner_zephyr_badge_prep_cleared?",
     "complete_falkner_zephyr_badge_battle",
     "falkner_zephyr_badge_battle_cleared?",
+    "complete_union_cave_road",
+    "union_cave_road_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3071,6 +3073,57 @@ raise 'expected JohtoStory Falkner battle unlocks Union Cave and Azalea' unless 
 second_falkner_battle = NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(kanto_story_state)
 raise 'expected JohtoStory Falkner battle idempotent guard' unless second_falkner_battle['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Falkner battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'falkner_zephyr_badge_battle' } == 1
+pre_union_cave = NexusRed::JohtoStory.complete_union_cave_road(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Union Cave gated before Johto unlock' unless pre_union_cave['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_falkner_battle = NexusRed::RuntimeState.build
+johto_before_falkner_battle['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_falkner_battle)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_falkner_battle)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_falkner_battle)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_falkner_battle)
+raise 'expected JohtoStory Union Cave gated before Falkner battle' unless NexusRed::JohtoStory.complete_union_cave_road(johto_before_falkner_battle)['status'] == 'blocked_missing_falkner_zephyr_badge_battle'
+union_cave = NexusRed::JohtoStory.complete_union_cave_road(
+  kanto_story_state,
+  location: 'Union Cave',
+  area_type: 'cave'
+)
+raise 'expected JohtoStory Union Cave clear status' unless union_cave['status'] == 'cleared'
+raise 'expected JohtoStory Union Cave event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('union_cave_road')
+raise 'expected JohtoStory Union Cave helper true' unless NexusRed::JohtoStory.union_cave_road_cleared?(kanto_story_state)
+raise 'expected JohtoStory Azalea town unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('azalea_town_unlocked')
+raise 'expected JohtoStory Slowpoke Well crisis unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('slowpoke_well_crisis_unlocked')
+raise 'expected JohtoStory Union Cave flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_UNION_CAVE_ROAD')
+raise 'expected JohtoStory Red Union Cave flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_UNION_CAVE_TRAVEL')
+raise 'expected JohtoStory Brock Union Cave flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_UNION_CAVE_SURVIVAL')
+raise 'expected JohtoStory Bill Union Cave scan flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_UNION_CAVE_RADIO_SCAN')
+raise 'expected JohtoStory Silver Union Cave ambush flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILVER_UNION_CAVE_AMBUSH')
+raise 'expected JohtoStory Rocket Slowpoke Well supply flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_SLOWPOKE_WELL_SUPPLY_LINE')
+raise 'expected JohtoStory Gold Dust Union Cave flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_UNION_CAVE_RELIC_AUCTION')
+raise 'expected JohtoStory Moonlight Union Cave flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_UNION_CAVE_ECHO')
+raise 'expected JohtoStory Nexus Order Union Cave fault flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_UNION_CAVE_FAULT_LINE')
+raise 'expected JohtoStory Azalea town flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_AZALEA_TOWN_UNLOCKED')
+raise 'expected JohtoStory Slowpoke Well crisis flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SLOWPOKE_WELL_CRISIS_UNLOCKED')
+raise 'expected JohtoStory current act Azalea crisis' unless kanto_story_state['johto_story']['current_act'] == 'act_5_azalea_slowpoke_well_crisis'
+raise 'expected JohtoStory Red Union Cave scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('union_cave_travel')
+raise 'expected JohtoStory Brock Union Cave scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('union_cave_survival')
+raise 'expected JohtoStory Bill Union Cave scan scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('union_cave_radio_scan')
+raise 'expected JohtoStory Silver Union Cave activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity'].dig('battle_hook', 'battle_id') == 'silver_union_cave_ambush'
+raise 'expected JohtoStory Rocket Slowpoke supply activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'slowpoke_well_supply_line' }
+raise 'expected JohtoStory Gold Dust Union Cave activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'union_cave_relic_auction' }
+raise 'expected JohtoStory Moonlight Union Cave echo activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'union_cave_dream_echo' }
+raise 'expected JohtoStory Nexus Order Union Cave fault activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'union_cave_fault_line_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust Union Cave conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Union Cave' }
+raise 'expected JohtoStory Nexus Order still hidden after Union Cave' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Union Cave messages paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Union Cave') && message['text'].include?('Azalea') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory Union Cave result route chain' unless union_cave['route_chain'] == ['Violet City', 'Route 32', 'Union Cave', 'Route 33', 'Azalea Town']
+raise 'expected JohtoStory Union Cave next hook Slowpoke Well' unless union_cave['next_hook'] == 'slowpoke_well_crisis'
+raise 'expected JohtoStory Union Cave current act' unless union_cave['current_act'] == 'act_5_azalea_slowpoke_well_crisis'
+raise 'expected JohtoStory Union Cave battle hook Silver' unless union_cave['battle_hooks'].any? { |hook| hook['battle_id'] == 'silver_union_cave_ambush' }
+raise 'expected JohtoStory Union Cave unlocks Azalea and Slowpoke Well' unless union_cave['unlocks'].include?('azalea_town') && union_cave['unlocks'].include?('slowpoke_well_crisis')
+raise 'expected JohtoStory Union Cave factions' unless %w[team_rocket team_gold_dust team_moonlight nexus_order].all? { |faction| union_cave['factions'].include?(faction) }
+second_union_cave = NexusRed::JohtoStory.complete_union_cave_road(kanto_story_state)
+raise 'expected JohtoStory Union Cave idempotent guard' unless second_union_cave['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Union Cave history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'union_cave_road' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
