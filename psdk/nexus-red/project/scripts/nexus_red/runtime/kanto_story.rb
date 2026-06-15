@@ -339,6 +339,11 @@ module NexusRed
     RIVAL_STANDINGS_WORLDLINK_DIGEST_EVENT_ID = 'rival_standings_worldlink_digest'
     RED_INDIGO_WATCH_ROUTE_EVENT_ID = 'red_indigo_watch_route'
     NEXUS_ORDER_INDIGO_STATIC_EVENT_ID = 'nexus_order_indigo_static_hidden'
+    BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID = 'blue_pre_league_or_champion_battle'
+    BLUE_INDIGO_CHALLENGE_RESOLVED_EVENT_ID = 'blue_indigo_challenge_resolved'
+    RED_WATCHES_LEAGUE_EVENT_ID = 'red_watches_league'
+    ELITE_FOUR_PATH_EVENT_ID = 'elite_four_path_unlocked'
+    NEXUS_ORDER_CHAMPION_ROOM_STATIC_EVENT_ID = 'nexus_order_champion_room_static_hidden'
 
     module_function
 
@@ -5132,6 +5137,76 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID }
     end
 
+    def complete_blue_pre_league_or_champion_battle(state, location: 'Victory Road Gate', result: 'player_win', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_victory_road_rival_standings', 'event_id' => BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID } unless victory_road_rival_standings_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID } if blue_pre_league_or_champion_battle_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_PRE_LEAGUE_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_PRE_LEAGUE_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_INDIGO_CHALLENGE_RESOLVED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_WATCHES_LEAGUE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_ELITE_FOUR_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_CHAMPION_ROOM_STATIC')
+      mark_cleared_event(story, BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID)
+      mark_cleared_event(story, BLUE_INDIGO_CHALLENGE_RESOLVED_EVENT_ID)
+      mark_cleared_event(story, RED_WATCHES_LEAGUE_EVENT_ID)
+      mark_cleared_event(story, ELITE_FOUR_PATH_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_CHAMPION_ROOM_STATIC_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'champion_room_static_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'blue_pre_league_watch',
+        location: location,
+        summary: 'Red watches Blue challenge Antman at the Victory Road gate and quietly frames it as the last Pallet test before Indigo.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'champion_room_static_decode',
+        location: location,
+        summary: 'Bill detects hidden static pulsing from the Champion room as Blue forces the final rival check before the Elite Four.',
+        area_type: area_type
+      )
+      blue = RivalProgress.ensure_rival(state, 'blue')
+      blue_activity = {
+        'category' => 'rival_battle_result',
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'summary' => 'Blue battled Antman before Indigo and accepted that the Champion race now reaches beyond their Pallet rivalry.'
+      }
+      RivalProgress.record_activity(blue, blue_activity)
+      WorldLink.queue_message(state, blue_activity['category'], blue_activity['summary'], source: 'blue', area_type: area_type)
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Blue pushed Antman at the Victory Road gate before Indigo; Red is watching the League path and the Elite Four route is open.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = blue_pre_league_or_champion_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def blue_pre_league_or_champion_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6441,6 +6516,64 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_indigo_static_unrevealed',
         'unlocks' => %w[blue_pre_league_battle indigo_plateau_route rival_standings_digest],
         'next_hook' => 'blue_pre_league_or_champion_battle'
+      }
+    end
+
+    def blue_pre_league_or_champion_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID,
+        'battle_id' => BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'rival' => 'blue',
+        'battle_type' => 'rival_blue_pre_league',
+        'level_cap' => 58,
+        'opponent_species' => %w[Pidgeot Alakazam Rhydon Gyarados Arcanine blue_starter],
+        'companion_rule' => 'no_companion_assist_in_rival_battle',
+        'linked_events' => [
+          BLUE_INDIGO_CHALLENGE_RESOLVED_EVENT_ID,
+          RED_WATCHES_LEAGUE_EVENT_ID,
+          ELITE_FOUR_PATH_EVENT_ID,
+          NEXUS_ORDER_CHAMPION_ROOM_STATIC_EVENT_ID
+        ],
+        'companions' => %w[red bill],
+        'factions' => %w[nexus_order],
+        'battle_hook' => {
+          'battle_id' => BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID,
+          'battle_type' => 'rival_blue_pre_league',
+          'location' => 'victory_road_gate',
+          'level_cap' => 58,
+          'companion_support' => 'red_watches_no_rival_battle_assist',
+          'standard_team' => [
+            { 'species' => 'Pidgeot', 'level' => 54, 'role' => 'speed_opener' },
+            { 'species' => 'Alakazam', 'level' => 55, 'role' => 'special_pressure' },
+            { 'species' => 'Rhydon', 'level' => 55, 'role' => 'physical_wallbreaker' },
+            { 'species' => 'Gyarados', 'level' => 56, 'role' => 'intimidate_pivot' },
+            { 'species' => 'Arcanine', 'level' => 56, 'role' => 'fire_coverage' },
+            { 'species' => 'blue_starter', 'level' => 58, 'role' => 'dynamic_starter_ace' }
+          ],
+          'hard_team' => [
+            { 'species' => 'Pidgeot', 'level' => 56, 'role' => 'speed_opener' },
+            { 'species' => 'Alakazam', 'level' => 56, 'role' => 'special_pressure' },
+            { 'species' => 'Rhydon', 'level' => 57, 'role' => 'physical_wallbreaker' },
+            { 'species' => 'Gyarados', 'level' => 57, 'role' => 'intimidate_pivot' },
+            { 'species' => 'Arcanine', 'level' => 57, 'role' => 'fire_coverage' },
+            { 'species' => 'blue_starter', 'level' => 59, 'role' => 'dynamic_starter_ace' }
+          ],
+          'expert_team' => [
+            { 'species' => 'Pidgeot', 'level' => 57, 'role' => 'speed_opener' },
+            { 'species' => 'Alakazam', 'level' => 58, 'role' => 'special_pressure' },
+            { 'species' => 'Rhydon', 'level' => 58, 'role' => 'physical_wallbreaker' },
+            { 'species' => 'Gyarados', 'level' => 58, 'role' => 'intimidate_pivot' },
+            { 'species' => 'Arcanine', 'level' => 58, 'role' => 'fire_coverage' },
+            { 'species' => 'blue_starter', 'level' => 60, 'role' => 'dynamic_starter_ace' }
+          ]
+        },
+        'blue_state' => 'rivalry_resolved_for_indigo_but_champion_race_continues',
+        'hidden_meta_signal' => 'nexus_order_champion_room_static_unrevealed',
+        'unlocks' => %w[red_watches_league elite_four_path champion_room_static_watch],
+        'next_hook' => 'red_watches_league'
       }
     end
 

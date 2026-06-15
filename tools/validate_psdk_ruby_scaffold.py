@@ -256,6 +256,8 @@ REQUIRED_MARKERS = (
     "giovanni_earth_badge_battle_cleared?",
     "complete_victory_road_rival_standings",
     "victory_road_rival_standings_cleared?",
+    "complete_blue_pre_league_or_champion_battle",
+    "blue_pre_league_or_champion_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2653,6 +2655,41 @@ raise 'expected KantoStory Victory Road standings unlocks' unless victory_standi
 second_victory_standings = NexusRed::KantoStory.complete_victory_road_rival_standings(kanto_story_state)
 raise 'expected KantoStory Victory Road standings idempotent guard' unless second_victory_standings['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Victory Road standings history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'victory_road_rival_standings' } == 1
+pre_blue_pre_league = NexusRed::KantoStory.complete_blue_pre_league_or_champion_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Blue pre-League gated before Victory Road standings' unless pre_blue_pre_league['status'] == 'blocked_missing_victory_road_rival_standings'
+blue_pre_league = NexusRed::KantoStory.complete_blue_pre_league_or_champion_battle(
+  kanto_story_state,
+  location: 'Victory Road Gate',
+  result: 'player_win',
+  area_type: 'route'
+)
+raise 'expected KantoStory Blue pre-League clear status' unless blue_pre_league['status'] == 'cleared'
+raise 'expected KantoStory Blue pre-League event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('blue_pre_league_or_champion_battle')
+raise 'expected KantoStory Blue pre-League helper true' unless NexusRed::KantoStory.blue_pre_league_or_champion_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Blue pre-League started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_PRE_LEAGUE_BATTLE_STARTED')
+raise 'expected KantoStory Blue pre-League finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_PRE_LEAGUE_BATTLE_FINISHED')
+raise 'expected KantoStory Blue Indigo challenge resolved flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_INDIGO_CHALLENGE_RESOLVED')
+raise 'expected KantoStory Red watches League unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_WATCHES_LEAGUE_UNLOCKED')
+raise 'expected KantoStory Elite Four path unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ELITE_FOUR_PATH_UNLOCKED')
+raise 'expected KantoStory Nexus champion room static flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_CHAMPION_ROOM_STATIC')
+raise 'expected KantoStory Red Blue pre-League watch scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('blue_pre_league_watch')
+raise 'expected KantoStory Bill champion room static scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('champion_room_static_decode')
+raise 'expected KantoStory Blue battle activity' unless kanto_story_state['rival_progress']['blue']['latest_activity']['category'] == 'rival_battle_result'
+raise 'expected KantoStory Blue battle summary' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Antman') && kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Indigo')
+raise 'expected KantoStory Blue pre-League story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Blue') && message['text'].include?('Indigo') && message['text'].include?('Elite Four') }
+raise 'expected KantoStory Nexus champion room static activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Victory Road Gate' && activity['operation'] == 'champion_room_static_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Blue pre-League' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Blue pre-League battle id' unless blue_pre_league['battle_id'] == 'blue_pre_league_or_champion_battle'
+raise 'expected KantoStory Blue pre-League rival' unless blue_pre_league['rival'] == 'blue'
+raise 'expected KantoStory Blue pre-League result propagated' unless blue_pre_league['result'] == 'player_win'
+raise 'expected KantoStory Blue pre-League level cap' unless blue_pre_league['level_cap'] == 58
+raise 'expected KantoStory Blue pre-League team species' unless blue_pre_league['opponent_species'] == %w[Pidgeot Alakazam Rhydon Gyarados Arcanine blue_starter]
+raise 'expected KantoStory Blue pre-League companion rule' unless blue_pre_league['companion_rule'] == 'no_companion_assist_in_rival_battle'
+raise 'expected KantoStory Blue pre-League next hook Red watches League' unless blue_pre_league['next_hook'] == 'red_watches_league'
+raise 'expected KantoStory Blue pre-League unlocks' unless blue_pre_league['unlocks'].include?('red_watches_league') && blue_pre_league['unlocks'].include?('elite_four_path')
+second_blue_pre_league = NexusRed::KantoStory.complete_blue_pre_league_or_champion_battle(kanto_story_state)
+raise 'expected KantoStory Blue pre-League idempotent guard' unless second_blue_pre_league['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Blue pre-League history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blue_pre_league_or_champion_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

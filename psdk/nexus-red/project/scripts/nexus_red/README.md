@@ -141,6 +141,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_victory_road_rival_standings(state, location:, area_type:)` resolves the first Indigo/Victory Road bridge after Giovanni. It keeps Red active, has Bill open the Indigo signal watchlist, posts a WorldLink standings digest for Blue, Ava, and Dax, keeps Nexus Order hidden in the static, and opens `blue_pre_league_or_champion_battle`.
 
+`NexusRed::KantoStory.complete_blue_pre_league_or_champion_battle(state, location:, result:, area_type:)` resolves Blue's final pre-Indigo rival battle at the Victory Road gate. Red watches without assisting, Bill detects hidden Champion room static, Blue's dynamic starter slot remains compatible with the 39-starter opening, and the hook opens `red_watches_league`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
