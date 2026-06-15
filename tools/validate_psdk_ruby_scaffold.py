@@ -151,6 +151,8 @@ REQUIRED_MARKERS = (
     "gold_dust_invoice_found?",
     "complete_nugget_bridge_qualifier",
     "nugget_bridge_qualifier_cleared?",
+    "complete_misty_battle",
+    "misty_battle_cleared?",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
@@ -972,6 +974,30 @@ raise 'expected KantoStory Nugget Bridge story alert immediate' unless kanto_sto
 second_nugget_bridge = NexusRed::KantoStory.complete_nugget_bridge_qualifier(kanto_story_state)
 raise 'expected KantoStory Nugget Bridge idempotent guard' unless second_nugget_bridge['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Nugget Bridge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'nugget_bridge_world_circuit_qualifier' } == 1
+pre_bridge_misty = NexusRed::KantoStory.complete_misty_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Misty gated before Nugget Bridge' unless pre_bridge_misty['status'] == 'blocked_missing_nugget_bridge_clear'
+misty_clear = NexusRed::KantoStory.complete_misty_battle(
+  kanto_story_state,
+  gym_location: 'Cerulean Gym',
+  join_location: 'Route 25',
+  area_type: 'route'
+)
+raise 'expected KantoStory Misty clear status' unless misty_clear['status'] == 'cleared'
+raise 'expected KantoStory Misty battle event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('misty_battle')
+raise 'expected KantoStory Misty helper true' unless NexusRed::KantoStory.misty_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Cascade Badge flag' unless kanto_story_state['story_flags'].include?('cascade_badge_obtained')
+raise 'expected KantoStory Nexus Cascade flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CASCADE_BADGE')
+raise 'expected KantoStory Route 25 Misty companion flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MISTY_ROUTE25_COMPANION')
+raise 'expected KantoStory rematch board tier flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_REMATCH_BOARD_TIER_1')
+raise 'expected KantoStory Old Rod unlocked after Misty' unless kanto_story_state['encounter_world']['unlocked_fishing_rods'].include?('old_rod')
+raise 'expected KantoStory Misty following after Route 25' unless kanto_story_state['companion_progress']['misty']['following'] == true
+raise 'expected KantoStory Misty post gym scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('post_gym_respect')
+raise 'expected KantoStory Misty Route 25 scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('route_25_companion_entry')
+raise 'expected KantoStory current act advances to Act 3' unless kanto_story_state['kanto_story']['current_act'] == 'act_3_cerulean_to_vermilion'
+raise 'expected KantoStory Misty story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Misty') }
+second_misty_clear = NexusRed::KantoStory.complete_misty_battle(kanto_story_state)
+raise 'expected KantoStory Misty idempotent guard' unless second_misty_clear['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Misty history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'misty_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

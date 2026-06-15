@@ -37,6 +37,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_nugget_bridge_qualifier(state, location:, area_type:, rival_ids:)` resolves the Nugget Bridge World Circuit qualifier. It requires Mt. Moon completion, records the Rocket bridge recruitment probe, updates rival World Circuit movement, activates Misty in Cerulean without following yet, records her bridge crisis scene, and leaves the story in Act 2 for the Misty battle.
 
+`NexusRed::KantoStory.complete_misty_battle(state, gym_location:, join_location:, area_type:)` resolves the Cascade Badge and Route 25 companion entry. It requires Nugget Bridge completion, records the Misty battle, unlocks the Old Rod and rematch board tier flag, marks Misty's Route 25 companion flag, makes Misty follow Antman, and advances Kanto into Act 3 toward Bill and Vermilion.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

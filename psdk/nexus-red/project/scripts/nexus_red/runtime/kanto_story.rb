@@ -8,6 +8,7 @@ module NexusRed
     GOLD_DUST_INVOICE_EVENT_ID = 'gold_dust_invoice_hint'
     AVA_CLEFAIRY_EVENT_ID = 'ava_clefairy_night_notes'
     NUGGET_BRIDGE_EVENT_ID = 'nugget_bridge_world_circuit_qualifier'
+    MISTY_EVENT_ID = 'misty_battle'
 
     module_function
 
@@ -244,6 +245,60 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == NUGGET_BRIDGE_EVENT_ID }
     end
 
+    def complete_misty_battle(state, gym_location: 'Cerulean Gym', join_location: 'Route 25', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_nugget_bridge_clear', 'event_id' => MISTY_EVENT_ID } unless nugget_bridge_qualifier_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => MISTY_EVENT_ID } if misty_battle_cleared?(state)
+
+      add_story_flag(state, 'cascade_badge_obtained')
+      add_story_flag(state, 'FLAG_NEXUS_CASCADE_BADGE')
+      add_story_flag(state, 'FLAG_NEXUS_MISTY_ROUTE25_COMPANION')
+      add_story_flag(state, 'FLAG_NEXUS_REMATCH_BOARD_TIER_1')
+      mark_cleared_event(story, MISTY_EVENT_ID)
+      EncounterWorld.unlock_fishing_rod(state, 'old_rod', source: 'Misty Route 25 camp', area_type: area_type)
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'post_gym_respect',
+        location: gym_location,
+        summary: 'Misty accepts Antman as a serious challenger after the Cascade Badge battle.',
+        area_type: area_type
+      )
+      CompanionProgress.activate_companion(
+        state,
+        'misty',
+        location: join_location,
+        reason: 'joined Antman after the Route 25 scene',
+        following: true,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'route_25_companion_entry',
+        location: join_location,
+        summary: 'Misty joins Antman as a recurring travel companion on Route 25.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Misty joined the travel party after the Cascade Badge and Route 25 scene.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_3_cerulean_to_vermilion'
+      event = misty_event_result(gym_location, join_location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def misty_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == MISTY_EVENT_ID }
+    end
+
     def field_healing_charges_for(state)
       case FieldHealing.policy(state)
       when 'full'
@@ -311,6 +366,18 @@ module NexusRed
         'rival_ids' => rival_ids.map(&:to_s),
         'companion_setup' => 'misty_cerulean_bridge_crisis',
         'next_hook' => 'misty_battle'
+      }
+    end
+
+    def misty_event_result(gym_location, join_location)
+      {
+        'status' => 'cleared',
+        'event_id' => MISTY_EVENT_ID,
+        'gym_location' => gym_location.to_s,
+        'join_location' => join_location.to_s,
+        'badge' => 'Cascade Badge',
+        'unlocks' => %w[old_rod rematch_board_tier_1 misty_following_companion],
+        'next_hook' => 'bill_storage_metadata_anomaly'
       }
     end
 
