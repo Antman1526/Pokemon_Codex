@@ -706,6 +706,24 @@ python3 tools/validate_native_ss_anne_ticket_office.py
 godot --headless --path native/nexus-red --script tests/ss_anne_ticket_office_test.gd
 ```
 
+### Task 7.37: Add S.S. Anne boarding and main deck setup
+
+Acceptance:
+
+- The ticket office keeps S.S. Anne boarding locked until Antman earns the boarding pass.
+- After the boarding pass, the ticket office can transition to a playable S.S. Anne main deck scene.
+- The main deck scene records Red as the active companion, Misty watching the tide, Bill finding Rocket cargo edits, Blue being aboard, and the Captain's Trail Cutter lead.
+- Save state and WorldLink record S.S. Anne boarded, Red's boarding scene, Blue's ship rival tease, Rocket cargo-hold clue, and Captain Trail Cutter lead.
+- WorldLink checklist adds S.S. Anne boarding, Blue ship tease, Rocket cargo clue, and Trail Cutter lead milestones.
+- The slice sets up the next Blue ship battle, Rocket cargo hold, and Captain/Trail Cutter payoff without implementing them yet.
+
+Verification:
+
+```sh
+python3 tools/validate_native_ss_anne_boarding.py
+godot --headless --path native/nexus-red --script tests/ss_anne_boarding_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

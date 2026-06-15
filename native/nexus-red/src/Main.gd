@@ -20,6 +20,7 @@ const CeruleanRocketHouseScene := preload("res://scenes/world/CeruleanRocketHous
 const Route5UndergroundPathScene := preload("res://scenes/world/Route5UndergroundPath.tscn")
 const VermilionCityScene := preload("res://scenes/world/VermilionCity.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
+const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -271,7 +272,19 @@ func _show_ss_anne_ticket_office() -> void:
 	var ticket_office := SSAnneTicketOfficeScene.instantiate()
 	ticket_office.save_state = save_state
 	ticket_office.go_to_vermilion_city.connect(_on_go_to_vermilion_city)
+	ticket_office.go_to_ss_anne_main_deck.connect(_on_go_to_ss_anne_main_deck)
 	_replace_screen(ticket_office)
+
+
+func _on_go_to_ss_anne_main_deck() -> void:
+	_show_ss_anne_main_deck()
+
+
+func _show_ss_anne_main_deck() -> void:
+	var deck := SSAnneMainDeckScene.instantiate()
+	deck.save_state = save_state
+	deck.go_to_ss_anne_ticket_office.connect(_on_go_to_ss_anne_ticket_office)
+	_replace_screen(deck)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

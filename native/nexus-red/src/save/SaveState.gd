@@ -150,6 +150,13 @@ func start_new_game(name: String) -> void:
 		"red_harbor_guard_scene_seen": false,
 		"ss_anne_boarding_pass_earned": false,
 		"worldlink_ss_anne_ticket_office_batch_queued": false,
+		"ss_anne_main_deck_reached": false,
+		"ss_anne_boarded": false,
+		"red_ss_anne_boarding_scene_seen": false,
+		"blue_ship_rival_teased": false,
+		"rocket_cargo_hold_clue_seen": false,
+		"captain_trail_cutter_lead_seen": false,
+		"worldlink_ss_anne_boarding_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -515,6 +522,34 @@ func queue_ss_anne_ticket_office_batch() -> void:
 		"wl_bill_manifest_decode_seen",
 		"wl_red_harbor_guard_scene",
 		"wl_ss_anne_boarding_pass_earned",
+	])
+
+
+func enter_ss_anne_main_deck() -> void:
+	current_scene = "ss_anne_main_deck"
+	active_companion = "red"
+	set_flag("ss_anne_main_deck_reached", true)
+	queue_worldlink_id("wl_ss_anne_boarded")
+
+
+func record_ss_anne_deck_boarding_scene() -> void:
+	active_companion = "red"
+	set_flag("ss_anne_boarded", true)
+	set_flag("red_ss_anne_boarding_scene_seen", true)
+	set_flag("blue_ship_rival_teased", true)
+	set_flag("rocket_cargo_hold_clue_seen", true)
+	set_flag("captain_trail_cutter_lead_seen", true)
+	queue_ss_anne_boarding_batch()
+
+
+func queue_ss_anne_boarding_batch() -> void:
+	set_flag("worldlink_ss_anne_boarding_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_ss_anne_boarded",
+		"wl_red_ss_anne_boarding_scene",
+		"wl_blue_ship_rival_tease",
+		"wl_rocket_cargo_hold_clue",
+		"wl_captain_trail_cutter_lead",
 	])
 
 

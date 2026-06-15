@@ -1,0 +1,31 @@
+{
+  "id": "ss_anne_boarding_batch",
+  "title": "S.S. Anne Boarding",
+  "feed": [
+    {
+      "id": "wl_ss_anne_boarded",
+      "type": "story",
+      "text": "Antman boarded the S.S. Anne with Red nearby, continuing the journey through a real harbor route instead of a WorldLink jump."
+    },
+    {
+      "id": "wl_red_ss_anne_boarding_scene",
+      "type": "companion",
+      "text": "Red stayed close on the main deck and marked the ship as too crowded for a normal cruise."
+    },
+    {
+      "id": "wl_blue_ship_rival_tease",
+      "type": "rival",
+      "text": "Blue was spotted aboard the S.S. Anne, already asking passengers who has seen Antman."
+    },
+    {
+      "id": "wl_rocket_cargo_hold_clue",
+      "type": "faction",
+      "text": "Bill found Rocket-linked cargo edits below deck. The cargo hold is the next suspicious target."
+    },
+    {
+      "id": "wl_captain_trail_cutter_lead",
+      "type": "tool",
+      "text": "A passenger mentioned the Captain's Trail Cutter prototype, an early replacement for old HM-style roadblocks."
+    }
+  ]
+}

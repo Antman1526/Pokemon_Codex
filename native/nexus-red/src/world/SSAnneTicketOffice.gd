@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_vermilion_city
+signal go_to_ss_anne_main_deck
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_ticket_office_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_ss_anne_boarding()
 	if event.is_action_pressed("cancel"):
 		return_to_vermilion_city()
 
@@ -94,7 +97,16 @@ func _build_ticket_office() -> void:
 func trigger_ticket_office_scene() -> void:
 	if save_state:
 		save_state.record_ss_anne_ticket_office_scene()
-	dialogue_label.text = "Bill: The S.S. Anne manifest was edited after Rocket reached Vermilion. Red, keep the harbor doors covered. Misty, watch the waterline. Antman, this boarding pass gets us onto the ship before the fake passengers vanish."
+	dialogue_label.text = "Bill: The S.S. Anne manifest was edited after Rocket reached Vermilion. Red, keep the harbor doors covered. Misty, watch the waterline. Antman, this boarding pass gets us onto the ship before the fake passengers vanish. Press Right to board."
+
+
+func trigger_ss_anne_boarding() -> void:
+	if save_state == null:
+		return
+	if not bool(save_state.story_flags.get("ss_anne_boarding_pass_earned", false)):
+		dialogue_label.text = "Red: We need the boarding pass before we step onto the S.S. Anne. Work the counter with Bill first."
+		return
+	emit_signal("go_to_ss_anne_main_deck")
 
 
 func return_to_vermilion_city() -> void:
@@ -102,4 +114,4 @@ func return_to_vermilion_city() -> void:
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is the S.S. Anne Ticket Office. Bill can read the manifest, Misty can spot harbor movement, and I will watch for Rocket. Press Z/Enter to work the counter, or X/Esc to return to Vermilion."
+	dialogue_label.text = "Red: This is the S.S. Anne Ticket Office. Bill can read the manifest, Misty can spot harbor movement, and I will watch for Rocket. Press Z/Enter to work the counter, Right to board after the pass, or X/Esc to return to Vermilion."
