@@ -12,6 +12,7 @@ require_relative 'runtime/field_tools'
 require_relative 'runtime/pokedex_availability'
 require_relative 'runtime/center_mart_services'
 require_relative 'runtime/encounter_world'
+require_relative 'runtime/battle_mechanics'
 
 if defined?(PFM::GameState)
   class PFM::GameState

@@ -76,6 +76,12 @@ REQUIRED_MARKERS = (
     "set_weather",
     "unlock_fishing_rod",
     "daycare_enabled?",
+    "module BattleMechanics",
+    "ensure_mechanics",
+    "mechanic_enabled?",
+    "ai_profile_for",
+    "gimmick_status",
+    "unlock_gimmick",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -103,6 +109,7 @@ REQUIRED_RUNTIME_FILES = (
     "pokedex_availability.rb",
     "center_mart_services.rb",
     "encounter_world.rb",
+    "battle_mechanics.rb",
 )
 
 RUNTIME_SMOKE = r"""
@@ -601,6 +608,39 @@ NexusRed::EncounterWorld.enable_following_pokemon(state, species: 'Pikachu')
 raise 'expected following Pokemon species recorded' unless state['encounter_world']['following_pokemon_species'].include?('Pikachu')
 raise 'expected invalid weather rejected' unless begin
   NexusRed::EncounterWorld.set_weather(state, 'rocket_smoke')
+  false
+rescue ArgumentError
+  true
+end
+
+mechanics_state = NexusRed::RuntimeState.build
+mechanics = NexusRed::BattleMechanics.ensure_mechanics(mechanics_state)
+raise 'expected physical/special split enabled' unless NexusRed::BattleMechanics.mechanic_enabled?(mechanics_state, 'physical_special_split')
+raise 'expected Fairy type enabled' unless NexusRed::BattleMechanics.mechanic_enabled?(mechanics_state, 'fairy_type')
+raise 'expected Gen 9 abilities enabled' unless NexusRed::BattleMechanics.mechanic_enabled?(mechanics_state, 'modern_abilities_through_gen_9')
+raise 'expected reusable TM list enabled' unless NexusRed::BattleMechanics.mechanic_enabled?(mechanics_state, 'expanded_reusable_tm_list')
+raise 'expected standard AI profile smart' unless NexusRed::BattleMechanics.ai_profile_for(mechanics_state, 'standard') == 'smart'
+raise 'expected expert AI profile competitive' unless NexusRed::BattleMechanics.ai_profile_for(mechanics_state, 'expert') == 'competitive'
+
+mega_status = NexusRed::BattleMechanics.gimmick_status(mechanics_state, 'mega_evolution')
+raise 'expected Mega locked before preview/full unlock' unless mega_status['state'] == 'locked'
+raise 'expected Mega full unlock region Kalos' unless mega_status['full_unlock'] == 'kalos'
+
+dynamax_status = NexusRed::BattleMechanics.gimmick_status(mechanics_state, 'dynamax_gigantamax')
+raise 'expected Dynamax locked before Hoenn clear' unless dynamax_status['state'] == 'locked'
+raise 'expected Dynamax preview after Hoenn' unless dynamax_status['first_preview'] == 'after_hoenn'
+
+NexusRed::RegionProgress.ensure_progress(mechanics_state)
+mechanics_state['region_progress']['completed_regions'] = %w[kanto johto hoenn]
+tera_preview = NexusRed::BattleMechanics.gimmick_status(mechanics_state, 'terastallization')
+raise 'expected Tera preview after Hoenn' unless tera_preview['state'] == 'preview'
+
+NexusRed::BattleMechanics.unlock_gimmick(mechanics_state, 'mega_evolution', mode: 'full', source: 'Kalos Keystone Resonator')
+raise 'expected Mega full unlock recorded' unless NexusRed::BattleMechanics.gimmick_status(mechanics_state, 'mega_evolution')['state'] == 'full'
+raise 'expected Mega unlock source recorded' unless mechanics_state['battle_mechanics']['gimmick_unlocks']['mega_evolution']['source'] == 'Kalos Keystone Resonator'
+raise 'expected unknown battle mechanic false' if NexusRed::BattleMechanics.mechanic_enabled?(mechanics_state, 'shadow_pokemon_mode')
+raise 'expected unknown gimmick rejected' unless begin
+  NexusRed::BattleMechanics.gimmick_status(mechanics_state, 'fusion_burst')
   false
 rescue ArgumentError
   true
