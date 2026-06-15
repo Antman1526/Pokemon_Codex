@@ -206,6 +206,18 @@ module NexusRed
     MOONLIGHT_DIRECTOR_VOICEPRINT_EVENT_ID = 'moonlight_director_voiceprint_echo'
     NEXUS_ORDER_DIRECTOR_SIGNAL_MASK_EVENT_ID = 'nexus_order_director_signal_mask_hidden'
     RADIO_TOWER_EXECUTIVE_FLOOR_UNLOCKED_EVENT_ID = 'radio_tower_executive_floor_unlocked'
+    RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID = 'radio_tower_executive_floor'
+    RADIO_TOWER_ADMIN_GAUNTLET_EVENT_ID = 'radio_tower_admin_gauntlet'
+    RED_BLUE_EXECUTIVE_TAG_EVENT_ID = 'red_blue_executive_tag'
+    BILL_TRANSMITTER_ADMIN_TRACE_EVENT_ID = 'bill_transmitter_admin_trace'
+    SILVER_ROCKET_ADMIN_CHALLENGE_EVENT_ID = 'silver_rocket_admin_challenge'
+    AVA_EXECUTIVE_SIGNAL_ARCHIVE_EVENT_ID = 'ava_executive_signal_archive'
+    ROCKET_EXECUTIVE_BROADCAST_COMMAND_EVENT_ID = 'rocket_executive_broadcast_command'
+    GOLD_DUST_EXECUTIVE_PAYOUT_LEDGER_EVENT_ID = 'gold_dust_executive_payout_ledger'
+    TEAM_GAS_TRANSMITTER_OVERHEAT_EVENT_ID = 'team_gas_transmitter_overheat'
+    MOONLIGHT_EXECUTIVE_VOICE_LOOP_EVENT_ID = 'moonlight_executive_voice_loop'
+    NEXUS_ORDER_EXECUTIVE_SIGNAL_LATTICE_EVENT_ID = 'nexus_order_executive_signal_lattice_hidden'
+    RADIO_TOWER_TRANSMITTER_SHUTDOWN_UNLOCKED_EVENT_ID = 'radio_tower_transmitter_shutdown_unlocked'
 
     module_function
 
@@ -3278,6 +3290,205 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_director_signal_mask_unrevealed',
         'unlocks' => %w[radio_tower_executive_floor card_key_shutter director_testimony tower_upper_floor_digest],
         'next_hook' => 'radio_tower_executive_floor'
+      }
+    end
+
+    def complete_radio_tower_executive_floor(state, location: 'Goldenrod Radio Tower Executive Floor', result: 'won', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_radio_tower_director_rescue', 'event_id' => RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID } unless radio_tower_director_rescue_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID } if radio_tower_executive_floor_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_EXECUTIVE_FLOOR')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_ADMIN_GAUNTLET')
+      add_story_flag(state, 'FLAG_NEXUS_RED_BLUE_EXECUTIVE_TAG')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_TRANSMITTER_ADMIN_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_ROCKET_ADMIN_CHALLENGE')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_EXECUTIVE_SIGNAL_ARCHIVE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_EXECUTIVE_BROADCAST_COMMAND')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_EXECUTIVE_PAYOUT_LEDGER')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_TRANSMITTER_OVERHEAT')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_EXECUTIVE_VOICE_LOOP')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_EXECUTIVE_SIGNAL_LATTICE')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_TRANSMITTER_SHUTDOWN_UNLOCKED')
+
+      [
+        RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID,
+        RADIO_TOWER_ADMIN_GAUNTLET_EVENT_ID,
+        RED_BLUE_EXECUTIVE_TAG_EVENT_ID,
+        BILL_TRANSMITTER_ADMIN_TRACE_EVENT_ID,
+        SILVER_ROCKET_ADMIN_CHALLENGE_EVENT_ID,
+        AVA_EXECUTIVE_SIGNAL_ARCHIVE_EVENT_ID,
+        ROCKET_EXECUTIVE_BROADCAST_COMMAND_EVENT_ID,
+        GOLD_DUST_EXECUTIVE_PAYOUT_LEDGER_EVENT_ID,
+        TEAM_GAS_TRANSMITTER_OVERHEAT_EVENT_ID,
+        MOONLIGHT_EXECUTIVE_VOICE_LOOP_EVENT_ID,
+        NEXUS_ORDER_EXECUTIVE_SIGNAL_LATTICE_EVENT_ID,
+        RADIO_TOWER_TRANSMITTER_SHUTDOWN_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'executive_floor_tag_support',
+        location: location,
+        summary: 'Red fights beside Antman on the executive floor, keeping Rocket admins from turning the tower climb into a hostage wall.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'blue',
+        'executive_floor_tag_support',
+        location: location,
+        summary: 'Blue drops the rivalry long enough to tag in against Rocket admins, then warns Antman the transmitter room is the real trap.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'transmitter_admin_trace',
+        location: location,
+        summary: 'Bill traces admin command codes from the executive floor into a transmitter shutdown path above the broadcast booth.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver challenged a Rocket admin on the executive floor, furious that the broadcast orders still pointed back to Giovanni.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Goldenrod Radio Tower Signal Archive',
+        'Ava captured an executive signal archive from Goldenrod before Rocket could wipe the admin command records.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'executive_broadcast_command',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Radio Tower Executive Accounts',
+        'executive_payout_ledger',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Radio Tower Transmitter Hall',
+        'transmitter_overheat',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower Broadcast Booth',
+        'executive_voice_loop',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower Signal Lattice',
+        'executive_signal_lattice_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket admins try to erase payout records while Gold Dust collectors demand their cut of the broadcast takeover.',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_gas',
+        'team_moonlight',
+        'Goldenrod Radio Tower Transmitter Hall',
+        'Team Gas transmitter overheat breaks Moonlight voice loops loose from the executive broadcast script.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_16_radio_tower_transmitter_shutdown'
+      event = radio_tower_executive_floor_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rocket admins are beaten on the executive floor, but the transmitter is still carrying their command signal above Goldenrod.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def radio_tower_executive_floor_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID }
+    end
+
+    def radio_tower_executive_floor_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => RADIO_TOWER_EXECUTIVE_FLOOR_EVENT_ID,
+        'battle_id' => 'radio_tower_executive_floor',
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_16_radio_tower_transmitter_shutdown',
+        'result' => result.to_s,
+        'route_chain' => ['Radio Tower Shutter', 'Radio Tower Executive Floor', 'Radio Tower Transmitter Hall'],
+        'companions' => %w[red blue bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          RADIO_TOWER_ADMIN_GAUNTLET_EVENT_ID,
+          RED_BLUE_EXECUTIVE_TAG_EVENT_ID,
+          BILL_TRANSMITTER_ADMIN_TRACE_EVENT_ID,
+          SILVER_ROCKET_ADMIN_CHALLENGE_EVENT_ID,
+          AVA_EXECUTIVE_SIGNAL_ARCHIVE_EVENT_ID,
+          ROCKET_EXECUTIVE_BROADCAST_COMMAND_EVENT_ID,
+          GOLD_DUST_EXECUTIVE_PAYOUT_LEDGER_EVENT_ID,
+          TEAM_GAS_TRANSMITTER_OVERHEAT_EVENT_ID,
+          MOONLIGHT_EXECUTIVE_VOICE_LOOP_EVENT_ID,
+          NEXUS_ORDER_EXECUTIVE_SIGNAL_LATTICE_EVENT_ID,
+          RADIO_TOWER_TRANSMITTER_SHUTDOWN_UNLOCKED_EVENT_ID
+        ],
+        'battle_hook' => {
+          'battle_id' => 'radio_tower_admin_gauntlet',
+          'level_cap' => 31,
+          'companion_rule' => 'red_and_blue_tag_allowed_outside_gym',
+          'enemy_trainers' => %w[rocket_broadcast_admin rocket_signal_admin],
+          'enemy_team_theme' => %w[poison dark electric normal]
+        },
+        'hidden_meta_signal' => 'nexus_order_executive_signal_lattice_unrevealed',
+        'unlocks' => %w[radio_tower_transmitter_shutdown admin_command_codes executive_floor_digest_after_exit],
+        'next_hook' => 'radio_tower_transmitter_shutdown'
       }
     end
   end

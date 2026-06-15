@@ -302,6 +302,8 @@ REQUIRED_MARKERS = (
     "goldenrod_underground_warehouse_cleared?",
     "complete_radio_tower_director_rescue",
     "radio_tower_director_rescue_cleared?",
+    "complete_radio_tower_executive_floor",
+    "radio_tower_executive_floor_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3767,6 +3769,70 @@ raise 'expected JohtoStory Director rescue factions' unless %w[team_rocket team_
 second_director_rescue = NexusRed::JohtoStory.complete_radio_tower_director_rescue(kanto_story_state)
 raise 'expected JohtoStory Director rescue idempotent guard' unless second_director_rescue['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Director rescue history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_director_rescue' } == 1
+pre_executive_floor = NexusRed::JohtoStory.complete_radio_tower_executive_floor(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory executive floor gated before Johto unlock' unless pre_executive_floor['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_director_rescue = NexusRed::RuntimeState.build
+johto_before_director_rescue['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_goldenrod_road(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_whitney_plain_badge_prep(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_whitney_plain_badge_battle(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_goldenrod_radio_tower_shadow(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_radio_tower_lobby_battle(johto_before_director_rescue)
+NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(johto_before_director_rescue)
+raise 'expected JohtoStory executive floor gated before Director rescue' unless NexusRed::JohtoStory.complete_radio_tower_executive_floor(johto_before_director_rescue)['status'] == 'blocked_missing_radio_tower_director_rescue'
+executive_floor = NexusRed::JohtoStory.complete_radio_tower_executive_floor(
+  kanto_story_state,
+  location: 'Goldenrod Radio Tower Executive Floor',
+  result: 'won',
+  area_type: 'villain_hideout'
+)
+raise 'expected JohtoStory executive floor clear status' unless executive_floor['status'] == 'cleared'
+raise 'expected JohtoStory executive floor event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_executive_floor')
+raise 'expected JohtoStory executive floor helper true' unless NexusRed::JohtoStory.radio_tower_executive_floor_cleared?(kanto_story_state)
+raise 'expected JohtoStory admin gauntlet event' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_admin_gauntlet')
+raise 'expected JohtoStory transmitter shutdown unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_transmitter_shutdown_unlocked')
+raise 'expected JohtoStory executive floor flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_EXECUTIVE_FLOOR')
+raise 'expected JohtoStory admin gauntlet flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_ADMIN_GAUNTLET')
+raise 'expected JohtoStory transmitter shutdown unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_TRANSMITTER_SHUTDOWN_UNLOCKED')
+raise 'expected JohtoStory current act transmitter shutdown' unless kanto_story_state['johto_story']['current_act'] == 'act_16_radio_tower_transmitter_shutdown'
+raise 'expected JohtoStory Red executive tag scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('executive_floor_tag_support')
+raise 'expected JohtoStory Blue executive tag scene' unless kanto_story_state['companion_progress']['blue']['scene_flags'].include?('executive_floor_tag_support')
+raise 'expected JohtoStory Bill admin trace scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('transmitter_admin_trace')
+raise 'expected JohtoStory Silver admin challenge activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Rocket admin') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('executive floor')
+raise 'expected JohtoStory Ava executive archive activity' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('executive signal archive') && kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Goldenrod')
+raise 'expected JohtoStory Rocket executive broadcast activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'executive_broadcast_command' && activity['location'] == 'Goldenrod Radio Tower Executive Floor' }
+raise 'expected JohtoStory Gold Dust executive payout activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'executive_payout_ledger' }
+raise 'expected JohtoStory Team Gas transmitter overheat activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'transmitter_overheat' }
+raise 'expected JohtoStory Moonlight executive voice loop activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'executive_voice_loop' }
+raise 'expected JohtoStory Nexus Order executive lattice activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'executive_signal_lattice_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust executive conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Goldenrod Radio Tower Executive Floor' }
+raise 'expected JohtoStory Team Gas Moonlight transmitter conflict' unless kanto_story_state['faction_progress']['team_gas']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Goldenrod Radio Tower Transmitter Hall' }
+raise 'expected JohtoStory Nexus Order still hidden after executive floor' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory executive floor story alert paused in hideout' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('executive floor') && message['text'].include?('Rocket') && message['text'].include?('transmitter') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory executive floor route chain' unless executive_floor['route_chain'] == ['Radio Tower Shutter', 'Radio Tower Executive Floor', 'Radio Tower Transmitter Hall']
+raise 'expected JohtoStory executive floor hidden meta signal' unless executive_floor['hidden_meta_signal'] == 'nexus_order_executive_signal_lattice_unrevealed'
+raise 'expected JohtoStory executive floor battle id' unless executive_floor['battle_id'] == 'radio_tower_executive_floor'
+raise 'expected JohtoStory executive floor result' unless executive_floor['result'] == 'won'
+raise 'expected JohtoStory executive floor battle hook id' unless executive_floor['battle_hook']['battle_id'] == 'radio_tower_admin_gauntlet'
+raise 'expected JohtoStory executive floor companion rule' unless executive_floor['battle_hook']['companion_rule'] == 'red_and_blue_tag_allowed_outside_gym'
+raise 'expected JohtoStory executive floor unlocks transmitter shutdown' unless executive_floor['unlocks'].include?('radio_tower_transmitter_shutdown') && executive_floor['unlocks'].include?('admin_command_codes')
+raise 'expected JohtoStory executive floor next hook transmitter shutdown' unless executive_floor['next_hook'] == 'radio_tower_transmitter_shutdown'
+raise 'expected JohtoStory executive floor companions' unless %w[red blue bill].all? { |companion| executive_floor['companions'].include?(companion) }
+raise 'expected JohtoStory executive floor rivals' unless %w[ava silver].all? { |rival| executive_floor['rivals'].include?(rival) }
+raise 'expected JohtoStory executive floor factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| executive_floor['factions'].include?(faction) }
+second_executive_floor = NexusRed::JohtoStory.complete_radio_tower_executive_floor(kanto_story_state)
+raise 'expected JohtoStory executive floor idempotent guard' unless second_executive_floor['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate executive floor history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_executive_floor' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
