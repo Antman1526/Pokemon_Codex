@@ -175,6 +175,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_whitney_plain_badge_prep(state, location:, area_type:)` resolves the Goldenrod Gym setup before Whitney's solo badge battle. Red warms Antman up without entering the gym battle, Brock teaches Rollout and Miltank counterplay, Bill links Plain Badge hype to Radio Tower static, Blue sends a practical Miltank warning, Silver gets checked by the badge wall, Rocket and Moonlight clash over badge-frequency broadcasts, Gold Dust runs match betting, Team Gas probes the gym basement vents, Nexus Order remains hidden in the Plain Badge frequency, and the method returns the `whitney_plain_badge_battle` hook.
 
+`NexusRed::JohtoStory.complete_whitney_plain_badge_battle(state, location:, result:, area_type:)` records Whitney's solo gym battle after PSDK returns the result. It awards the Plain Badge, confirms companions did not assist inside the gym, records Red/Brock/Bill post-battle scenes, has Blue and Silver react to the badge wall, escalates Rocket staging at Goldenrod Radio Tower, logs Gold Dust match payouts, Team Gas underground exhaust leaks, and Moonlight jingle collapse, keeps Nexus Order hidden in the Plain Badge resonance, and opens `goldenrod_radio_tower_shadow`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

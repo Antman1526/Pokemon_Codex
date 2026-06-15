@@ -292,6 +292,8 @@ REQUIRED_MARKERS = (
     "goldenrod_road_cleared?",
     "complete_whitney_plain_badge_prep",
     "whitney_plain_badge_prep_cleared?",
+    "complete_whitney_plain_badge_battle",
+    "whitney_plain_badge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3458,6 +3460,66 @@ raise 'expected JohtoStory Whitney prep factions' unless %w[team_rocket team_gol
 second_whitney_prep = NexusRed::JohtoStory.complete_whitney_plain_badge_prep(kanto_story_state)
 raise 'expected JohtoStory Whitney prep idempotent guard' unless second_whitney_prep['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Whitney prep history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'whitney_plain_badge_prep' } == 1
+pre_whitney_battle = NexusRed::JohtoStory.complete_whitney_plain_badge_battle(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Whitney battle gated before Johto unlock' unless pre_whitney_battle['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_whitney_prep = NexusRed::RuntimeState.build
+johto_before_whitney_prep['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_whitney_prep)
+NexusRed::JohtoStory.complete_goldenrod_road(johto_before_whitney_prep)
+raise 'expected JohtoStory Whitney battle gated before prep' unless NexusRed::JohtoStory.complete_whitney_plain_badge_battle(johto_before_whitney_prep)['status'] == 'blocked_missing_whitney_plain_badge_prep'
+whitney_battle = NexusRed::JohtoStory.complete_whitney_plain_badge_battle(
+  kanto_story_state,
+  location: 'Goldenrod Gym',
+  result: 'won',
+  area_type: 'gym'
+)
+raise 'expected JohtoStory Whitney battle clear status' unless whitney_battle['status'] == 'cleared'
+raise 'expected JohtoStory Whitney battle event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('whitney_plain_badge_battle')
+raise 'expected JohtoStory Whitney battle helper true' unless NexusRed::JohtoStory.whitney_plain_badge_battle_cleared?(kanto_story_state)
+raise 'expected JohtoStory Plain Badge event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('plain_badge_obtained')
+raise 'expected JohtoStory Radio Tower crisis unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_radio_tower_crisis_unlocked')
+raise 'expected JohtoStory Plain Badge flag' unless kanto_story_state['story_flags'].include?('plain_badge_obtained')
+raise 'expected JohtoStory Nexus Plain Badge flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PLAIN_BADGE')
+raise 'expected JohtoStory Whitney battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_WHITNEY_BATTLE_STARTED')
+raise 'expected JohtoStory Whitney battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_WHITNEY_BATTLE_FINISHED')
+raise 'expected JohtoStory Red post Whitney flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_POST_WHITNEY')
+raise 'expected JohtoStory Brock post Whitney flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_POST_WHITNEY')
+raise 'expected JohtoStory Bill Plain Badge signal decoded flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_PLAIN_BADGE_SIGNAL_DECODED')
+raise 'expected JohtoStory Radio Tower crisis flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_RADIO_TOWER_CRISIS_UNLOCKED')
+raise 'expected JohtoStory current act Radio Tower shadow' unless kanto_story_state['johto_story']['current_act'] == 'act_11_goldenrod_radio_tower_shadow'
+raise 'expected JohtoStory Red post Whitney scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('post_whitney_respect')
+raise 'expected JohtoStory Brock post Whitney scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('post_whitney_recovery_review')
+raise 'expected JohtoStory Bill Plain Badge decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('plain_badge_signal_decode')
+raise 'expected JohtoStory Silver Radio Tower activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Radio Tower') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Plain Badge')
+raise 'expected JohtoStory Blue Whitney respect activity' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Whitney') && kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Radio Tower')
+raise 'expected JohtoStory Rocket Radio Tower escalation activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'radio_tower_takeover_staging' && activity['location'] == 'Goldenrod Radio Tower' }
+raise 'expected JohtoStory Gold Dust Whitney payout activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'whitney_match_payouts' }
+raise 'expected JohtoStory Team Gas underground leak activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'underground_exhaust_leak' }
+raise 'expected JohtoStory Moonlight jingle collapse activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'plain_badge_jingle_collapse' }
+raise 'expected JohtoStory Nexus Order Plain Badge resonance activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'plain_badge_resonance_hidden' }
+raise 'expected JohtoStory Rocket Team Gas battle fallout conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gas' && conflict['location'] == 'Goldenrod Underground' }
+raise 'expected JohtoStory Nexus Order still hidden after Whitney battle' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Whitney battle story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Plain Badge') && message['text'].include?('Radio Tower') && message['text'].include?('Red') }
+raise 'expected JohtoStory Whitney battle result won' unless whitney_battle['result'] == 'won'
+raise 'expected JohtoStory Whitney battle badge' unless whitney_battle['badge'] == 'Plain Badge'
+raise 'expected JohtoStory Whitney battle no companion assist' unless whitney_battle['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected JohtoStory Whitney battle next hook Radio Tower' unless whitney_battle['next_hook'] == 'goldenrod_radio_tower_shadow'
+raise 'expected JohtoStory Whitney battle current act' unless whitney_battle['current_act'] == 'act_11_goldenrod_radio_tower_shadow'
+raise 'expected JohtoStory Whitney battle unlocks Radio Tower and rematch' unless whitney_battle['unlocks'].include?('goldenrod_radio_tower_shadow') && whitney_battle['unlocks'].include?('whitney_rematch_board_tier_1')
+raise 'expected JohtoStory Whitney battle companions' unless %w[red brock bill].all? { |companion| whitney_battle['companions'].include?(companion) }
+raise 'expected JohtoStory Whitney battle factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| whitney_battle['factions'].include?(faction) }
+second_whitney_battle = NexusRed::JohtoStory.complete_whitney_plain_badge_battle(kanto_story_state)
+raise 'expected JohtoStory Whitney battle idempotent guard' unless second_whitney_battle['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Whitney battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'whitney_plain_badge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
