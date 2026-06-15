@@ -14,6 +14,11 @@ module NexusRed
     SS_ANNE_EVENT_ID = 'ss_anne_foreign_trainers'
     BLUE_SS_ANNE_EVENT_ID = 'blue_ss_anne_battle'
     ROCKET_MANIFEST_EVENT_ID = 'rocket_smuggling_manifest'
+    VERMILION_POWER_EVENT_ID = 'vermilion_power_sabotage'
+    ROCKET_GAS_POWER_EVENT_ID = 'rocket_gas_power_sabotage'
+    TEAM_GAS_DEBUT_EVENT_ID = 'team_gas_kanto_debut'
+    BILL_POWER_GRID_EVENT_ID = 'bill_power_grid_decode'
+    LT_SURGE_EVENT_ID = 'lt_surge_battle'
 
     module_function
 
@@ -431,6 +436,137 @@ module NexusRed
       ensure_kanto_story(state)['cleared_events'].include?(ROCKET_MANIFEST_EVENT_ID)
     end
 
+    def complete_vermilion_power_sabotage(state, location: 'Vermilion Power Yard', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_ss_anne_manifest', 'event_id' => VERMILION_POWER_EVENT_ID } unless ss_anne_manifest_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => VERMILION_POWER_EVENT_ID } if vermilion_power_sabotage_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_VERMILION_POWER_SABOTAGE_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GAS_POWER_SABOTAGE')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_KANTO_DEBUT')
+      add_story_flag(state, 'FLAG_NEXUS_RED_MISTY_SURGE_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_POWER_GRID_DECODE')
+      add_story_flag(state, 'FLAG_NEXUS_SURGE_GYM_BATTLE_UNLOCKED')
+      mark_cleared_event(story, VERMILION_POWER_EVENT_ID)
+      mark_cleared_event(story, ROCKET_GAS_POWER_EVENT_ID)
+      mark_cleared_event(story, TEAM_GAS_DEBUT_EVENT_ID)
+      mark_cleared_event(story, BILL_POWER_GRID_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'power_room_break_in',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'kanto',
+        location,
+        'poison_exhaust_grid_sabotage',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gas',
+        location,
+        'Rocket opened the power room, but Team Gas poisoned the grid and stole the operation',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'surge_prep',
+        location: location,
+        summary: 'Red trains Antman on clean switching before Surge.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'surge_prep',
+        location: location,
+        summary: 'Misty clears harbor vents and drills paralysis counterplay.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'power_grid_decode',
+        location: location,
+        summary: 'Bill decodes the power-grid relay loop tied to the S.S. Anne manifest.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Team Gas debuted in Kanto by hijacking Rocket power sabotage behind Lt. Surge\'s gym.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = vermilion_power_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def vermilion_power_sabotage_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == VERMILION_POWER_EVENT_ID }
+    end
+
+    def complete_lt_surge_battle(state, location: 'Vermilion Gym', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_vermilion_sabotage', 'event_id' => LT_SURGE_EVENT_ID } unless vermilion_power_sabotage_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => LT_SURGE_EVENT_ID } if lt_surge_battle_cleared?(state)
+
+      add_story_flag(state, 'thunder_badge_obtained')
+      add_story_flag(state, 'FLAG_NEXUS_THUNDER_BADGE')
+      add_story_flag(state, 'FLAG_NEXUS_LT_SURGE_BATTLE')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE11_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_VS_SEEKER_UNLOCKED')
+      mark_cleared_event(story, LT_SURGE_EVENT_ID)
+      EncounterWorld.unlock_fishing_rod(state, 'good_rod', source: 'Lt. Surge Route 11 clearance', area_type: area_type)
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'post_surge_route11',
+        location: location,
+        summary: 'Red stays with Antman as the Thunder Badge opens the road east.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'surge_respect_scene',
+        location: location,
+        summary: "Misty logs Surge's respect beat and warns that Rocket will adapt.",
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman earned the Thunder Badge, unlocked the Good Rod and VS Seeker lead, and opened Route 11.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_4_rock_tunnel_celadon_lavender'
+      event = lt_surge_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def lt_surge_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == LT_SURGE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -537,6 +673,29 @@ module NexusRed
         'linked_events' => [BLUE_SS_ANNE_EVENT_ID, ROCKET_MANIFEST_EVENT_ID, 'red_worldlink_mt_moon_note'],
         'factions' => %w[team_rocket],
         'next_hook' => 'lt_surge_battle'
+      }
+    end
+
+    def vermilion_power_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => VERMILION_POWER_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [ROCKET_GAS_POWER_EVENT_ID, TEAM_GAS_DEBUT_EVENT_ID, BILL_POWER_GRID_EVENT_ID],
+        'factions' => %w[team_rocket team_gas],
+        'companion_setup' => 'red_misty_surge_prep',
+        'next_hook' => 'lt_surge_battle'
+      }
+    end
+
+    def lt_surge_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => LT_SURGE_EVENT_ID,
+        'location' => location.to_s,
+        'badge' => 'Thunder Badge',
+        'unlocks' => %w[good_rod vs_seeker route_11_path],
+        'next_hook' => 'route_11_handoff'
       }
     end
 

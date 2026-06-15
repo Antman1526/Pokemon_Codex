@@ -43,6 +43,10 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_ss_anne_manifest(state, location:, area_type:, rival_id:)` resolves the S.S. Anne Act 3 bridge. It requires Bill's storage anomaly, marks the foreign Trainer traffic, Blue ship battle, and Rocket smuggling manifest events, records Rocket manifest activity, updates Blue through WorldLink, gives Misty and Red companion scenes, and points the chapter toward Lt. Surge in Vermilion.
 
+`NexusRed::KantoStory.complete_vermilion_power_sabotage(state, location:, area_type:)` resolves the service-yard branch behind Lt. Surge's gym. It requires the S.S. Anne manifest, records Rocket's power-room break-in, debuts Team Gas through poison exhaust grid sabotage, logs their faction conflict, records Red/Misty/Bill prep scenes, and unlocks the Surge gym battle.
+
+`NexusRed::KantoStory.complete_lt_surge_battle(state, location:, area_type:)` resolves the Thunder Badge battle after the power sabotage is cleared. It marks the Thunder Badge and Route 11 path flags, unlocks the Good Rod and VS Seeker lead, records Red and Misty post-Surge scenes, and advances Kanto into the Rock Tunnel/Celadon/Lavender act.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

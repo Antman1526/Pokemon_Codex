@@ -158,6 +158,10 @@ REQUIRED_MARKERS = (
     "complete_ss_anne_manifest",
     "ss_anne_manifest_cleared?",
     "rocket_manifest_found?",
+    "complete_vermilion_power_sabotage",
+    "vermilion_power_sabotage_cleared?",
+    "complete_lt_surge_battle",
+    "lt_surge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1057,6 +1061,58 @@ raise 'expected KantoStory S.S. Anne next hook Surge' unless ss_anne_clear['next
 second_ss_anne_clear = NexusRed::KantoStory.complete_ss_anne_manifest(kanto_story_state)
 raise 'expected KantoStory S.S. Anne idempotent guard' unless second_ss_anne_clear['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate S.S. Anne history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'ss_anne_foreign_trainers' } == 1
+pre_ss_anne_sabotage = NexusRed::KantoStory.complete_vermilion_power_sabotage(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Vermilion sabotage gated before S.S. Anne' unless pre_ss_anne_sabotage['status'] == 'blocked_missing_ss_anne_manifest'
+vermilion_sabotage = NexusRed::KantoStory.complete_vermilion_power_sabotage(
+  kanto_story_state,
+  location: 'Vermilion Power Yard',
+  area_type: 'route'
+)
+raise 'expected KantoStory Vermilion sabotage clear status' unless vermilion_sabotage['status'] == 'cleared'
+raise 'expected KantoStory Vermilion sabotage event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('vermilion_power_sabotage')
+raise 'expected KantoStory Rocket Gas sabotage event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('rocket_gas_power_sabotage')
+raise 'expected KantoStory Team Gas debut event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('team_gas_kanto_debut')
+raise 'expected KantoStory Vermilion sabotage helper true' unless NexusRed::KantoStory.vermilion_power_sabotage_cleared?(kanto_story_state)
+raise 'expected KantoStory Vermilion sabotage reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VERMILION_POWER_SABOTAGE_REACHED')
+raise 'expected KantoStory Rocket Gas sabotage flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GAS_POWER_SABOTAGE')
+raise 'expected KantoStory Team Gas debut flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_GAS_KANTO_DEBUT')
+raise 'expected KantoStory Red Misty Surge prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_MISTY_SURGE_PREP')
+raise 'expected KantoStory Bill power grid decode flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_POWER_GRID_DECODE')
+raise 'expected KantoStory Surge gym battle unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SURGE_GYM_BATTLE_UNLOCKED')
+raise 'expected KantoStory Rocket power break-in activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Vermilion Power Yard' && activity['operation'] == 'power_room_break_in' }
+raise 'expected KantoStory Team Gas power sabotage activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['kanto'].any? { |activity| activity['operation'] == 'poison_exhaust_grid_sabotage' }
+raise 'expected KantoStory Rocket Team Gas conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gas' && conflict['location'] == 'Vermilion Power Yard' }
+raise 'expected KantoStory Red Surge prep scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('surge_prep')
+raise 'expected KantoStory Misty Surge prep scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('surge_prep')
+raise 'expected KantoStory Bill power grid scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('power_grid_decode')
+raise 'expected KantoStory Vermilion sabotage story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Team Gas') }
+raise 'expected KantoStory Vermilion sabotage next hook Surge battle' unless vermilion_sabotage['next_hook'] == 'lt_surge_battle'
+second_vermilion_sabotage = NexusRed::KantoStory.complete_vermilion_power_sabotage(kanto_story_state)
+raise 'expected KantoStory Vermilion sabotage idempotent guard' unless second_vermilion_sabotage['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Vermilion sabotage history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'vermilion_power_sabotage' } == 1
+pre_sabotage_surge = NexusRed::KantoStory.complete_lt_surge_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Surge gated before power sabotage' unless pre_sabotage_surge['status'] == 'blocked_missing_vermilion_sabotage'
+surge_clear = NexusRed::KantoStory.complete_lt_surge_battle(
+  kanto_story_state,
+  location: 'Vermilion Gym',
+  area_type: 'route'
+)
+raise 'expected KantoStory Surge clear status' unless surge_clear['status'] == 'cleared'
+raise 'expected KantoStory Surge event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('lt_surge_battle')
+raise 'expected KantoStory Surge helper true' unless NexusRed::KantoStory.lt_surge_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Thunder Badge flag' unless kanto_story_state['story_flags'].include?('thunder_badge_obtained')
+raise 'expected KantoStory Nexus Thunder Badge flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_THUNDER_BADGE')
+raise 'expected KantoStory Route 11 path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE11_PATH_UNLOCKED')
+raise 'expected KantoStory VS Seeker flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VS_SEEKER_UNLOCKED')
+raise 'expected KantoStory Good Rod unlocked after Surge' unless kanto_story_state['encounter_world']['unlocked_fishing_rods'].include?('good_rod')
+raise 'expected KantoStory Red post Surge scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('post_surge_route11')
+raise 'expected KantoStory Misty Surge respect scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('surge_respect_scene')
+raise 'expected KantoStory Surge story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Thunder Badge') }
+raise 'expected KantoStory current act advances to Act 4 after Surge' unless kanto_story_state['kanto_story']['current_act'] == 'act_4_rock_tunnel_celadon_lavender'
+raise 'expected KantoStory Surge next hook Route 11' unless surge_clear['next_hook'] == 'route_11_handoff'
+second_surge_clear = NexusRed::KantoStory.complete_lt_surge_battle(kanto_story_state)
+raise 'expected KantoStory Surge idempotent guard' unless second_surge_clear['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Surge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'lt_surge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
