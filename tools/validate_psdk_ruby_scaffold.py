@@ -298,6 +298,8 @@ REQUIRED_MARKERS = (
     "goldenrod_radio_tower_shadow_cleared?",
     "complete_radio_tower_lobby_battle",
     "radio_tower_lobby_battle_cleared?",
+    "complete_goldenrod_underground_warehouse",
+    "goldenrod_underground_warehouse_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3643,6 +3645,65 @@ raise 'expected JohtoStory Radio Tower lobby factions' unless %w[team_rocket tea
 second_radio_lobby_battle = NexusRed::JohtoStory.complete_radio_tower_lobby_battle(kanto_story_state)
 raise 'expected JohtoStory Radio Tower lobby battle idempotent guard' unless second_radio_lobby_battle['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Radio Tower lobby battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_lobby_battle' } == 1
+pre_warehouse = NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Goldenrod warehouse gated before Johto unlock' unless pre_warehouse['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_radio_lobby = NexusRed::RuntimeState.build
+johto_before_radio_lobby['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_goldenrod_road(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_whitney_plain_badge_prep(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_whitney_plain_badge_battle(johto_before_radio_lobby)
+NexusRed::JohtoStory.complete_goldenrod_radio_tower_shadow(johto_before_radio_lobby)
+raise 'expected JohtoStory Goldenrod warehouse gated before lobby battle' unless NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(johto_before_radio_lobby)['status'] == 'blocked_missing_radio_tower_lobby_battle'
+warehouse = NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(
+  kanto_story_state,
+  location: 'Goldenrod Underground Warehouse',
+  area_type: 'villain_hideout'
+)
+raise 'expected JohtoStory Goldenrod warehouse clear status' unless warehouse['status'] == 'cleared'
+raise 'expected JohtoStory Goldenrod warehouse event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_underground_warehouse')
+raise 'expected JohtoStory Goldenrod warehouse helper true' unless NexusRed::JohtoStory.goldenrod_underground_warehouse_cleared?(kanto_story_state)
+raise 'expected JohtoStory warehouse switch room event' unless kanto_story_state['johto_story']['cleared_events'].include?('warehouse_switch_room')
+raise 'expected JohtoStory director rescue unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_director_rescue_unlocked')
+raise 'expected JohtoStory Goldenrod warehouse flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_UNDERGROUND_WAREHOUSE')
+raise 'expected JohtoStory director rescue unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_DIRECTOR_RESCUE_UNLOCKED')
+raise 'expected JohtoStory current act director rescue' unless kanto_story_state['johto_story']['current_act'] == 'act_14_radio_tower_director_rescue'
+raise 'expected JohtoStory Red warehouse backup scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('warehouse_backup')
+raise 'expected JohtoStory Blue lobby hold scene' unless kanto_story_state['companion_progress']['blue']['scene_flags'].include?('radio_tower_lobby_hold')
+raise 'expected JohtoStory Bill director card trace scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('director_card_trace')
+raise 'expected JohtoStory Silver warehouse clash activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Warehouse') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Rocket')
+raise 'expected JohtoStory Ava underground ledger activity' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('ledger') && kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Underground')
+raise 'expected JohtoStory Rocket director card theft activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'director_card_theft' && activity['location'] == 'Goldenrod Underground Warehouse' }
+raise 'expected JohtoStory Gold Dust warehouse ledger activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'warehouse_ledger_grab' }
+raise 'expected JohtoStory Team Gas switch room fumes activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'switch_room_fumes' }
+raise 'expected JohtoStory Moonlight basement relay activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'basement_signal_relay' }
+raise 'expected JohtoStory Nexus Order basement grid activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'basement_grid_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust warehouse conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Goldenrod Underground Warehouse Vault' }
+raise 'expected JohtoStory Team Gas Moonlight switch conflict' unless kanto_story_state['faction_progress']['team_gas']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Goldenrod Underground Switch Room' }
+raise 'expected JohtoStory Nexus Order still hidden after warehouse' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory warehouse story alert paused in hideout' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Underground Warehouse') && message['text'].include?('Director') && message['text'].include?('Rocket') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory warehouse route chain' unless warehouse['route_chain'] == ['Goldenrod Underground', 'Goldenrod Underground Warehouse', 'Radio Tower Director Rescue']
+raise 'expected JohtoStory warehouse hidden meta signal' unless warehouse['hidden_meta_signal'] == 'nexus_order_basement_grid_unrevealed'
+raise 'expected JohtoStory warehouse recovered director key' unless warehouse['recovered_items'].include?('Director Card Key')
+raise 'expected JohtoStory warehouse battle hook id' unless warehouse['battle_hook']['battle_id'] == 'warehouse_switch_room_battle'
+raise 'expected JohtoStory warehouse battle companion rule' unless warehouse['battle_hook']['companion_rule'] == 'red_tag_allowed_blue_holds_lobby'
+raise 'expected JohtoStory warehouse unlocks director rescue' unless warehouse['unlocks'].include?('radio_tower_director_rescue') && warehouse['unlocks'].include?('director_card_key')
+raise 'expected JohtoStory warehouse next hook director rescue' unless warehouse['next_hook'] == 'radio_tower_director_rescue'
+raise 'expected JohtoStory warehouse companions' unless %w[red blue bill].all? { |companion| warehouse['companions'].include?(companion) }
+raise 'expected JohtoStory warehouse rivals' unless %w[ava silver].all? { |rival| warehouse['rivals'].include?(rival) }
+raise 'expected JohtoStory warehouse factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| warehouse['factions'].include?(faction) }
+second_warehouse = NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(kanto_story_state)
+raise 'expected JohtoStory Goldenrod warehouse idempotent guard' unless second_warehouse['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Goldenrod warehouse history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'goldenrod_underground_warehouse' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

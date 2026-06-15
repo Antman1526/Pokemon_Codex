@@ -181,6 +181,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_radio_tower_lobby_battle(state, location:, result:, area_type:)` records the first Rocket lobby/tag battle after the Radio Tower lockdown. It keeps Red and Blue as allowed outside-gym tag partners, has Bill cache the lobby transmitter data, sends Silver racing toward the Underground Warehouse, lets Ava preserve the Rocket broadcast archive, escalates Rocket's elevator lock against Team Gas generator smoke, keeps Nexus Order hidden in the elevator pattern, pauses WorldLink in the villain-hideout context, and opens `goldenrod_underground_warehouse`.
 
+`NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(state, location:, area_type:)` resolves the classic Goldenrod Underground Warehouse detour after the lobby tag battle. Red backs Antman through the switch room, Blue holds the tower lobby, Bill traces the stolen Director Card Key, Silver clashes with Rocket in the warehouse, Ava decodes the Gold Dust ledger, Team Gas fumes disrupt Moonlight basement relays, Nexus Order remains hidden in the basement grid, and the method opens `radio_tower_director_rescue`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

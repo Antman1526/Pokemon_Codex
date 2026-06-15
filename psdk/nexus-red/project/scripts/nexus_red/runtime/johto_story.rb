@@ -179,6 +179,19 @@ module NexusRed
     MOONLIGHT_LOBBY_SIGNAL_FADE_EVENT_ID = 'moonlight_lobby_signal_fade'
     NEXUS_ORDER_ELEVATOR_PATTERN_EVENT_ID = 'nexus_order_elevator_pattern_hidden'
     GOLDENROD_UNDERGROUND_WAREHOUSE_UNLOCKED_EVENT_ID = 'goldenrod_underground_warehouse_unlocked'
+    GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID = 'goldenrod_underground_warehouse'
+    WAREHOUSE_SWITCH_ROOM_EVENT_ID = 'warehouse_switch_room'
+    RED_WAREHOUSE_BACKUP_EVENT_ID = 'red_warehouse_backup'
+    BLUE_RADIO_TOWER_LOBBY_HOLD_EVENT_ID = 'blue_radio_tower_lobby_hold'
+    BILL_DIRECTOR_CARD_TRACE_EVENT_ID = 'bill_director_card_trace'
+    SILVER_WAREHOUSE_RIVAL_CLASH_EVENT_ID = 'silver_warehouse_rival_clash'
+    AVA_UNDERGROUND_LEDGER_DECODE_EVENT_ID = 'ava_underground_ledger_decode'
+    ROCKET_DIRECTOR_CARD_THEFT_EVENT_ID = 'rocket_director_card_theft'
+    GOLD_DUST_WAREHOUSE_LEDGER_GRAB_EVENT_ID = 'gold_dust_warehouse_ledger_grab'
+    TEAM_GAS_SWITCH_ROOM_FUMES_EVENT_ID = 'team_gas_switch_room_fumes'
+    MOONLIGHT_BASEMENT_SIGNAL_RELAY_EVENT_ID = 'moonlight_basement_signal_relay'
+    NEXUS_ORDER_BASEMENT_GRID_EVENT_ID = 'nexus_order_basement_grid_hidden'
+    RADIO_TOWER_DIRECTOR_RESCUE_UNLOCKED_EVENT_ID = 'radio_tower_director_rescue_unlocked'
 
     module_function
 
@@ -2846,6 +2859,207 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_elevator_pattern_unrevealed',
         'unlocks' => %w[goldenrod_underground_warehouse rocket_elevator_lock_clue radio_tower_digest_after_exit],
         'next_hook' => 'goldenrod_underground_warehouse'
+      }
+    end
+
+    def complete_goldenrod_underground_warehouse(state, location: 'Goldenrod Underground Warehouse', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_radio_tower_lobby_battle', 'event_id' => GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID } unless radio_tower_lobby_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID } if goldenrod_underground_warehouse_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_UNDERGROUND_WAREHOUSE')
+      add_story_flag(state, 'FLAG_NEXUS_WAREHOUSE_SWITCH_ROOM')
+      add_story_flag(state, 'FLAG_NEXUS_RED_WAREHOUSE_BACKUP')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_RADIO_TOWER_LOBBY_HOLD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_DIRECTOR_CARD_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_WAREHOUSE_RIVAL_CLASH')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_UNDERGROUND_LEDGER_DECODE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_DIRECTOR_CARD_THEFT')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_WAREHOUSE_LEDGER_GRAB')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_SWITCH_ROOM_FUMES')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_BASEMENT_SIGNAL_RELAY')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_BASEMENT_GRID')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_DIRECTOR_RESCUE_UNLOCKED')
+
+      [
+        GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID,
+        WAREHOUSE_SWITCH_ROOM_EVENT_ID,
+        RED_WAREHOUSE_BACKUP_EVENT_ID,
+        BLUE_RADIO_TOWER_LOBBY_HOLD_EVENT_ID,
+        BILL_DIRECTOR_CARD_TRACE_EVENT_ID,
+        SILVER_WAREHOUSE_RIVAL_CLASH_EVENT_ID,
+        AVA_UNDERGROUND_LEDGER_DECODE_EVENT_ID,
+        ROCKET_DIRECTOR_CARD_THEFT_EVENT_ID,
+        GOLD_DUST_WAREHOUSE_LEDGER_GRAB_EVENT_ID,
+        TEAM_GAS_SWITCH_ROOM_FUMES_EVENT_ID,
+        MOONLIGHT_BASEMENT_SIGNAL_RELAY_EVENT_ID,
+        NEXUS_ORDER_BASEMENT_GRID_EVENT_ID,
+        RADIO_TOWER_DIRECTOR_RESCUE_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'warehouse_backup',
+        location: location,
+        summary: 'Red stays close in the Underground Warehouse, letting Antman lead the switch room while he cuts off Rocket escape routes.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'blue',
+        'radio_tower_lobby_hold',
+        location: 'Goldenrod Radio Tower Lobby',
+        summary: 'Blue holds the Radio Tower lobby alone, forcing Rocket to keep splitting grunts between the tower and the warehouse.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'director_card_trace',
+        location: location,
+        summary: 'Bill traces the stolen Director Card Key through the warehouse locks and marks the route back into the Radio Tower upper floors.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver clashed with Rocket in the Warehouse switch room, furious that their stolen Director Card Key slowed his own chase.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Goldenrod Underground Ledger Room',
+        'Ava decoded an Underground ledger that ties Gold Dust ad money to Rocket warehouse access.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'director_card_theft',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Underground Warehouse Vault',
+        'warehouse_ledger_grab',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Underground Switch Room',
+        'switch_room_fumes',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Underground Relay Alcove',
+        'basement_signal_relay',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Underground Grid',
+        'basement_grid_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        'Goldenrod Underground Warehouse Vault',
+        'Rocket wants the stolen Director Card Key kept quiet while Gold Dust tries to steal the payment ledger.',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_gas',
+        'team_moonlight',
+        'Goldenrod Underground Switch Room',
+        'Team Gas fumes scramble Moonlight basement relay timing and expose the switch puzzle pattern.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_14_radio_tower_director_rescue'
+      event = goldenrod_underground_warehouse_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The Underground Warehouse confirms Rocket stole the Director Card Key, and the Radio Tower Director rescue route is now open.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def goldenrod_underground_warehouse_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID }
+    end
+
+    def goldenrod_underground_warehouse_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => GOLDENROD_UNDERGROUND_WAREHOUSE_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_14_radio_tower_director_rescue',
+        'route_chain' => ['Goldenrod Underground', 'Goldenrod Underground Warehouse', 'Radio Tower Director Rescue'],
+        'companions' => %w[red blue bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          WAREHOUSE_SWITCH_ROOM_EVENT_ID,
+          RED_WAREHOUSE_BACKUP_EVENT_ID,
+          BLUE_RADIO_TOWER_LOBBY_HOLD_EVENT_ID,
+          BILL_DIRECTOR_CARD_TRACE_EVENT_ID,
+          SILVER_WAREHOUSE_RIVAL_CLASH_EVENT_ID,
+          AVA_UNDERGROUND_LEDGER_DECODE_EVENT_ID,
+          ROCKET_DIRECTOR_CARD_THEFT_EVENT_ID,
+          GOLD_DUST_WAREHOUSE_LEDGER_GRAB_EVENT_ID,
+          TEAM_GAS_SWITCH_ROOM_FUMES_EVENT_ID,
+          MOONLIGHT_BASEMENT_SIGNAL_RELAY_EVENT_ID,
+          NEXUS_ORDER_BASEMENT_GRID_EVENT_ID,
+          RADIO_TOWER_DIRECTOR_RESCUE_UNLOCKED_EVENT_ID
+        ],
+        'recovered_items' => ['Director Card Key', 'Rocket Elevator Route'],
+        'battle_hook' => {
+          'battle_id' => 'warehouse_switch_room_battle',
+          'level_cap' => 29,
+          'companion_rule' => 'red_tag_allowed_blue_holds_lobby',
+          'enemy_trainers' => %w[rocket_warehouse_guard gold_dust_ledger_thief],
+          'enemy_team_theme' => %w[normal poison steel dark]
+        },
+        'hidden_meta_signal' => 'nexus_order_basement_grid_unrevealed',
+        'unlocks' => %w[radio_tower_director_rescue director_card_key rocket_elevator_route warehouse_digest_after_exit],
+        'next_hook' => 'radio_tower_director_rescue'
       }
     end
   end
