@@ -377,6 +377,22 @@ python3 tools/validate_native_route3_migration_scene.py
 godot --headless --path native/nexus-red --script tests/route3_migration_scene_test.gd
 ```
 
+### Task 7.18: Add Viridian Forest mini-dungeon shell
+
+Acceptance:
+
+- Route 2 / Viridian Forest Gate can transition into Viridian Forest.
+- Viridian Forest records save-state progress and keeps Red as the active companion.
+- Viridian Forest contains a first Rocket scout story beat.
+- Viridian Forest can return to the gate or continue forward to Route 3.
+
+Verification:
+
+```sh
+python3 tools/validate_native_viridian_forest_slice.py
+godot --headless --path native/nexus-red --script tests/viridian_forest_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

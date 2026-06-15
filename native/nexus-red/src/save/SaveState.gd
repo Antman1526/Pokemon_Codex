@@ -65,6 +65,9 @@ func start_new_game(name: String) -> void:
 		"red_route_2_warning_seen": false,
 		"route_2_catch_tutorial_seen": false,
 		"route_2_catch_tutorial_caught": false,
+		"viridian_forest_reached": false,
+		"red_viridian_forest_scene_seen": false,
+		"rocket_forest_scout_seen": false,
 		"route_3_reached": false,
 		"red_route_3_migration_scene_seen": false,
 	}
@@ -116,6 +119,19 @@ func enter_route_3() -> void:
 	set_flag("route_3_reached", true)
 	set_flag("red_route_3_migration_scene_seen", true)
 	queue_worldlink_id("route_3_reached")
+
+
+func enter_viridian_forest() -> void:
+	current_scene = "viridian_forest"
+	active_companion = "red"
+	set_flag("viridian_forest_reached", true)
+	set_flag("red_viridian_forest_scene_seen", true)
+	queue_worldlink_id("viridian_forest_reached")
+
+
+func record_rocket_forest_scout() -> void:
+	set_flag("rocket_forest_scout_seen", true)
+	queue_worldlink_id("rocket_forest_scout_seen")
 
 
 func record_viridian_center_visit() -> void:

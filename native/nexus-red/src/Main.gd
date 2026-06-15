@@ -6,6 +6,7 @@ const OakLabScene := preload("res://scenes/world/OakLab.tscn")
 const Route1Scene := preload("res://scenes/world/Route1.tscn")
 const ViridianCityScene := preload("res://scenes/world/ViridianCity.tscn")
 const Route2ForestGateScene := preload("res://scenes/world/Route2ForestGate.tscn")
+const ViridianForestScene := preload("res://scenes/world/ViridianForest.tscn")
 const Route3Scene := preload("res://scenes/world/Route3.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
@@ -82,9 +83,22 @@ func _show_route_2_forest_gate() -> void:
 	var route_2_gate := Route2ForestGateScene.instantiate()
 	route_2_gate.save_state = save_state
 	route_2_gate.go_to_viridian_city.connect(_on_go_to_viridian_city)
+	route_2_gate.go_to_viridian_forest.connect(_on_go_to_viridian_forest)
 	route_2_gate.go_to_route_3.connect(_on_go_to_route_3)
 	route_2_gate.start_wild_encounter.connect(_on_start_wild_encounter)
 	_replace_screen(route_2_gate)
+
+
+func _on_go_to_viridian_forest() -> void:
+	_show_viridian_forest()
+
+
+func _show_viridian_forest() -> void:
+	var forest := ViridianForestScene.instantiate()
+	forest.save_state = save_state
+	forest.go_to_route_2_forest_gate.connect(_on_go_to_route_2_forest_gate)
+	forest.go_to_route_3.connect(_on_go_to_route_3)
+	_replace_screen(forest)
 
 
 func _on_go_to_route_3() -> void:
