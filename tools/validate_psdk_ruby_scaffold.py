@@ -88,6 +88,12 @@ REQUIRED_MARKERS = (
     "select_partner",
     "starter_chosen?",
     "rival_assignment",
+    "module EarlyMigrationEncounters",
+    "ensure_migration",
+    "route_target",
+    "available_for_route",
+    "catchable_species",
+    "rare_power_species",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -117,6 +123,7 @@ REQUIRED_RUNTIME_FILES = (
     "encounter_world.rb",
     "battle_mechanics.rb",
     "starter_selection.rb",
+    "early_migration_encounters.rb",
 )
 
 RUNTIME_SMOKE = r"""
@@ -685,6 +692,34 @@ raise 'expected unknown starter rejected' unless begin
 rescue ArgumentError
   true
 end
+
+migration_state = NexusRed::RuntimeState.build
+migration = NexusRed::EarlyMigrationEncounters.ensure_migration(migration_state)
+raise 'expected pre-Brock migration level cap context' unless migration['level_cap_context'] == 'pre_brock'
+raise 'expected three route targets in migration runtime' unless migration['route_targets'].length == 3
+raise 'expected Route 1 target helper' unless NexusRed::EarlyMigrationEncounters.route_target('route_1')['display_name'] == 'Route 1'
+raise 'expected unknown route target nil' unless NexusRed::EarlyMigrationEncounters.route_target('route_99').nil?
+raise 'expected starter gate before migration encounters' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_1').empty?
+NexusRed::StarterSelection.select_partner(migration_state, 'Bulbasaur')
+route_1_morning = NexusRed::EarlyMigrationEncounters.available_for_route(
+  migration_state,
+  'route_1',
+  time: 'morning',
+  max_level: 5
+)
+raise 'expected Route 1 morning Bulbasaur encounter' unless route_1_morning.any? { |encounter| encounter['species'] == 'Bulbasaur' }
+raise 'expected Route 1 morning excludes Charmander day slot' if route_1_morning.any? { |encounter| encounter['species'] == 'Charmander' }
+raise 'expected Route 2 gated before forest gate' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_2').empty?
+raise 'expected Route 1 catchable species includes Rockruff' unless NexusRed::EarlyMigrationEncounters.catchable_species(migration_state, 'route_1').include?('Rockruff')
+raise 'expected Route 2 catchable species includes Dratini' unless NexusRed::EarlyMigrationEncounters.catchable_species(migration_state, 'route_2').include?('Dratini')
+raise 'expected Route 3 catchable species includes Kubfu' unless NexusRed::EarlyMigrationEncounters.catchable_species(migration_state, 'route_3').include?('Kubfu')
+raise 'expected rare power species across early routes' unless NexusRed::EarlyMigrationEncounters.rare_power_species(migration_state) == %w[Dratini Larvitar Kubfu]
+story_flags = migration_state['story_flags']
+story_flags << 'route_2_forest_gate_reached'
+story_flags << 'boulder_badge_obtained'
+raise 'expected Route 2 night Dratini available after forest gate' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_2', time: 'night').any? { |encounter| encounter['species'] == 'Dratini' }
+raise 'expected Route 3 day Kubfu available after Boulder Badge' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_3', time: 'day').any? { |encounter| encounter['species'] == 'Kubfu' }
+raise 'expected over-level migration encounters filtered out' unless NexusRed::EarlyMigrationEncounters.available_for_route(migration_state, 'route_3', max_level: 6).none? { |encounter| encounter['species'] == 'Grookey' }
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """

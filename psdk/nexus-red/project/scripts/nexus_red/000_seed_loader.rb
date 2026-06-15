@@ -14,6 +14,7 @@ require_relative 'runtime/center_mart_services'
 require_relative 'runtime/encounter_world'
 require_relative 'runtime/battle_mechanics'
 require_relative 'runtime/starter_selection'
+require_relative 'runtime/early_migration_encounters'
 
 if defined?(PFM::GameState)
   class PFM::GameState
