@@ -63,6 +63,12 @@ REQUIRED_MARKERS = (
     "record_caught",
     "readiness_report",
     "pre_final_ready?",
+    "module CenterMartServices",
+    "ensure_services",
+    "use_nurse_service",
+    "terminal_available?",
+    "mart_inventory",
+    "unlock_mart_tier",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -480,6 +486,50 @@ raise 'expected no missing species after catches' unless complete_report['missin
 raise 'expected pre-final readiness true after required catches' unless NexusRed::PokedexAvailability.pre_final_ready?(state)
 raise 'expected unknown availability channel rejected' unless begin
   NexusRed::PokedexAvailability.record_seen(state, 'Mew', location: 'Unknown', channel: 'truck_rumor')
+  false
+rescue ArgumentError
+  true
+end
+
+services = NexusRed::CenterMartServices.ensure_services(state)
+raise 'expected starting money in Center/Mart state' unless services['money'] == 100000
+raise 'expected heal team Nurse Joy service available' unless services['nurse_joy_services'].include?('heal_team')
+raise 'expected WorldLink terminal available' unless NexusRed::CenterMartServices.terminal_available?(state, 'worldlink_feed')
+raise 'expected hyper training terminal unavailable before unlock' if NexusRed::CenterMartServices.terminal_available?(state, 'hyper_training')
+
+heal = NexusRed::CenterMartServices.use_nurse_service(
+  state,
+  'heal_team',
+  location: 'Viridian Pokemon Center',
+  area_type: 'route'
+)
+raise 'expected heal service immediate delivery' unless heal['delivery'] == 'immediate'
+raise 'expected heal service recorded' unless state['center_mart']['service_history'].first['service_id'] == 'heal_team'
+
+gift = NexusRed::CenterMartServices.use_nurse_service(
+  state,
+  'daily_wellness_gift',
+  location: 'Viridian Pokemon Center',
+  area_type: 'route'
+)
+raise 'expected daily wellness gift immediate delivery' unless gift['delivery'] == 'immediate'
+raise 'expected daily wellness gift flag recorded' unless state['center_mart']['daily_services_claimed'].include?('daily_wellness_gift')
+
+basic_inventory = NexusRed::CenterMartServices.mart_inventory(state, 'viridian')
+raise 'expected basic balls immediate in Viridian mart' unless basic_inventory.include?('basic_balls')
+raise 'expected core medicine immediate in Viridian mart' unless basic_inventory.include?('core_medicine')
+raise 'expected rare candies locked before badge unlock' if basic_inventory.include?('rare_candies')
+
+NexusRed::CenterMartServices.unlock_mart_tier(state, 'after_first_badge')
+badge_inventory = NexusRed::CenterMartServices.mart_inventory(state, 'pewter')
+raise 'expected rare candies after first badge' unless badge_inventory.include?('rare_candies')
+
+NexusRed::CenterMartServices.unlock_terminal_feature(state, 'hyper_training')
+raise 'expected hyper training terminal available after unlock' unless NexusRed::CenterMartServices.terminal_available?(state, 'hyper_training')
+celadon_inventory = NexusRed::CenterMartServices.mart_inventory(state, 'celadon')
+raise 'expected Celadon specialty mart flag' unless celadon_inventory.include?('specialty_mart')
+raise 'expected unknown Nurse Joy service rejected' unless begin
+  NexusRed::CenterMartServices.use_nurse_service(state, 'rocket_heal_discount', location: 'Celadon')
   false
 rescue ArgumentError
   true
