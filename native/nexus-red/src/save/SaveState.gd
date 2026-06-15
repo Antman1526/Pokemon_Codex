@@ -218,6 +218,14 @@ func start_new_game(name: String) -> void:
 		"lavender_tower_signal_confirmed": false,
 		"rock_tunnel_entry_unlocked": false,
 		"worldlink_route_9_rock_tunnel_approach_batch_queued": false,
+		"rock_tunnel_interior_reached": false,
+		"red_rock_tunnel_guidance_seen": false,
+		"bill_lavender_echo_trace_seen": false,
+		"team_moonlight_cave_pressure_seen": false,
+		"rocket_dark_cache_seen": false,
+		"flash_lantern_needed_seen": false,
+		"lavender_exit_path_unlocked": false,
+		"worldlink_rock_tunnel_interior_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -838,6 +846,37 @@ func queue_route_9_rock_tunnel_approach_batch() -> void:
 		"wl_rocket_route_9_supply_cache",
 		"wl_lavender_tower_signal_confirmed",
 		"wl_rock_tunnel_entry_unlocked",
+	])
+
+
+func enter_rock_tunnel_interior() -> void:
+	current_scene = "rock_tunnel_interior"
+	active_companion = "red"
+	set_flag("rock_tunnel_interior_reached", true)
+	queue_worldlink_id("wl_rock_tunnel_interior_reached")
+
+
+func record_rock_tunnel_interior_scene() -> void:
+	active_companion = "red"
+	set_flag("red_rock_tunnel_guidance_seen", true)
+	set_flag("bill_lavender_echo_trace_seen", true)
+	set_flag("team_moonlight_cave_pressure_seen", true)
+	set_flag("rocket_dark_cache_seen", true)
+	set_flag("flash_lantern_needed_seen", true)
+	set_flag("lavender_exit_path_unlocked", true)
+	queue_rock_tunnel_interior_batch()
+
+
+func queue_rock_tunnel_interior_batch() -> void:
+	set_flag("worldlink_rock_tunnel_interior_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_rock_tunnel_interior_reached",
+		"wl_red_rock_tunnel_guidance",
+		"wl_bill_lavender_echo_trace",
+		"wl_team_moonlight_cave_pressure",
+		"wl_rocket_dark_cache",
+		"wl_flash_lantern_needed",
+		"wl_lavender_exit_path_unlocked",
 	])
 
 

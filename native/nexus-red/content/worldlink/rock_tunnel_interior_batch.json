@@ -1,0 +1,40 @@
+{
+  "id": "rock_tunnel_interior_batch",
+  "feed": [
+    {
+      "id": "wl_rock_tunnel_interior_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red entered Rock Tunnel instead of jumping regions, keeping the Kanto path physical and dangerous."
+    },
+    {
+      "id": "wl_red_rock_tunnel_guidance",
+      "speaker": "Red",
+      "text": "Red stayed close in the darkness and turned Rock Tunnel into a real companion survival beat."
+    },
+    {
+      "id": "wl_bill_lavender_echo_trace",
+      "speaker": "Bill",
+      "text": "Bill tracked the Echo Flute trace through Rock Tunnel toward Lavender, where the sleep signal is getting stronger."
+    },
+    {
+      "id": "wl_team_moonlight_cave_pressure",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight is using the cave darkness to amplify dream pressure and steer travelers away from the Lavender signal."
+    },
+    {
+      "id": "wl_rocket_dark_cache",
+      "speaker": "WorldLink",
+      "text": "A Rocket dark cache near the tunnel exit proves Giovanni's network is watching Team Moonlight's operation."
+    },
+    {
+      "id": "wl_flash_lantern_needed",
+      "speaker": "Red",
+      "text": "Red flagged the Flash Lantern as the safer field-tool answer for deeper cave travel."
+    },
+    {
+      "id": "wl_lavender_exit_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Lavender exit path is marked. The next Kanto beat can move toward the tower signal."
+    }
+  ]
+}

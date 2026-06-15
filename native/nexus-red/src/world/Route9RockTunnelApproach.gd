@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_2_east_field_lab
+signal go_to_rock_tunnel_interior
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_route_9_approach_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_rock_tunnel_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_2_east_field_lab()
 
@@ -105,9 +108,17 @@ func trigger_route_9_approach_scene() -> void:
 	dialogue_label.text = "Red: Route 9 is a trainer lane, so we train before Rock Tunnel. Bill warns the cave is dark and the Echo Flute signal points toward Lavender. Team Moonlight finally stepped into the open, and Rocket left a supply cache near their mark."
 
 
+func trigger_rock_tunnel_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("rock_tunnel_entry_unlocked", false)):
+		dialogue_label.text = "Red: Rock Tunnel is not a shortcut. Scout Route 9 first so we know where Team Moonlight, Rocket, and the Lavender signal are pulling from."
+		return
+	dialogue_label.text = "Red: Rock Tunnel is open. Stay close, watch the echoes, and keep Bill's Echo Flute trace in mind."
+	emit_signal("go_to_rock_tunnel_interior")
+
+
 func return_to_route_2_east_field_lab() -> void:
 	emit_signal("go_to_route_2_east_field_lab")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Route 9 is the approach to Rock Tunnel. Press Z/Enter to scout the trainer lane, Moonlight mark, Rocket cache, and Lavender signal, or X/Esc to return to Route 2."
+	dialogue_label.text = "Red: Route 9 is the approach to Rock Tunnel. Press Z/Enter to scout the trainer lane, Moonlight mark, Rocket cache, and Lavender signal, Right to enter Rock Tunnel, or X/Esc to return to Route 2."

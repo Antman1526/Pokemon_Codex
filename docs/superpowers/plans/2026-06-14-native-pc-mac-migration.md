@@ -893,6 +893,27 @@ python3 tools/validate_native_route9_rock_tunnel_approach.py
 godot --headless --path native/nexus-red --script tests/route9_rock_tunnel_approach_test.gd
 ```
 
+### Task 7.47: Add Rock Tunnel interior shell
+
+Acceptance:
+
+- Route 9 keeps Rock Tunnel locked until Red scouts the trainer lane, Team Moonlight mark, Rocket cache, and Lavender signal.
+- After Route 9 scouting, Antman can transition into a playable Rock Tunnel interior scene.
+- Rock Tunnel records Red as the active full-game companion and frames the dungeon as a companion survival beat, not a quick regional jump.
+- Bill tracks the Echo Flute trace through Rock Tunnel toward Lavender.
+- Team Moonlight pressures the cave with sleep/dream signals while Rocket's dark cache shows Giovanni's network is monitoring the faction conflict.
+- The Flash Lantern field-tool need is introduced before deeper cave travel.
+- The Lavender exit path is unlocked for the next Kanto beat without implementing Lavender yet.
+- Save state and WorldLink record Rock Tunnel reached, Red's guidance, Bill's Lavender echo trace, Team Moonlight cave pressure, Rocket dark cache, Flash Lantern need, and Lavender exit path unlock.
+- WorldLink checklist adds Enter Rock Tunnel, Track Lavender echo, Pressure Team Moonlight in Rock Tunnel, and Unlock Lavender exit path milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_rock_tunnel_interior.py
+godot --headless --path native/nexus-red --script tests/rock_tunnel_interior_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
