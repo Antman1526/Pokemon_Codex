@@ -14,6 +14,31 @@ module NexusRed
       payload
     end
 
+    def execute_pending_request(state)
+      payload = launch_pending_request(state)
+      return payload unless payload['status'] == 'launch_prepared' && psdk_runtime_available?
+
+      execute_launch_payload(payload)
+      payload['status'] = 'battle_scene_called'
+      state['last_wild_battle_launch'] = payload
+      launch_history(state)[-1] = payload
+      payload
+    end
+
+    def execute_launch_payload(payload)
+      battle_info = Battle::Logic::BattleInfo.new
+      battle_info.add_party(0, *battle_info.player_basic_info)
+      party = [
+        PFM::Pokemon.generate_from_hash(
+          id: payload['psdk_species_symbol'].to_sym,
+          level: payload['level'].to_i
+        )
+      ]
+      battle_info.add_party(1, party)
+      $scene.call_scene(Battle::Scene, battle_info)
+      battle_info
+    end
+
     def build_launch_payload(request)
       species_key = request['psdk_species_key'].to_s
       level = request['level'].to_i

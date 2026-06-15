@@ -105,6 +105,8 @@ REQUIRED_MARKERS = (
     "trigger_route",
     "module WildBattleLauncher",
     "launch_pending_request",
+    "execute_pending_request",
+    "execute_launch_payload",
     "build_launch_payload",
     "build_psdk_script_lines",
     "species_symbol",
@@ -814,6 +816,75 @@ raise 'expected wild battle launch script feeds wild party' unless launch_payloa
 raise 'expected wild battle launch script calls Battle Scene' unless launch_payload['psdk_script_lines'].include?('$scene.call_scene(Battle::Scene, bi)')
 raise 'expected WildBattleLauncher species symbol helper' unless NexusRed::WildBattleLauncher.species_symbol('BULBASAUR') == 'bulbasaur'
 raise 'expected wild battle launch history recorded' unless NexusRed::WildBattleLauncher.launch_history(route_1_launch_state).last == launch_payload
+
+stub_route_1_state = NexusRed::RuntimeState.build
+NexusRed::StarterSelection.select_partner(stub_route_1_state, 'Bulbasaur')
+NexusRed::Route1MigrationEvent.trigger(stub_route_1_state, time: 'morning', max_level: 5)
+module Battle
+  class Scene
+  end
+
+  module Logic
+    class BattleInfo
+      attr_reader :added_parties
+
+      def initialize
+        @added_parties = []
+      end
+
+      def player_basic_info
+        [[:player_party], 'Antman', 'Trainer', 'antman_battler', :bag, 0, 1]
+      end
+
+      def add_party(bank, *args)
+        @added_parties << [bank, args]
+      end
+    end
+  end
+end
+
+module PFM
+  class Pokemon
+    class << self
+      attr_reader :generated_hashes
+    end
+
+    @generated_hashes = []
+
+    def self.generate_from_hash(hash)
+      @generated_hashes << hash
+      { generated_pokemon: hash }
+    end
+  end
+end
+
+class NexusRedStubScene
+  attr_reader :calls
+
+  def initialize
+    @calls = []
+  end
+
+  def call_scene(scene_class, battle_info)
+    @calls << [scene_class, battle_info]
+  end
+end
+
+$scene = NexusRedStubScene.new
+executed_payload = NexusRed::WildBattleLauncher.execute_pending_request(stub_route_1_state)
+raise 'expected stub PSDK runtime available' unless executed_payload['psdk_runtime_available']
+raise 'expected execute status when PSDK runtime available' unless executed_payload['status'] == 'battle_scene_called'
+raise 'expected generated Bulbasaur hash' unless PFM::Pokemon.generated_hashes.last == { id: :bulbasaur, level: 4 }
+raise 'expected Battle Scene called once' unless $scene.calls.length == 1
+raise 'expected Battle Scene class passed' unless $scene.calls.first.first == Battle::Scene
+stub_battle_info = $scene.calls.first.last
+raise 'expected player party added to bank 0' unless stub_battle_info.added_parties.first.first == 0
+raise 'expected wild party added to bank 1' unless stub_battle_info.added_parties.last.first == 1
+raise 'expected executed launch history recorded' unless NexusRed::WildBattleLauncher.launch_history(stub_route_1_state).last == executed_payload
+Object.send(:remove_const, :Battle)
+Object.send(:remove_const, :PFM)
+Object.send(:remove_const, :NexusRedStubScene)
+$scene = nil
 
 route_2_event_state = NexusRed::RuntimeState.build
 NexusRed::StarterSelection.select_partner(route_2_event_state, 'Bulbasaur')

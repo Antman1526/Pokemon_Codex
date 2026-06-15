@@ -19,6 +19,8 @@ Route 1-3 can use `NexusRed::Route1MigrationEvent.trigger`, `NexusRed::Route2Mig
 
 `NexusRed::WildBattleLauncher.launch_pending_request(state)` consumes the pending request and builds the validated wild-battle launch payload. It records launch history and exposes `species_key`, `level`, map id, route id, and source event id. The payload now includes PSDK BattleInfo script lines based on the official scripted battle flow: create `Battle::Logic::BattleInfo`, add the player party, generate a wild `PFM::Pokemon`, add it to enemy bank 1 without trainer metadata, then call `$scene.call_scene(Battle::Scene, bi)`.
 
+When running inside a loaded PSDK runtime, `NexusRed::WildBattleLauncher.execute_pending_request(state)` consumes the same pending request and performs that BattleInfo flow directly. Outside PSDK it remains safe for validation because it returns the launch payload without attempting to call missing engine constants.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
