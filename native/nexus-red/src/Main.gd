@@ -6,6 +6,7 @@ const OakLabScene := preload("res://scenes/world/OakLab.tscn")
 const Route1Scene := preload("res://scenes/world/Route1.tscn")
 const ViridianCityScene := preload("res://scenes/world/ViridianCity.tscn")
 const Route2ForestGateScene := preload("res://scenes/world/Route2ForestGate.tscn")
+const Route3Scene := preload("res://scenes/world/Route3.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -81,8 +82,21 @@ func _show_route_2_forest_gate() -> void:
 	var route_2_gate := Route2ForestGateScene.instantiate()
 	route_2_gate.save_state = save_state
 	route_2_gate.go_to_viridian_city.connect(_on_go_to_viridian_city)
+	route_2_gate.go_to_route_3.connect(_on_go_to_route_3)
 	route_2_gate.start_wild_encounter.connect(_on_start_wild_encounter)
 	_replace_screen(route_2_gate)
+
+
+func _on_go_to_route_3() -> void:
+	_show_route_3()
+
+
+func _show_route_3() -> void:
+	var route_3 := Route3Scene.instantiate()
+	route_3.save_state = save_state
+	route_3.go_to_route_2_forest_gate.connect(_on_go_to_route_2_forest_gate)
+	route_3.start_wild_encounter.connect(_on_start_wild_encounter)
+	_replace_screen(route_3)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:
@@ -118,6 +132,8 @@ func _on_wild_encounter_finished(result: String) -> void:
 func _return_from_wild_encounter(return_scene: String) -> void:
 	if return_scene == "route_2_forest_gate":
 		_show_route_2_forest_gate()
+	elif return_scene == "route_3":
+		_show_route_3()
 	else:
 		_on_go_to_route_1()
 

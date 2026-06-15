@@ -361,6 +361,22 @@ python3 tools/validate_native_playable_migration_triggers.py
 godot --headless --path native/nexus-red --script tests/playable_migration_triggers_test.gd
 ```
 
+### Task 7.17: Add playable Route 3 migration scene
+
+Acceptance:
+
+- Route 2 / Viridian Forest Gate can transition north into Route 3.
+- Route 3 records save-state progress and keeps Red as the active companion.
+- Route 3 can trigger its migration encounter pool, starting with Chespin.
+- Wild encounters that start on Route 3 return to Route 3.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route3_migration_scene.py
+godot --headless --path native/nexus-red --script tests/route3_migration_scene_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

@@ -3,6 +3,7 @@ extends Control
 const EncounterService := preload("res://src/encounter/EncounterService.gd")
 
 signal go_to_viridian_city
+signal go_to_route_3
 signal start_wild_encounter(encounter_data)
 
 var save_state
@@ -22,6 +23,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_route_2_catch_tutorial()
 	if event.is_action_pressed("ui_down"):
 		trigger_route_2_migration_encounter()
+	if event.is_action_pressed("ui_up"):
+		trigger_route_3_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_viridian_city()
 
@@ -114,9 +117,14 @@ func trigger_route_2_migration_encounter() -> void:
 	emit_signal("start_wild_encounter", encounter)
 
 
+func trigger_route_3_entry() -> void:
+	dialogue_label.text = "Red: Route 3 is where the last early migration readings spike. Stay sharp; Pewter is close, and Brock will notice if we rush."
+	emit_signal("go_to_route_3")
+
+
 func return_to_viridian_city() -> void:
 	emit_signal("go_to_viridian_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is Route 2 and the Viridian Forest Gate. The trees are too quiet, and Rocket activity this close to town means somebody is testing the road ahead. Press Z/Enter for the catch tutorial or Down for Route 2 migration."
+	dialogue_label.text = "Red: This is Route 2 and the Viridian Forest Gate. The trees are too quiet, and Rocket activity this close to town means somebody is testing the road ahead. Press Z/Enter for the catch tutorial, Down for Route 2 migration, or Up for Route 3."
