@@ -214,6 +214,8 @@ REQUIRED_MARKERS = (
     "fuchsia_city_arrival_cleared?",
     "complete_safari_zone_anomaly",
     "safari_zone_anomaly_cleared?",
+    "complete_koga_gym_prep",
+    "koga_gym_prep_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1887,6 +1889,40 @@ raise 'expected KantoStory Safari anomaly unlocks Koga prep' unless safari_anoma
 second_safari_anomaly = NexusRed::KantoStory.complete_safari_zone_anomaly(kanto_story_state)
 raise 'expected KantoStory Safari anomaly idempotent guard' unless second_safari_anomaly['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Safari anomaly history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'safari_zone_anomaly' } == 1
+pre_koga_prep = NexusRed::KantoStory.complete_koga_gym_prep(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Koga prep gated before Safari anomaly' unless pre_koga_prep['status'] == 'blocked_missing_safari_zone_anomaly'
+koga_prep = NexusRed::KantoStory.complete_koga_gym_prep(
+  kanto_story_state,
+  location: 'Fuchsia Gym Dojo',
+  area_type: 'gym'
+)
+raise 'expected KantoStory Koga prep clear status' unless koga_prep['status'] == 'cleared'
+raise 'expected KantoStory Koga prep event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('koga_gym_prep')
+raise 'expected KantoStory Koga prep helper true' unless NexusRed::KantoStory.koga_gym_prep_cleared?(kanto_story_state)
+raise 'expected KantoStory Koga prep reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KOGA_GYM_PREP_REACHED')
+raise 'expected KantoStory Koga poison hazard training flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KOGA_POISON_HAZARD_TRAINING')
+raise 'expected KantoStory antidote prep station flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ANTIDOTE_PREP_STATION_UNLOCKED')
+raise 'expected KantoStory Fuchsia gym access flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FUCHSIA_GYM_ACCESS_UNLOCKED')
+raise 'expected KantoStory Clover toxic lure countermeasure flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CLOVER_TOXIC_LURE_COUNTERMEASURE')
+raise 'expected KantoStory Soul Badge battle flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SOUL_BADGE_BATTLE_UNLOCKED')
+raise 'expected KantoStory Red Koga prep guard' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('koga_gym_prep_guard')
+raise 'expected KantoStory Misty hazard tempo drill' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('poison_hazard_tempo_drill')
+raise 'expected KantoStory Brock antidote field care' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('antidote_field_care')
+raise 'expected KantoStory Bill toxic lure countermeasure' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('toxic_lure_countermeasure')
+raise 'expected KantoStory Clover toxic lure countermeasure activity' unless kanto_story_state['faction_progress']['team_clover']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia Gym Dojo' && activity['operation'] == 'toxic_lure_countermeasure_pressure' }
+raise 'expected KantoStory Rocket Koga gym scouting activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia Gym Dojo' && activity['operation'] == 'koga_gym_scouting' }
+raise 'expected KantoStory Clover Rocket Koga prep conflict' unless kanto_story_state['faction_progress']['team_clover']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_rocket' && conflict['location'] == 'Fuchsia Gym Dojo' }
+raise 'expected KantoStory Koga prep story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Koga') && message['text'].include?('Soul Badge') }
+raise 'expected KantoStory Koga prep next hook Soul Badge battle' unless koga_prep['next_hook'] == 'koga_soul_badge_battle'
+raise 'expected KantoStory Koga prep gym leader Koga' unless koga_prep['gym_leader'] == 'Koga'
+raise 'expected KantoStory Koga prep badge Soul Badge' unless koga_prep['badge'] == 'Soul Badge'
+raise 'expected KantoStory Koga prep training hooks' unless koga_prep['training_hooks'].include?('poison_hazard_training') && koga_prep['training_hooks'].include?('antidote_preparation')
+raise 'expected KantoStory Koga prep battle hook' unless koga_prep['battle_hook']['battle_id'] == 'koga_soul_badge_battle'
+raise 'expected KantoStory Koga prep level cap' unless koga_prep['battle_hook']['level_cap'] == 38
+raise 'expected KantoStory Koga prep unlocks Soul Badge battle' unless koga_prep['unlocks'].include?('soul_badge_battle')
+second_koga_prep = NexusRed::KantoStory.complete_koga_gym_prep(kanto_story_state)
+raise 'expected KantoStory Koga prep idempotent guard' unless second_koga_prep['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Koga prep history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'koga_gym_prep' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

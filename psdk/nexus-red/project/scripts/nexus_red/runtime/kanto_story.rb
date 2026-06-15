@@ -165,6 +165,13 @@ module NexusRed
     ROCKET_WARDEN_FILE_EVENT_ID = 'rocket_warden_file_stolen'
     KOGA_HAZARD_PREP_EVENT_ID = 'koga_hazard_prep_unlocked'
     CLOVER_SAFARI_LURE_BATTLE_ID = 'clover_safari_lure_admin'
+    KOGA_GYM_PREP_EVENT_ID = 'koga_gym_prep'
+    KOGA_POISON_HAZARD_TRAINING_EVENT_ID = 'koga_poison_hazard_training'
+    ANTIDOTE_PREP_STATION_EVENT_ID = 'antidote_prep_station_unlocked'
+    FUCHSIA_GYM_ACCESS_EVENT_ID = 'fuchsia_gym_access_unlocked'
+    CLOVER_TOXIC_LURE_COUNTER_EVENT_ID = 'clover_toxic_lure_countermeasure'
+    SOUL_BADGE_BATTLE_EVENT_ID = 'soul_badge_battle_unlocked'
+    KOGA_SOUL_BADGE_BATTLE_ID = 'koga_soul_badge_battle'
 
     module_function
 
@@ -2800,6 +2807,101 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SAFARI_ZONE_ANOMALY_EVENT_ID }
     end
 
+    def complete_koga_gym_prep(state, location: 'Fuchsia Gym Dojo', area_type: 'gym')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_safari_zone_anomaly', 'event_id' => KOGA_GYM_PREP_EVENT_ID } unless safari_zone_anomaly_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => KOGA_GYM_PREP_EVENT_ID } if koga_gym_prep_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_KOGA_GYM_PREP_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_KOGA_POISON_HAZARD_TRAINING')
+      add_story_flag(state, 'FLAG_NEXUS_ANTIDOTE_PREP_STATION_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_FUCHSIA_GYM_ACCESS_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_CLOVER_TOXIC_LURE_COUNTERMEASURE')
+      add_story_flag(state, 'FLAG_NEXUS_SOUL_BADGE_BATTLE_UNLOCKED')
+      mark_cleared_event(story, KOGA_GYM_PREP_EVENT_ID)
+      mark_cleared_event(story, KOGA_POISON_HAZARD_TRAINING_EVENT_ID)
+      mark_cleared_event(story, ANTIDOTE_PREP_STATION_EVENT_ID)
+      mark_cleared_event(story, FUCHSIA_GYM_ACCESS_EVENT_ID)
+      mark_cleared_event(story, CLOVER_TOXIC_LURE_COUNTER_EVENT_ID)
+      mark_cleared_event(story, SOUL_BADGE_BATTLE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_clover',
+        'kanto',
+        location,
+        'toxic_lure_countermeasure_pressure',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'koga_gym_scouting',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_clover',
+        'team_rocket',
+        location,
+        'Clover tries to turn the Safari lure evidence into poison-field leverage while Rocket scouts Koga for Giovanni',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'koga_gym_prep_guard',
+        location: location,
+        summary: 'Red stays at Antman\'s side through Koga prep and calls out the trap rhythm before the gym battle.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'poison_hazard_tempo_drill',
+        location: location,
+        summary: 'Misty drills switch timing, antidote discipline, and water pressure against poison attrition.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'antidote_field_care',
+        location: location,
+        summary: 'Brock turns the prep room into a field-care station so poison does not become cheap punishment.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'toxic_lure_countermeasure',
+        location: location,
+        summary: 'Bill converts the Clover lure readings into a countermeasure Koga can test inside the dojo.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Koga opened Soul Badge prep after the Safari anomaly; Red, Misty, Brock, and Bill are helping Antman counter poison hazards before Rocket can exploit Fuchsia.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = koga_gym_prep_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def koga_gym_prep_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == KOGA_GYM_PREP_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3422,6 +3524,35 @@ module NexusRed
         },
         'unlocks' => %w[koga_gym_prep safari_rotation_debug],
         'next_hook' => 'koga_gym_prep'
+      }
+    end
+
+    def koga_gym_prep_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => KOGA_GYM_PREP_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          KOGA_POISON_HAZARD_TRAINING_EVENT_ID,
+          ANTIDOTE_PREP_STATION_EVENT_ID,
+          FUCHSIA_GYM_ACCESS_EVENT_ID,
+          CLOVER_TOXIC_LURE_COUNTER_EVENT_ID,
+          SOUL_BADGE_BATTLE_EVENT_ID
+        ],
+        'factions' => %w[team_clover team_rocket],
+        'gym_leader' => 'Koga',
+        'badge' => 'Soul Badge',
+        'training_hooks' => %w[poison_hazard_training antidote_preparation evasion_counterplay],
+        'battle_hook' => {
+          'battle_id' => KOGA_SOUL_BADGE_BATTLE_ID,
+          'battle_type' => 'gym_leader',
+          'location' => 'fuchsia_gym',
+          'level_cap' => 38,
+          'opponent_species' => %w[Koffing Muk Crobat Weezing],
+          'companion_support' => 'companions_train_only_no_gym_assist'
+        },
+        'unlocks' => %w[fuchsia_gym_access soul_badge_battle antidote_prep_station],
+        'next_hook' => 'koga_soul_badge_battle'
       }
     end
 
