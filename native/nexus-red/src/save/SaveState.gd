@@ -95,6 +95,12 @@ func start_new_game(name: String) -> void:
 		"mt_moon_gold_dust_right_battle_started": false,
 		"mt_moon_gold_dust_right_battle_finished": false,
 		"gold_dust_helix_claim_blocked": false,
+		"mt_moon_fossil_decision_reached": false,
+		"mt_moon_fossil_choice_made": false,
+		"dome_fossil_chosen": false,
+		"helix_fossil_chosen": false,
+		"nexus_fossil_deeper_signal_seen": false,
+		"worldlink_mt_moon_fossil_decision_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -240,6 +246,35 @@ func queue_mt_moon_interior_split_batch() -> void:
 		"wl_rocket_mt_moon_left_path",
 		"wl_gold_dust_mt_moon_right_path",
 		"wl_fossil_choice_setup",
+	])
+
+
+func enter_mt_moon_fossil_decision() -> void:
+	current_scene = "mt_moon_fossil_decision"
+	active_companion = "red"
+	set_flag("mt_moon_fossil_decision_reached", true)
+	set_flag("nexus_fossil_deeper_signal_seen", true)
+	queue_mt_moon_fossil_decision_batch()
+
+
+func choose_mt_moon_fossil(fossil_id: String) -> void:
+	if bool(story_flags.get("mt_moon_fossil_choice_made", false)):
+		return
+	set_flag("mt_moon_fossil_choice_made", true)
+	if fossil_id == "dome":
+		set_flag("dome_fossil_chosen", true)
+		set_flag("helix_fossil_chosen", false)
+	elif fossil_id == "helix":
+		set_flag("helix_fossil_chosen", true)
+		set_flag("dome_fossil_chosen", false)
+	queue_worldlink_id("wl_mt_moon_fossil_choice_made")
+
+
+func queue_mt_moon_fossil_decision_batch() -> void:
+	set_flag("worldlink_mt_moon_fossil_decision_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_mt_moon_fossil_decision_reached",
+		"wl_nexus_fossil_deeper_signal",
 	])
 
 

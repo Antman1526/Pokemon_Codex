@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_mt_moon_entrance
+signal go_to_mt_moon_fossil_decision
 signal start_battle_placeholder(battle_id)
 
 var save_state
@@ -21,6 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_rocket_left_path_battle()
 	if event.is_action_pressed("ui_right"):
 		trigger_gold_dust_right_path_battle()
+	if event.is_action_pressed("ui_down"):
+		trigger_fossil_decision_scene()
 	if event.is_action_pressed("cancel"):
 		return_to_mt_moon_entrance()
 
@@ -132,9 +135,20 @@ func trigger_gold_dust_right_path_battle() -> void:
 	emit_signal("start_battle_placeholder", "mt_moon_gold_dust_right_path")
 
 
+func trigger_fossil_decision_scene() -> void:
+	if save_state and (
+		not bool(save_state.story_flags.get("mt_moon_rocket_left_battle_finished", false))
+		or not bool(save_state.story_flags.get("mt_moon_gold_dust_right_battle_finished", false))
+	):
+		dialogue_label.text = "Red: We need to pressure both factions before touching the fossil table."
+		return
+	dialogue_label.text = "Red: Dome and Helix are stable enough to move. The Nexus Fossil signal is deeper, and it is still calling."
+	emit_signal("go_to_mt_moon_fossil_decision")
+
+
 func return_to_mt_moon_entrance() -> void:
 	emit_signal("go_to_mt_moon_entrance")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is the first split. Press Z/Enter to scout Rocket, Gold Dust, and the fossil table, Left for the Rocket runner, Right for Gold Dust, or X/Esc to return to the Mt. Moon entrance."
+	dialogue_label.text = "Red: This is the first split. Press Z/Enter to scout, Left for Rocket, Right for Gold Dust, Down for the fossil table, or X/Esc to return to the Mt. Moon entrance."

@@ -1,0 +1,24 @@
+{
+  "id": "mt_moon_fossil_decision_batch",
+  "name": "Mt. Moon Fossil Decision Batch",
+  "trigger": "mt_moon_fossil_decision_after_faction_pressure",
+  "feed": [
+    {
+      "id": "wl_mt_moon_fossil_decision_reached",
+      "category": "story",
+      "text": "Antman and Red reached the Mt. Moon fossil table after forcing Rocket and Gold Dust away from the split paths."
+    },
+    {
+      "id": "wl_mt_moon_fossil_choice_made",
+      "category": "story",
+      "artifact": "dome_or_helix",
+      "text": "Antman secured one stable Mt. Moon fossil before the cave signal shifted again."
+    },
+    {
+      "id": "wl_nexus_fossil_deeper_signal",
+      "category": "mystery",
+      "artifact": "nexus_fossil",
+      "text": "The Nexus Fossil was not on the table. Its signal dropped deeper below Mt. Moon after the Dome and Helix readings stabilized."
+    }
+  ]
+}

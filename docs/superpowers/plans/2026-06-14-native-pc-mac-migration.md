@@ -510,6 +510,23 @@ python3 tools/validate_native_mt_moon_gold_dust_battle.py
 godot --headless --path native/nexus-red --script tests/mt_moon_gold_dust_battle_test.gd
 ```
 
+### Task 7.26: Add Mt. Moon fossil decision scene
+
+Acceptance:
+
+- Mt. Moon Interior 1 can transition to a fossil decision scene only after both faction battles are finished.
+- The decision scene presents Dome Fossil and Helix Fossil as the immediate choice.
+- Choosing one fossil records a persistent single-choice flag and does not choose the other fossil.
+- The Nexus Fossil remains unresolved as a deeper cave signal.
+- Save state and WorldLink record fossil decision reached, fossil choice made, and the deeper Nexus signal.
+
+Verification:
+
+```sh
+python3 tools/validate_native_mt_moon_fossil_decision.py
+godot --headless --path native/nexus-red --script tests/mt_moon_fossil_decision_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
