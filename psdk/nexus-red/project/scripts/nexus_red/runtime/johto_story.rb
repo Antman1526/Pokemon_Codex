@@ -218,6 +218,19 @@ module NexusRed
     MOONLIGHT_EXECUTIVE_VOICE_LOOP_EVENT_ID = 'moonlight_executive_voice_loop'
     NEXUS_ORDER_EXECUTIVE_SIGNAL_LATTICE_EVENT_ID = 'nexus_order_executive_signal_lattice_hidden'
     RADIO_TOWER_TRANSMITTER_SHUTDOWN_UNLOCKED_EVENT_ID = 'radio_tower_transmitter_shutdown_unlocked'
+    RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID = 'radio_tower_transmitter_shutdown'
+    GOLDENROD_BROADCAST_RESTORED_EVENT_ID = 'goldenrod_broadcast_restored'
+    RED_TRANSMITTER_SHUTDOWN_EVENT_ID = 'red_transmitter_shutdown'
+    BLUE_ROCKET_RETREAT_BLOCK_EVENT_ID = 'blue_rocket_retreat_block'
+    BILL_TOWER_SIGNAL_PURGE_EVENT_ID = 'bill_tower_signal_purge'
+    SILVER_ROCKET_RETREAT_CHASE_EVENT_ID = 'silver_rocket_retreat_chase'
+    AVA_GOLDENROD_RECOVERY_BULLETIN_EVENT_ID = 'ava_goldenrod_recovery_bulletin'
+    ROCKET_JOHTO_BROADCAST_COLLAPSE_EVENT_ID = 'rocket_johto_broadcast_collapse'
+    GOLD_DUST_PAYOUT_CACHE_SEIZED_EVENT_ID = 'gold_dust_payout_cache_seized'
+    TEAM_GAS_COOLANT_VALVE_STABILIZED_EVENT_ID = 'team_gas_coolant_valve_stabilized'
+    MOONLIGHT_VOICE_LOOP_COLLAPSE_EVENT_ID = 'moonlight_voice_loop_collapse'
+    NEXUS_ORDER_TOWER_LATTICE_ECHO_EVENT_ID = 'nexus_order_tower_lattice_echo_hidden'
+    ECRUTEAK_CITY_PATH_UNLOCKED_EVENT_ID = 'ecruteak_city_path_unlocked'
 
     module_function
 
@@ -3489,6 +3502,202 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_executive_signal_lattice_unrevealed',
         'unlocks' => %w[radio_tower_transmitter_shutdown admin_command_codes executive_floor_digest_after_exit],
         'next_hook' => 'radio_tower_transmitter_shutdown'
+      }
+    end
+
+    def complete_radio_tower_transmitter_shutdown(state, location: 'Goldenrod Radio Tower Transmitter Hall', result: 'won', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_radio_tower_executive_floor', 'event_id' => RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID } unless radio_tower_executive_floor_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID } if radio_tower_transmitter_shutdown_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_TRANSMITTER_SHUTDOWN')
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_BROADCAST_RESTORED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_TRANSMITTER_SHUTDOWN')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_ROCKET_RETREAT_BLOCK')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_TOWER_SIGNAL_PURGE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_ROCKET_RETREAT_CHASE')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_GOLDENROD_RECOVERY_BULLETIN')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_JOHTO_BROADCAST_COLLAPSE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_PAYOUT_CACHE_SEIZED')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_COOLANT_VALVE_STABILIZED')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_VOICE_LOOP_COLLAPSE')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_TOWER_LATTICE_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_ECRUTEAK_CITY_PATH_UNLOCKED')
+
+      [
+        RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID,
+        GOLDENROD_BROADCAST_RESTORED_EVENT_ID,
+        RED_TRANSMITTER_SHUTDOWN_EVENT_ID,
+        BLUE_ROCKET_RETREAT_BLOCK_EVENT_ID,
+        BILL_TOWER_SIGNAL_PURGE_EVENT_ID,
+        SILVER_ROCKET_RETREAT_CHASE_EVENT_ID,
+        AVA_GOLDENROD_RECOVERY_BULLETIN_EVENT_ID,
+        ROCKET_JOHTO_BROADCAST_COLLAPSE_EVENT_ID,
+        GOLD_DUST_PAYOUT_CACHE_SEIZED_EVENT_ID,
+        TEAM_GAS_COOLANT_VALVE_STABILIZED_EVENT_ID,
+        MOONLIGHT_VOICE_LOOP_COLLAPSE_EVENT_ID,
+        NEXUS_ORDER_TOWER_LATTICE_ECHO_EVENT_ID,
+        ECRUTEAK_CITY_PATH_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'transmitter_shutdown',
+        location: location,
+        summary: 'Red holds the transmitter room door while Antman shuts down Rocket command traffic and lets Goldenrod hear its own signal again.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'blue',
+        'rocket_retreat_block',
+        location: 'Goldenrod Radio Tower Stairwell',
+        summary: 'Blue blocks Rocket retreat through the stairwell, forcing the last admins to abandon the tower instead of regrouping underground.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'tower_signal_purge',
+        location: location,
+        summary: 'Bill purges the command loop from the transmitter and finds a clean echo pointing east toward Ecruteak and older tower signals.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Route 37 / Ecruteak Road',
+        'Silver chased the Rocket retreat toward Ecruteak after the Radio Tower broadcast collapsed.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Goldenrod Radio Tower News Desk',
+        'Ava posted a Goldenrod recovery bulletin confirming the Radio Tower is clean and the Ecruteak road is safe enough to reopen.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'johto_broadcast_collapse',
+        threat_delta: -2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Radio Tower Executive Accounts',
+        'payout_cache_seized',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Radio Tower Transmitter Hall',
+        'coolant_valve_stabilized',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower Broadcast Booth',
+        'voice_loop_collapse',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower Signal Lattice',
+        'tower_lattice_echo_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket command traffic collapses into Moonlight voice loops as the transmitter is purged.',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gas',
+        location,
+        'Rocket tries to overload the transmitter while Team Gas coolant valves are forced back into stable pressure.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_17_ecruteak_burned_tower'
+      event = radio_tower_transmitter_shutdown_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Goldenrod Radio Tower is clean, Rocket is retreating, and the recovered signal points Antman and Red toward Ecruteak.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def radio_tower_transmitter_shutdown_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID }
+    end
+
+    def radio_tower_transmitter_shutdown_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => RADIO_TOWER_TRANSMITTER_SHUTDOWN_EVENT_ID,
+        'battle_id' => 'radio_tower_transmitter_shutdown',
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_17_ecruteak_burned_tower',
+        'result' => result.to_s,
+        'route_chain' => ['Radio Tower Transmitter Hall', 'Goldenrod Recovery', 'Route 37 / Ecruteak Road'],
+        'companions' => %w[red blue bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          GOLDENROD_BROADCAST_RESTORED_EVENT_ID,
+          RED_TRANSMITTER_SHUTDOWN_EVENT_ID,
+          BLUE_ROCKET_RETREAT_BLOCK_EVENT_ID,
+          BILL_TOWER_SIGNAL_PURGE_EVENT_ID,
+          SILVER_ROCKET_RETREAT_CHASE_EVENT_ID,
+          AVA_GOLDENROD_RECOVERY_BULLETIN_EVENT_ID,
+          ROCKET_JOHTO_BROADCAST_COLLAPSE_EVENT_ID,
+          GOLD_DUST_PAYOUT_CACHE_SEIZED_EVENT_ID,
+          TEAM_GAS_COOLANT_VALVE_STABILIZED_EVENT_ID,
+          MOONLIGHT_VOICE_LOOP_COLLAPSE_EVENT_ID,
+          NEXUS_ORDER_TOWER_LATTICE_ECHO_EVENT_ID,
+          ECRUTEAK_CITY_PATH_UNLOCKED_EVENT_ID
+        ],
+        'recovered_items' => ['Admin Command Codes', 'Tower Clear Broadcast', 'Ecruteak Signal Echo'],
+        'hidden_meta_signal' => 'nexus_order_tower_lattice_echo_unrevealed',
+        'unlocks' => %w[ecruteak_city_path goldenrod_recovery_services radio_tower_rematch_board tower_clear_digest_after_exit],
+        'next_hook' => 'ecruteak_city_path'
       }
     end
   end

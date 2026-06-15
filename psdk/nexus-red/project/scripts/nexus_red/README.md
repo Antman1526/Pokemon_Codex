@@ -187,6 +187,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_radio_tower_executive_floor(state, location:, result:, area_type:)` records the Rocket admin gauntlet on the Goldenrod Radio Tower executive floor. Red and Blue tag beside Antman outside gym restrictions, Bill traces admin command codes toward the transmitter room, Silver challenges a Rocket admin, Ava preserves the executive signal archive, Rocket broadcast orders clash with Gold Dust payout ledgers and Team Gas/Moonlight transmitter instability, Nexus Order remains hidden in the executive signal lattice, and the method opens `radio_tower_transmitter_shutdown`.
 
+`NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(state, location:, result:, area_type:)` closes the Goldenrod Radio Tower crisis after the executive-floor gauntlet. Antman, Red, and Blue shut down Rocket command traffic, Bill purges the tower signal, Goldenrod's clean broadcast returns, Silver chases Rocket retreat toward Ecruteak, Ava posts the recovery bulletin, Gold Dust payout caches are seized, Team Gas stabilizes transmitter coolant, Moonlight voice loops collapse, Nexus Order remains hidden as a tower-lattice echo, and the method opens `ecruteak_city_path`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

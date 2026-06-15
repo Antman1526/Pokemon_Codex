@@ -304,6 +304,8 @@ REQUIRED_MARKERS = (
     "radio_tower_director_rescue_cleared?",
     "complete_radio_tower_executive_floor",
     "radio_tower_executive_floor_cleared?",
+    "complete_radio_tower_transmitter_shutdown",
+    "radio_tower_transmitter_shutdown_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3833,6 +3835,70 @@ raise 'expected JohtoStory executive floor factions' unless %w[team_rocket team_
 second_executive_floor = NexusRed::JohtoStory.complete_radio_tower_executive_floor(kanto_story_state)
 raise 'expected JohtoStory executive floor idempotent guard' unless second_executive_floor['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate executive floor history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_executive_floor' } == 1
+pre_transmitter_shutdown = NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory transmitter shutdown gated before Johto unlock' unless pre_transmitter_shutdown['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_executive_floor = NexusRed::RuntimeState.build
+johto_before_executive_floor['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_goldenrod_road(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_whitney_plain_badge_prep(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_whitney_plain_badge_battle(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_goldenrod_radio_tower_shadow(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_radio_tower_lobby_battle(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_goldenrod_underground_warehouse(johto_before_executive_floor)
+NexusRed::JohtoStory.complete_radio_tower_director_rescue(johto_before_executive_floor)
+raise 'expected JohtoStory transmitter shutdown gated before executive floor' unless NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(johto_before_executive_floor)['status'] == 'blocked_missing_radio_tower_executive_floor'
+transmitter_shutdown = NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(
+  kanto_story_state,
+  location: 'Goldenrod Radio Tower Transmitter Hall',
+  result: 'won',
+  area_type: 'villain_hideout'
+)
+raise 'expected JohtoStory transmitter shutdown clear status' unless transmitter_shutdown['status'] == 'cleared'
+raise 'expected JohtoStory transmitter shutdown event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('radio_tower_transmitter_shutdown')
+raise 'expected JohtoStory transmitter shutdown helper true' unless NexusRed::JohtoStory.radio_tower_transmitter_shutdown_cleared?(kanto_story_state)
+raise 'expected JohtoStory broadcast restored event' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_broadcast_restored')
+raise 'expected JohtoStory Ecruteak path unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('ecruteak_city_path_unlocked')
+raise 'expected JohtoStory transmitter shutdown flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RADIO_TOWER_TRANSMITTER_SHUTDOWN')
+raise 'expected JohtoStory broadcast restored flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_BROADCAST_RESTORED')
+raise 'expected JohtoStory Ecruteak path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ECRUTEAK_CITY_PATH_UNLOCKED')
+raise 'expected JohtoStory current act Ecruteak' unless kanto_story_state['johto_story']['current_act'] == 'act_17_ecruteak_burned_tower'
+raise 'expected JohtoStory Red transmitter shutdown scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('transmitter_shutdown')
+raise 'expected JohtoStory Blue Rocket retreat block scene' unless kanto_story_state['companion_progress']['blue']['scene_flags'].include?('rocket_retreat_block')
+raise 'expected JohtoStory Bill signal purge scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('tower_signal_purge')
+raise 'expected JohtoStory Silver Rocket retreat chase activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Rocket retreat') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Ecruteak')
+raise 'expected JohtoStory Ava recovery bulletin activity' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('recovery bulletin') && kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Goldenrod')
+raise 'expected JohtoStory Rocket broadcast collapse activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'johto_broadcast_collapse' && activity['location'] == 'Goldenrod Radio Tower Transmitter Hall' }
+raise 'expected JohtoStory Gold Dust payout cache seized activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'payout_cache_seized' }
+raise 'expected JohtoStory Team Gas coolant valve activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'coolant_valve_stabilized' }
+raise 'expected JohtoStory Moonlight voice loop collapse activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'voice_loop_collapse' }
+raise 'expected JohtoStory Nexus Order tower lattice echo activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'tower_lattice_echo_hidden' }
+raise 'expected JohtoStory Rocket Moonlight final tower conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Goldenrod Radio Tower Transmitter Hall' }
+raise 'expected JohtoStory Rocket Team Gas transmitter conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gas' && conflict['location'] == 'Goldenrod Radio Tower Transmitter Hall' }
+raise 'expected JohtoStory Nexus Order still hidden after transmitter shutdown' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory transmitter shutdown story alert paused in hideout' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Goldenrod') && message['text'].include?('Radio Tower') && message['text'].include?('Ecruteak') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory transmitter shutdown route chain' unless transmitter_shutdown['route_chain'] == ['Radio Tower Transmitter Hall', 'Goldenrod Recovery', 'Route 37 / Ecruteak Road']
+raise 'expected JohtoStory transmitter shutdown hidden meta signal' unless transmitter_shutdown['hidden_meta_signal'] == 'nexus_order_tower_lattice_echo_unrevealed'
+raise 'expected JohtoStory transmitter shutdown battle id' unless transmitter_shutdown['battle_id'] == 'radio_tower_transmitter_shutdown'
+raise 'expected JohtoStory transmitter shutdown result' unless transmitter_shutdown['result'] == 'won'
+raise 'expected JohtoStory transmitter shutdown recovered command codes' unless transmitter_shutdown['recovered_items'].include?('Admin Command Codes') && transmitter_shutdown['recovered_items'].include?('Tower Clear Broadcast')
+raise 'expected JohtoStory transmitter shutdown unlocks Ecruteak' unless transmitter_shutdown['unlocks'].include?('ecruteak_city_path') && transmitter_shutdown['unlocks'].include?('goldenrod_recovery_services')
+raise 'expected JohtoStory transmitter shutdown next hook Ecruteak' unless transmitter_shutdown['next_hook'] == 'ecruteak_city_path'
+raise 'expected JohtoStory transmitter shutdown companions' unless %w[red blue bill].all? { |companion| transmitter_shutdown['companions'].include?(companion) }
+raise 'expected JohtoStory transmitter shutdown rivals' unless %w[ava silver].all? { |rival| transmitter_shutdown['rivals'].include?(rival) }
+raise 'expected JohtoStory transmitter shutdown factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| transmitter_shutdown['factions'].include?(faction) }
+second_transmitter_shutdown = NexusRed::JohtoStory.complete_radio_tower_transmitter_shutdown(kanto_story_state)
+raise 'expected JohtoStory transmitter shutdown idempotent guard' unless second_transmitter_shutdown['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate transmitter shutdown history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'radio_tower_transmitter_shutdown' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
