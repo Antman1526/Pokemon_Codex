@@ -81,6 +81,7 @@ python3 tools/validate_native_vermilion_city_arrival.py
 python3 tools/validate_native_ss_anne_ticket_office.py
 python3 tools/validate_native_ss_anne_boarding.py
 python3 tools/validate_native_ss_anne_blue_battle.py
+python3 tools/validate_native_ss_anne_cargo_hold.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -119,6 +120,7 @@ godot --headless --path native/nexus-red --script tests/vermilion_city_arrival_t
 godot --headless --path native/nexus-red --script tests/ss_anne_ticket_office_test.gd
 godot --headless --path native/nexus-red --script tests/ss_anne_boarding_test.gd
 godot --headless --path native/nexus-red --script tests/ss_anne_blue_battle_test.gd
+godot --headless --path native/nexus-red --script tests/ss_anne_cargo_hold_test.gd
 ```
 
 ## Legal Rule

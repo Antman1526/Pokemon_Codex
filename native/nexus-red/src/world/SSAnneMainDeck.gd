@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_ss_anne_ticket_office
+signal go_to_ss_anne_cargo_hold
 signal start_battle_placeholder(battle_id)
 
 var save_state
@@ -19,6 +20,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_deck_boarding_scene()
 	if event.is_action_pressed("ui_right"):
 		trigger_blue_ship_battle()
+	if event.is_action_pressed("ui_down"):
+		trigger_cargo_hold_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_ticket_office()
 
@@ -118,9 +121,16 @@ func trigger_blue_ship_battle() -> void:
 	emit_signal("start_battle_placeholder", "blue_ss_anne")
 
 
+func trigger_cargo_hold_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("blue_ss_anne_battle_finished", false)):
+		dialogue_label.text = "Red: Handle Blue first. He saw Rocket cargo movement, and he will not stop blocking the main deck until Antman answers him."
+		return
+	emit_signal("go_to_ss_anne_cargo_hold")
+
+
 func return_to_ticket_office() -> void:
 	emit_signal("go_to_ss_anne_ticket_office")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Stay sharp on the S.S. Anne Main Deck. Press Z/Enter to scout with Red, Misty, and Bill, Right to answer Blue's challenge, or X/Esc to return to the ticket office."
+	dialogue_label.text = "Red: Stay sharp on the S.S. Anne Main Deck. Press Z/Enter to scout with Red, Misty, and Bill, Right to answer Blue's challenge, Down for the Cargo Hold, or X/Esc to return to the ticket office."

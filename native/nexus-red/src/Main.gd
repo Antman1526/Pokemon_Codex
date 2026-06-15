@@ -21,6 +21,7 @@ const Route5UndergroundPathScene := preload("res://scenes/world/Route5Undergroun
 const VermilionCityScene := preload("res://scenes/world/VermilionCity.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
+const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -284,8 +285,20 @@ func _show_ss_anne_main_deck() -> void:
 	var deck := SSAnneMainDeckScene.instantiate()
 	deck.save_state = save_state
 	deck.go_to_ss_anne_ticket_office.connect(_on_go_to_ss_anne_ticket_office)
+	deck.go_to_ss_anne_cargo_hold.connect(_on_go_to_ss_anne_cargo_hold)
 	deck.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(deck)
+
+
+func _on_go_to_ss_anne_cargo_hold() -> void:
+	_show_ss_anne_cargo_hold()
+
+
+func _show_ss_anne_cargo_hold() -> void:
+	var cargo := SSAnneCargoHoldScene.instantiate()
+	cargo.save_state = save_state
+	cargo.go_to_ss_anne_main_deck.connect(_on_go_to_ss_anne_main_deck)
+	_replace_screen(cargo)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

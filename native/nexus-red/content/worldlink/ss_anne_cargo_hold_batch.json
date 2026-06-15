@@ -1,0 +1,41 @@
+{
+  "id": "ss_anne_cargo_hold_batch",
+  "title": "S.S. Anne Cargo Hold",
+  "feed": [
+    {
+      "id": "wl_ss_anne_cargo_hold_reached",
+      "type": "story",
+      "text": "Antman, Red, Misty, and Bill entered the S.S. Anne cargo hold after Blue's battle cleared the main deck."
+    },
+    {
+      "id": "wl_rocket_cargo_manifest_recovered",
+      "type": "faction",
+      "text": "Red recovered a Rocket cargo manifest listing false passenger names and off-book crates."
+    },
+    {
+      "id": "wl_nexus_order_crate_symbol_seen",
+      "type": "nexus",
+      "text": "Bill found a hidden Nexus Order symbol on one crate, implying Rocket is not the only force using the ship."
+    },
+    {
+      "id": "wl_bill_cargo_decode_seen",
+      "type": "companion",
+      "text": "Bill decoded the cargo timestamps and matched them to the earlier WorldLink network pulse."
+    },
+    {
+      "id": "wl_misty_lower_deck_waterline_seen",
+      "type": "companion",
+      "text": "Misty noticed the lower-deck waterline is unstable, as if something heavy was moved recently."
+    },
+    {
+      "id": "wl_red_cargo_hold_guard_seen",
+      "type": "companion",
+      "text": "Red guarded the cargo stairs so Antman could search without Rocket trapping the team below deck."
+    },
+    {
+      "id": "wl_ss_anne_captain_path_unlocked",
+      "type": "story",
+      "text": "The cargo manifest points toward the Captain's cabin and the Trail Cutter prototype."
+    }
+  ]
+}

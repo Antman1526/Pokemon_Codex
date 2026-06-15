@@ -742,6 +742,24 @@ python3 tools/validate_native_ss_anne_blue_battle.py
 godot --headless --path native/nexus-red --script tests/ss_anne_blue_battle_test.gd
 ```
 
+### Task 7.39: Add S.S. Anne Rocket cargo hold investigation
+
+Acceptance:
+
+- The S.S. Anne main deck keeps the cargo hold locked until Blue's ship battle is complete.
+- After Blue's ship battle, the main deck can transition to a playable S.S. Anne cargo hold scene.
+- The cargo hold scene records Red guarding the stairs, Misty reading the lower-deck waterline, Bill decoding cargo data, Rocket cargo manifest recovery, and the first hidden Nexus Order crate symbol.
+- Save state and WorldLink record cargo hold reached, Rocket cargo manifest recovered, Nexus Order crate symbol seen, Bill cargo decode, Misty's waterline clue, Red's guard beat, and Captain path unlocked.
+- WorldLink checklist adds cargo hold entry, Rocket manifest, Nexus Order crate symbol, and Captain path milestones.
+- The slice sets up the next Captain/Trail Cutter or Rocket cargo battle payoff without implementing it yet.
+
+Verification:
+
+```sh
+python3 tools/validate_native_ss_anne_cargo_hold.py
+godot --headless --path native/nexus-red --script tests/ss_anne_cargo_hold_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

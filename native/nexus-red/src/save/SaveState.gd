@@ -161,6 +161,14 @@ func start_new_game(name: String) -> void:
 		"blue_ss_anne_battle_finished": false,
 		"blue_ss_anne_rival_respect_seen": false,
 		"worldlink_ss_anne_blue_battle_batch_queued": false,
+		"ss_anne_cargo_hold_reached": false,
+		"rocket_cargo_manifest_recovered": false,
+		"nexus_order_crate_symbol_seen": false,
+		"bill_cargo_decode_seen": false,
+		"misty_lower_deck_waterline_seen": false,
+		"red_cargo_hold_guard_seen": false,
+		"ss_anne_captain_path_unlocked": false,
+		"worldlink_ss_anne_cargo_hold_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -563,6 +571,37 @@ func queue_ss_anne_blue_battle_batch() -> void:
 		"wl_blue_ss_anne_battle_started",
 		"wl_blue_ss_anne_battle_finished",
 		"wl_blue_ss_anne_rival_respect",
+	])
+
+
+func enter_ss_anne_cargo_hold() -> void:
+	current_scene = "ss_anne_cargo_hold"
+	active_companion = "red"
+	set_flag("ss_anne_cargo_hold_reached", true)
+	queue_worldlink_id("wl_ss_anne_cargo_hold_reached")
+
+
+func record_ss_anne_cargo_hold_investigation() -> void:
+	active_companion = "red"
+	set_flag("rocket_cargo_manifest_recovered", true)
+	set_flag("nexus_order_crate_symbol_seen", true)
+	set_flag("bill_cargo_decode_seen", true)
+	set_flag("misty_lower_deck_waterline_seen", true)
+	set_flag("red_cargo_hold_guard_seen", true)
+	set_flag("ss_anne_captain_path_unlocked", true)
+	queue_ss_anne_cargo_hold_batch()
+
+
+func queue_ss_anne_cargo_hold_batch() -> void:
+	set_flag("worldlink_ss_anne_cargo_hold_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_ss_anne_cargo_hold_reached",
+		"wl_rocket_cargo_manifest_recovered",
+		"wl_nexus_order_crate_symbol_seen",
+		"wl_bill_cargo_decode_seen",
+		"wl_misty_lower_deck_waterline_seen",
+		"wl_red_cargo_hold_guard_seen",
+		"wl_ss_anne_captain_path_unlocked",
 	])
 
 
