@@ -44,38 +44,57 @@ require './scripts/nexus_red/000_seed_loader'
 all = NexusRed::SeedData.all
 raise 'expected 7 registries' unless all.length == 7
 raise 'expected 39 selectable partners' unless NexusRed::SeedData.starter_selector['selectable_partners'].length == 39
+raise 'expected helper 39 starter species' unless NexusRed::SeedData.starter_species.length == 39
+raise 'expected Bulbasaur first starter helper' unless NexusRed::SeedData.starter_species.first == 'Bulbasaur'
+raise 'expected Ralts final starter helper' unless NexusRed::SeedData.starter_species.last == 'Ralts'
+raise 'expected Blue counter helper for Bulbasaur' unless NexusRed::SeedData.blue_counter_for('Bulbasaur') == 'Charmander'
 
 route_targets = NexusRed::SeedData.early_encounters['route_targets']
 raise 'expected 3 early route targets' unless route_targets.length == 3
 route_targets.each do |route_id, route|
   raise "#{route_id} expected 13 encounters" unless route['encounters'].length == 13
 end
+raise 'expected route_1 helper encounters' unless NexusRed::SeedData.encounters_for_route('route_1').length == 13
+raise 'expected route_3 helper to include Kubfu' unless NexusRed::SeedData.encounters_for_route('route_3').any? { |encounter| encounter['species'] == 'Kubfu' }
 
 regions = NexusRed::SeedData.regions['region_unlocks'].map { |region| region['region_id'] }
 raise 'expected Kanto first' unless regions.first == 'kanto'
 raise 'expected Nexus Island final' unless regions.last == 'nexus_island'
 raise 'expected 10 regions' unless regions.length == 10
+raise 'expected region_order helper' unless NexusRed::SeedData.region_order == regions
+raise 'expected final_region helper' unless NexusRed::SeedData.final_region == 'nexus_island'
 
 factions = NexusRed::SeedData.factions
 raise 'expected Team Rocket primary antagonist' unless factions['primary_antagonist'] == 'team_rocket'
 raise 'expected Nexus Order hidden meta villain' unless factions['hidden_meta_villain'] == 'nexus_order'
 raise 'expected 9 custom factions' unless factions['factions'].length == 9
+raise 'expected primary_faction helper' unless NexusRed::SeedData.primary_faction == 'team_rocket'
+raise 'expected hidden_meta_villain helper' unless NexusRed::SeedData.hidden_meta_villain == 'nexus_order'
 
 companions = NexusRed::SeedData.companions
 raise 'expected Red primary companion' unless companions['primary_companion'] == 'red'
 raise 'expected 7 companions' unless companions['companions'].length == 7
+raise 'expected red_primary_companion? helper' unless NexusRed::SeedData.red_primary_companion?
+raise 'expected companion_ids helper' unless NexusRed::SeedData.companion_ids == %w[red ash misty brock blue may bill]
 
 rivals = NexusRed::SeedData.rivals_worldlink
 raise 'expected 10 rivals' unless rivals['rivals'].length == 10
 raise 'expected Blue/Ava/Dax starting rivals' unless rivals['starting_rivals'] == %w[blue ava dax]
+raise 'expected rival_ids helper' unless NexusRed::SeedData.rival_ids.length == 10
+raise 'expected starting_rival_ids helper' unless NexusRed::SeedData.starting_rival_ids == %w[blue ava dax]
 pause = rivals['worldlink_settings']['delivery_rules']['pause_and_digest']
 raise 'expected cave WorldLink pause' unless pause.include?('cave')
 raise 'expected villain hideout WorldLink pause' unless pause.include?('villain_hideout')
+raise 'expected worldlink_paused_area? cave helper' unless NexusRed::SeedData.worldlink_paused_area?('cave')
+raise 'expected worldlink_paused_area? safe route false' if NexusRed::SeedData.worldlink_paused_area?('route')
 
 systems = NexusRed::SeedData.gameplay_systems
 raise 'expected Gen 9 species scope' unless systems['pokedex_and_availability']['species_scope'] == 'through_generation_9'
 raise 'expected all base species before final boss' unless systems['pokedex_and_availability']['all_base_species_before_final_boss'] == true
 raise 'expected starting money 100000' unless systems['pokemon_center_and_mart']['mart_rules']['starting_money'] == 100000
+raise 'expected all_base_species_before_final_boss? helper' unless NexusRed::SeedData.all_base_species_before_final_boss?
+raise 'expected starting_money helper' unless NexusRed::SeedData.starting_money == 100000
+raise 'expected gameplay_option_available? level caps helper' unless NexusRed::SeedData.gameplay_option_available?('level_caps')
 
 state = NexusRed::RuntimeState.build
 raise 'expected kanto runtime region' unless state['current_region'] == 'kanto'

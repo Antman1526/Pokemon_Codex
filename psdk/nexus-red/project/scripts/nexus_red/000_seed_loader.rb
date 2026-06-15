@@ -62,6 +62,68 @@ module NexusRed
       REGISTRY_FILES.keys.each_with_object({}) { |key, acc| acc[key] = registry(key) }
     end
 
+    def starter_species
+      starter_selector['selectable_partners'].map { |partner| partner['species'] }
+    end
+
+    def blue_counter_for(species)
+      starter_selector['blue_counter_rules'][species.to_s]
+    end
+
+    def encounters_for_route(route_id)
+      route = early_encounters['route_targets'][route_id.to_s]
+      route ? route['encounters'] : []
+    end
+
+    def region_order
+      regions['region_unlocks'].map { |region| region['region_id'] }
+    end
+
+    def final_region
+      regions['final_region']
+    end
+
+    def primary_faction
+      factions['primary_antagonist']
+    end
+
+    def hidden_meta_villain
+      factions['hidden_meta_villain']
+    end
+
+    def red_primary_companion?
+      companions['primary_companion'] == 'red'
+    end
+
+    def companion_ids
+      companions['companions'].map { |companion| companion['companion_id'] }
+    end
+
+    def rival_ids
+      rivals_worldlink['rivals'].map { |rival| rival['rival_id'] }
+    end
+
+    def starting_rival_ids
+      rivals_worldlink['starting_rivals']
+    end
+
+    def worldlink_paused_area?(area_type)
+      pause_list = rivals_worldlink.dig('worldlink_settings', 'delivery_rules', 'pause_and_digest') || []
+      pause_list.include?(area_type.to_s)
+    end
+
+    def all_base_species_before_final_boss?
+      gameplay_systems.dig('pokedex_and_availability', 'all_base_species_before_final_boss') == true
+    end
+
+    def starting_money
+      gameplay_systems.dig('pokemon_center_and_mart', 'mart_rules', 'starting_money')
+    end
+
+    def gameplay_option_available?(option_id)
+      gameplay_systems.dig('qol_systems', 'must_have').include?(option_id.to_s)
+    end
+
     def read_json(path)
       JSON.parse(File.read(path))
     rescue Errno::ENOENT
