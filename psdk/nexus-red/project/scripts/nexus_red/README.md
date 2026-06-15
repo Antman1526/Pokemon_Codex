@@ -11,7 +11,7 @@ Runtime services:
 - `runtime/seed_data.rb` reads generated registries.
 - `runtime/runtime_state.rb` builds the Nexus Red save-state scaffold.
 - `runtime/world_link.rb` handles live, paused, and digest notifications.
-- `runtime/*_progress.rb` and other service files track starter selection, party/PC storage, portable PC access, early migration encounters, rivals, companions, factions, regions, gameplay options, field tools, Pokédex readiness, Center/Mart services, encounter-world state, and battle mechanics gating.
+- `runtime/*_progress.rb` and other service files track starter selection, party/PC storage, portable PC access, field healing, early migration encounters, rivals, companions, factions, regions, gameplay options, field tools, Pokédex readiness, Center/Mart services, encounter-world state, and battle mechanics gating.
 
 Route 1-3 migration map events should call `NexusRed::EarlyMigrationEncounters.prepare_map_event_encounter(state, route_id, time:, max_level:)`. The method returns a PSDK-friendly encounter payload, records the species as seen in the Pokédex, and skips species already caught by the player.
 
@@ -26,6 +26,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 `NexusRed::PartyStorage` owns the current six-slot party cap and PC overflow list. Starter selection and caught wild battles both route through this service. It also exposes `deposit_species`, `withdraw_species`, and `swap_species` for the future portable PC and Pokemon Center PC interfaces.
 
 `NexusRed::PortablePC` wraps `PartyStorage` for field/menu use. It starts locked, unlocks from a story source with `unlock(state, source:, access_level:)`, exposes `open` and `summary`, and forwards `deposit`, `withdraw`, and `swap` while recording the last action for later UI feedback. Kanto can use `access_level: 'lite'` after Brock/Red training, then upgrade to full access later in the journey.
+
+`NexusRed::FieldHealing` wraps the portable healing QoL rule from the active difficulty profile. It starts locked, unlocks from a story source with charges, stores lightweight party conditions until real PSDK HP/status binding is connected, and exposes `heal_team` plus `restore_species`. Casual difficulty uses full portable healing without charge consumption, Standard/Hard consume charges, and Expert/Nuzlocke block field healing in paused danger areas such as caves and villain hideouts.
 
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 

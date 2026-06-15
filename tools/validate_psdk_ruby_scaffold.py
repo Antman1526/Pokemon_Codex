@@ -133,6 +133,13 @@ REQUIRED_MARKERS = (
     "deposit",
     "withdraw",
     "swap",
+    "module FieldHealing",
+    "ensure_field_healing",
+    "policy",
+    "available?",
+    "set_party_condition",
+    "heal_team",
+    "restore_species",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -173,6 +180,7 @@ REQUIRED_RUNTIME_FILES = (
     "wild_battle_results.rb",
     "party_storage.rb",
     "portable_pc.rb",
+    "field_healing.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -811,6 +819,51 @@ raise 'expected PortablePC swap forwarded' unless swap_pc['status'] == 'swapped'
 raise 'expected PortablePC swap moved Pikachu to party' unless NexusRed::PartyStorage.party_species(portable_state).include?('Pikachu')
 locked_deposit = NexusRed::PortablePC.deposit(NexusRed::RuntimeState.build, 'Bulbasaur')
 raise 'expected locked PortablePC deposit guarded' unless locked_deposit['status'] == 'locked'
+
+healing_state = NexusRed::RuntimeState.build
+field_healing = NexusRed::FieldHealing.ensure_field_healing(healing_state)
+raise 'expected FieldHealing locked by default' if field_healing['unlocked']
+raise 'expected standard FieldHealing policy limited' unless NexusRed::FieldHealing.policy(healing_state) == 'limited'
+raise 'expected FieldHealing unavailable before unlock' if NexusRed::FieldHealing.available?(healing_state, area_type: 'route')
+locked_heal = NexusRed::FieldHealing.heal_team(healing_state, location: 'Route 1', area_type: 'route')
+raise 'expected locked FieldHealing guarded' unless locked_heal['status'] == 'locked'
+unlock_healing = NexusRed::FieldHealing.unlock(
+  healing_state,
+  source: 'Mom and Brock care kit',
+  charges: 2,
+  area_type: 'route'
+)
+raise 'expected FieldHealing unlock immediate delivery' unless unlock_healing['delivery'] == 'immediate'
+raise 'expected FieldHealing source recorded' unless healing_state['field_healing']['source'] == 'Mom and Brock care kit'
+raise 'expected FieldHealing charges recorded' unless healing_state['field_healing']['charges'] == 2
+NexusRed::PartyStorage.add_species(healing_state, 'Bulbasaur')
+NexusRed::PartyStorage.add_species(healing_state, 'Charmander')
+NexusRed::FieldHealing.set_party_condition(healing_state, 'Bulbasaur', hp_percent: 35, status: 'poison')
+NexusRed::FieldHealing.set_party_condition(healing_state, 'Charmander', hp_percent: 1, status: 'faint')
+heal_team = NexusRed::FieldHealing.heal_team(healing_state, location: 'Viridian Outskirts', area_type: 'route')
+raise 'expected FieldHealing heal recorded' unless heal_team['status'] == 'healed'
+raise 'expected FieldHealing standard charge consumed' unless heal_team['charges_remaining'] == 1
+raise 'expected Bulbasaur restored by field heal' unless healing_state['party_conditions']['Bulbasaur'] == { 'hp_percent' => 100, 'status' => 'ok' }
+raise 'expected FieldHealing usage history recorded' unless healing_state['field_healing']['usage_history'].first['location'] == 'Viridian Outskirts'
+NexusRed::FieldHealing.set_party_condition(healing_state, 'Bulbasaur', hp_percent: 50, status: 'burn')
+restore_one = NexusRed::FieldHealing.restore_species(healing_state, 'Bulbasaur', location: 'Route 2', area_type: 'route')
+raise 'expected FieldHealing single restore recorded' unless restore_one['status'] == 'restored'
+raise 'expected FieldHealing final charge consumed' unless restore_one['charges_remaining'] == 0
+no_charge_heal = NexusRed::FieldHealing.heal_team(healing_state, location: 'Route 2', area_type: 'route')
+raise 'expected FieldHealing no-charge guard' unless no_charge_heal['status'] == 'no_charges'
+casual_healing_state = NexusRed::RuntimeState.build
+NexusRed::GameplayOptions.set_difficulty(casual_healing_state, 'casual')
+NexusRed::FieldHealing.unlock(casual_healing_state, source: 'Casual field kit', charges: 0, area_type: 'route')
+NexusRed::PartyStorage.add_species(casual_healing_state, 'Squirtle')
+casual_heal = NexusRed::FieldHealing.heal_team(casual_healing_state, location: 'Pallet Town', area_type: 'route')
+raise 'expected casual FieldHealing full policy' unless casual_heal['policy'] == 'full'
+raise 'expected casual FieldHealing no charge requirement' unless casual_heal['charges_remaining'] == 0
+expert_healing_state = NexusRed::RuntimeState.build
+NexusRed::GameplayOptions.set_difficulty(expert_healing_state, 'expert')
+NexusRed::FieldHealing.unlock(expert_healing_state, source: 'Expert care kit', charges: 1, area_type: 'route')
+raise 'expected expert FieldHealing route available' unless NexusRed::FieldHealing.available?(expert_healing_state, area_type: 'route')
+restricted_heal = NexusRed::FieldHealing.heal_team(expert_healing_state, location: 'Mt. Moon', area_type: 'cave')
+raise 'expected restricted FieldHealing cave guard' unless restricted_heal['status'] == 'restricted_area'
 
 migration_state = NexusRed::RuntimeState.build
 migration = NexusRed::EarlyMigrationEncounters.ensure_migration(migration_state)
