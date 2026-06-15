@@ -13,6 +13,7 @@ require_relative 'runtime/pokedex_availability'
 require_relative 'runtime/center_mart_services'
 require_relative 'runtime/encounter_world'
 require_relative 'runtime/battle_mechanics'
+require_relative 'runtime/starter_selection'
 
 if defined?(PFM::GameState)
   class PFM::GameState

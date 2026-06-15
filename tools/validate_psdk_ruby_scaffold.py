@@ -82,6 +82,12 @@ REQUIRED_MARKERS = (
     "ai_profile_for",
     "gimmick_status",
     "unlock_gimmick",
+    "module StarterSelection",
+    "ensure_selection",
+    "available_partners",
+    "select_partner",
+    "starter_chosen?",
+    "rival_assignment",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -110,6 +116,7 @@ REQUIRED_RUNTIME_FILES = (
     "center_mart_services.rb",
     "encounter_world.rb",
     "battle_mechanics.rb",
+    "starter_selection.rb",
 )
 
 RUNTIME_SMOKE = r"""
@@ -641,6 +648,39 @@ raise 'expected Mega unlock source recorded' unless mechanics_state['battle_mech
 raise 'expected unknown battle mechanic false' if NexusRed::BattleMechanics.mechanic_enabled?(mechanics_state, 'shadow_pokemon_mode')
 raise 'expected unknown gimmick rejected' unless begin
   NexusRed::BattleMechanics.gimmick_status(mechanics_state, 'fusion_burst')
+  false
+rescue ArgumentError
+  true
+end
+
+starter_state = NexusRed::RuntimeState.build
+selection = NexusRed::StarterSelection.ensure_selection(starter_state)
+raise 'expected 39 available starter partners' unless NexusRed::StarterSelection.available_partners(starter_state).length == 39
+raise 'expected starter not chosen initially' if NexusRed::StarterSelection.starter_chosen?(starter_state)
+raise 'expected Oak Lab selection map' unless selection['story_context']['map'] == 'Oak Lab'
+
+starter_message = NexusRed::StarterSelection.select_partner(
+  starter_state,
+  'Bulbasaur',
+  source: 'Professor Oak',
+  area_type: 'route'
+)
+raise 'expected starter choice immediate delivery' unless starter_message['delivery'] == 'immediate'
+raise 'expected starter chosen flag' unless NexusRed::StarterSelection.starter_chosen?(starter_state)
+raise 'expected selected starter species recorded' unless starter_state['starter_selection']['selected_partner']['species'] == 'Bulbasaur'
+raise 'expected selected starter added to party' unless starter_state['party_species'].include?('Bulbasaur')
+raise 'expected Blue counter pick Charmander' unless NexusRed::StarterSelection.rival_assignment(starter_state, 'blue') == 'Charmander'
+raise 'expected Ava priority pick Chikorita' unless NexusRed::StarterSelection.rival_assignment(starter_state, 'ava') == 'Chikorita'
+raise 'expected Dax priority pick Cyndaquil' unless NexusRed::StarterSelection.rival_assignment(starter_state, 'dax') == 'Cyndaquil'
+raise 'expected starter chosen story flag recorded' unless starter_state['story_flags'].include?('starter_chosen')
+raise 'expected repeat starter choice rejected' unless begin
+  NexusRed::StarterSelection.select_partner(starter_state, 'Charmander')
+  false
+rescue ArgumentError
+  true
+end
+raise 'expected unknown starter rejected' unless begin
+  NexusRed::StarterSelection.select_partner(NexusRed::RuntimeState.build, 'Missingno')
   false
 rescue ArgumentError
   true
