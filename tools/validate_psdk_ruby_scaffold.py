@@ -97,6 +97,12 @@ REQUIRED_MARKERS = (
     "next_uncaught_for_route",
     "prepare_map_event_encounter",
     "record_migration_seen",
+    "module MapEventBridge",
+    "prepare_wild_battle_request",
+    "pending_battle_request",
+    "consume_pending_battle_request",
+    "module Route1MigrationEvent",
+    "trigger",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -127,6 +133,8 @@ REQUIRED_RUNTIME_FILES = (
     "battle_mechanics.rb",
     "starter_selection.rb",
     "early_migration_encounters.rb",
+    "map_event_bridge.rb",
+    "route1_migration_event.rb",
 )
 
 RUNTIME_SMOKE = r"""
@@ -748,6 +756,27 @@ next_payload = NexusRed::EarlyMigrationEncounters.prepare_map_event_encounter(
   max_level: 5
 )
 raise 'expected caught migration species skipped' unless next_payload['species'] == 'Chikorita'
+
+blocked_route_1_state = NexusRed::RuntimeState.build
+blocked_route_1_request = NexusRed::Route1MigrationEvent.trigger(blocked_route_1_state, time: 'morning', max_level: 5)
+raise 'expected Route 1 migration event gated before starter choice' unless blocked_route_1_request['status'] == 'no_encounter'
+raise 'expected no pending battle before Route 1 migration unlock' unless NexusRed::MapEventBridge.pending_battle_request(blocked_route_1_state).nil?
+
+route_1_event_state = NexusRed::RuntimeState.build
+NexusRed::StarterSelection.select_partner(route_1_event_state, 'Bulbasaur')
+route_1_request = NexusRed::Route1MigrationEvent.trigger(route_1_event_state, time: 'morning', max_level: 5)
+raise 'expected Route 1 migration battle request prepared' unless route_1_request['status'] == 'prepared'
+raise 'expected Route 1 migration battle request kind' unless route_1_request['kind'] == 'wild_migration'
+raise 'expected Route 1 migration battle request species' unless route_1_request['species'] == 'Bulbasaur'
+raise 'expected Route 1 migration battle request map id' unless route_1_request['psdk_map_id'] == 'kanto_route_1'
+raise 'expected pending battle request stored' unless NexusRed::MapEventBridge.pending_battle_request(route_1_event_state) == route_1_request
+raise 'expected Route 1 event history recorded' unless route_1_event_state['map_event_history'].any? { |event| event['event_id'] == 'route_1_migration_event' && event['species'] == 'Bulbasaur' }
+consumed_request = NexusRed::MapEventBridge.consume_pending_battle_request(route_1_event_state)
+raise 'expected consumed request to match pending request' unless consumed_request == route_1_request
+raise 'expected pending battle request cleared after consume' unless NexusRed::MapEventBridge.pending_battle_request(route_1_event_state).nil?
+NexusRed::PokedexAvailability.record_caught(route_1_event_state, 'Bulbasaur', location: 'Route 1', channel: 'wild_grass', area_type: 'route')
+second_route_1_request = NexusRed::Route1MigrationEvent.trigger(route_1_event_state, time: 'morning', max_level: 5)
+raise 'expected Route 1 migration adapter skips caught Bulbasaur' unless second_route_1_request['species'] == 'Chikorita'
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """

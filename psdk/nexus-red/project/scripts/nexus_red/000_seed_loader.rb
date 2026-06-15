@@ -15,6 +15,8 @@ require_relative 'runtime/encounter_world'
 require_relative 'runtime/battle_mechanics'
 require_relative 'runtime/starter_selection'
 require_relative 'runtime/early_migration_encounters'
+require_relative 'runtime/map_event_bridge'
+require_relative 'runtime/route1_migration_event'
 
 if defined?(PFM::GameState)
   class PFM::GameState
