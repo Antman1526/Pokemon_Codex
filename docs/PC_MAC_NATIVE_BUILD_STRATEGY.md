@@ -1,7 +1,9 @@
 # Pokemon Nexus Red - PC/Mac Native Build Strategy
 
 Date: 2026-06-14
-Platform decision: native PC/Mac build becomes the primary target for the full nine-region game.
+Updated: 2026-06-15
+Platform decision: native PC/Mac build remains the primary target for the full nine-region game.
+Engine decision: Pokemon Studio / PSDK is now the recommended production engine. The existing Godot build remains a validated prototype/reference track.
 Legacy target: the `.gba`/OpenEmu work remains useful as a prototype and nostalgia reference, but it is no longer the recommended target for the full all-region release.
 
 ## 1. High-Level Decision
@@ -17,21 +19,28 @@ This is not a GBA ROM anymore. It is one Pokemon-style desktop game that can car
 
 ## 2. Recommended Engine
 
-Proposed: Godot 4, custom 2D RPG framework.
+Proposed: Pokemon Studio plus Pokemon SDK (PSDK).
 
 Why this is the best fit:
 
-- Exports to Windows and macOS from one codebase.
-- Strong 2D TileMap, UI, input, animation, audio, and data-loading support.
-- No RPG Maker dependency for players.
-- Better long-term control than Pokemon Essentials for WorldLink, 10 rivals, companion AI, regional unlocks, and all nine regions.
-- Easier for Claude Code and Codex to modify than a binary editor workflow.
-- Supports data-driven content, which is required for a project this large.
+- Purpose-built for classic top-down creature-collector games instead of requiring us to hand-build the Pokemon-style foundation.
+- Pokemon Studio edits game data, game settings, translations/texts, PSDK updates, maps, and map links through the Tiled-to-PSDK workflow.
+- PSDK is the game engine/starter kit, with Ruby scripting available for custom systems such as WorldLink, companion AI, faction wars, region gating, and custom QoL.
+- Better fit for the requested "identical or better than the ROMs" presentation because the workflow is already aligned with RMXP/FRLG-style creature-collector maps and events.
+- Reduces months of custom battle/data/editor work compared with building all species, moves, abilities, items, weather, battle rules, trainer data, and map tooling from scratch in Godot.
+- Keeps data and scripts Git-friendly enough for Claude Code/Codex work, provided the repo avoids unsafe binaries, caches, and copyrighted assets.
+
+Godot 4 status:
+
+- The existing Godot project under `native/nexus-red/` remains a working prototype/reference slice.
+- Use it for design proof, automated behavior tests, and migration reference.
+- Do not continue expanding Godot as the production all-nine-region game while PSDK is the active primary path.
 
 Not recommended as primary:
 
 - GBA decomp only: excellent nostalgia, too constrained for all nine full regions and every requested system.
-- RPG Maker/Pokemon Essentials only: fast for Pokemon fangame conventions, weaker for a custom PC/Mac package, custom UI, large data pipeline, and long-term source control hygiene.
+- Godot custom-only: capable, but requires us to build the battle engine, editor tooling, full Pokemon data model, map-event pipeline, and fangame conventions ourselves.
+- Pokemon Essentials only: mature ecosystem, but PSDK/Studio is the stronger current recommendation for this project because Studio gives a dedicated data editor and PSDK has a more explicit modern data/project workflow.
 - Unity: capable, but heavier licensing/project overhead for a 2D Pokemon-style RPG.
 
 ## 3. Game Identity
@@ -52,42 +61,29 @@ Primary player fantasy:
 
 ## 4. Native Architecture
 
-Recommended project root:
+Recommended production project root:
+
+```text
+psdk/nexus-red/
+  README.md
+  project/
+    Data/
+    Graphics/
+    Audio/
+    scripts/
+    maps/
+  docs/
+    content-migration/
+    studio-data-notes/
+```
+
+Reference/prototype root:
 
 ```text
 native/nexus-red/
-  project.godot
-  src/
-    battle/
-    world/
-    ui/
-    data/
-    companions/
-    worldlink/
-    save/
-  content/
-    regions/
-      kanto/
-      johto/
-      hoenn/
-      sinnoh_hisui/
-      unova/
-      kalos/
-      alola/
-      galar/
-      paldea/
-      nexus_island/
-    trainers/
-    pokemon/
-    moves/
-    items/
-    dialogue/
-    music/
-  tests/
-  exports/
 ```
 
-Data first, scenes second. Region chapters, trainers, encounters, marts, WorldLink notifications, companion scenes, faction wars, and boss teams should live in structured data files. Godot scenes should render and execute that data, not hard-code every event.
+Data first, scenes second. Region chapters, trainers, encounters, marts, WorldLink notifications, companion scenes, faction wars, and boss teams should live in Studio/PSDK data and Git-friendly script files wherever possible. Avoid hard-coding every event into one-off scripts.
 
 Internal source should use generic names such as creature, trainer, region, faction, companion, and WorldLink. Design docs can preserve Pokemon-style references, but source/data should stay swap-friendly where practical.
 
@@ -203,20 +199,28 @@ Native build should include all requested QoL:
 
 ## 6. Build Commands
 
-Godot 4.6.3 and matching export templates are installed on this machine. Use commands shaped like:
+Production PSDK commands will be finalized after the setup spike because Pokemon Studio/PSDK project creation and export are driven through Studio plus local PSDK binaries.
+
+Expected first setup checks:
+
+- Install/open Pokemon Studio on macOS.
+- Create or open a PSDK project.
+- Confirm which files are source-of-truth and safe for Git.
+- Confirm local macOS and Windows build/export path from Studio/PSDK.
+
+The existing Godot reference project still validates with:
 
 ```sh
-godot --headless --path native/nexus-red --export-release "Windows Desktop" builds/windows/PokemonNexusRed.exe
-godot --headless --path native/nexus-red --export-release "macOS" builds/macos/PokemonNexusRed.app
+godot --headless --path native/nexus-red --check-only --quit
 ```
 
-Expected local dev command:
+Reference dev command:
 
 ```sh
 godot --path native/nexus-red
 ```
 
-Until export presets exist in the Godot project, repository validation should focus on data/spec consistency and headless project checks rather than binary export.
+Until the PSDK scaffold exists, repository validation should focus on data/spec consistency, the documented PSDK pivot, and the existing Godot reference checks.
 
 ## 7. Migration Plan
 
@@ -224,25 +228,33 @@ Until export presets exist in the Godot project, repository validation should fo
 
 Deliverables:
 
-- PC/Mac native strategy.
+- PC/Mac native strategy updated to PSDK.
 - Updated decisions log.
 - Platform target data.
 - Validation script.
 - GBA path marked as legacy prototype/reference.
+- Godot path marked as validated prototype/reference.
 
-### Phase 1 - Native Prototype Shell
+### Phase 1 - PSDK Setup Spike
 
 Deliverables:
 
-- Godot project scaffold.
-- Boot screen with `POKEMON NEXUS RED`.
-- Main menu.
-- New game starts in Antman's bedroom.
-- Save/load skeleton.
-- Keyboard/controller input.
-- Data loader for region/chapter YAML or converted JSON.
+- Pokemon Studio install/open confirmed.
+- PSDK project creation confirmed.
+- Safe Git layout documented.
+- Blank or sample project runs locally.
+- Decision recorded on whether to import starter/sample project files.
 
-### Phase 2 - Kanto Native Vertical Slice
+### Phase 2 - PSDK Project Scaffold
+
+Deliverables:
+
+- `psdk/nexus-red/` scaffold.
+- PSDK asset/legal policy.
+- Kanto migration map from existing design/Godot prototype to PSDK.
+- 39-starter data migration plan.
+
+### Phase 3 - Kanto Native Vertical Slice
 
 Scope:
 
@@ -254,7 +266,7 @@ Scope:
 - Brock, Red training, Pewter Museum anomaly.
 - WorldLink feed prototype.
 
-### Phase 3 - Full Kanto
+### Phase 4 - Full Kanto
 
 Scope:
 
@@ -264,7 +276,7 @@ Scope:
 - Indigo League.
 - Kanto Pokedex availability tier.
 
-### Phase 4 - Johto Through Paldea
+### Phase 5 - Johto Through Paldea
 
 Build each region as a complete chapter, in order:
 
@@ -298,13 +310,15 @@ The native direction is ready when:
 
 - Windows and macOS are documented as first-class targets.
 - The repository clearly says native PC/Mac is the primary full-game path.
+- Pokemon Studio / PSDK is documented as the primary production engine.
 - GBA/OpenEmu is documented as legacy prototype/reference.
+- Godot is documented as a validated prototype/reference track.
 - Platform targets are machine-validated.
-- The next implementation task can scaffold `native/nexus-red/` without reopening the engine decision.
+- The next implementation task can scaffold `psdk/nexus-red/` without reopening the engine decision.
 - Nexus Island is documented as the full final-region chapter.
 
 ## 10. Immediate Next Recommendation
 
-Next build slice: create the Godot project scaffold and bootable title/menu/bedroom prototype.
+Next build slice: perform the Pokemon Studio / PSDK setup spike and create the safe `psdk/nexus-red/` scaffold.
 
-Do not start by implementing all Pokemon data. Start with the shell, save state, region/chapter loader, and Kanto bedroom intro. The project needs a playable native loop before it needs hundreds of species fully wired.
+Do not start by importing all Pokemon data. First prove Studio can create/open the project, identify which PSDK files are safe for Git, document asset/legal rules, and map the current Godot Kanto prototype data into PSDK concepts.

@@ -1,10 +1,13 @@
 # Pokemon Nexus Red - PC/Mac Native Build Notes
 
 Date: 2026-06-14
+Updated: 2026-06-15
 
 ## Current Status
 
-The repository contains the first native Godot shell under:
+The primary production recommendation has changed to Pokemon Studio / PSDK.
+
+The repository also contains a validated Godot reference prototype under:
 
 ```text
 native/nexus-red/
@@ -29,7 +32,7 @@ The first playable slice currently covers:
 - save-state skeleton,
 - native content data for regions, factions, companions, starters, and opening feed.
 
-Godot is installed locally:
+Godot is installed locally for the reference prototype:
 
 ```text
 4.6.3.stable.official.7d41c59c4
@@ -55,7 +58,15 @@ Confirmed template files include:
 
 ## Platform Pivot
 
-The full nine-region Pokemon Nexus Red target is now native PC/Mac first.
+The full nine-region Pokemon Nexus Red target is now native PC/Mac first, with Pokemon Studio / PSDK as the recommended production engine.
+
+The Godot project remains useful for:
+
+- automated behavior references,
+- story and data proof slices,
+- comparing implementation decisions before porting them to PSDK.
+
+It should not be treated as the production all-region engine while the PSDK path is active.
 
 The GBA/OpenEmu path remains useful for:
 
@@ -68,20 +79,27 @@ It should not be treated as the required format for the complete all-region rele
 
 ## Required Local Setup
 
-Godot 4 and export templates are installed. Reconfirm with:
+Next required PSDK setup:
+
+- Install/open Pokemon Studio.
+- Create or open a blank PSDK project.
+- Confirm where PSDK project data, maps, scripts, and generated files live.
+- Document which generated/cache/export files must not be committed.
+
+Godot 4 and export templates are installed for the reference prototype. Reconfirm with:
 
 ```sh
 godot --version
 godot --headless --version
 ```
 
-Expected future dev command:
+Reference dev command:
 
 ```sh
 godot --path native/nexus-red
 ```
 
-Native shell validation:
+Reference prototype validation:
 
 ```sh
 python3 tools/validate_native_godot_shell.py
@@ -95,7 +113,7 @@ godot --headless --path native/nexus-red --script tests/route1_slice_test.gd
 godot --headless --path native/nexus-red --script tests/battle_placeholder_test.gd
 ```
 
-Expected future export commands:
+Old Godot reference export command shape:
 
 ```sh
 godot --headless --path native/nexus-red --export-release "Windows Desktop" builds/windows/PokemonNexusRed.exe
@@ -106,9 +124,9 @@ godot --headless --path native/nexus-red --export-release "macOS" builds/macos/P
 
 Next build step:
 
-- add Route 1 encounter-rumor data without full combat,
-- add the first WorldLink rival notification batch after Route 1,
-- start the battle engine data model behind the placeholder screen,
-- keep full battle mechanics and full creature data out of scope until the placeholder battle flow is stable.
+- perform the Pokemon Studio / PSDK setup spike,
+- create the safe `psdk/nexus-red/` project scaffold,
+- document the PSDK Git ignore/source-of-truth policy,
+- map the existing Godot Kanto prototype data into PSDK concepts before importing content.
 
-Do not port all nine regions at once. Keep expanding the playable native Kanto shell, then build chapter by chapter.
+Do not port all nine regions at once. Prove a small PSDK Pallet/Route 1 loop first, then build chapter by chapter.

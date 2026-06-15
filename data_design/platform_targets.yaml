@@ -1,16 +1,20 @@
 # Pokemon Nexus Red platform targets.
-# This file records the native PC/Mac pivot and keeps the GBA path as a legacy prototype track.
+# This file records the native PC/Mac pivot and keeps the Godot/GBA paths as prototype/reference tracks.
 
 platform_strategy:
   primary_target: native_pc_mac
-  primary_engine_recommendation: godot_4_custom_2d_rpg
+  primary_engine_recommendation: pokemon_studio_psdk
+  previous_primary_engine: godot_4_custom_2d_rpg
+  prototype_engine: godot_4_custom_2d_rpg
   game_title: POKEMON NEXUS RED
   subtitle: A World Circuit Adventure
   full_game_distribution_model: standalone_native_game
+  psdk_status: primary_recommended_pending_scaffold
   legacy_target: gba_openemu_prototype
   legacy_engine: pokeemerald_expansion_patch_stack
-  one_game_policy: "One source project exports to Windows PC and macOS; do not fork content into separate games."
+  one_game_policy: "One primary PSDK source project exports to Windows PC and macOS; do not fork content into separate games."
   rom_policy: "The complete nine-region version is not a GBA ROM. The GBA work remains a playable prototype/reference track."
+  godot_policy: "The Godot project remains a tested prototype/reference slice, not the production engine while PSDK is primary."
 
 native_targets:
   windows:
@@ -30,16 +34,22 @@ native_targets:
     required: false
 
 build_commands:
-  dev: godot --path native/nexus-red
-  windows_release: godot --headless --path native/nexus-red --export-release "Windows Desktop" builds/windows/PokemonNexusRed.exe
-  macos_release: godot --headless --path native/nexus-red --export-release "macOS" builds/macos/PokemonNexusRed.app
+  psdk_dev: "Open the PSDK project through Pokemon Studio after scaffold."
+  psdk_windows_release: "Use Pokemon Studio/PSDK local Windows build workflow after scaffold."
+  psdk_macos_release: "Use Pokemon Studio/PSDK local macOS build workflow after scaffold."
+  godot_reference_dev: godot --path native/nexus-red
+  godot_reference_check: godot --headless --path native/nexus-red --check-only --quit
 
 native_project_layout:
-  root: native/nexus-red
-  source: native/nexus-red/src
-  content: native/nexus-red/content
-  tests: native/nexus-red/tests
-  exports: native/nexus-red/exports
+  primary_root: psdk/nexus-red
+  primary_engine: pokemon_studio_psdk
+  primary_source: psdk/nexus-red/project
+  primary_scripts: psdk/nexus-red/project/scripts
+  primary_maps: psdk/nexus-red/project/maps
+  godot_reference_root: native/nexus-red
+  godot_reference_source: native/nexus-red/src
+  godot_reference_content: native/nexus-red/content
+  godot_reference_tests: native/nexus-red/tests
 
 non_negotiable_design_carryover:
   - all_9_regions_in_order
@@ -63,15 +73,19 @@ non_negotiable_design_carryover:
   - worldlink_notifications_pause_in_dungeons
 
 first_native_milestones:
-  - id: native_shell
-    description: Bootable Godot shell with title screen, menu, input, save skeleton, and data loader.
-  - id: pallet_intro
-    description: Antman's bedroom, Mom scene, Red outside, Oak lab, and 39-starter selection.
-  - id: kanto_brock_slice
-    description: Route 1 through Pewter with Red training, Brock, and Pewter Museum anomaly.
+  - id: psdk_setup_spike
+    description: Install/open Pokemon Studio, confirm PSDK project creation, document safe Git layout, and avoid committing unsafe binaries/assets.
+  - id: psdk_project_scaffold
+    description: Create psdk/nexus-red project scaffold and migration notes for Kanto-first content.
+  - id: psdk_pallet_intro
+    description: Antman's bedroom, Mom scene, Red outside, Oak lab, and 39-starter selection implemented in PSDK.
+  - id: psdk_kanto_brock_slice
+    description: Route 1 through Pewter with Red training, Brock, and Pewter Museum anomaly implemented in PSDK.
+  - id: godot_reference_shell
+    description: Existing bootable Godot shell retained as tested reference/prototype.
   - id: full_kanto_native
-    description: Full Kanto campaign with Indigo League and Johto unlock.
+    description: Full PSDK Kanto campaign with Indigo League and Johto unlock.
   - id: johto_native
-    description: Johto chapter with Radio Tower, Silver, Ecruteak, and Hoenn unlock.
+    description: PSDK Johto chapter with Radio Tower, Silver, Ecruteak, and Hoenn unlock.
   - id: nexus_island_native
-    description: Final full-region island chapter with faction war, Rocket metropolis, legendary convergence, rival gauntlet, and Giovanni final battle.
+    description: Final PSDK full-region island chapter with faction war, Rocket metropolis, legendary convergence, rival gauntlet, and Giovanni final battle.

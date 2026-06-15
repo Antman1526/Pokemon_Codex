@@ -2,14 +2,14 @@
 
 Pokemon Nexus Red is a native PC/Mac monster-taming RPG design project. It begins in Pallet Town with Antman, a new trainer following Red's path, and expands through Kanto, Johto, Hoenn, Sinnoh/Hisui, Unova, Kalos, Alola, Galar, Paldea, and the final full-region Nexus Island chapter.
 
-The project goal is to create a legal, phased build framework that Claude Code and Codex can implement chapter by chapter. Primary target: native PC/Mac standalone game. Legacy/prototype target: `.gba` playable in OpenEmu.
+The project goal is to create a legal, phased build framework that Claude Code and Codex can implement chapter by chapter. Primary target: native PC/Mac standalone game in Pokemon Studio / PSDK. Prototype/reference targets: the existing Godot slice under `native/nexus-red/` and the `.gba`/OpenEmu track.
 
-The native build is the recommended path for the complete all-nine-region game. The GBA/OpenEmu path remains a useful FireRed-style prototype/reference track, but it should not constrain the full game vision.
+The PSDK native build is the recommended path for the complete all-nine-region game. The Godot and GBA/OpenEmu paths remain useful FireRed-style prototype/reference tracks, but they should not constrain the full game vision.
 
 ## Core Design
 
 - 9 main-series regions connected by one meta-story.
-- Classic FireRed-style visual identity, upgraded for native PC/Mac with HD pixel tiles, richer lighting, smoother UI, and widescreen readability.
+- Classic FireRed-style visual identity, upgraded for native PC/Mac through Pokemon Studio / PSDK, HD pixel presentation, richer lighting/effects where practical, smoother UI, and widescreen readability.
 - 39 starter choices: all 27 regional starters plus 12 special starters.
 - 10 rivals traveling the same World Circuit.
 - WorldLink notification feed for rival progress and world events.
@@ -27,9 +27,11 @@ The native build is the recommended path for the complete all-nine-region game. 
 - `docs/WORLDLINK_SYSTEM_SPEC.md` - WorldLink UI, notification, checklist, rival, companion, and transit system.
 - `docs/superpowers/specs/2026-06-13-title-opening-companion-design.md` - approved title-screen, opening, Red AI, WorldLink pause, and Brock/Misty companion direction.
 - `docs/REGION_CONTENT_BLUEPRINT.md` - full 9-region content plan.
+- `docs/PSDK_NATIVE_BUILD_STRATEGY.md` - primary Pokemon Studio / PSDK build strategy.
 - `docs/PC_MAC_NATIVE_BUILD_STRATEGY.md` - primary native Windows/macOS build strategy.
 - `docs/GBA_OPENEMU_BUILD_STRATEGY.md` - how to keep the project on the `.gba` and OpenEmu path.
-- `data_design/platform_targets.yaml` - structured target-platform decision data.
+- `data_design/platform_targets.yaml` - structured target-platform and engine decision data.
+- `psdk/nexus-red/README.md` - PSDK landing scaffold and setup guardrails.
 - `docs/LONG_GAME_RETENTION_DESIGN.md` - pacing and replayability design for a very long game.
 - `docs/CLAUDE_CODEX_GBA_TASK_ROADMAP.md` - phased task roadmap for Claude Code and Codex.
 - `data_design/` - structured planning data for regions, rivals, starters, encounters, and WorldLink.

@@ -177,3 +177,17 @@ Implication: queued updates should be delivered through a compact "While You Wer
 Decision: Brock and Misty are mandatory recurring story companions after their gym arcs.
 
 Implication: they rotate in and out across the story as friends, mentors, and tag-battle allies, but they do not become permanent followers or fight Antman's gym battles.
+
+## 2026-06-15
+
+### PSDK Primary Engine Pivot
+
+Decision: Pokemon Studio / PSDK becomes the recommended primary production engine for the native PC/Mac all-nine-region build.
+
+Implication: the existing Godot project under `native/nexus-red/` remains a validated prototype/reference slice, but new production work should move toward a safe `psdk/nexus-red/` scaffold, Pokemon Studio data workflows, Tiled-to-PSDK maps, and PSDK Ruby scripts for custom systems.
+
+### Godot Reference Track
+
+Decision: do not discard the Godot work.
+
+Implication: the Godot Kanto slices remain useful for behavior tests, story flow references, and migration notes, but they should not be expanded as the production engine while PSDK is the active primary target.

@@ -2,17 +2,62 @@
 
 Date: 2026-06-14
 Target: `POKEMON NEXUS RED` native Windows/macOS build.
+Updated: 2026-06-15 for Pokemon Studio / PSDK primary engine pivot.
 
 ## Overview
 
-Move the complete all-nine-region Pokemon Nexus Red vision from a GBA-first implementation path to a native PC/Mac game path. The GBA patch-stack remains a prototype/reference track. The native game should be built as one source project that exports to Windows PC and macOS.
+Move the complete all-nine-region Pokemon Nexus Red vision from a GBA-first implementation path to a native PC/Mac game path. The GBA patch-stack remains a prototype/reference track. The existing Godot project remains a validated prototype/reference slice. The production path is now Pokemon Studio / PSDK unless the setup spike proves blocked.
 
 ## Architecture Decisions
 
-- Use Godot 4 as the recommended engine for the native build.
-- Keep story/content data-driven so nine regions, 10 rivals, companions, encounters, trainers, marts, and WorldLink notifications can scale.
+- Use Pokemon Studio / PSDK as the recommended production engine for the native build.
+- Keep story/content data-driven through Studio/PSDK project data and Ruby scripts so nine regions, 10 rivals, companions, encounters, trainers, marts, and WorldLink notifications can scale.
 - Preserve classic FireRed-style visual direction with upgraded HD pixel visuals, richer lighting, smoother UI, and widescreen readability without binding the project to GBA memory, save, or UI constraints.
-- Start with a Kanto shell and bedroom/lab loop before porting large Pokemon datasets.
+- Preserve the existing Godot 4 project as a reference/prototype and behavior-test source, not the production engine while the PSDK path is active.
+- Start with a PSDK setup/scaffold and a Kanto bedroom/lab loop before importing large Pokemon datasets.
+
+## PSDK Pivot Tasks
+
+### Task P1: Verify Pokemon Studio / PSDK local setup
+
+Acceptance:
+
+- Pokemon Studio can be installed/opened on macOS.
+- PSDK project creation/opening path is confirmed.
+- The team documents where PSDK keeps source project data, scripts, maps, generated files, and exports.
+- Unsafe binaries, generated caches, commercial ROM assets, and ripped assets are excluded from Git.
+
+Verification:
+
+```sh
+python3 tools/validate_native_platform_strategy.py
+```
+
+Files likely touched:
+
+- `docs/PSDK_NATIVE_BUILD_STRATEGY.md`
+- `build_notes/PC_MAC_NATIVE_BUILD_NOTES.md`
+- `psdk/nexus-red/README.md`
+
+### Task P2: Create PSDK project scaffold
+
+Acceptance:
+
+- `psdk/nexus-red/` contains a safe README and expected source layout notes.
+- Kanto-first migration notes map Godot prototype concepts to PSDK data/events/scripts.
+- 39-starter contract and Routes 1-3 early migration pool are identified as first data imports.
+
+Verification:
+
+```sh
+python3 tools/validate_native_platform_strategy.py
+```
+
+Files likely touched:
+
+- `psdk/nexus-red/`
+- `docs/PSDK_NATIVE_BUILD_STRATEGY.md`
+- `data_design/platform_targets.yaml`
 
 ## Phase 1: Native Shell
 
