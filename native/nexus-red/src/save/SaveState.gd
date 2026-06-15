@@ -234,6 +234,15 @@ func start_new_game(name: String) -> void:
 		"pokemon_tower_signal_confirmed": false,
 		"pokemon_tower_entry_unlocked": false,
 		"worldlink_lavender_outskirts_batch_queued": false,
+		"pokemon_tower_first_floor_reached": false,
+		"red_pokemon_tower_guard_seen": false,
+		"bill_tower_echo_flute_distortion_seen": false,
+		"team_moonlight_tower_pressure_seen": false,
+		"rocket_tower_grunt_seen": false,
+		"cubone_mr_fuji_thread_seen": false,
+		"silph_scope_need_seen": false,
+		"pokemon_tower_deeper_path_locked": false,
+		"worldlink_pokemon_tower_first_floor_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -916,6 +925,39 @@ func queue_lavender_outskirts_batch() -> void:
 		"wl_rocket_lavender_surveillance",
 		"wl_pokemon_tower_signal_confirmed",
 		"wl_pokemon_tower_entry_unlocked",
+	])
+
+
+func enter_pokemon_tower_first_floor() -> void:
+	current_scene = "pokemon_tower_first_floor"
+	active_companion = "red"
+	set_flag("pokemon_tower_first_floor_reached", true)
+	queue_worldlink_id("wl_pokemon_tower_first_floor_reached")
+
+
+func record_pokemon_tower_first_floor_scene() -> void:
+	active_companion = "red"
+	set_flag("red_pokemon_tower_guard_seen", true)
+	set_flag("bill_tower_echo_flute_distortion_seen", true)
+	set_flag("team_moonlight_tower_pressure_seen", true)
+	set_flag("rocket_tower_grunt_seen", true)
+	set_flag("cubone_mr_fuji_thread_seen", true)
+	set_flag("silph_scope_need_seen", true)
+	set_flag("pokemon_tower_deeper_path_locked", true)
+	queue_pokemon_tower_first_floor_batch()
+
+
+func queue_pokemon_tower_first_floor_batch() -> void:
+	set_flag("worldlink_pokemon_tower_first_floor_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_pokemon_tower_first_floor_reached",
+		"wl_red_pokemon_tower_guard",
+		"wl_bill_tower_echo_flute_distortion",
+		"wl_team_moonlight_tower_pressure",
+		"wl_rocket_tower_grunt_seen",
+		"wl_cubone_mr_fuji_thread",
+		"wl_silph_scope_need_seen",
+		"wl_pokemon_tower_deeper_path_locked",
 	])
 
 

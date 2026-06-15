@@ -91,6 +91,7 @@ python3 tools/validate_native_route2_east_field_lab.py
 python3 tools/validate_native_route9_rock_tunnel_approach.py
 python3 tools/validate_native_rock_tunnel_interior.py
 python3 tools/validate_native_lavender_outskirts.py
+python3 tools/validate_native_pokemon_tower_first_floor.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -139,6 +140,7 @@ godot --headless --path native/nexus-red --script tests/route2_east_field_lab_te
 godot --headless --path native/nexus-red --script tests/route9_rock_tunnel_approach_test.gd
 godot --headless --path native/nexus-red --script tests/rock_tunnel_interior_test.gd
 godot --headless --path native/nexus-red --script tests/lavender_outskirts_test.gd
+godot --headless --path native/nexus-red --script tests/pokemon_tower_first_floor_test.gd
 ```
 
 ## Legal Rule

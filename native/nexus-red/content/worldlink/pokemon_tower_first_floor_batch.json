@@ -1,0 +1,45 @@
+{
+  "id": "pokemon_tower_first_floor_batch",
+  "feed": [
+    {
+      "id": "wl_pokemon_tower_first_floor_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red entered Pokemon Tower's first floor after Bill confirmed the Lavender signal."
+    },
+    {
+      "id": "wl_red_pokemon_tower_guard",
+      "speaker": "Red",
+      "text": "Red stayed close at the tower entrance and warned that this is not a normal trainer route."
+    },
+    {
+      "id": "wl_bill_tower_echo_flute_distortion",
+      "speaker": "Bill",
+      "text": "Bill detected the Echo Flute distorting inside Pokemon Tower, as if the signal is being bent by grief and dream pressure."
+    },
+    {
+      "id": "wl_team_moonlight_tower_pressure",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight pressure is strongest around the first-floor memorials, masking whatever is happening higher in the tower."
+    },
+    {
+      "id": "wl_rocket_tower_grunt_seen",
+      "speaker": "WorldLink",
+      "text": "A Rocket grunt is watching the tower stairs, proving Giovanni's network is tracking the same disturbance."
+    },
+    {
+      "id": "wl_cubone_mr_fuji_thread",
+      "speaker": "Red",
+      "text": "Cubone and Mr. Fuji are now tied to the Lavender mystery instead of being a separate side story."
+    },
+    {
+      "id": "wl_silph_scope_need_seen",
+      "speaker": "Bill",
+      "text": "Bill marked the Silph Scope as the needed tool before Antman can safely push deeper into Pokemon Tower."
+    },
+    {
+      "id": "wl_pokemon_tower_deeper_path_locked",
+      "speaker": "WorldLink",
+      "text": "The deeper Pokemon Tower path is locked until the Silph Scope thread is resolved."
+    }
+  ]
+}

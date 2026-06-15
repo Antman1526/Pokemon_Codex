@@ -935,6 +935,27 @@ python3 tools/validate_native_lavender_outskirts.py
 godot --headless --path native/nexus-red --script tests/lavender_outskirts_test.gd
 ```
 
+### Task 7.49: Add Pokemon Tower first floor and deeper-path lock
+
+Acceptance:
+
+- Lavender outskirts keeps Pokemon Tower locked until the outskirts scene confirms Bill's tower signal and unlocks tower entry.
+- After the Lavender outskirts beat, Antman can transition into a playable Pokemon Tower first floor scene.
+- Pokemon Tower records Red as the active full-game companion and frames the tower as a story dungeon rather than a normal route.
+- Bill detects Echo Flute distortion inside Pokemon Tower.
+- Team Moonlight pressure is present around the memorial floor and Rocket has a lookout watching the stairs.
+- The Cubone and Mr. Fuji thread is introduced as part of the main Lavender mystery.
+- The Silph Scope need is introduced, and the deeper Pokemon Tower path stays locked until that future thread is resolved.
+- Save state and WorldLink record Pokemon Tower first floor reached, Red's tower guard beat, Bill's Echo Flute distortion, Team Moonlight tower pressure, Rocket tower lookout, Cubone/Mr. Fuji thread, Silph Scope need, and deeper tower path lock.
+- WorldLink checklist adds Enter Pokemon Tower, Decode tower Echo Flute distortion, Find Cubone and Mr. Fuji thread, and Lock deeper tower behind Silph Scope milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_pokemon_tower_first_floor.py
+godot --headless --path native/nexus-red --script tests/pokemon_tower_first_floor_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

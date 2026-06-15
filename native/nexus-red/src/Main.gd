@@ -26,6 +26,7 @@ const Route2EastFieldLabScene := preload("res://scenes/world/Route2EastFieldLab.
 const Route9RockTunnelApproachScene := preload("res://scenes/world/Route9RockTunnelApproach.tscn")
 const RockTunnelInteriorScene := preload("res://scenes/world/RockTunnelInterior.tscn")
 const LavenderOutskirtsScene := preload("res://scenes/world/LavenderOutskirts.tscn")
+const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFirstFloor.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -355,7 +356,19 @@ func _show_lavender_outskirts() -> void:
 	var lavender := LavenderOutskirtsScene.instantiate()
 	lavender.save_state = save_state
 	lavender.go_to_rock_tunnel_interior.connect(_on_go_to_rock_tunnel_interior)
+	lavender.go_to_pokemon_tower_first_floor.connect(_on_go_to_pokemon_tower_first_floor)
 	_replace_screen(lavender)
+
+
+func _on_go_to_pokemon_tower_first_floor() -> void:
+	_show_pokemon_tower_first_floor()
+
+
+func _show_pokemon_tower_first_floor() -> void:
+	var tower := PokemonTowerFirstFloorScene.instantiate()
+	tower.save_state = save_state
+	tower.go_to_lavender_outskirts.connect(_on_go_to_lavender_outskirts)
+	_replace_screen(tower)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:

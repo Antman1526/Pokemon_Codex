@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_rock_tunnel_interior
+signal go_to_pokemon_tower_first_floor
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_lavender_outskirts_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_pokemon_tower_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_rock_tunnel_interior()
 
@@ -127,5 +130,13 @@ func return_to_rock_tunnel_interior() -> void:
 	emit_signal("go_to_rock_tunnel_interior")
 
 
+func trigger_pokemon_tower_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("pokemon_tower_entry_unlocked", false)):
+		dialogue_label.text = "Red: Pokemon Tower is calling, but we need Bill to confirm the Echo Flute signal and identify the Moonlight and Rocket pressure first."
+		return
+	dialogue_label.text = "Red: Pokemon Tower is open. Stay close and do not trust the echoes."
+	emit_signal("go_to_pokemon_tower_first_floor")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Lavender is the first town where the journey feels different. Press Z/Enter to decode Bill's Pokemon Tower Echo Flute signal, Team Moonlight presence, and Rocket surveillance, or X/Esc to return to Rock Tunnel."
+	dialogue_label.text = "Red: Lavender is the first town where the journey feels different. Press Z/Enter to decode Bill's Pokemon Tower Echo Flute signal, Team Moonlight presence, and Rocket surveillance, Right for Pokemon Tower, or X/Esc to return to Rock Tunnel."
