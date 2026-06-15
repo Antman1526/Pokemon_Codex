@@ -190,6 +190,10 @@ REQUIRED_MARKERS = (
     "celadon_rocket_hideout_entry_cleared?",
     "complete_celadon_rocket_hideout_b1f",
     "celadon_rocket_hideout_b1f_cleared?",
+    "complete_celadon_rocket_hideout_b2f",
+    "celadon_rocket_hideout_b2f_cleared?",
+    "complete_rocket_hideout_b2f_patrol_battle",
+    "rocket_hideout_b2f_patrol_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1528,6 +1532,60 @@ raise 'expected KantoStory Rocket Hideout B1F next hook B2F' unless hideout_b1f[
 second_hideout_b1f = NexusRed::KantoStory.complete_celadon_rocket_hideout_b1f(kanto_story_state)
 raise 'expected KantoStory Rocket Hideout B1F idempotent guard' unless second_hideout_b1f['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Rocket Hideout B1F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_rocket_hideout_b1f' } == 1
+pre_b1f_b2f = NexusRed::KantoStory.complete_celadon_rocket_hideout_b2f(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Rocket Hideout B2F gated before B1F' unless pre_b1f_b2f['status'] == 'blocked_missing_rocket_hideout_b1f'
+hideout_b2f = NexusRed::KantoStory.complete_celadon_rocket_hideout_b2f(
+  kanto_story_state,
+  location: 'Celadon Rocket Hideout B2F',
+  area_type: 'villain_hideout'
+)
+raise 'expected KantoStory Rocket Hideout B2F clear status' unless hideout_b2f['status'] == 'cleared'
+raise 'expected KantoStory Rocket Hideout B2F event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('celadon_rocket_hideout_b2f')
+raise 'expected KantoStory Rocket Hideout B2F helper true' unless NexusRed::KantoStory.celadon_rocket_hideout_b2f_cleared?(kanto_story_state)
+raise 'expected KantoStory Rocket Hideout B2F reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_B2F_REACHED')
+raise 'expected KantoStory Red hideout B2F patrol warning flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_HIDEOUT_B2F_PATROL_WARNING')
+raise 'expected KantoStory Bill stolen Silph Scope crate flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_STOLEN_SILPH_SCOPE_CRATE')
+raise 'expected KantoStory Rocket B2F patrol battle unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATROL_BATTLE_UNLOCKED')
+raise 'expected KantoStory Rocket Gold Dust B2F conflict flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GOLD_DUST_B2F_CONFLICT')
+raise 'expected KantoStory Moonlight control room interference flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_CONTROL_ROOM_INTERFERENCE')
+raise 'expected KantoStory Lift Key B3F route flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LIFT_KEY_B3F_ROUTE')
+raise 'expected KantoStory Rocket B2F patrol activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout B2F' && activity['operation'] == 'b2f_patrol_line' }
+raise 'expected KantoStory Rocket stolen Silph Scope crate activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout B2F' && activity['operation'] == 'stolen_silph_scope_crate' }
+raise 'expected KantoStory Gold Dust B2F conflict activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout B2F' && activity['operation'] == 'b2f_ledger_breach' }
+raise 'expected KantoStory Moonlight control room activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout B2F' && activity['operation'] == 'control_room_interference' }
+raise 'expected KantoStory Rocket Gold Dust B2F conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Celadon Rocket Hideout B2F' }
+raise 'expected KantoStory Rocket Moonlight B2F conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Celadon Rocket Hideout B2F' }
+raise 'expected KantoStory Red hideout B2F scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('hideout_b2f_patrol_warning')
+raise 'expected KantoStory Bill stolen Silph Scope crate scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('stolen_silph_scope_crate')
+raise 'expected KantoStory Rocket Hideout B2F story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Silph Scope crate') && message['text'].include?('B3F') }
+raise 'expected KantoStory Rocket Hideout B2F battle hook id' unless hideout_b2f['battle_hook']['battle_id'] == 'rocket_hideout_b2f_patrol'
+raise 'expected KantoStory Rocket Hideout B2F next hook patrol battle' unless hideout_b2f['next_hook'] == 'rocket_hideout_b2f_patrol_battle'
+second_hideout_b2f = NexusRed::KantoStory.complete_celadon_rocket_hideout_b2f(kanto_story_state)
+raise 'expected KantoStory Rocket Hideout B2F idempotent guard' unless second_hideout_b2f['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Rocket Hideout B2F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_rocket_hideout_b2f' } == 1
+
+pre_b2f_patrol = NexusRed::KantoStory.complete_rocket_hideout_b2f_patrol_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Rocket Hideout B2F patrol gated before B2F' unless pre_b2f_patrol['status'] == 'blocked_missing_rocket_hideout_b2f'
+b2f_patrol = NexusRed::KantoStory.complete_rocket_hideout_b2f_patrol_battle(
+  kanto_story_state,
+  location: 'Celadon Rocket Hideout B2F',
+  result: 'placeholder_win',
+  area_type: 'villain_hideout'
+)
+raise 'expected KantoStory Rocket Hideout B2F patrol clear status' unless b2f_patrol['status'] == 'cleared'
+raise 'expected KantoStory Rocket Hideout B2F patrol event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('rocket_hideout_b2f_patrol_battle')
+raise 'expected KantoStory Rocket Hideout B2F patrol helper true' unless NexusRed::KantoStory.rocket_hideout_b2f_patrol_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Rocket Hideout B2F patrol started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATROL_BATTLE_STARTED')
+raise 'expected KantoStory Rocket Hideout B2F patrol finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATROL_BATTLE_FINISHED')
+raise 'expected KantoStory Rocket Hideout B3F path unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_HIDEOUT_B3F_PATH_UNLOCKED')
+raise 'expected KantoStory Rocket B2F patrol defeated activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout B2F' && activity['operation'] == 'b2f_patrol_defeated' }
+raise 'expected KantoStory Red B3F route scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('hideout_b3f_route_opened')
+raise 'expected KantoStory Rocket Hideout B2F patrol story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('B2F patrol') && message['text'].include?('B3F') }
+raise 'expected KantoStory Rocket B2F patrol result tracked' unless b2f_patrol['result'] == 'placeholder_win'
+raise 'expected KantoStory Rocket B2F patrol next hook B3F' unless b2f_patrol['next_hook'] == 'celadon_rocket_hideout_b3f'
+second_b2f_patrol = NexusRed::KantoStory.complete_rocket_hideout_b2f_patrol_battle(kanto_story_state)
+raise 'expected KantoStory Rocket Hideout B2F patrol idempotent guard' unless second_b2f_patrol['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Rocket Hideout B2F patrol history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'rocket_hideout_b2f_patrol_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

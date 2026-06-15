@@ -75,6 +75,10 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_celadon_rocket_hideout_b1f(state, location:, area_type:)` resolves the first full Rocket Hideout dungeon floor. It requires the hideout entry room, records Red guarding the spinner maze, Bill tracing the Silph Scope machine pattern, Rocket's maze control, Gold Dust infiltration, Team Moonlight signal bleed, and unlocks the B2F path while the Lift Key trail continues deeper.
 
+`NexusRed::KantoStory.complete_celadon_rocket_hideout_b2f(state, location:, area_type:)` resolves the second Rocket Hideout dungeon floor. It requires B1F completion, keeps Red active, records the B2F patrol warning, Bill's stolen Silph Scope crate trace, Rocket/Gold Dust ledger conflict, Team Moonlight control-room interference, and returns a `battle_hook` for the `rocket_hideout_b2f_patrol` villain battle at level cap 32.
+
+`NexusRed::KantoStory.complete_rocket_hideout_b2f_patrol_battle(state, location:, result:, area_type:)` records the B2F Rocket patrol result after the map battle returns. It marks the patrol started/finished flags, records Red opening the B3F route, unlocks the Rocket Hideout B3F path, and points the next hook to `celadon_rocket_hideout_b3f`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

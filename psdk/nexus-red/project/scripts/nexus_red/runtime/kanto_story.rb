@@ -95,6 +95,16 @@ module NexusRed
     TEAM_MOONLIGHT_HIDEOUT_SIGNAL_BLEED_EVENT_ID = 'team_moonlight_hideout_signal_bleed'
     LIFT_KEY_DEEPER_TRAIL_EVENT_ID = 'lift_key_deeper_trail'
     ROCKET_HIDEOUT_B2F_PATH_EVENT_ID = 'rocket_hideout_b2f_path_unlocked'
+    CELADON_ROCKET_HIDEOUT_B2F_EVENT_ID = 'celadon_rocket_hideout_b2f'
+    RED_HIDEOUT_B2F_PATROL_WARNING_EVENT_ID = 'red_hideout_b2f_patrol_warning'
+    BILL_STOLEN_SILPH_SCOPE_CRATE_EVENT_ID = 'bill_stolen_silph_scope_crate'
+    ROCKET_HIDEOUT_B2F_PATROL_UNLOCK_EVENT_ID = 'rocket_hideout_b2f_patrol_unlocked'
+    ROCKET_GOLD_DUST_B2F_CONFLICT_EVENT_ID = 'rocket_gold_dust_b2f_conflict'
+    TEAM_MOONLIGHT_CONTROL_ROOM_EVENT_ID = 'team_moonlight_control_room_interference'
+    LIFT_KEY_B3F_ROUTE_EVENT_ID = 'lift_key_b3f_route_seen'
+    ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID = 'rocket_hideout_b2f_patrol_battle'
+    ROCKET_HIDEOUT_B3F_PATH_EVENT_ID = 'rocket_hideout_b3f_path_unlocked'
+    ROCKET_HIDEOUT_B2F_PATROL_BATTLE_ID = 'rocket_hideout_b2f_patrol'
 
     module_function
 
@@ -1765,6 +1775,160 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID }
     end
 
+    def complete_celadon_rocket_hideout_b2f(state, location: 'Celadon Rocket Hideout B2F', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_b1f', 'event_id' => CELADON_ROCKET_HIDEOUT_B2F_EVENT_ID } unless celadon_rocket_hideout_b1f_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_ROCKET_HIDEOUT_B2F_EVENT_ID } if celadon_rocket_hideout_b2f_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_B2F_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_HIDEOUT_B2F_PATROL_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_STOLEN_SILPH_SCOPE_CRATE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATROL_BATTLE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GOLD_DUST_B2F_CONFLICT')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_CONTROL_ROOM_INTERFERENCE')
+      add_story_flag(state, 'FLAG_NEXUS_LIFT_KEY_B3F_ROUTE')
+      mark_cleared_event(story, CELADON_ROCKET_HIDEOUT_B2F_EVENT_ID)
+      mark_cleared_event(story, RED_HIDEOUT_B2F_PATROL_WARNING_EVENT_ID)
+      mark_cleared_event(story, BILL_STOLEN_SILPH_SCOPE_CRATE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_HIDEOUT_B2F_PATROL_UNLOCK_EVENT_ID)
+      mark_cleared_event(story, ROCKET_GOLD_DUST_B2F_CONFLICT_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_CONTROL_ROOM_EVENT_ID)
+      mark_cleared_event(story, LIFT_KEY_B3F_ROUTE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'b2f_patrol_line',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'stolen_silph_scope_crate',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'b2f_ledger_breach',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'control_room_interference',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Gold Dust found a hidden ledger and coin cache beside Rocket stolen Silph Scope cargo on B2F',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Moonlight interference in the control room scrambles Rocket patrol calls and the lower-floor route',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_b2f_patrol_warning',
+        location: location,
+        summary: 'Red marks the B2F Rocket patrol route and keeps reinforcements from surrounding Antman.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'stolen_silph_scope_crate',
+        location: location,
+        summary: 'Bill confirms the stolen Silph Scope crate is tied to the Lavender signal and points toward B3F.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rocket Hideout B2F exposed the stolen Silph Scope crate, Gold Dust ledger breach, Moonlight control room interference, and the B3F Lift Key route.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_rocket_hideout_b2f_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_rocket_hideout_b2f_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_B2F_EVENT_ID }
+    end
+
+    def complete_rocket_hideout_b2f_patrol_battle(state, location: 'Celadon Rocket Hideout B2F', result: 'placeholder_win', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_b2f', 'event_id' => ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID } unless celadon_rocket_hideout_b2f_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID } if rocket_hideout_b2f_patrol_battle_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATROL_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATROL_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_B3F_PATH_UNLOCKED')
+      mark_cleared_event(story, ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_HIDEOUT_B3F_PATH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'b2f_patrol_defeated',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_b3f_route_opened',
+        location: location,
+        summary: 'Red holds the B2F corridor after the patrol falls so Antman can push toward B3F.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The B2F patrol is down, Red has the corridor covered, and the Rocket Hideout B3F route is open.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = rocket_hideout_b2f_patrol_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def rocket_hideout_b2f_patrol_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -2138,6 +2302,48 @@ module NexusRed
         'dungeon_hazard' => 'spinner_maze',
         'key_item_trail' => 'lift_key_deeper_trail',
         'next_hook' => 'celadon_rocket_hideout_b2f'
+      }
+    end
+
+    def celadon_rocket_hideout_b2f_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_ROCKET_HIDEOUT_B2F_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_HIDEOUT_B2F_PATROL_WARNING_EVENT_ID,
+          BILL_STOLEN_SILPH_SCOPE_CRATE_EVENT_ID,
+          ROCKET_HIDEOUT_B2F_PATROL_UNLOCK_EVENT_ID,
+          ROCKET_GOLD_DUST_B2F_CONFLICT_EVENT_ID,
+          TEAM_MOONLIGHT_CONTROL_ROOM_EVENT_ID,
+          LIFT_KEY_B3F_ROUTE_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight],
+        'battle_hook' => {
+          'battle_id' => ROCKET_HIDEOUT_B2F_PATROL_BATTLE_ID,
+          'battle_type' => 'villain_grunt',
+          'location' => 'celadon_rocket_hideout_b2f',
+          'level_cap' => 32,
+          'opponent_species' => %w[Golbat Raticate Koffing],
+          'companion_support' => 'red_blocks_b2f_reinforcements'
+        },
+        'key_item_trail' => 'lift_key_b3f_route',
+        'next_hook' => 'rocket_hideout_b2f_patrol_battle'
+      }
+    end
+
+    def rocket_hideout_b2f_patrol_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID,
+        'battle_id' => ROCKET_HIDEOUT_B2F_PATROL_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'linked_events' => [
+          ROCKET_HIDEOUT_B3F_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket],
+        'next_hook' => 'celadon_rocket_hideout_b3f'
       }
     end
 
