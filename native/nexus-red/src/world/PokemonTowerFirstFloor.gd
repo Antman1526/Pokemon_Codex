@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_lavender_outskirts
+signal go_to_route_8_celadon_road
 
 var save_state
 var dialogue_label: Label
@@ -18,6 +19,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_pokemon_tower_first_floor_scene()
 	if event.is_action_pressed("ui_right"):
 		trigger_deeper_tower_path()
+	if event.is_action_pressed("ui_down"):
+		trigger_route_8_celadon_lead()
 	if event.is_action_pressed("cancel"):
 		return_to_lavender_outskirts()
 
@@ -129,9 +132,17 @@ func trigger_deeper_tower_path() -> void:
 	dialogue_label.text = "Red: The deeper Pokemon Tower path stays locked until we get the Silph Scope. Without it, the Echo Flute and Bill's readings are just noise."
 
 
+func trigger_route_8_celadon_lead() -> void:
+	if save_state and not bool(save_state.story_flags.get("silph_scope_need_seen", false)):
+		dialogue_label.text = "Red: Route 8 toward Celadon can wait until we understand why the Silph Scope matters here."
+		return
+	dialogue_label.text = "Red: The Silph Scope lead points west through Route 8 toward Celadon. Bill says Rocket's Game Corner front is the next place to check."
+	emit_signal("go_to_route_8_celadon_road")
+
+
 func return_to_lavender_outskirts() -> void:
 	emit_signal("go_to_lavender_outskirts")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is Pokemon Tower's first floor. Press Z/Enter to inspect Bill's Echo Flute distortion, Team Moonlight pressure, Rocket's lookout, Cubone, Mr. Fuji, and the Silph Scope problem, Right to test the deeper path, or X/Esc to return to Lavender."
+	dialogue_label.text = "Red: This is Pokemon Tower's first floor. Press Z/Enter to inspect Bill's Echo Flute distortion, Team Moonlight pressure, Rocket's lookout, Cubone, Mr. Fuji, and the Silph Scope problem, Right to test the deeper path, Down for Route 8 toward Celadon, or X/Esc to return to Lavender."

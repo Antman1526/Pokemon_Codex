@@ -956,6 +956,27 @@ python3 tools/validate_native_pokemon_tower_first_floor.py
 godot --headless --path native/nexus-red --script tests/pokemon_tower_first_floor_test.gd
 ```
 
+### Task 7.50: Add Route 8 Celadon road and Silph Scope lead
+
+Acceptance:
+
+- Pokemon Tower keeps the Route 8/Celadon lead locked until the first-floor investigation records the Silph Scope need.
+- After the tower first-floor beat, Antman can transition to a playable Route 8 Celadon road scene.
+- Route 8 keeps the journey physical, moving west from Lavender toward Celadon instead of jumping through WorldLink.
+- Red remains the active full-game companion and frames the road as a deliberate Rocket trap.
+- Bill traces the Silph Scope signal toward Celadon, tying the Lavender/Pokemon Tower arc into Celadon's Rocket/Game Corner arc.
+- Team Moonlight's shadow follows Antman out of Lavender, showing that the custom faction conflict is spreading across routes.
+- The Underground Path to Celadon is unlocked as the next physical travel step, with Celadon teased as the next major hub.
+- Save state and WorldLink record Route 8 reached, Red's westbound warning, Bill's Silph Scope-to-Celadon trace, Rocket Game Corner lead, Team Moonlight Route 8 shadow, Underground Path to Celadon unlock, and Celadon City tease.
+- WorldLink checklist adds Reach Route 8, Trace Silph Scope toward Celadon, Find Rocket Game Corner lead, and Unlock Underground Path to Celadon milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route8_celadon_road.py
+godot --headless --path native/nexus-red --script tests/route8_celadon_road_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

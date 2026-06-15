@@ -243,6 +243,14 @@ func start_new_game(name: String) -> void:
 		"silph_scope_need_seen": false,
 		"pokemon_tower_deeper_path_locked": false,
 		"worldlink_pokemon_tower_first_floor_batch_queued": false,
+		"route_8_celadon_road_reached": false,
+		"red_route_8_westbound_seen": false,
+		"bill_silph_scope_celadon_trace_seen": false,
+		"rocket_celadon_game_corner_lead_seen": false,
+		"team_moonlight_route_8_shadow_seen": false,
+		"underground_path_to_celadon_unlocked": false,
+		"celadon_city_teased": false,
+		"worldlink_route_8_celadon_road_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -958,6 +966,37 @@ func queue_pokemon_tower_first_floor_batch() -> void:
 		"wl_cubone_mr_fuji_thread",
 		"wl_silph_scope_need_seen",
 		"wl_pokemon_tower_deeper_path_locked",
+	])
+
+
+func enter_route_8_celadon_road() -> void:
+	current_scene = "route_8_celadon_road"
+	active_companion = "red"
+	set_flag("route_8_celadon_road_reached", true)
+	queue_worldlink_id("wl_route_8_celadon_road_reached")
+
+
+func record_route_8_celadon_road_scene() -> void:
+	active_companion = "red"
+	set_flag("red_route_8_westbound_seen", true)
+	set_flag("bill_silph_scope_celadon_trace_seen", true)
+	set_flag("rocket_celadon_game_corner_lead_seen", true)
+	set_flag("team_moonlight_route_8_shadow_seen", true)
+	set_flag("underground_path_to_celadon_unlocked", true)
+	set_flag("celadon_city_teased", true)
+	queue_route_8_celadon_road_batch()
+
+
+func queue_route_8_celadon_road_batch() -> void:
+	set_flag("worldlink_route_8_celadon_road_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_8_celadon_road_reached",
+		"wl_red_route_8_westbound",
+		"wl_bill_silph_scope_celadon_trace",
+		"wl_rocket_celadon_game_corner_lead",
+		"wl_team_moonlight_route_8_shadow",
+		"wl_underground_path_to_celadon_unlocked",
+		"wl_celadon_city_teased",
 	])
 
 

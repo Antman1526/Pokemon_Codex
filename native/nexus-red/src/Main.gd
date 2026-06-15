@@ -27,6 +27,7 @@ const Route9RockTunnelApproachScene := preload("res://scenes/world/Route9RockTun
 const RockTunnelInteriorScene := preload("res://scenes/world/RockTunnelInterior.tscn")
 const LavenderOutskirtsScene := preload("res://scenes/world/LavenderOutskirts.tscn")
 const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFirstFloor.tscn")
+const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -368,7 +369,19 @@ func _show_pokemon_tower_first_floor() -> void:
 	var tower := PokemonTowerFirstFloorScene.instantiate()
 	tower.save_state = save_state
 	tower.go_to_lavender_outskirts.connect(_on_go_to_lavender_outskirts)
+	tower.go_to_route_8_celadon_road.connect(_on_go_to_route_8_celadon_road)
 	_replace_screen(tower)
+
+
+func _on_go_to_route_8_celadon_road() -> void:
+	_show_route_8_celadon_road()
+
+
+func _show_route_8_celadon_road() -> void:
+	var route8 := Route8CeladonRoadScene.instantiate()
+	route8.save_state = save_state
+	route8.go_to_pokemon_tower_first_floor.connect(_on_go_to_pokemon_tower_first_floor)
+	_replace_screen(route8)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:

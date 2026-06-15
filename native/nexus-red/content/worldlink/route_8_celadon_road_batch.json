@@ -1,0 +1,40 @@
+{
+  "id": "route_8_celadon_road_batch",
+  "feed": [
+    {
+      "id": "wl_route_8_celadon_road_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red left Pokemon Tower on foot and reached Route 8, keeping the Silph Scope lead grounded in Kanto's route network."
+    },
+    {
+      "id": "wl_red_route_8_westbound",
+      "speaker": "Red",
+      "text": "Red marked Route 8 as the westbound road toward Celadon and warned that Rocket wants Antman to chase the clue."
+    },
+    {
+      "id": "wl_bill_silph_scope_celadon_trace",
+      "speaker": "Bill",
+      "text": "Bill traced the Silph Scope signal toward Celadon rather than deeper into Pokemon Tower."
+    },
+    {
+      "id": "wl_rocket_celadon_game_corner_lead",
+      "speaker": "WorldLink",
+      "text": "Rocket's Game Corner front in Celadon is now the strongest Silph Scope lead."
+    },
+    {
+      "id": "wl_team_moonlight_route_8_shadow",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight left a shadow on Route 8, proving Lavender's dream pressure is spreading beyond the tower."
+    },
+    {
+      "id": "wl_underground_path_to_celadon_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Underground Path to Celadon is unlocked as the next physical travel step."
+    },
+    {
+      "id": "wl_celadon_city_teased",
+      "speaker": "WorldLink",
+      "text": "Celadon City is now teased as the next major Kanto story hub for the Silph Scope thread."
+    }
+  ]
+}
