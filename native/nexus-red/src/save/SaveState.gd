@@ -70,6 +70,9 @@ func start_new_game(name: String) -> void:
 		"rocket_forest_scout_seen": false,
 		"route_3_reached": false,
 		"red_route_3_migration_scene_seen": false,
+		"pewter_city_reached": false,
+		"brock_pewter_intro_seen": false,
+		"red_pewter_training_seen": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -132,6 +135,24 @@ func enter_viridian_forest() -> void:
 func record_rocket_forest_scout() -> void:
 	set_flag("rocket_forest_scout_seen", true)
 	queue_worldlink_id("rocket_forest_scout_seen")
+
+
+func enter_pewter_city() -> void:
+	current_scene = "pewter_city"
+	active_companion = "red"
+	set_flag("pewter_city_reached", true)
+	queue_worldlink_id("pewter_city_reached")
+
+
+func record_brock_pewter_intro() -> void:
+	set_flag("brock_pewter_intro_seen", true)
+	queue_worldlink_id("brock_pewter_intro_seen")
+
+
+func record_red_pewter_training() -> void:
+	active_companion = "red"
+	set_flag("red_pewter_training_seen", true)
+	queue_worldlink_id("red_pewter_training_seen")
 
 
 func record_viridian_center_visit() -> void:

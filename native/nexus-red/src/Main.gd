@@ -8,6 +8,7 @@ const ViridianCityScene := preload("res://scenes/world/ViridianCity.tscn")
 const Route2ForestGateScene := preload("res://scenes/world/Route2ForestGate.tscn")
 const ViridianForestScene := preload("res://scenes/world/ViridianForest.tscn")
 const Route3Scene := preload("res://scenes/world/Route3.tscn")
+const PewterCityScene := preload("res://scenes/world/PewterCity.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -109,8 +110,20 @@ func _show_route_3() -> void:
 	var route_3 := Route3Scene.instantiate()
 	route_3.save_state = save_state
 	route_3.go_to_route_2_forest_gate.connect(_on_go_to_route_2_forest_gate)
+	route_3.go_to_pewter_city.connect(_on_go_to_pewter_city)
 	route_3.start_wild_encounter.connect(_on_start_wild_encounter)
 	_replace_screen(route_3)
+
+
+func _on_go_to_pewter_city() -> void:
+	_show_pewter_city()
+
+
+func _show_pewter_city() -> void:
+	var pewter := PewterCityScene.instantiate()
+	pewter.save_state = save_state
+	pewter.go_to_route_3.connect(_on_go_to_route_3)
+	_replace_screen(pewter)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

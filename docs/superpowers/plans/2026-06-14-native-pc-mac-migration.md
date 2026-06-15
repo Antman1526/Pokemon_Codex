@@ -393,6 +393,22 @@ python3 tools/validate_native_viridian_forest_slice.py
 godot --headless --path native/nexus-red --script tests/viridian_forest_test.gd
 ```
 
+### Task 7.19: Add Pewter City Brock/Red intro shell
+
+Acceptance:
+
+- Route 3 can transition into Pewter City.
+- Pewter City records save-state progress.
+- Brock appears as a friendly first-gym mentor, not just a boss gate.
+- Red gives pre-Brock training advice that respects the expanded starter pool.
+
+Verification:
+
+```sh
+python3 tools/validate_native_pewter_city_slice.py
+godot --headless --path native/nexus-red --script tests/pewter_city_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

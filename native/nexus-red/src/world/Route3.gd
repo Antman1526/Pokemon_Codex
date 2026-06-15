@@ -4,6 +4,7 @@ const EncounterService := preload("res://src/encounter/EncounterService.gd")
 const FIRST_ROUTE_3_MIGRATION_ID := "route_3_migration_chespin"
 
 signal go_to_route_2_forest_gate
+signal go_to_pewter_city
 signal start_wild_encounter(encounter_data)
 
 var save_state
@@ -21,6 +22,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_route_3_migration_encounter()
+	if event.is_action_pressed("ui_up"):
+		trigger_pewter_city_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_2_forest_gate()
 
@@ -100,5 +103,10 @@ func return_to_route_2_forest_gate() -> void:
 	emit_signal("go_to_route_2_forest_gate")
 
 
+func trigger_pewter_city_entry() -> void:
+	dialogue_label.text = "Red: Pewter City is ahead. Brock is friendly, but he is still the first real wall."
+	emit_signal("go_to_pewter_city")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Route 3 carries the final early migration group. Press Z/Enter for Route 3 migration, or X/Esc to return to the Viridian Forest Gate."
+	dialogue_label.text = "Red: Route 3 carries the final early migration group. Press Z/Enter for Route 3 migration, Up for Pewter City, or X/Esc to return to the Viridian Forest Gate."
