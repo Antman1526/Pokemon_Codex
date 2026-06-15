@@ -1,0 +1,49 @@
+{
+  "route_id": "route_2",
+  "name": "Route 2 Wild Encounters",
+  "status": "placeholder_playable",
+  "level_cap_context": "pre_brock",
+  "design_note": "Route 2 gently raises wild levels after Viridian while staying below Brock pacing. Red anchors the first catch tutorial before the Viridian Forest dungeon slice.",
+  "encounters": [
+    {
+      "id": "route_2_red_catch_tutorial_pidgey",
+      "species": "Pidgey",
+      "level": 4,
+      "weight": 100,
+      "time": "day",
+      "route_name": "Route 2",
+      "return_scene": "route_2_forest_gate",
+      "tags": ["deterministic_first_encounter", "catch_tutorial", "red_companion", "pre_brock_balanced"]
+    },
+    {
+      "id": "route_2_common_caterpie",
+      "species": "Caterpie",
+      "level": 4,
+      "weight": 35,
+      "time": "day",
+      "route_name": "Route 2",
+      "return_scene": "route_2_forest_gate",
+      "tags": ["common", "forest_approach", "safe_early"]
+    },
+    {
+      "id": "route_2_common_rattata",
+      "species": "Rattata",
+      "level": 4,
+      "weight": 30,
+      "time": "any",
+      "route_name": "Route 2",
+      "return_scene": "route_2_forest_gate",
+      "tags": ["common", "safe_early"]
+    },
+    {
+      "id": "route_2_rare_pikachu_tease",
+      "species": "Pikachu",
+      "level": 5,
+      "weight": 5,
+      "time": "morning",
+      "route_name": "Route 2",
+      "return_scene": "route_2_forest_gate",
+      "tags": ["rare", "route_1_to_3_special_pool", "pre_brock_balanced"]
+    }
+  ]
+}

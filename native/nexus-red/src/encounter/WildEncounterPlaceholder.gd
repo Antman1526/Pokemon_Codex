@@ -74,7 +74,7 @@ func _build_encounter_screen() -> void:
 	add_child(wild_side)
 
 	var title := Label.new()
-	title.text = "Route 1 wild encounter placeholder"
+	title.text = "%s wild encounter placeholder" % _route_name()
 	title.anchor_left = 0.05
 	title.anchor_top = 0.04
 	title.anchor_right = 0.95
@@ -208,6 +208,10 @@ func _player_starter() -> String:
 
 func _wild_species() -> String:
 	return str(encounter_data.get("species", "creature"))
+
+
+func _route_name() -> String:
+	return str(encounter_data.get("route_name", "Route 1"))
 
 
 func _wild_level() -> int:

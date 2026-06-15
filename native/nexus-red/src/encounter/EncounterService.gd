@@ -1,6 +1,7 @@
 extends RefCounted
 
 const ROUTE_1_WILD_PATH := "res://content/encounters/route_1_wild_encounters.json"
+const ROUTE_2_WILD_PATH := "res://content/encounters/route_2_wild_encounters.json"
 
 
 func pick_route_1_encounter(save_state = null) -> Dictionary:
@@ -15,6 +16,23 @@ func pick_route_1_encounter(save_state = null) -> Dictionary:
 			return first
 
 	var fallback := _find_encounter(encounters, "route_1_common_rattata")
+	if not fallback.is_empty():
+		return fallback
+	return encounters[0]
+
+
+func pick_route_2_encounter(save_state = null) -> Dictionary:
+	var data := _load_json(ROUTE_2_WILD_PATH)
+	var encounters: Array = data.get("encounters", [])
+	if encounters.is_empty():
+		return {}
+
+	if save_state == null or not save_state.story_flags.get("route_2_catch_tutorial_seen", false):
+		var first := _find_encounter(encounters, "route_2_red_catch_tutorial_pidgey")
+		if not first.is_empty():
+			return first
+
+	var fallback := _find_encounter(encounters, "route_2_common_caterpie")
 	if not fallback.is_empty():
 		return fallback
 	return encounters[0]

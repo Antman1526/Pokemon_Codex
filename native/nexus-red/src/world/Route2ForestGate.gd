@@ -1,9 +1,13 @@
 extends Control
 
+const EncounterService := preload("res://src/encounter/EncounterService.gd")
+
 signal go_to_viridian_city
+signal start_wild_encounter(encounter_data)
 
 var save_state
 var dialogue_label: Label
+var encounter_service := EncounterService.new()
 
 
 func _ready() -> void:
@@ -15,7 +19,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
-		inspect_gate()
+		trigger_route_2_catch_tutorial()
 	if event.is_action_pressed("cancel"):
 		return_to_viridian_city()
 
@@ -86,9 +90,20 @@ func inspect_gate() -> void:
 	dialogue_label.text = "A fresh boot print cuts across the Route 2 trail. Red points toward the Viridian Forest Gate and lowers his voice: Rocket activity is moving north."
 
 
+func trigger_route_2_catch_tutorial() -> void:
+	var encounter := encounter_service.pick_route_2_encounter(save_state)
+	if encounter.is_empty():
+		dialogue_label.text = "Red checks the grass line, but the Route 2 encounter table is not ready yet."
+		return
+	if save_state:
+		save_state.start_wild_encounter(encounter)
+	dialogue_label.text = "Red: Pidgey is circling low. This is a clean catch tutorial before Viridian Forest gets risky."
+	emit_signal("start_wild_encounter", encounter)
+
+
 func return_to_viridian_city() -> void:
 	emit_signal("go_to_viridian_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is Route 2 and the Viridian Forest Gate. The trees are too quiet, and Rocket activity this close to town means somebody is testing the road ahead."
+	dialogue_label.text = "Red: This is Route 2 and the Viridian Forest Gate. The trees are too quiet, and Rocket activity this close to town means somebody is testing the road ahead. Press Z/Enter for the catch tutorial."

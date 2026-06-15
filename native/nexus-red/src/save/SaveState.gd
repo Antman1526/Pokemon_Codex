@@ -14,6 +14,7 @@ var active_battle_id := ""
 var last_battle_result := ""
 var active_encounter_id := ""
 var active_encounter_data: Dictionary = {}
+var encounter_return_scene := ""
 var last_encounter_result := ""
 var party_roster: Array[String] = []
 var captured_creatures: Array[String] = []
@@ -36,6 +37,7 @@ func start_new_game(name: String) -> void:
 	last_battle_result = ""
 	active_encounter_id = ""
 	active_encounter_data = {}
+	encounter_return_scene = ""
 	last_encounter_result = ""
 	party_roster = []
 	captured_creatures = []
@@ -61,6 +63,8 @@ func start_new_game(name: String) -> void:
 		"worldlink_viridian_story_batch_queued": false,
 		"route_2_forest_gate_reached": false,
 		"red_route_2_warning_seen": false,
+		"route_2_catch_tutorial_seen": false,
+		"route_2_catch_tutorial_caught": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -200,9 +204,12 @@ func finish_battle_placeholder(result: String) -> void:
 func start_wild_encounter(encounter: Dictionary) -> void:
 	active_encounter_data = encounter.duplicate(true)
 	active_encounter_id = str(active_encounter_data.get("id", ""))
+	encounter_return_scene = str(active_encounter_data.get("return_scene", current_scene))
 	last_encounter_result = ""
 	if active_encounter_id == "route_1_first_wild":
 		set_flag("route_1_first_wild_seen", true)
+	if active_encounter_id == "route_2_red_catch_tutorial_pidgey":
+		set_flag("route_2_catch_tutorial_seen", true)
 	queue_worldlink_id(active_encounter_id + "_seen")
 
 
@@ -215,6 +222,9 @@ func finish_wild_encounter(result: String) -> void:
 		if active_encounter_id == "route_1_first_wild":
 			set_flag("route_1_first_wild_caught", true)
 			queue_worldlink_id("route_1_first_wild_caught")
+		if active_encounter_id == "route_2_red_catch_tutorial_pidgey":
+			set_flag("route_2_catch_tutorial_caught", true)
+			queue_worldlink_id("route_2_catch_tutorial_caught")
 	active_encounter_id = ""
 	active_encounter_data = {}
 

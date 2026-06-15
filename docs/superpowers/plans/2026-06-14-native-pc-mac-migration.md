@@ -313,6 +313,22 @@ python3 tools/validate_native_route2_gate_slice.py
 godot --headless --path native/nexus-red --script tests/route2_forest_gate_test.gd
 ```
 
+### Task 7.14: Add Route 2 catch tutorial encounter
+
+Acceptance:
+
+- Route 2 has its own pre-Brock encounter data that returns to the Viridian Forest Gate scene.
+- Red can trigger a first Route 2 catch tutorial before the forest dungeon.
+- Save state records Route 2 tutorial seen/caught flags and captures Pidgey.
+- The shared wild encounter shell can return to Route 2 instead of always returning to Route 1.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route2_catch_tutorial_slice.py
+godot --headless --path native/nexus-red --script tests/route2_catch_tutorial_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
@@ -335,6 +351,6 @@ The native migration is healthy when:
 
 ## Open Questions
 
-- Should the first native art style use placeholder FireRed-like tiles, HD pixel art, or a clean original chibi style?
+- Confirmed direction: Godot 4 as a 2D HD pixel RPG engine with a classic FireRed-style structure and original/custom assets.
 - Should the initial native battle engine be built in GDScript first, or C# from the start for stronger typing?
 - Should PC controls prioritize keyboard/controller only, or include mouse-driven menus?

@@ -81,6 +81,7 @@ func _show_route_2_forest_gate() -> void:
 	var route_2_gate := Route2ForestGateScene.instantiate()
 	route_2_gate.save_state = save_state
 	route_2_gate.go_to_viridian_city.connect(_on_go_to_viridian_city)
+	route_2_gate.start_wild_encounter.connect(_on_start_wild_encounter)
 	_replace_screen(route_2_gate)
 
 
@@ -109,8 +110,16 @@ func _on_start_wild_encounter(encounter_data: Dictionary) -> void:
 
 
 func _on_wild_encounter_finished(result: String) -> void:
+	var return_scene := save_state.encounter_return_scene
 	save_state.finish_wild_encounter(result)
-	_on_go_to_route_1()
+	_return_from_wild_encounter(return_scene)
+
+
+func _return_from_wild_encounter(return_scene: String) -> void:
+	if return_scene == "route_2_forest_gate":
+		_show_route_2_forest_gate()
+	else:
+		_on_go_to_route_1()
 
 
 func _replace_screen(next_screen: Control) -> void:
