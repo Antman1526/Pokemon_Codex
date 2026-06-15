@@ -1,0 +1,40 @@
+{
+  "id": "route_2_east_field_lab_batch",
+  "feed": [
+    {
+      "id": "wl_route_2_east_field_lab_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red surfaced at the Route 2 east field lab after crossing Diglett's Cave."
+    },
+    {
+      "id": "wl_red_route_2_east_exit",
+      "speaker": "Red",
+      "text": "Red confirmed the party is still following the physical Kanto route chain, not using WorldLink as a shortcut."
+    },
+    {
+      "id": "wl_bill_echo_flute_decoder",
+      "speaker": "Bill",
+      "text": "Bill tuned the Echo Flute frequency into a decoder that can identify sleep-wave sources."
+    },
+    {
+      "id": "wl_oak_aide_field_tool_brief",
+      "speaker": "Oak Aide",
+      "text": "Oak's aide briefed Antman on field-tool research and marked the Echo Flute as a future Snorlax solution."
+    },
+    {
+      "id": "wl_rocket_moonlight_sleep_signal",
+      "speaker": "WorldLink",
+      "text": "Rocket traces overlap with Team Moonlight sleep-signal residue, pointing the investigation toward Lavender."
+    },
+    {
+      "id": "wl_lavender_signal_path_teased",
+      "speaker": "Bill",
+      "text": "Bill traced the sleep signal toward Lavender's tower frequencies."
+    },
+    {
+      "id": "wl_route_9_rock_tunnel_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Route 9 toward Rock Tunnel is now the next recommended physical path."
+    }
+  ]
+}

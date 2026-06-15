@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_11
+signal go_to_route_2_east_field_lab
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_diglett_cave_detour_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_route_2_east_field_lab_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_11()
 
@@ -105,9 +108,17 @@ func trigger_diglett_cave_detour_scene() -> void:
 	dialogue_label.text = "Red: Diglett's Cave keeps us moving while Snorlax blocks Route 12. Bill mapped a Nexus relay through these tunnels, Rocket is yelling at Gold Dust over stolen cave survey crates, and the only clean way to wake Snorlax later is an Echo Flute lead."
 
 
+func trigger_route_2_east_field_lab_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("echo_flute_lead_seen", false)):
+		dialogue_label.text = "Red: Before we exit to Route 2, follow the Echo Flute lead in this cave. Bill needs the sleeping-frequency trace first."
+		return
+	dialogue_label.text = "Red: Route 2 is ahead. Bill says an Oak aide field lab can turn the Echo Flute clue into a real route plan."
+	emit_signal("go_to_route_2_east_field_lab")
+
+
 func return_to_route_11() -> void:
 	emit_signal("go_to_route_11")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Diglett's Cave is the detour, not a shortcut. Press Z/Enter to map the tunnel with Bill's relay notes, or X/Esc to return to Route 11."
+	dialogue_label.text = "Red: Diglett's Cave is the detour, not a shortcut. Press Z/Enter to map the tunnel with Bill's relay notes, Right for the Route 2 field lab after the Echo Flute lead, or X/Esc to return to Route 11."

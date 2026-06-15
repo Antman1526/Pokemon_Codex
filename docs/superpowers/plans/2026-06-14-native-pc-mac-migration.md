@@ -853,6 +853,26 @@ python3 tools/validate_native_diglett_cave_detour.py
 godot --headless --path native/nexus-red --script tests/diglett_cave_detour_test.gd
 ```
 
+### Task 7.45: Add Route 2 east field lab and Rock Tunnel lead
+
+Acceptance:
+
+- Diglett's Cave keeps the Route 2 east field lab locked until the Echo Flute lead has been found.
+- After the cave detour scene, Antman can exit to a playable Route 2 east field lab scene.
+- Red stays as the active full-game companion and confirms the party is still moving through physical Kanto routes.
+- Bill and an Oak aide turn the Echo Flute lead into a field-tool frequency decoder without waking Snorlax yet.
+- Rocket and Team Moonlight are connected through sleep-signal residue, preserving the custom faction web while pointing toward Lavender.
+- The scene unlocks Route 9 toward Rock Tunnel as the next recommended physical path.
+- Save state and WorldLink record the field lab reached, Red's east-exit confirmation, Bill's Echo Flute decoder, Oak aide field-tool brief, Rocket/Moonlight sleep trace, Lavender signal path, and Route 9/Rock Tunnel unlock.
+- WorldLink checklist adds Route 2 east field lab, Echo Flute frequency, Rocket/Moonlight sleep trace, and Route 9/Rock Tunnel milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route2_east_field_lab.py
+godot --headless --path native/nexus-red --script tests/route2_east_field_lab_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

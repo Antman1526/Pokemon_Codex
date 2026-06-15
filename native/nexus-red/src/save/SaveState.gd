@@ -202,6 +202,14 @@ func start_new_game(name: String) -> void:
 		"snorlax_route_12_block_confirmed": false,
 		"echo_flute_lead_seen": false,
 		"worldlink_diglett_cave_detour_batch_queued": false,
+		"route_2_east_field_lab_reached": false,
+		"red_route_2_east_exit_seen": false,
+		"bill_echo_flute_decoder_seen": false,
+		"oak_aide_field_tool_brief_seen": false,
+		"rocket_moonlight_sleep_signal_seen": false,
+		"lavender_signal_path_teased": false,
+		"route_9_rock_tunnel_path_unlocked": false,
+		"worldlink_route_2_east_field_lab_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -760,6 +768,37 @@ func queue_diglett_cave_detour_batch() -> void:
 		"wl_rocket_gold_dust_cave_argument",
 		"wl_snorlax_route_12_block_confirmed",
 		"wl_echo_flute_lead_seen",
+	])
+
+
+func enter_route_2_east_field_lab() -> void:
+	current_scene = "route_2_east_field_lab"
+	active_companion = "red"
+	set_flag("route_2_east_field_lab_reached", true)
+	queue_worldlink_id("wl_route_2_east_field_lab_reached")
+
+
+func record_route_2_field_lab_scene() -> void:
+	active_companion = "red"
+	set_flag("red_route_2_east_exit_seen", true)
+	set_flag("bill_echo_flute_decoder_seen", true)
+	set_flag("oak_aide_field_tool_brief_seen", true)
+	set_flag("rocket_moonlight_sleep_signal_seen", true)
+	set_flag("lavender_signal_path_teased", true)
+	set_flag("route_9_rock_tunnel_path_unlocked", true)
+	queue_route_2_east_field_lab_batch()
+
+
+func queue_route_2_east_field_lab_batch() -> void:
+	set_flag("worldlink_route_2_east_field_lab_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_2_east_field_lab_reached",
+		"wl_red_route_2_east_exit",
+		"wl_bill_echo_flute_decoder",
+		"wl_oak_aide_field_tool_brief",
+		"wl_rocket_moonlight_sleep_signal",
+		"wl_lavender_signal_path_teased",
+		"wl_route_9_rock_tunnel_path_unlocked",
 	])
 
 
