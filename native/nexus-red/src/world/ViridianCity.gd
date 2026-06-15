@@ -18,6 +18,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		interact_pokemon_center()
 	if event.is_action_pressed("menu"):
 		interact_poke_mart()
+	if event.is_action_pressed("worldlink"):
+		interact_red_companion()
+	if event.is_action_pressed("ui_up"):
+		investigate_rocket_clue()
 	if event.is_action_pressed("cancel"):
 		emit_signal("go_to_route_1")
 
@@ -114,5 +118,17 @@ func interact_poke_mart() -> void:
 	dialogue_label.text = "Poke Mart Clerk: Basic field supplies are ready. Antman's travel fund is $%d." % money
 
 
+func interact_red_companion() -> void:
+	if save_state:
+		save_state.record_viridian_red_scene()
+	dialogue_label.text = "Red: Viridian is quiet because everyone thinks quiet means safe. It does not. Check the Mart shipment logs before we push north."
+
+
+func investigate_rocket_clue() -> void:
+	if save_state:
+		save_state.record_viridian_rocket_clue()
+	dialogue_label.text = "A supply slip behind the Mart has a Rocket stamp pressed into the corner. Red folds it carefully: first clue, not the last."
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Nurse Joy waves from the Pokemon Center while the Poke Mart clerk stocks early-route supplies. Press Z/Enter for Center, Tab for Mart, X/Esc to return south."
+	dialogue_label.text = "Nurse Joy waves from the Pokemon Center while the Poke Mart clerk stocks early-route supplies. Press Z/Enter for Center, Tab for Mart, W for Red, Up for Rocket clue, X/Esc to return south."

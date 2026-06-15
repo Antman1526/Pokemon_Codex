@@ -1,0 +1,25 @@
+{
+  "id": "viridian_story_batch",
+  "name": "Viridian Story Batch",
+  "trigger": "viridian_city_arrival_and_red_checkin",
+  "feed": [
+    {
+      "id": "wl_red_viridian_checkin",
+      "category": "companion",
+      "rival": "red",
+      "text": "Red checked in at Viridian City and told Antman to watch the Center, Mart, and north road before moving on."
+    },
+    {
+      "id": "wl_rocket_viridian_clue",
+      "category": "faction",
+      "faction": "team_rocket",
+      "text": "A Rocket-marked supply slip surfaced near Viridian's Mart shipment logs."
+    },
+    {
+      "id": "wl_blue_viridian_sighting",
+      "category": "rival",
+      "rival": "blue",
+      "text": "Blue was spotted near Viridian's north path, already asking which trainers are worth his time."
+    }
+  ]
+}

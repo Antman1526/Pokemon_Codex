@@ -281,6 +281,22 @@ python3 tools/validate_native_viridian_city_slice.py
 godot --headless --path native/nexus-red --script tests/viridian_city_test.gd
 ```
 
+### Task 7.12: Add Viridian Red/Rocket story beat
+
+Acceptance:
+
+- Viridian City has a Red companion check-in.
+- Viridian City can surface the first Rocket clue through a Mart shipment lead.
+- Save state records the Red scene, Rocket clue, and Viridian story WorldLink queue.
+- WorldLink renders the Viridian Red/Rocket/Blue story batch from JSON.
+
+Verification:
+
+```sh
+python3 tools/validate_native_viridian_story_slice.py
+godot --headless --path native/nexus-red --script tests/viridian_story_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

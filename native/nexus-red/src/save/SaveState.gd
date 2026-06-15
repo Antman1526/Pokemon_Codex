@@ -56,6 +56,9 @@ func start_new_game(name: String) -> void:
 		"viridian_city_reached": false,
 		"viridian_center_visited": false,
 		"viridian_mart_visited": false,
+		"viridian_red_scene_seen": false,
+		"viridian_rocket_clue_found": false,
+		"worldlink_viridian_story_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -99,6 +102,27 @@ func record_viridian_center_visit() -> void:
 func record_viridian_mart_visit() -> void:
 	set_flag("viridian_mart_visited", true)
 	queue_worldlink_id("viridian_mart_visited")
+
+
+func record_viridian_red_scene() -> void:
+	active_companion = "red"
+	set_flag("viridian_red_scene_seen", true)
+	queue_viridian_story_batch()
+	queue_worldlink_id("wl_red_viridian_checkin")
+
+
+func record_viridian_rocket_clue() -> void:
+	set_flag("viridian_rocket_clue_found", true)
+	queue_viridian_story_batch()
+	queue_worldlink_id("wl_rocket_viridian_clue")
+
+
+func queue_viridian_story_batch() -> void:
+	set_flag("worldlink_viridian_story_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_red_viridian_checkin",
+		"wl_blue_viridian_sighting",
+	])
 
 
 func choose_starter(selection: Dictionary) -> void:
