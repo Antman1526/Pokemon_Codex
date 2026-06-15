@@ -1,0 +1,40 @@
+{
+  "id": "celadon_rocket_hideout_entry_batch",
+  "feed": [
+    {
+      "id": "wl_celadon_rocket_hideout_entry_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red entered the Celadon Rocket Hideout through the Game Corner poster switch."
+    },
+    {
+      "id": "wl_red_hideout_entry_watch",
+      "speaker": "Red",
+      "text": "Red held the entry stairs and warned that Rocket designed the hideout to split trainers from their support."
+    },
+    {
+      "id": "wl_bill_hideout_elevator_signal",
+      "speaker": "Bill",
+      "text": "Bill traced a Silph Scope echo through the hideout elevator signal."
+    },
+    {
+      "id": "wl_rocket_lift_key_required",
+      "speaker": "WorldLink",
+      "text": "The Rocket elevator requires a Lift Key before deeper access is possible."
+    },
+    {
+      "id": "wl_giovanni_hideout_command",
+      "speaker": "WorldLink",
+      "text": "A Giovanni command terminal confirms Rocket expected Antman to follow the Silph Scope trail."
+    },
+    {
+      "id": "wl_team_moonlight_rocket_interference",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight interference is scraping Rocket's hideout signal, proving the custom faction war is inside Celadon too."
+    },
+    {
+      "id": "wl_rocket_hideout_b1f_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Rocket Hideout B1F is unlocked as the next Celadon dungeon step."
+    }
+  ]
+}

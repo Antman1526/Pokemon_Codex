@@ -1045,6 +1045,28 @@ python3 tools/validate_native_celadon_game_corner_exterior.py
 godot --headless --path native/nexus-red --script tests/celadon_game_corner_exterior_test.gd
 ```
 
+### Task 7.54: Add Celadon Rocket Hideout entry floor
+
+Acceptance:
+
+- The Game Corner exterior keeps the Rocket Hideout entry locked until the poster-switch/hideout-entry lead is unlocked.
+- After the Rocket guard battle and poster-switch lead, Antman can enter a playable Celadon Rocket Hideout entry scene.
+- Red remains the active full-game companion and guards the entry stairs without taking over the player's role.
+- Bill traces the hideout elevator signal back to the Silph Scope pattern.
+- The elevator/Lift Key barrier is visible and recorded as the next dungeon gating problem.
+- Giovanni is foreshadowed through a command terminal instead of appearing too early.
+- Team Moonlight interference appears inside Rocket's hideout, keeping the custom faction war blended into the classic Celadon Rocket arc.
+- The Hideout B1F path is unlocked as the next dungeon step, but the full B1F scene is deferred.
+- Save state and WorldLink record Rocket Hideout entry reached, Red's entry watch, Bill's elevator signal, Lift Key requirement, Giovanni command, Team Moonlight interference, and Hideout B1F path unlock.
+- WorldLink checklist adds Reach Rocket Hideout entry, Trace hideout elevator signal, Find Lift Key requirement, Hear Giovanni command, and Unlock Hideout B1F path milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_rocket_hideout_entry.py
+godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_entry_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

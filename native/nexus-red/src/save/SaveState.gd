@@ -278,6 +278,14 @@ func start_new_game(name: String) -> void:
 		"rocket_hideout_switch_lead_seen": false,
 		"game_corner_hideout_entry_unlocked": false,
 		"worldlink_celadon_game_corner_exterior_batch_queued": false,
+		"celadon_rocket_hideout_entry_reached": false,
+		"red_hideout_entry_watch_seen": false,
+		"bill_hideout_elevator_signal_seen": false,
+		"rocket_lift_key_required_seen": false,
+		"giovanni_hideout_command_seen": false,
+		"team_moonlight_rocket_interference_seen": false,
+		"rocket_hideout_b1f_path_unlocked": false,
+		"worldlink_celadon_rocket_hideout_entry_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1115,6 +1123,37 @@ func queue_celadon_game_corner_exterior_batch() -> void:
 		"wl_rocket_game_corner_guard_exposed",
 		"wl_team_moonlight_sleep_coin",
 		"wl_game_corner_guard_battle_unlocked",
+	])
+
+
+func enter_celadon_rocket_hideout_entry() -> void:
+	current_scene = "celadon_rocket_hideout_entry"
+	active_companion = "red"
+	set_flag("celadon_rocket_hideout_entry_reached", true)
+	queue_worldlink_id("wl_celadon_rocket_hideout_entry_reached")
+
+
+func record_celadon_rocket_hideout_entry_scene() -> void:
+	active_companion = "red"
+	set_flag("red_hideout_entry_watch_seen", true)
+	set_flag("bill_hideout_elevator_signal_seen", true)
+	set_flag("rocket_lift_key_required_seen", true)
+	set_flag("giovanni_hideout_command_seen", true)
+	set_flag("team_moonlight_rocket_interference_seen", true)
+	set_flag("rocket_hideout_b1f_path_unlocked", true)
+	queue_celadon_rocket_hideout_entry_batch()
+
+
+func queue_celadon_rocket_hideout_entry_batch() -> void:
+	set_flag("worldlink_celadon_rocket_hideout_entry_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_rocket_hideout_entry_reached",
+		"wl_red_hideout_entry_watch",
+		"wl_bill_hideout_elevator_signal",
+		"wl_rocket_lift_key_required",
+		"wl_giovanni_hideout_command",
+		"wl_team_moonlight_rocket_interference",
+		"wl_rocket_hideout_b1f_path_unlocked",
 	])
 
 

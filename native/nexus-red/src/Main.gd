@@ -31,6 +31,7 @@ const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.ts
 const CeladonUndergroundPathScene := preload("res://scenes/world/CeladonUndergroundPath.tscn")
 const CeladonCityScene := preload("res://scenes/world/CeladonCity.tscn")
 const CeladonGameCornerExteriorScene := preload("res://scenes/world/CeladonGameCornerExterior.tscn")
+const CeladonRocketHideoutEntryScene := preload("res://scenes/world/CeladonRocketHideoutEntry.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -421,7 +422,19 @@ func _show_celadon_game_corner_exterior() -> void:
 	exterior.save_state = save_state
 	exterior.go_to_celadon_city.connect(_on_go_to_celadon_city)
 	exterior.start_battle_placeholder.connect(_on_start_battle_placeholder)
+	exterior.go_to_game_corner_hideout_entry.connect(_on_go_to_game_corner_hideout_entry)
 	_replace_screen(exterior)
+
+
+func _on_go_to_game_corner_hideout_entry() -> void:
+	_show_celadon_rocket_hideout_entry()
+
+
+func _show_celadon_rocket_hideout_entry() -> void:
+	var hideout := CeladonRocketHideoutEntryScene.instantiate()
+	hideout.save_state = save_state
+	hideout.go_to_game_corner_exterior.connect(_on_go_to_game_corner_exterior)
+	_replace_screen(hideout)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:
