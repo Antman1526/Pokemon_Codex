@@ -145,6 +145,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_red_watches_league(state, location:, area_type:)` resolves Red's Indigo companion vow before the Elite Four. Red stays with Antman emotionally while refusing to interfere, Bill maps hidden League static through the Elite Four rooms, Nexus Order remains unrevealed, and the hook opens `elite_four`.
 
+`NexusRed::KantoStory.complete_elite_four(state, location:, result:, area_type:)` resolves the Kanto Elite Four gauntlet across Lorelei, Bruno, Agatha, and Lance. Companions watch without assisting, Bill sees the Champion room signal spike after Lance, Nexus Order remains hidden, and the hook opens `lance_legendary_energy_warning`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

@@ -349,6 +349,11 @@ module NexusRed
     ELITE_FOUR_CHALLENGE_EVENT_ID = 'elite_four_challenge_unlocked'
     LANCE_LEGENDARY_WARNING_LEAD_EVENT_ID = 'lance_legendary_energy_warning_lead'
     NEXUS_ORDER_LEAGUE_BRACKET_STATIC_EVENT_ID = 'nexus_order_league_bracket_static_hidden'
+    ELITE_FOUR_EVENT_ID = 'elite_four'
+    CHAMPION_ROOM_UNLOCKED_EVENT_ID = 'champion_room_unlocked'
+    LANCE_LEGENDARY_WARNING_UNLOCKED_EVENT_ID = 'lance_legendary_energy_warning_unlocked'
+    OAK_WORLD_CIRCUIT_PASSPORT_LEAD_EVENT_ID = 'oak_world_circuit_passport_lead'
+    NEXUS_ORDER_CHAMPION_SIGNAL_EVENT_ID = 'nexus_order_champion_signal_hidden'
 
     module_function
 
@@ -5274,6 +5279,67 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == RED_WATCHES_LEAGUE_EVENT_ID }
     end
 
+    def complete_elite_four(state, location: 'Indigo Plateau', result: 'cleared', area_type: 'league')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_red_watches_league', 'event_id' => ELITE_FOUR_EVENT_ID } unless red_watches_league_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ELITE_FOUR_EVENT_ID } if elite_four_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_ELITE_FOUR_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_ELITE_FOUR_CLEARED')
+      add_story_flag(state, 'FLAG_NEXUS_CHAMPION_ROOM_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_LANCE_LEGENDARY_ENERGY_WARNING_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_OAK_WORLD_CIRCUIT_PASSPORT_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_CHAMPION_SIGNAL')
+      mark_cleared_event(story, ELITE_FOUR_EVENT_ID)
+      mark_cleared_event(story, CHAMPION_ROOM_UNLOCKED_EVENT_ID)
+      mark_cleared_event(story, LANCE_LEGENDARY_WARNING_UNLOCKED_EVENT_ID)
+      mark_cleared_event(story, OAK_WORLD_CIRCUIT_PASSPORT_LEAD_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_CHAMPION_SIGNAL_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'champion_room_signal_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'elite_four_watch',
+        location: location,
+        summary: 'Red watches Antman clear the Elite Four from the Indigo stands and understands the journey has outgrown Kanto.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'lance_legendary_energy_decode',
+        location: location,
+        summary: 'Bill sees the hidden Champion room signal spike when Lance falls, pointing toward a legendary-energy warning.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman cleared the Elite Four at Indigo; Lance sensed the Champion room signal, and the next warning is bigger than Kanto.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = elite_four_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def elite_four_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ELITE_FOUR_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6664,6 +6730,67 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_league_bracket_static_unrevealed',
         'unlocks' => %w[elite_four_challenge lance_warning_lead indigo_plateau_watch],
         'next_hook' => 'elite_four'
+      }
+    end
+
+    def elite_four_event_result(location, result)
+      gauntlet = [
+        {
+          'leader' => 'Lorelei',
+          'room' => 'ice_room',
+          'specialty' => 'ice_water',
+          'ace' => 'Lapras'
+        },
+        {
+          'leader' => 'Bruno',
+          'room' => 'fighting_room',
+          'specialty' => 'fighting_rock',
+          'ace' => 'Machamp'
+        },
+        {
+          'leader' => 'Agatha',
+          'room' => 'ghost_room',
+          'specialty' => 'ghost_poison',
+          'ace' => 'Gengar'
+        },
+        {
+          'leader' => 'Lance',
+          'room' => 'dragon_room',
+          'specialty' => 'dragon_flying',
+          'ace' => 'Dragonite'
+        }
+      ]
+      {
+        'status' => 'cleared',
+        'event_id' => ELITE_FOUR_EVENT_ID,
+        'battle_id' => ELITE_FOUR_EVENT_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'level_cap' => 62,
+        'gauntlet' => gauntlet,
+        'final_leader' => 'Lance',
+        'companion_rule' => 'no_companion_assist_in_league_gauntlet',
+        'linked_events' => [
+          CHAMPION_ROOM_UNLOCKED_EVENT_ID,
+          LANCE_LEGENDARY_WARNING_UNLOCKED_EVENT_ID,
+          OAK_WORLD_CIRCUIT_PASSPORT_LEAD_EVENT_ID,
+          NEXUS_ORDER_CHAMPION_SIGNAL_EVENT_ID
+        ],
+        'companions' => %w[red bill],
+        'factions' => %w[nexus_order],
+        'battle_hook' => {
+          'battle_id' => ELITE_FOUR_EVENT_ID,
+          'battle_type' => 'kanto_elite_four_gauntlet',
+          'location' => 'indigo_plateau',
+          'level_cap' => 62,
+          'companion_support' => 'companions_watch_no_league_assist',
+          'standard_gauntlet' => gauntlet
+        },
+        'league_state' => 'champion_room_unlocked',
+        'lance_state' => 'legendary_energy_warning_ready',
+        'hidden_meta_signal' => 'nexus_order_champion_signal_unrevealed',
+        'unlocks' => %w[champion_room lance_legendary_energy_warning oak_world_circuit_passport_lead],
+        'next_hook' => 'lance_legendary_energy_warning'
       }
     end
 

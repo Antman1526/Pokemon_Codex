@@ -260,6 +260,8 @@ REQUIRED_MARKERS = (
     "blue_pre_league_or_champion_battle_cleared?",
     "complete_red_watches_league",
     "red_watches_league_cleared?",
+    "complete_elite_four",
+    "elite_four_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2720,6 +2722,40 @@ raise 'expected KantoStory Red watches League unlocks' unless red_watches['unloc
 second_red_watches = NexusRed::KantoStory.complete_red_watches_league(kanto_story_state)
 raise 'expected KantoStory Red watches League idempotent guard' unless second_red_watches['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Red watches League history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'red_watches_league' } == 1
+pre_elite_four = NexusRed::KantoStory.complete_elite_four(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Elite Four gated before Red watches League' unless pre_elite_four['status'] == 'blocked_missing_red_watches_league'
+elite_four = NexusRed::KantoStory.complete_elite_four(
+  kanto_story_state,
+  location: 'Indigo Plateau',
+  result: 'cleared',
+  area_type: 'league'
+)
+raise 'expected KantoStory Elite Four clear status' unless elite_four['status'] == 'cleared'
+raise 'expected KantoStory Elite Four event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('elite_four')
+raise 'expected KantoStory Elite Four helper true' unless NexusRed::KantoStory.elite_four_cleared?(kanto_story_state)
+raise 'expected KantoStory Elite Four started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ELITE_FOUR_STARTED')
+raise 'expected KantoStory Elite Four cleared flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ELITE_FOUR_CLEARED')
+raise 'expected KantoStory Champion room unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CHAMPION_ROOM_UNLOCKED')
+raise 'expected KantoStory Lance warning unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LANCE_LEGENDARY_ENERGY_WARNING_UNLOCKED')
+raise 'expected KantoStory Oak passport lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_OAK_WORLD_CIRCUIT_PASSPORT_LEAD')
+raise 'expected KantoStory Nexus champion signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_CHAMPION_SIGNAL')
+raise 'expected KantoStory Red Elite Four watch scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('elite_four_watch')
+raise 'expected KantoStory Bill Lance signal decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('lance_legendary_energy_decode')
+raise 'expected KantoStory Nexus champion signal activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Indigo Plateau' && activity['operation'] == 'champion_room_signal_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Elite Four' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Elite Four story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Elite Four') && message['text'].include?('Lance') && message['text'].include?('Champion') }
+raise 'expected KantoStory Elite Four result propagated' unless elite_four['result'] == 'cleared'
+raise 'expected KantoStory Elite Four level cap' unless elite_four['level_cap'] == 62
+raise 'expected KantoStory Elite Four gauntlet leaders' unless elite_four['gauntlet'].map { |entry| entry['leader'] } == %w[Lorelei Bruno Agatha Lance]
+raise 'expected KantoStory Elite Four final leader Lance' unless elite_four['final_leader'] == 'Lance'
+raise 'expected KantoStory Elite Four companion rule' unless elite_four['companion_rule'] == 'no_companion_assist_in_league_gauntlet'
+raise 'expected KantoStory Elite Four battle hook id' unless elite_four['battle_hook']['battle_id'] == 'elite_four'
+raise 'expected KantoStory Elite Four battle hook standard gauntlet' unless elite_four['battle_hook']['standard_gauntlet'].map { |entry| entry['leader'] } == %w[Lorelei Bruno Agatha Lance]
+raise 'expected KantoStory Elite Four next hook Lance warning' unless elite_four['next_hook'] == 'lance_legendary_energy_warning'
+raise 'expected KantoStory Elite Four unlocks' unless elite_four['unlocks'].include?('champion_room') && elite_four['unlocks'].include?('lance_legendary_energy_warning')
+second_elite_four = NexusRed::KantoStory.complete_elite_four(kanto_story_state)
+raise 'expected KantoStory Elite Four idempotent guard' unless second_elite_four['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Elite Four history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'elite_four' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
