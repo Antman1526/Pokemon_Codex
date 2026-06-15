@@ -169,6 +169,12 @@ func start_new_game(name: String) -> void:
 		"red_cargo_hold_guard_seen": false,
 		"ss_anne_captain_path_unlocked": false,
 		"worldlink_ss_anne_cargo_hold_batch_queued": false,
+		"ss_anne_captain_cabin_reached": false,
+		"captain_seasick_scene_seen": false,
+		"trail_cutter_obtained": false,
+		"trail_cutter_field_tool_unlocked": false,
+		"surge_gym_access_unlocked": false,
+		"worldlink_ss_anne_captain_cabin_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -602,6 +608,33 @@ func queue_ss_anne_cargo_hold_batch() -> void:
 		"wl_misty_lower_deck_waterline_seen",
 		"wl_red_cargo_hold_guard_seen",
 		"wl_ss_anne_captain_path_unlocked",
+	])
+
+
+func enter_ss_anne_captain_cabin() -> void:
+	current_scene = "ss_anne_captain_cabin"
+	active_companion = "red"
+	set_flag("ss_anne_captain_cabin_reached", true)
+	queue_worldlink_id("wl_ss_anne_captain_cabin_reached")
+
+
+func record_ss_anne_captain_cabin_scene() -> void:
+	active_companion = "red"
+	set_flag("captain_seasick_scene_seen", true)
+	set_flag("trail_cutter_obtained", true)
+	set_flag("trail_cutter_field_tool_unlocked", true)
+	set_flag("surge_gym_access_unlocked", true)
+	queue_ss_anne_captain_cabin_batch()
+
+
+func queue_ss_anne_captain_cabin_batch() -> void:
+	set_flag("worldlink_ss_anne_captain_cabin_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_ss_anne_captain_cabin_reached",
+		"wl_captain_seasick_scene_seen",
+		"wl_trail_cutter_obtained",
+		"wl_trail_cutter_field_tool_unlocked",
+		"wl_surge_gym_access_unlocked",
 	])
 
 

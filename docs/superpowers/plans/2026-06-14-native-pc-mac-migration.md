@@ -760,6 +760,24 @@ python3 tools/validate_native_ss_anne_cargo_hold.py
 godot --headless --path native/nexus-red --script tests/ss_anne_cargo_hold_test.gd
 ```
 
+### Task 7.40: Add S.S. Anne Captain cabin and Trail Cutter payoff
+
+Acceptance:
+
+- The S.S. Anne cargo hold keeps the Captain cabin locked until the Rocket cargo investigation unlocks the Captain path.
+- After cargo investigation, the cargo hold can transition to a playable S.S. Anne Captain cabin scene.
+- The Captain cabin scene records Red as the active companion while Misty confirms the waterline clue, Bill validates the cargo manifest, and the Captain hands Antman the Trail Cutter.
+- Save state and WorldLink record Captain cabin reached, Captain seasick scene, Trail Cutter obtained, Trail Cutter field tool unlocked, and Lt. Surge gym access unlocked.
+- WorldLink checklist adds Captain cabin entry, Captain help, Trail Cutter, and Lt. Surge gym access milestones.
+- The slice sets up the next Vermilion/Lt. Surge sabotage chapter without implementing Surge's gym battle yet.
+
+Verification:
+
+```sh
+python3 tools/validate_native_ss_anne_captain_cabin.py
+godot --headless --path native/nexus-red --script tests/ss_anne_captain_cabin_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

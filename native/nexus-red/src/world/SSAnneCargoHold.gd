@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_ss_anne_main_deck
+signal go_to_ss_anne_captain_cabin
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_cargo_hold_investigation()
+	if event.is_action_pressed("ui_right"):
+		trigger_captain_cabin_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_main_deck()
 
@@ -97,9 +100,16 @@ func trigger_cargo_hold_investigation() -> void:
 	dialogue_label.text = "Red: Rocket hid a cargo manifest down here. Misty says the lower-deck waterline is wrong, and Bill found a Nexus Order symbol burned into one crate. This points us toward the Captain before Rocket can move the shipment."
 
 
+func trigger_captain_cabin_entry() -> void:
+	if save_state == null or not bool(save_state.story_flags.get("ss_anne_captain_path_unlocked", false)):
+		dialogue_label.text = "Red: The Captain Cabin is still guarded. We need the cargo manifest and Bill's crate decode before we can prove why the Trail Cutter is in danger."
+		return
+	emit_signal("go_to_ss_anne_captain_cabin")
+
+
 func return_to_main_deck() -> void:
 	emit_signal("go_to_ss_anne_main_deck")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is the S.S. Anne Cargo Hold. Press Z/Enter to investigate Rocket crates with Misty and Bill, or X/Esc to return to the main deck."
+	dialogue_label.text = "Red: This is the S.S. Anne Cargo Hold. Press Z/Enter to investigate Rocket crates with Misty and Bill, Right to approach the Captain Cabin, or X/Esc to return to the main deck."

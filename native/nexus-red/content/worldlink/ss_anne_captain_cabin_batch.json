@@ -1,0 +1,31 @@
+{
+  "id": "ss_anne_captain_cabin_batch",
+  "title": "S.S. Anne Captain Cabin",
+  "feed": [
+    {
+      "id": "wl_ss_anne_captain_cabin_reached",
+      "speaker": "Red",
+      "text": "Antman reached the S.S. Anne Captain's cabin after proving Rocket tampered with the cargo manifest."
+    },
+    {
+      "id": "wl_captain_seasick_scene_seen",
+      "speaker": "Misty",
+      "text": "The Captain confirmed the lower-deck waterline was sabotage, not ordinary seasickness."
+    },
+    {
+      "id": "wl_trail_cutter_obtained",
+      "speaker": "Bill",
+      "text": "Trail Cutter registered as Antman's first field tool. It replaces Cut without taking a team move slot."
+    },
+    {
+      "id": "wl_trail_cutter_field_tool_unlocked",
+      "speaker": "Red",
+      "text": "Red marked Trail Cutter as the first real proof that this journey is bigger than old HM errands."
+    },
+    {
+      "id": "wl_surge_gym_access_unlocked",
+      "speaker": "WorldLink",
+      "text": "Lt. Surge gym access unlocked. Vermilion's power sabotage thread can now move forward."
+    }
+  ]
+}
