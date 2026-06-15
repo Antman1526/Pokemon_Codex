@@ -236,6 +236,8 @@ REQUIRED_MARKERS = (
     "silph_co_giovanni_boardroom_cleared?",
     "complete_saffron_sabrina_aftermath",
     "saffron_sabrina_aftermath_cleared?",
+    "complete_sabrina_gym_prep",
+    "sabrina_gym_prep_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2293,6 +2295,35 @@ raise 'expected KantoStory Saffron aftermath unlocks Sabrina gym prep' unless sa
 second_saffron_aftermath = NexusRed::KantoStory.complete_saffron_sabrina_aftermath(kanto_story_state)
 raise 'expected KantoStory Saffron aftermath idempotent guard' unless second_saffron_aftermath['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Saffron aftermath history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'saffron_sabrina_aftermath' } == 1
+pre_sabrina_gym_prep = NexusRed::KantoStory.complete_sabrina_gym_prep(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Sabrina gym prep gated before Saffron aftermath' unless pre_sabrina_gym_prep['status'] == 'blocked_missing_saffron_sabrina_aftermath'
+sabrina_gym_prep = NexusRed::KantoStory.complete_sabrina_gym_prep(
+  kanto_story_state,
+  location: 'Saffron Gym Antechamber',
+  area_type: 'gym'
+)
+raise 'expected KantoStory Sabrina gym prep clear status' unless sabrina_gym_prep['status'] == 'cleared'
+raise 'expected KantoStory Sabrina gym prep event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('sabrina_gym_prep')
+raise 'expected KantoStory Sabrina gym prep helper true' unless NexusRed::KantoStory.sabrina_gym_prep_cleared?(kanto_story_state)
+raise 'expected KantoStory Sabrina gym prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_GYM_PREP')
+raise 'expected KantoStory Saffron Gym reopened flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFFRON_GYM_REOPENED')
+raise 'expected KantoStory Red gym door support flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_GYM_DOOR_SUPPORT')
+raise 'expected KantoStory Sabrina psychic trial ready flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_PSYCHIC_TRIAL_READY')
+raise 'expected KantoStory Moonlight dream static weakened flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_DREAM_STATIC_WEAKENED')
+raise 'expected KantoStory Mind Badge challenge unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MIND_BADGE_CHALLENGE_UNLOCKED')
+raise 'expected KantoStory Red Saffron gym door scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('saffron_gym_door_support')
+raise 'expected KantoStory Sabrina psychic trial scene' unless kanto_story_state['companion_progress']['sabrina']['scene_flags'].include?('psychic_trial_ready')
+raise 'expected KantoStory Moonlight gym prep activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron Gym Antechamber' && activity['operation'] == 'dream_static_weakened' }
+raise 'expected KantoStory Nexus hidden gym prep activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron Gym Antechamber' && activity['operation'] == 'psychic_signal_observer_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Sabrina prep' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Moonlight Nexus gym prep conflict' unless kanto_story_state['faction_progress']['team_moonlight']['conflicts'].any? { |conflict| conflict['opponent'] == 'nexus_order' && conflict['location'] == 'Saffron Gym Antechamber' }
+raise 'expected KantoStory Sabrina gym prep story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Sabrina') && message['text'].include?('Mind Badge') && message['text'].include?('solo') }
+raise 'expected KantoStory Sabrina gym prep next hook Mind Badge challenge' unless sabrina_gym_prep['next_hook'] == 'sabrina_mind_badge_challenge'
+raise 'expected KantoStory Sabrina gym prep no gym companion assist' unless sabrina_gym_prep['battle_hook']['companion_support'] == 'companions_wait_outside_no_gym_assist'
+raise 'expected KantoStory Sabrina gym prep unlocks Mind Badge challenge' unless sabrina_gym_prep['unlocks'].include?('sabrina_mind_badge_challenge') && sabrina_gym_prep['unlocks'].include?('psychic_trial_warp_room')
+second_sabrina_gym_prep = NexusRed::KantoStory.complete_sabrina_gym_prep(kanto_story_state)
+raise 'expected KantoStory Sabrina gym prep idempotent guard' unless second_sabrina_gym_prep['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Sabrina gym prep history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'sabrina_gym_prep' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

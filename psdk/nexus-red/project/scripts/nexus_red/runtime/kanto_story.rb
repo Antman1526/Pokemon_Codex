@@ -267,6 +267,14 @@ module NexusRed
     SABRINA_GYM_PREP_EVENT_ID = 'sabrina_gym_prep_unlocked'
     GOLD_DUST_FAILED_SILPH_BUYOUT_EVENT_ID = 'gold_dust_failed_silph_buyout'
     SABRINA_GYM_PREP_BATTLE_ID = 'sabrina_gym_prep'
+    SABRINA_GYM_PREP_TRIAL_EVENT_ID = 'sabrina_gym_prep'
+    SAFFRON_GYM_REOPENED_EVENT_ID = 'saffron_gym_reopened'
+    RED_SAFFRON_GYM_DOOR_SUPPORT_EVENT_ID = 'red_saffron_gym_door_support'
+    SABRINA_PSYCHIC_TRIAL_READY_EVENT_ID = 'sabrina_psychic_trial_ready'
+    MOONLIGHT_DREAM_STATIC_WEAKENED_EVENT_ID = 'moonlight_dream_static_weakened'
+    NEXUS_ORDER_PSYCHIC_SIGNAL_OBSERVER_EVENT_ID = 'nexus_order_psychic_signal_observer_hidden'
+    MIND_BADGE_CHALLENGE_UNLOCKED_EVENT_ID = 'mind_badge_challenge_unlocked'
+    SABRINA_MIND_BADGE_BATTLE_ID = 'sabrina_mind_badge_challenge'
 
     module_function
 
@@ -4138,6 +4146,86 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SAFFRON_SABRINA_AFTER_MATH_EVENT_ID }
     end
 
+    def complete_sabrina_gym_prep(state, location: 'Saffron Gym Antechamber', area_type: 'gym')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_saffron_sabrina_aftermath', 'event_id' => SABRINA_GYM_PREP_TRIAL_EVENT_ID } unless saffron_sabrina_aftermath_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SABRINA_GYM_PREP_TRIAL_EVENT_ID } if sabrina_gym_prep_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_GYM_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_SAFFRON_GYM_REOPENED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_GYM_DOOR_SUPPORT')
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_PSYCHIC_TRIAL_READY')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_DREAM_STATIC_WEAKENED')
+      add_story_flag(state, 'FLAG_NEXUS_MIND_BADGE_CHALLENGE_UNLOCKED')
+      mark_cleared_event(story, SABRINA_GYM_PREP_TRIAL_EVENT_ID)
+      mark_cleared_event(story, SAFFRON_GYM_REOPENED_EVENT_ID)
+      mark_cleared_event(story, RED_SAFFRON_GYM_DOOR_SUPPORT_EVENT_ID)
+      mark_cleared_event(story, SABRINA_PSYCHIC_TRIAL_READY_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_DREAM_STATIC_WEAKENED_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_PSYCHIC_SIGNAL_OBSERVER_EVENT_ID)
+      mark_cleared_event(story, MIND_BADGE_CHALLENGE_UNLOCKED_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'dream_static_weakened',
+        threat_delta: -2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'psychic_signal_observer_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_moonlight',
+        'nexus_order',
+        location,
+        'Sabrina weakens the dream static, but the hidden observer signal keeps watching the Gym from outside her reach',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'saffron_gym_door_support',
+        location: location,
+        summary: "Red waits at the Saffron Gym door to keep Rocket stragglers away while Antman takes Sabrina's challenge solo.",
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'sabrina',
+        'psychic_trial_ready',
+        location: location,
+        summary: 'Sabrina stabilizes the warp rooms and opens a solo psychic trial before the Mind Badge challenge.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Sabrina reopens Saffron Gym for the Mind Badge challenge; Red waits outside, and Antman must enter the psychic trial solo.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = sabrina_gym_prep_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def sabrina_gym_prep_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SABRINA_GYM_PREP_TRIAL_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5103,6 +5191,37 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_still_unrevealed',
         'unlocks' => %w[sabrina_gym_prep saffron_city_cleanup psychic_residue_reading],
         'next_hook' => 'sabrina_gym_prep'
+      }
+    end
+
+    def sabrina_gym_prep_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SABRINA_GYM_PREP_TRIAL_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          SAFFRON_GYM_REOPENED_EVENT_ID,
+          RED_SAFFRON_GYM_DOOR_SUPPORT_EVENT_ID,
+          SABRINA_PSYCHIC_TRIAL_READY_EVENT_ID,
+          MOONLIGHT_DREAM_STATIC_WEAKENED_EVENT_ID,
+          NEXUS_ORDER_PSYCHIC_SIGNAL_OBSERVER_EVENT_ID,
+          MIND_BADGE_CHALLENGE_UNLOCKED_EVENT_ID
+        ],
+        'factions' => %w[team_moonlight nexus_order],
+        'gym_state' => 'warp_rooms_stabilized_mind_badge_challenge_open',
+        'trial_state' => 'solo_psychic_trial_ready',
+        'battle_hook' => {
+          'battle_id' => SABRINA_MIND_BADGE_BATTLE_ID,
+          'battle_type' => 'gym_leader_sabrina',
+          'location' => 'saffron_gym',
+          'level_cap' => 47,
+          'opponent_species' => %w[MrMime Venomoth Kadabra Alakazam],
+          'field_rule' => 'psychic_warp_room_pressure',
+          'companion_support' => 'companions_wait_outside_no_gym_assist'
+        },
+        'hidden_meta_signal' => 'nexus_order_observes_psychic_residue_unrevealed',
+        'unlocks' => %w[sabrina_mind_badge_challenge psychic_trial_warp_room saffron_gym_rematch_seed],
+        'next_hook' => 'sabrina_mind_badge_challenge'
       }
     end
 

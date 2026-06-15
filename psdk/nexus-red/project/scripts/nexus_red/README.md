@@ -121,6 +121,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_saffron_sabrina_aftermath(state, location:, area_type:)` resolves Saffron's post-Silph cleanup. It records Red stabilizing the streets, Bill analyzing the cached signal, Sabrina identifying Moonlight psychic residue, Rocket and Gold Dust retreat fallout, and opens `sabrina_gym_prep`.
 
+`NexusRed::KantoStory.complete_sabrina_gym_prep(state, location:, area_type:)` resolves the pre-Mind Badge setup. Sabrina reopens the Gym, stabilizes the psychic warp trial, Moonlight dream static weakens, Nexus Order remains a hidden observer, and Red waits outside so Antman takes the Gym challenge solo.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
