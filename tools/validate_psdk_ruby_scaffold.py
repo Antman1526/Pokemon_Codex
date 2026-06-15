@@ -39,6 +39,11 @@ REQUIRED_MARKERS = (
     "record_activity",
     "record_conflict",
     "reveal_hidden_faction",
+    "module RegionProgress",
+    "ensure_progress",
+    "advance_to_next_region",
+    "current_region_seed",
+    "can_enter_region?",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -285,6 +290,51 @@ raise 'expected Nexus Order reveal region recorded' unless state['faction_progre
 faction_digest = NexusRed::WorldLink.release_digest(state)
 raise 'expected faction digest releases conflict and reveal' unless faction_digest['items'].length == 2
 raise 'expected faction progress tracks Rocket, Gold Dust, and Nexus Order' unless state['faction_progress'].keys.sort == %w[nexus_order team_gold_dust team_rocket]
+
+journey = NexusRed::RegionProgress.ensure_progress(state)
+raise 'expected Kanto current journey region' unless journey['current_region'] == 'kanto'
+raise 'expected only Kanto unlocked at start' unless journey['unlocked_regions'] == ['kanto']
+raise 'expected no completed regions at start' unless journey['completed_regions'].empty?
+raise 'expected current region seed Kanto' unless NexusRed::RegionProgress.current_region_seed(state)['display_name'] == 'Kanto'
+raise 'expected Kanto enterable at start' unless NexusRed::RegionProgress.can_enter_region?(state, 'kanto')
+raise 'expected Johto locked at start' if NexusRed::RegionProgress.can_enter_region?(state, 'johto')
+
+johto_message = NexusRed::RegionProgress.advance_to_next_region(
+  state,
+  completion_flag: 'kanto_indigo_league_clear',
+  transition_hub: 'New Bark Town',
+  area_type: 'route'
+)
+raise 'expected Johto story unlock immediate delivery' unless johto_message['delivery'] == 'immediate'
+raise 'expected current region switches to Johto' unless state['current_region'] == 'johto'
+raise 'expected one unlocked region after Johto transition' unless state['region_progress']['unlocked_regions'] == ['johto']
+raise 'expected Kanto completed after transition' unless state['region_progress']['completed_regions'] == ['kanto']
+raise 'expected region history tracks Kanto and Johto' unless state['region_progress']['region_history'] == %w[kanto johto]
+raise 'expected Johto enterable after transition' unless NexusRed::RegionProgress.can_enter_region?(state, 'johto')
+raise 'expected Kanto no longer enterable after single-region transition' if NexusRed::RegionProgress.can_enter_region?(state, 'kanto')
+raise 'expected transition flag recorded' unless state['region_progress']['latest_transition']['completion_flag'] == 'kanto_indigo_league_clear'
+
+8.times do |index|
+  NexusRed::RegionProgress.advance_to_next_region(
+    state,
+    completion_flag: "chapter_#{index + 2}_clear",
+    transition_hub: "region_gate_#{index + 2}",
+    area_type: 'route'
+  )
+end
+raise 'expected Nexus Island current final region' unless state['current_region'] == 'nexus_island'
+raise 'expected final region unlocked helper' unless NexusRed::RegionProgress.final_region_unlocked?(state)
+raise 'expected 9 completed regions before final' unless state['region_progress']['completed_regions'].length == 9
+raise 'expected journey not complete before Nexus Island clear' if NexusRed::RegionProgress.journey_complete?(state)
+
+final_message = NexusRed::RegionProgress.complete_current_region(
+  state,
+  completion_flag: 'giovanni_final_battle_clear',
+  area_type: 'story_dungeon'
+)
+raise 'expected final completion paused in story dungeon' unless final_message['delivery'] == 'paused'
+raise 'expected journey complete after Nexus Island clear' unless NexusRed::RegionProgress.journey_complete?(state)
+raise 'expected Nexus Island completed at journey end' unless state['region_progress']['completed_regions'].last == 'nexus_island'
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
