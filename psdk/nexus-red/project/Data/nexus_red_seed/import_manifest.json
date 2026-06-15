@@ -176,6 +176,57 @@
         "worldlink_digest_displays_after_leaving_paused_areas",
         "rival_notifications_respect_major_only_default"
       ]
+    },
+    {
+      "id": "gameplay_systems_registry",
+      "source_path": "data_design/gameplay_systems.yaml",
+      "extra_source_paths": [
+        "data_design/availability_channels.yaml",
+        "data_design/boss_progression.yaml",
+        "data_design/region_activity_rewards.yaml"
+      ],
+      "psdk_target": "project/Data/nexus_red_seed/generated/gameplay_systems_registry.json",
+      "psdk_system": "psdk_gameplay_settings_plus_custom_ruby_services",
+      "required_battle_mechanics": [
+        "physical_special_split",
+        "fairy_type",
+        "modern_move_categories",
+        "modern_abilities_through_gen_9",
+        "modern_moves_through_gen_9",
+        "expanded_reusable_tm_list",
+        "held_items",
+        "ability_capsule",
+        "ability_patch",
+        "smarter_battle_ai_profiles"
+      ],
+      "required_qol_systems": [
+        "infinite_repel_toggle",
+        "portable_pc",
+        "field_healing",
+        "skip_text",
+        "fast_battle_animation_toggle",
+        "level_caps",
+        "infinite_rare_candies_after_first_badge",
+        "trainer_rematches",
+        "adjusted_trade_evolutions",
+        "no_hm_slaves",
+        "built_in_nuzlocke_tools",
+        "difficulty_options"
+      ],
+      "required_availability_commitments": [
+        "all_base_species_before_final_boss",
+        "postgame_not_required_for_base_species",
+        "through_generation_9",
+        "worldlink_readiness_checklist"
+      ],
+      "preserve_rules": [
+        "rare_candies_are_balanced_by_level_caps",
+        "dynamax_and_tera_preview_after_hoenn",
+        "hm_replacements_are_key_items",
+        "day_night_weather_affect_encounters",
+        "nuzlocke_tools_are_built_in",
+        "pokemon_center_and_mart_expand_into_service_hubs"
+      ]
     }
   ],
   "first_psdk_slice_flags": [

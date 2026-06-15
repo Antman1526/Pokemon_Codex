@@ -54,7 +54,7 @@ The first PSDK import must preserve:
 
 Detailed import rows live in `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`.
 Machine-readable source/target mappings live in `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`.
-Generated seed data is refreshed with `python3 tools/generate_psdk_seed_data.py`, including starter selection, Routes 1-3 encounters, region progression, custom factions, companion registry, and rival WorldLink registry.
+Generated seed data is refreshed with `python3 tools/generate_psdk_seed_data.py`, including starter selection, Routes 1-3 encounters, region progression, custom factions, companion registry, rival WorldLink registry, and gameplay systems registry.
 
 ## Routes 1-3 Catchability Contract
 

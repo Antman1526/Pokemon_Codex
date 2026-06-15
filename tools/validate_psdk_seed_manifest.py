@@ -36,6 +36,7 @@ REQUIRED_IMPORT_IDS = {
     "custom_faction_war_registry",
     "core_companion_registry",
     "rival_worldlink_registry",
+    "gameplay_systems_registry",
 }
 REQUIRED_ROUTES = {"route_1", "route_2", "route_3"}
 REQUIRED_REGIONS = [
@@ -91,6 +92,32 @@ REQUIRED_WORLDLINK_CATEGORIES = {
     "rival_region_entry",
     "villain_alert",
     "legendary_anomaly",
+}
+REQUIRED_BATTLE_MECHANICS = {
+    "physical_special_split",
+    "fairy_type",
+    "modern_move_categories",
+    "modern_abilities_through_gen_9",
+    "modern_moves_through_gen_9",
+    "expanded_reusable_tm_list",
+    "held_items",
+    "ability_capsule",
+    "ability_patch",
+    "smarter_battle_ai_profiles",
+}
+REQUIRED_QOL_SYSTEMS = {
+    "infinite_repel_toggle",
+    "portable_pc",
+    "field_healing",
+    "skip_text",
+    "fast_battle_animation_toggle",
+    "level_caps",
+    "infinite_rare_candies_after_first_badge",
+    "trainer_rematches",
+    "adjusted_trade_evolutions",
+    "no_hm_slaves",
+    "built_in_nuzlocke_tools",
+    "difficulty_options",
 }
 
 
@@ -446,6 +473,62 @@ def validate_rival_worldlink_import(entry: dict) -> list[str]:
     return errors
 
 
+def validate_gameplay_systems_import(entry: dict) -> list[str]:
+    errors: list[str] = []
+    data = read_yaml(source_path(entry))
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
+
+    if set(entry.get("required_battle_mechanics", [])) != REQUIRED_BATTLE_MECHANICS:
+        errors.append("gameplay import required_battle_mechanics must match core battle system commitments")
+    if set(entry.get("required_qol_systems", [])) != REQUIRED_QOL_SYSTEMS:
+        errors.append("gameplay import required_qol_systems must match core QoL commitments")
+
+    battle_required = set(data.get("battle_mechanics", {}).get("required", []))
+    if not REQUIRED_BATTLE_MECHANICS.issubset(battle_required):
+        errors.append("gameplay source missing required battle mechanics")
+    qol_required = set(data.get("qol_systems", {}).get("must_have", []))
+    if not REQUIRED_QOL_SYSTEMS.issubset(qol_required):
+        errors.append("gameplay source missing required QoL systems")
+
+    gimmicks = data.get("battle_mechanics", {}).get("gimmick_gating", {})
+    if gimmicks.get("dynamax_gigantamax", {}).get("first_preview") != "after_hoenn":
+        errors.append("gameplay source must gate Dynamax/Gigantamax preview until after Hoenn")
+    if gimmicks.get("terastallization", {}).get("first_preview") != "after_hoenn":
+        errors.append("gameplay source must gate Terastallization preview until after Hoenn")
+
+    availability = data.get("pokedex_and_availability", {})
+    if availability.get("all_base_species_before_final_boss") is not True:
+        errors.append("gameplay source must make all base species available before final boss")
+    if availability.get("postgame_required_for_base_species") is not False:
+        errors.append("gameplay source must not require postgame for base species")
+    if availability.get("species_scope") != "through_generation_9":
+        errors.append("gameplay source species_scope must be through_generation_9")
+    for channel in ("wild_grass", "time_of_day", "weather", "fishing", "breeding", "raid_dens", "ultra_wormholes", "area_zero_anomalies", "legendary_trials"):
+        if channel not in availability.get("availability_channels", []):
+            errors.append(f"gameplay availability missing channel {channel}")
+
+    field_tools = data.get("field_tools", {})
+    for tool in ("trail_cutter", "tide_rider", "sky_pass", "rock_gauntlet", "cave_lantern", "climb_gear", "waterfall_gear", "dive_gear", "dig_kit"):
+        if tool not in field_tools.get("hm_replacements", {}):
+            errors.append(f"gameplay field tools missing {tool}")
+
+    if generated.get("seed_type") != "psdk_gameplay_systems_registry":
+        errors.append("generated gameplay seed must use seed_type psdk_gameplay_systems_registry")
+    generated_battle = set(generated.get("battle_mechanics", {}).get("required", []))
+    if not REQUIRED_BATTLE_MECHANICS.issubset(generated_battle):
+        errors.append("generated gameplay seed missing required battle mechanics")
+    generated_qol = set(generated.get("qol_systems", {}).get("must_have", []))
+    if not REQUIRED_QOL_SYSTEMS.issubset(generated_qol):
+        errors.append("generated gameplay seed missing required QoL systems")
+    generated_availability = generated.get("pokedex_and_availability", {})
+    if generated_availability.get("all_base_species_before_final_boss") is not True:
+        errors.append("generated gameplay seed must preserve all-base-species-before-final-boss")
+    if generated.get("pokemon_center_and_mart", {}).get("mart_rules", {}).get("starting_money") != 100000:
+        errors.append("generated gameplay seed must preserve starting money 100000")
+
+    return errors
+
+
 def validate() -> list[str]:
     if not MANIFEST.exists():
         return [f"missing PSDK seed manifest: {rel(MANIFEST)}"]
@@ -473,6 +556,9 @@ def validate() -> list[str]:
     rival_entry = imports.get("rival_worldlink_registry")
     if rival_entry:
         errors.extend(validate_rival_worldlink_import(rival_entry))
+    gameplay_entry = imports.get("gameplay_systems_registry")
+    if gameplay_entry:
+        errors.extend(validate_gameplay_systems_import(gameplay_entry))
 
     return errors
 

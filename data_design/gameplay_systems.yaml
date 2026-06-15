@@ -1,0 +1,227 @@
+# Gameplay systems source of truth for Pokemon Nexus Red.
+
+system_profile:
+  title: POKEMON NEXUS RED
+  engine_target: pokemon_studio_psdk
+  default_difficulty: standard
+  design_feel: "Classic FireRed readability with modern creature-collector systems."
+
+battle_mechanics:
+  required:
+    - physical_special_split
+    - fairy_type
+    - modern_move_categories
+    - modern_abilities_through_gen_9
+    - modern_moves_through_gen_9
+    - expanded_reusable_tm_list
+    - held_items
+    - ability_capsule
+    - ability_patch
+    - smarter_battle_ai_profiles
+    - optional_exp_share_behavior
+  gimmick_gating:
+    mega_evolution:
+      first_preview: kanto_postgame_rematch
+      full_unlock: kalos
+      rule: "Kalos remains the story home for full Mega access."
+    z_moves:
+      first_preview: alola
+      full_unlock: alola
+      rule: "Alola trials remain the story home for Z-Moves."
+    dynamax_gigantamax:
+      first_preview: after_hoenn
+      full_unlock: galar
+      rule: "Only usable at approved power spots before postgame."
+    terastallization:
+      first_preview: after_hoenn
+      full_unlock: paldea
+      rule: "Only usable in approved facilities or Paldea story contexts before postgame."
+
+qol_systems:
+  must_have:
+    - infinite_repel_toggle
+    - portable_pc
+    - field_healing
+    - skip_text
+    - fast_battle_animation_toggle
+    - level_caps
+    - infinite_rare_candies_after_first_badge
+    - trainer_rematches
+    - adjusted_trade_evolutions
+    - no_hm_slaves
+    - built_in_nuzlocke_tools
+    - difficulty_options
+    - nature_mints
+    - easy_ev_training
+    - iv_hyper_training
+    - shiny_hunting_improvements
+  start_enabled:
+    - running_shoes
+    - bike_access
+    - basic_balls
+    - starting_money_100000
+  unlocks:
+    before_brock:
+      - infinite_repel_toggle
+      - basic_pokecenter_services
+      - worldlink_feed
+    after_brock:
+      - rare_candy_mart
+      - portable_pc_lite
+      - vs_seeker_prototype
+    mid_kanto:
+      - trail_cutter
+      - rock_gauntlet
+      - expanded_mart_tiers
+      - daycare
+    late_kanto:
+      - sky_pass_local_fly
+      - dig_kit
+      - rematch_board
+
+difficulty_modes:
+  casual:
+    cap_type: soft
+    portable_healing: full
+    item_rules: normal
+    ai_profile: forgiving
+  standard:
+    cap_type: soft
+    portable_healing: limited
+    item_rules: normal
+    ai_profile: smart
+  hard:
+    cap_type: hard
+    portable_healing: limited
+    item_rules: limited
+    ai_profile: strong
+  expert:
+    cap_type: hard
+    portable_healing: restricted
+    item_rules: no_in_battle_items
+    ai_profile: competitive
+  nuzlocke:
+    cap_type: hard
+    portable_healing: restricted
+    item_rules: configurable_default_banned
+    ai_profile: strong
+    rules:
+      - first_encounter_rule
+      - permadeath_box
+      - duplicate_clause_toggle
+      - shiny_clause_toggle
+      - level_cap_enforced
+  custom:
+    cap_type: player_selected
+    portable_healing: player_selected
+    item_rules: player_selected
+    ai_profile: player_selected
+
+field_tools:
+  hm_replacements:
+    trail_cutter: Cut
+    tide_rider: Surf
+    sky_pass: Fly
+    rock_gauntlet: Strength_RockSmash
+    cave_lantern: Flash
+    climb_gear: RockClimb
+    waterfall_gear: Waterfall
+    dive_gear: Dive
+    dig_kit: Dig
+  expanded_dig:
+    - escape_caves
+    - find_fossils
+    - find_shards
+    - find_nuggets
+    - find_bottle_caps
+    - access_gold_dust_tunnels
+    - reveal_ruins_and_hidden_encounters
+  expanded_fly:
+    - region_fast_travel
+    - story_gated_inter_region_transit
+    - emergency_return_to_last_pokecenter
+    - late_game_rival_location_jump
+
+encounter_world_systems:
+  day_phases: [morning, day, evening, night, late_night]
+  weather_types: [clear, rain, heavy_rain, sun, harsh_sun, sandstorm, snow, fog, thunderstorm, ashfall]
+  fishing_rods:
+    - old_rod
+    - good_rod
+    - super_rod
+    - mythic_rod
+  daycare_and_breeding: true
+  overworld_pokemon: phased_special_zones_first
+  following_pokemon: phased_starter_and_favorites_first
+
+pokedex_and_availability:
+  all_base_species_before_final_boss: true
+  postgame_required_for_base_species: false
+  species_scope: through_generation_9
+  readiness_surface: WorldLink
+  readiness_interaction: optional_pull_based_checklist
+  availability_channels:
+    - wild_grass
+    - time_of_day
+    - weather
+    - fishing
+    - surfing_diving
+    - static_gift
+    - breeding
+    - fossil_restoration
+    - swarms_outbreaks
+    - raid_dens
+    - ultra_wormholes
+    - area_zero_anomalies
+    - gold_dust_auctions
+    - legendary_trials
+  pokedex_fields:
+    - habitat
+    - time_weather_requirements
+    - evolution_method
+    - regional_forms
+    - egg_groups
+    - base_stats
+    - ev_yield
+    - held_item_drops
+    - seen_caught_locations
+    - form_availability
+    - outbreak_hints
+
+pokemon_center_and_mart:
+  nurse_joy_services:
+    - heal_team
+    - status_scan
+    - next_gym_advice
+    - rival_news_hint
+    - daily_wellness_gift
+    - friendship_check
+    - egg_daycare_reminder
+    - nuzlocke_compliance_warning
+    - regional_rumor
+  pokecenter_terminal:
+    - pc
+    - worldlink_feed
+    - difficulty_settings
+    - move_reminder_deleter
+    - iv_judge
+    - ev_trainer
+    - nature_mint_vendor
+    - hyper_training
+    - daycare_remote_check
+    - battle_simulator
+  mart_rules:
+    starting_money: 100000
+    core_balls_immediate: true
+    core_medicine_immediate: true
+    rare_candies_after_first_badge: true
+    specialty_marts:
+      - celadon
+      - goldenrod
+      - lilycove
+      - veilstone
+      - castelia
+      - lumiose
+      - alola_festival_stalls
+      - wyndon
+      - mesagoza

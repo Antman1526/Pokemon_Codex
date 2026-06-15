@@ -43,6 +43,7 @@ def validate_required_files() -> list[str]:
         "starter_rival_assignment.yaml",
         "worldlink_schema.yaml",
         "platform_targets.yaml",
+        "gameplay_systems.yaml",
     ]
     for name in required:
         if not (DATA_DIR / name).exists():
@@ -129,6 +130,51 @@ def validate_encounters(data) -> list[str]:
     return errors
 
 
+def validate_gameplay_systems(data) -> list[str]:
+    errors: list[str] = []
+    battle_required = set(data.get("battle_mechanics", {}).get("required", []))
+    for marker in (
+        "physical_special_split",
+        "fairy_type",
+        "modern_abilities_through_gen_9",
+        "modern_moves_through_gen_9",
+        "expanded_reusable_tm_list",
+        "ability_capsule",
+        "ability_patch",
+    ):
+        if marker not in battle_required:
+            errors.append(f"gameplay_systems battle_mechanics missing {marker}")
+
+    qol_required = set(data.get("qol_systems", {}).get("must_have", []))
+    for marker in (
+        "infinite_repel_toggle",
+        "portable_pc",
+        "field_healing",
+        "level_caps",
+        "infinite_rare_candies_after_first_badge",
+        "no_hm_slaves",
+        "built_in_nuzlocke_tools",
+    ):
+        if marker not in qol_required:
+            errors.append(f"gameplay_systems qol_systems missing {marker}")
+
+    availability = data.get("pokedex_and_availability", {})
+    if availability.get("all_base_species_before_final_boss") is not True:
+        errors.append("gameplay_systems must require all base species before final boss")
+    if availability.get("postgame_required_for_base_species") is not False:
+        errors.append("gameplay_systems must not require postgame for base species")
+    if availability.get("species_scope") != "through_generation_9":
+        errors.append("gameplay_systems species_scope must be through_generation_9")
+
+    gimmicks = data.get("battle_mechanics", {}).get("gimmick_gating", {})
+    if gimmicks.get("dynamax_gigantamax", {}).get("first_preview") != "after_hoenn":
+        errors.append("Dynamax/Gigantamax preview must stay after Hoenn")
+    if gimmicks.get("terastallization", {}).get("first_preview") != "after_hoenn":
+        errors.append("Terastallization preview must stay after Hoenn")
+
+    return errors
+
+
 def main() -> int:
     errors = validate_required_files()
 
@@ -143,6 +189,7 @@ def main() -> int:
         errors.extend(validate_rivals(load_yaml(DATA_DIR / "rivals.yaml")))
         errors.extend(validate_starters(load_yaml(DATA_DIR / "starter_pools.yaml")))
         errors.extend(validate_encounters(load_yaml(DATA_DIR / "early_encounter_policy.yaml")))
+        errors.extend(validate_gameplay_systems(load_yaml(DATA_DIR / "gameplay_systems.yaml")))
 
     if errors:
         for error in errors:

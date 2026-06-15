@@ -231,6 +231,38 @@ def build_rival_worldlink_seed(entry: dict) -> dict:
     }
 
 
+def build_gameplay_systems_seed(entry: dict) -> dict:
+    source = read_yaml(ROOT / entry["source_path"])
+    availability = read_yaml(ROOT / "data_design" / "availability_channels.yaml")
+    boss_progression = read_yaml(ROOT / "data_design" / "boss_progression.yaml")
+    activity_rewards = read_yaml(ROOT / "data_design" / "region_activity_rewards.yaml")
+    return {
+        "schema_version": 1,
+        "seed_type": "psdk_gameplay_systems_registry",
+        "source_import_id": entry["id"],
+        "source_path": entry["source_path"],
+        "extra_source_paths": entry.get("extra_source_paths", []),
+        "system_profile": source["system_profile"],
+        "battle_mechanics": source["battle_mechanics"],
+        "qol_systems": source["qol_systems"],
+        "difficulty_modes": source["difficulty_modes"],
+        "field_tools": source["field_tools"],
+        "encounter_world_systems": source["encounter_world_systems"],
+        "pokedex_and_availability": source["pokedex_and_availability"],
+        "pokemon_center_and_mart": source["pokemon_center_and_mart"],
+        "availability_goal": availability["availability_goal"],
+        "availability_channels": availability["channels"],
+        "regional_activity_rewards": activity_rewards.get("regions", activity_rewards),
+        "boss_difficulty_modes": boss_progression["difficulty_modes"],
+        "manifest_requirements": {
+            "required_battle_mechanics": entry["required_battle_mechanics"],
+            "required_qol_systems": entry["required_qol_systems"],
+            "required_availability_commitments": entry["required_availability_commitments"],
+            "preserve_rules": entry["preserve_rules"],
+        },
+    }
+
+
 def build_seed_data(manifest: dict) -> dict[str, dict]:
     imports = manifest_imports(manifest)
     return {
@@ -251,6 +283,9 @@ def build_seed_data(manifest: dict) -> dict[str, dict]:
         ),
         imports["rival_worldlink_registry"]["psdk_target"]: build_rival_worldlink_seed(
             imports["rival_worldlink_registry"]
+        ),
+        imports["gameplay_systems_registry"]["psdk_target"]: build_gameplay_systems_seed(
+            imports["gameplay_systems_registry"]
         ),
     }
 

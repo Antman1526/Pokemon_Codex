@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "seed_type": "psdk_gameplay_systems_registry",
+  "source_import_id": "gameplay_systems_registry",
+  "source_path": "data_design/gameplay_systems.yaml",
+  "extra_source_paths": [
+    "data_design/availability_channels.yaml",
+    "data_design/boss_progression.yaml",
+    "data_design/region_activity_rewards.yaml"
+  ],
+  "system_profile": {
+    "title": "POKEMON NEXUS RED",
+    "engine_target": "pokemon_studio_psdk",
+    "default_difficulty": "standard",
+    "design_feel": "Classic FireRed readability with modern creature-collector systems."
+  },
+  "battle_mechanics": {
+    "required": [
+      "physical_special_split",
+      "fairy_type",
+      "modern_move_categories",
+      "modern_abilities_through_gen_9",
+      "modern_moves_through_gen_9",
+      "expanded_reusable_tm_list",
+      "held_items",
+      "ability_capsule",
+      "ability_patch",
+      "smarter_battle_ai_profiles",
+      "optional_exp_share_behavior"
+    ],
+    "gimmick_gating": {
+      "mega_evolution": {
+        "first_preview": "kanto_postgame_rematch",
+        "full_unlock": "kalos",
+        "rule": "Kalos remains the story home for full Mega access."
+      },
+      "z_moves": {
+        "first_preview": "alola",
+        "full_unlock": "alola",
+        "rule": "Alola trials remain the story home for Z-Moves."
+      },
+      "dynamax_gigantamax": {
+        "first_preview": "after_hoenn",
+        "full_unlock": "galar",
+        "rule": "Only usable at approved power spots before postgame."
+      },
+      "terastallization": {
+        "first_preview": "after_hoenn",
+        "full_unlock": "paldea",
+        "rule": "Only usable in approved facilities or Paldea story contexts before postgame."
+      }
+    }
+  },
+  "qol_systems": {
+    "must_have": [
+      "infinite_repel_toggle",
+      "portable_pc",
+      "field_healing",
+      "skip_text",
+      "fast_battle_animation_toggle",
+      "level_caps",
+      "infinite_rare_candies_after_first_badge",
+      "trainer_rematches",
+      "adjusted_trade_evolutions",
+      "no_hm_slaves",
+      "built_in_nuzlocke_tools",
+      "difficulty_options",
+      "nature_mints",
+      "easy_ev_training",
+      "iv_hyper_training",
+      "shiny_hunting_improvements"
+    ],
+    "start_enabled": [
+      "running_shoes",
+      "bike_access",
+      "basic_balls",
+      "starting_money_100000"
+    ],
+    "unlocks": {
+      "before_brock": [
+        "infinite_repel_toggle",
+        "basic_pokecenter_services",
+        "worldlink_feed"
+      ],
+      "after_brock": [
+        "rare_candy_mart",
+        "portable_pc_lite",
+        "vs_seeker_prototype"
+      ],
+      "mid_kanto": [
+        "trail_cutter",
+        "rock_gauntlet",
+        "expanded_mart_tiers",
+        "daycare"
+      ],
+      "late_kanto": [
+        "sky_pass_local_fly",
+        "dig_kit",
+        "rematch_board"
+      ]
+    }
+  },
+  "difficulty_modes": {
+    "casual": {
+      "cap_type": "soft",
+      "portable_healing": "full",
+      "item_rules": "normal",
+      "ai_profile": "forgiving"
+    },
+    "standard": {
+      "cap_type": "soft",
+      "portable_healing": "limited",
+      "item_rules": "normal",
+      "ai_profile": "smart"
+    },
+    "hard": {
+      "cap_type": "hard",
+      "portable_healing": "limited",
+      "item_rules": "limited",
+      "ai_profile": "strong"
+    },
+    "expert": {
+      "cap_type": "hard",
+      "portable_healing": "restricted",
+      "item_rules": "no_in_battle_items",
+      "ai_profile": "competitive"
+    },
+    "nuzlocke": {
+      "cap_type": "hard",
+      "portable_healing": "restricted",
+      "item_rules": "configurable_default_banned",
+      "ai_profile": "strong",
+      "rules": [
+        "first_encounter_rule",
+        "permadeath_box",
+        "duplicate_clause_toggle",
+        "shiny_clause_toggle",
+        "level_cap_enforced"
+      ]
+    },
+    "custom": {
+      "cap_type": "player_selected",
+      "portable_healing": "player_selected",
+      "item_rules": "player_selected",
+      "ai_profile": "player_selected"
+    }
+  },
+  "field_tools": {
+    "hm_replacements": {
+      "trail_cutter": "Cut",
+      "tide_rider": "Surf",
+      "sky_pass": "Fly",
+      "rock_gauntlet": "Strength_RockSmash",
+      "cave_lantern": "Flash",
+      "climb_gear": "RockClimb",
+      "waterfall_gear": "Waterfall",
+      "dive_gear": "Dive",
+      "dig_kit": "Dig"
+    },
+    "expanded_dig": [
+      "escape_caves",
+      "find_fossils",
+      "find_shards",
+      "find_nuggets",
+      "find_bottle_caps",
+      "access_gold_dust_tunnels",
+      "reveal_ruins_and_hidden_encounters"
+    ],
+    "expanded_fly": [
+      "region_fast_travel",
+      "story_gated_inter_region_transit",
+      "emergency_return_to_last_pokecenter",
+      "late_game_rival_location_jump"
+    ]
+  },
+  "encounter_world_systems": {
+    "day_phases": [
+      "morning",
+      "day",
+      "evening",
+      "night",
+      "late_night"
+    ],
+    "weather_types": [
+      "clear",
+      "rain",
+      "heavy_rain",
+      "sun",
+      "harsh_sun",
+      "sandstorm",
+      "snow",
+      "fog",
+      "thunderstorm",
+      "ashfall"
+    ],
+    "fishing_rods": [
+      "old_rod",
+      "good_rod",
+      "super_rod",
+      "mythic_rod"
+    ],
+    "daycare_and_breeding": true,
+    "overworld_pokemon": "phased_special_zones_first",
+    "following_pokemon": "phased_starter_and_favorites_first"
+  },
+  "pokedex_and_availability": {
+    "all_base_species_before_final_boss": true,
+    "postgame_required_for_base_species": false,
+    "species_scope": "through_generation_9",
+    "readiness_surface": "WorldLink",
+    "readiness_interaction": "optional_pull_based_checklist",
+    "availability_channels": [
+      "wild_grass",
+      "time_of_day",
+      "weather",
+      "fishing",
+      "surfing_diving",
+      "static_gift",
+      "breeding",
+      "fossil_restoration",
+      "swarms_outbreaks",
+      "raid_dens",
+      "ultra_wormholes",
+      "area_zero_anomalies",
+      "gold_dust_auctions",
+      "legendary_trials"
+    ],
+    "pokedex_fields": [
+      "habitat",
+      "time_weather_requirements",
+      "evolution_method",
+      "regional_forms",
+      "egg_groups",
+      "base_stats",
+      "ev_yield",
+      "held_item_drops",
+      "seen_caught_locations",
+      "form_availability",
+      "outbreak_hints"
+    ]
+  },
+  "pokemon_center_and_mart": {
+    "nurse_joy_services": [
+      "heal_team",
+      "status_scan",
+      "next_gym_advice",
+      "rival_news_hint",
+      "daily_wellness_gift",
+      "friendship_check",
+      "egg_daycare_reminder",
+      "nuzlocke_compliance_warning",
+      "regional_rumor"
+    ],
+    "pokecenter_terminal": [
+      "pc",
+      "worldlink_feed",
+      "difficulty_settings",
+      "move_reminder_deleter",
+      "iv_judge",
+      "ev_trainer",
+      "nature_mint_vendor",
+      "hyper_training",
+      "daycare_remote_check",
+      "battle_simulator"
+    ],
+    "mart_rules": {
+      "starting_money": 100000,
+      "core_balls_immediate": true,
+      "core_medicine_immediate": true,
+      "rare_candies_after_first_badge": true,
+      "specialty_marts": [
+        "celadon",
+        "goldenrod",
+        "lilycove",
+        "veilstone",
+        "castelia",
+        "lumiose",
+        "alola_festival_stalls",
+        "wyndon",
+        "mesagoza"
+      ]
+    }
+  },
+  "availability_goal": {
+    "all_base_species_before_final_boss": true,
+    "postgame_required_for_base_species": false,
+    "postgame_role": "Convenience, rematches, shiny hunting, alternate rewards, and mastery challenges."
+  },
+  "availability_channels": {
+    "wild_grass": {
+      "role": "Common and regional identity encounters."
+    },
+    "time_of_day": {
+      "role": "Night, morning, and evening identity encounters."
+    },
+    "weather": {
+      "role": "Hoenn and global anomaly encounters."
+    },
+    "fishing": {
+      "role": "Four-rod water progression and chain hunting."
+    },
+    "surfing_diving": {
+      "role": "Water route and underwater species."
+    },
+    "static_gift": {
+      "role": "Rare starters, fossils, story Pokemon, and special one-offs."
+    },
+    "breeding": {
+      "role": "Baby Pokemon, egg moves, completion support."
+    },
+    "fossil_restoration": {
+      "role": "Fossils and Team Phoenix story tie-ins."
+    },
+    "swarms_outbreaks": {
+      "role": "Rotating rare species without overloaded route tables."
+    },
+    "raid_dens": {
+      "role": "Galar-style high-value encounters and rewards."
+    },
+    "ultra_wormholes": {
+      "role": "Ultra Beasts, dimensional species, rare forms."
+    },
+    "area_zero_anomalies": {
+      "role": "Paradox/anomaly Pokemon and final missing species."
+    },
+    "gold_dust_auctions": {
+      "role": "Rare item/Pokemon side route; should not be the only source for base species."
+    },
+    "legendary_trials": {
+      "role": "Pre-final access to major legendaries through difficult quests."
+    }
+  },
+  "regional_activity_rewards": {
+    "kanto": {
+      "activity_identity": "classic journey, starter anomalies, Rocket escalation",
+      "major_rewards": [
+        "WorldLink",
+        "Infinite Repel",
+        "VS Seeker prototype",
+        "Kanto badge set",
+        "World Circuit Passport"
+      ],
+      "repeatable_hooks": [
+        "gym_rematches",
+        "route_swarms",
+        "Rocket cleanup",
+        "starter_hunts"
+      ]
+    },
+    "johto": {
+      "activity_identity": "day/night, friendship, towers, Rocket remnants",
+      "major_rewards": [
+        "time_tracker_upgrade",
+        "friendship_checker",
+        "roaming_tracker",
+        "Johto badge set"
+      ],
+      "repeatable_hooks": [
+        "night_swarms",
+        "tower_trials",
+        "Silver_rematches",
+        "apricorn_ball_crafting"
+      ]
+    },
+    "hoenn": {
+      "activity_identity": "weather, sea routes, fishing, ecology",
+      "major_rewards": [
+        "weather_radar",
+        "Good_Rod",
+        "Super_Rod",
+        "Dive_Gear",
+        "Hoenn_badge_set"
+      ],
+      "repeatable_hooks": [
+        "weather_outbreaks",
+        "fishing_chains",
+        "secret_base_trainers",
+        "dive_treasure"
+      ]
+    },
+    "sinnoh_hisui": {
+      "activity_identity": "myth, ancient forms, space-time anomalies",
+      "major_rewards": [
+        "anomaly_tracker",
+        "ancient_map",
+        "Rock_Climb_Gear",
+        "Sinnoh_badge_set"
+      ],
+      "repeatable_hooks": [
+        "ruin_puzzles",
+        "ancient_form_hunts",
+        "Cynthia_trials",
+        "distortion_rifts"
+      ]
+    },
+    "unova": {
+      "activity_identity": "public debate, city systems, battle formats",
+      "major_rewards": [
+        "reputation_board",
+        "Battle_Subway_pass",
+        "truth_ideal_balance_flag",
+        "Unova_badge_set"
+      ],
+      "repeatable_hooks": [
+        "subway_battles",
+        "Castelia_market",
+        "N_natural_team_rematches",
+        "Plasma_cleanup"
+      ]
+    },
+    "kalos": {
+      "activity_identity": "style, Mega Evolution, old weapon",
+      "major_rewards": [
+        "Keystone_Resonator",
+        "customization_pass",
+        "Kalos_badge_set"
+      ],
+      "repeatable_hooks": [
+        "Mega_stone_hunts",
+        "style_challenges",
+        "Flare_remnants",
+        "boutique_rewards"
+      ]
+    },
+    "alola": {
+      "activity_identity": "trials, islands, Ultra Space",
+      "major_rewards": [
+        "Z_Ring",
+        "wormhole_access",
+        "island_challenge_clear",
+        "Alola_league_access"
+      ],
+      "repeatable_hooks": [
+        "trial_rematches",
+        "Ultra_Beast_hunts",
+        "island_swarms",
+        "Skull_favors"
+      ]
+    },
+    "galar": {
+      "activity_identity": "stadiums, raids, energy industry",
+      "major_rewards": [
+        "raid_pass",
+        "power_spot_access",
+        "Galar_champion_cup_entry"
+      ],
+      "repeatable_hooks": [
+        "raid_dens",
+        "stadium_rematches",
+        "Marnie_challenges",
+        "Gold_Dust_reward_routes"
+      ]
+    },
+    "paldea": {
+      "activity_identity": "academy, Titans, Team Star, Area Zero",
+      "major_rewards": [
+        "Tera_Orb",
+        "academy_board",
+        "Area_Zero_access",
+        "Paldea_champion_clear"
+      ],
+      "repeatable_hooks": [
+        "Tera_raids",
+        "Titan_rematches",
+        "Team_Star_favors",
+        "academy_exams"
+      ]
+    },
+    "world_nexus_championship": {
+      "activity_identity": "champion ladder, final villain convergence",
+      "major_rewards": [
+        "Champion_of_Champions_entry",
+        "final_dungeon_access",
+        "full_world_roam"
+      ],
+      "repeatable_hooks": [
+        "rival_ladder",
+        "champion_rematches",
+        "legendary_trials",
+        "battle_frontier"
+      ]
+    }
+  },
+  "boss_difficulty_modes": {
+    "casual": {
+      "cap_type": "soft",
+      "item_rules": "normal",
+      "ai_profile": "forgiving"
+    },
+    "standard": {
+      "cap_type": "soft",
+      "item_rules": "normal",
+      "ai_profile": "smart"
+    },
+    "hard": {
+      "cap_type": "hard",
+      "item_rules": "limited",
+      "ai_profile": "strong"
+    },
+    "expert": {
+      "cap_type": "hard",
+      "item_rules": "no_in_battle_items",
+      "ai_profile": "competitive"
+    },
+    "nuzlocke": {
+      "cap_type": "hard",
+      "item_rules": "configurable_default_banned",
+      "ai_profile": "strong"
+    }
+  },
+  "manifest_requirements": {
+    "required_battle_mechanics": [
+      "physical_special_split",
+      "fairy_type",
+      "modern_move_categories",
+      "modern_abilities_through_gen_9",
+      "modern_moves_through_gen_9",
+      "expanded_reusable_tm_list",
+      "held_items",
+      "ability_capsule",
+      "ability_patch",
+      "smarter_battle_ai_profiles"
+    ],
+    "required_qol_systems": [
+      "infinite_repel_toggle",
+      "portable_pc",
+      "field_healing",
+      "skip_text",
+      "fast_battle_animation_toggle",
+      "level_caps",
+      "infinite_rare_candies_after_first_badge",
+      "trainer_rematches",
+      "adjusted_trade_evolutions",
+      "no_hm_slaves",
+      "built_in_nuzlocke_tools",
+      "difficulty_options"
+    ],
+    "required_availability_commitments": [
+      "all_base_species_before_final_boss",
+      "postgame_not_required_for_base_species",
+      "through_generation_9",
+      "worldlink_readiness_checklist"
+    ],
+    "preserve_rules": [
+      "rare_candies_are_balanced_by_level_caps",
+      "dynamax_and_tera_preview_after_hoenn",
+      "hm_replacements_are_key_items",
+      "day_night_weather_affect_encounters",
+      "nuzlocke_tools_are_built_in",
+      "pokemon_center_and_mart_expand_into_service_hubs"
+    ]
+  }
+}
