@@ -1111,6 +1111,27 @@ python3 tools/validate_native_celadon_rocket_hideout_b2f.py
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b2f_test.gd
 ```
 
+### Task 7.57: Add Celadon Rocket Hideout B3F Lift Key chamber
+
+Acceptance:
+
+- Rocket Hideout B2F keeps B3F locked until the B2F patrol battle is finished.
+- After the B2F patrol is cleared, Antman can transition into a playable Celadon Rocket Hideout B3F scene.
+- Red remains the active full-game companion and protects the corridor while Antman pushes the Lift Key chamber.
+- Bill traces a hidden Nexus Order elevator signal under Rocket's B3F wiring, keeping the meta-villain thread alive inside the classic Rocket arc.
+- B3F contains the Lift Key chamber, a Rocket Admin block, a recovered Gold Dust ledger, and a Team Moonlight sleep panel wired into Rocket's alarms.
+- A Rocket Admin battle is unlocked from B3F using placeholder battle data and returns to B3F after completion.
+- Defeating the Rocket Admin records the Rocket Lift Key and unlocks the future hideout elevator/Giovanni route.
+- Save state and WorldLink record Rocket Hideout B3F reached, Red's Lift Key warning, Bill's Nexus Order elevator trace, Rocket Admin battle unlock/start/finish, Gold Dust ledger recovered, Team Moonlight sleep panel, Giovanni elevator route, Rocket Lift Key obtained, and Hideout elevator path unlock.
+- WorldLink checklist adds Reach Rocket Hideout B3F, Trace Nexus Order elevator, Battle B3F Rocket Admin, Obtain Rocket Lift Key, and Unlock Hideout elevator path milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_rocket_hideout_b3f.py
+godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b3f_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

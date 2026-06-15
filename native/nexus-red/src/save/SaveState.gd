@@ -306,6 +306,18 @@ func start_new_game(name: String) -> void:
 		"lift_key_b3f_route_seen": false,
 		"rocket_hideout_b3f_path_unlocked": false,
 		"worldlink_celadon_rocket_hideout_b2f_batch_queued": false,
+		"celadon_rocket_hideout_b3f_reached": false,
+		"red_hideout_b3f_lift_key_warning_seen": false,
+		"bill_nexus_order_elevator_trace_seen": false,
+		"rocket_admin_lift_key_battle_unlocked": false,
+		"rocket_admin_lift_key_battle_started": false,
+		"rocket_admin_lift_key_battle_finished": false,
+		"gold_dust_ledger_recovered_seen": false,
+		"team_moonlight_sleep_panel_seen": false,
+		"giovanni_elevator_route_seen": false,
+		"rocket_lift_key_obtained": false,
+		"rocket_hideout_elevator_path_unlocked": false,
+		"worldlink_celadon_rocket_hideout_b3f_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1241,6 +1253,37 @@ func queue_celadon_rocket_hideout_b2f_batch() -> void:
 	])
 
 
+func enter_celadon_rocket_hideout_b3f() -> void:
+	current_scene = "celadon_rocket_hideout_b3f"
+	active_companion = "red"
+	set_flag("celadon_rocket_hideout_b3f_reached", true)
+	queue_worldlink_id("wl_celadon_rocket_hideout_b3f_reached")
+
+
+func record_celadon_rocket_hideout_b3f_scene() -> void:
+	active_companion = "red"
+	set_flag("red_hideout_b3f_lift_key_warning_seen", true)
+	set_flag("bill_nexus_order_elevator_trace_seen", true)
+	set_flag("rocket_admin_lift_key_battle_unlocked", true)
+	set_flag("gold_dust_ledger_recovered_seen", true)
+	set_flag("team_moonlight_sleep_panel_seen", true)
+	set_flag("giovanni_elevator_route_seen", true)
+	queue_celadon_rocket_hideout_b3f_batch()
+
+
+func queue_celadon_rocket_hideout_b3f_batch() -> void:
+	set_flag("worldlink_celadon_rocket_hideout_b3f_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_rocket_hideout_b3f_reached",
+		"wl_red_hideout_b3f_lift_key_warning",
+		"wl_bill_nexus_order_elevator_trace",
+		"wl_rocket_admin_lift_key_battle_unlocked",
+		"wl_gold_dust_ledger_recovered",
+		"wl_team_moonlight_sleep_panel",
+		"wl_giovanni_elevator_route_seen",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -1348,6 +1391,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("rocket_game_corner_guard_battle_started", true)
 	if battle_id == "rocket_hideout_b2f_patrol":
 		set_flag("rocket_hideout_b2f_patrol_battle_started", true)
+	if battle_id == "rocket_hideout_b3f_admin":
+		set_flag("rocket_admin_lift_key_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -1412,6 +1457,13 @@ func finish_battle_placeholder(result: String) -> void:
 		set_flag("rocket_hideout_b3f_path_unlocked", true)
 		queue_worldlink_id("wl_rocket_hideout_b2f_patrol_finished")
 		queue_worldlink_id("wl_rocket_hideout_b3f_path_unlocked")
+	if active_battle_id == "rocket_hideout_b3f_admin":
+		set_flag("rocket_admin_lift_key_battle_finished", true)
+		set_flag("rocket_lift_key_obtained", true)
+		set_flag("rocket_hideout_elevator_path_unlocked", true)
+		queue_worldlink_id("wl_rocket_admin_lift_key_battle_finished")
+		queue_worldlink_id("wl_rocket_lift_key_obtained")
+		queue_worldlink_id("wl_rocket_hideout_elevator_path_unlocked")
 	active_battle_id = ""
 
 

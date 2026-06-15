@@ -15,6 +15,7 @@ const BATTLE_DATA_PATHS := {
 	"lt_surge_vermilion_gym": "res://content/battles/lt_surge_vermilion_gym.json",
 	"rocket_game_corner_guard": "res://content/battles/rocket_game_corner_guard.json",
 	"rocket_hideout_b2f_patrol": "res://content/battles/rocket_hideout_b2f_patrol.json",
+	"rocket_hideout_b3f_admin": "res://content/battles/rocket_hideout_b3f_admin.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

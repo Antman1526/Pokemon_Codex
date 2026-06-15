@@ -99,6 +99,7 @@ python3 tools/validate_native_celadon_game_corner_exterior.py
 python3 tools/validate_native_celadon_rocket_hideout_entry.py
 python3 tools/validate_native_celadon_rocket_hideout_b1f.py
 python3 tools/validate_native_celadon_rocket_hideout_b2f.py
+python3 tools/validate_native_celadon_rocket_hideout_b3f.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -155,6 +156,7 @@ godot --headless --path native/nexus-red --script tests/celadon_game_corner_exte
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_entry_test.gd
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b1f_test.gd
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b2f_test.gd
+godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b3f_test.gd
 ```
 
 ## Legal Rule

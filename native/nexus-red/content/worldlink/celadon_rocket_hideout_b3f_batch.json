@@ -1,0 +1,55 @@
+{
+  "id": "celadon_rocket_hideout_b3f_batch",
+  "feed": [
+    {
+      "id": "wl_celadon_rocket_hideout_b3f_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Celadon Rocket Hideout B3F."
+    },
+    {
+      "id": "wl_red_hideout_b3f_lift_key_warning",
+      "speaker": "Red",
+      "text": "Red identified B3F as Rocket's Lift Key chamber and warned that the admin is guarding the elevator route."
+    },
+    {
+      "id": "wl_bill_nexus_order_elevator_trace",
+      "speaker": "Bill",
+      "text": "Bill found a Nexus Order elevator trace hidden under Rocket's B3F wiring."
+    },
+    {
+      "id": "wl_rocket_admin_lift_key_battle_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Rocket Admin Lift Key battle is unlocked."
+    },
+    {
+      "id": "wl_gold_dust_ledger_recovered",
+      "speaker": "WorldLink",
+      "text": "A Gold Dust ledger recovered on B3F hints that multiple factions are pricing Rocket's stolen research."
+    },
+    {
+      "id": "wl_team_moonlight_sleep_panel",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight's sleep panel is wired into Rocket's B3F alarm system."
+    },
+    {
+      "id": "wl_giovanni_elevator_route_seen",
+      "speaker": "WorldLink",
+      "text": "Giovanni's elevator route has been found, but the Lift Key is still required."
+    },
+    {
+      "id": "wl_rocket_admin_lift_key_battle_finished",
+      "speaker": "WorldLink",
+      "text": "The B3F Rocket Admin has been defeated."
+    },
+    {
+      "id": "wl_rocket_lift_key_obtained",
+      "speaker": "WorldLink",
+      "text": "Antman obtained the Rocket Lift Key."
+    },
+    {
+      "id": "wl_rocket_hideout_elevator_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Rocket Hideout elevator path unlocked. Giovanni's Celadon route is exposed."
+    }
+  ]
+}

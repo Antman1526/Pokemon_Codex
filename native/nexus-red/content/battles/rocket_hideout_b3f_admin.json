@@ -1,0 +1,47 @@
+{
+  "id": "rocket_hideout_b3f_admin",
+  "display_title": "Celadon Rocket Hideout B3F - Rocket Admin",
+  "status": "placeholder",
+  "battle_type": "villain_admin",
+  "location": "celadon_rocket_hideout_b3f",
+  "level_cap": 33,
+  "difficulty_note": "First Celadon hideout admin pressure fight. It should feel like a real dungeon gate while staying fair on default difficulty.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red holds the B3F corridor so the Rocket Admin cannot escape with the Lift Key."
+  },
+  "opponent": {
+    "id": "rocket_hideout_b3f_admin",
+    "display_name": "Rocket B3F Admin",
+    "faction": "rocket",
+    "slots": [
+      {
+        "species": "Arbok",
+        "level": 32,
+        "role": "classic Rocket intimidate pressure"
+      },
+      {
+        "species": "Hypno",
+        "level": 32,
+        "role": "Moonlight sleep-panel callback"
+      },
+      {
+        "species": "Persian",
+        "level": 33,
+        "role": "Giovanni-style speed and money motif"
+      }
+    ],
+    "intent": "guard the Lift Key, conceal the Nexus Order elevator trace, and buy time for Giovanni's lower hideout route"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "rocket_admin_lift_key_battle_started",
+      "rocket_admin_lift_key_battle_finished",
+      "rocket_lift_key_obtained",
+      "rocket_hideout_elevator_path_unlocked"
+    ]
+  }
+}
