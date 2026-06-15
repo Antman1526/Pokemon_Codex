@@ -1023,6 +1023,28 @@ python3 tools/validate_native_celadon_city_arrival.py
 godot --headless --path native/nexus-red --script tests/celadon_city_arrival_test.gd
 ```
 
+### Task 7.53: Add Celadon Game Corner exterior and Rocket guard pressure
+
+Acceptance:
+
+- Celadon City keeps the Game Corner exterior locked until the city arrival scene unlocks the investigation.
+- After Celadon scouting, Antman can enter a playable Game Corner exterior scene from Celadon City.
+- Red remains the active full-game companion and reads the public front as a Rocket trap.
+- Bill traces a Coin Case/Silph Scope echo at the front door, connecting the classic Game Corner setup to the larger Nexus signal mystery.
+- Team Moonlight's sleep coin ad keeps the Lavender/Celadon pressure blended instead of leaving the arc as Rocket-only.
+- The Rocket Game Corner guard is exposed and battle-unlocked from the exterior scene.
+- A placeholder Rocket guard battle uses battle data and returns to the Game Corner exterior.
+- Defeating the guard records the poster-switch lead and unlocks the hideout-entry lead without implementing the full hideout yet.
+- Save state and WorldLink record Game Corner exterior reached, Red's door guard read, Bill's Coin Case signal, Rocket guard exposure, Moonlight sleep coin ad, guard battle unlock, guard battle finish, poster-switch lead, and hideout-entry unlock.
+- WorldLink checklist adds Reach Game Corner exterior, Expose Rocket Game Corner guard, Battle Game Corner guard, and Unlock hideout-entry lead milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_game_corner_exterior.py
+godot --headless --path native/nexus-red --script tests/celadon_game_corner_exterior_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

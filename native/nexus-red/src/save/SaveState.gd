@@ -267,6 +267,17 @@ func start_new_game(name: String) -> void:
 		"erika_gym_teased_seen": false,
 		"game_corner_investigation_unlocked": false,
 		"worldlink_celadon_city_arrival_batch_queued": false,
+		"game_corner_exterior_reached": false,
+		"red_game_corner_door_guard_seen": false,
+		"bill_coin_case_signal_seen": false,
+		"rocket_game_corner_guard_exposed": false,
+		"team_moonlight_sleep_coin_seen": false,
+		"game_corner_guard_battle_unlocked": false,
+		"rocket_game_corner_guard_battle_started": false,
+		"rocket_game_corner_guard_battle_finished": false,
+		"rocket_hideout_switch_lead_seen": false,
+		"game_corner_hideout_entry_unlocked": false,
+		"worldlink_celadon_game_corner_exterior_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1078,6 +1089,35 @@ func queue_celadon_city_arrival_batch() -> void:
 	])
 
 
+func enter_celadon_game_corner_exterior() -> void:
+	current_scene = "celadon_game_corner_exterior"
+	active_companion = "red"
+	set_flag("game_corner_exterior_reached", true)
+	queue_worldlink_id("wl_game_corner_exterior_reached")
+
+
+func record_celadon_game_corner_exterior_scene() -> void:
+	active_companion = "red"
+	set_flag("red_game_corner_door_guard_seen", true)
+	set_flag("bill_coin_case_signal_seen", true)
+	set_flag("rocket_game_corner_guard_exposed", true)
+	set_flag("team_moonlight_sleep_coin_seen", true)
+	set_flag("game_corner_guard_battle_unlocked", true)
+	queue_celadon_game_corner_exterior_batch()
+
+
+func queue_celadon_game_corner_exterior_batch() -> void:
+	set_flag("worldlink_celadon_game_corner_exterior_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_game_corner_exterior_reached",
+		"wl_red_game_corner_door_guard",
+		"wl_bill_coin_case_signal",
+		"wl_rocket_game_corner_guard_exposed",
+		"wl_team_moonlight_sleep_coin",
+		"wl_game_corner_guard_battle_unlocked",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -1181,6 +1221,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 	if battle_id == "lt_surge_vermilion_gym":
 		set_flag("surge_vermilion_gym_started", true)
 		queue_worldlink_id("wl_surge_vermilion_gym_started")
+	if battle_id == "rocket_game_corner_guard":
+		set_flag("rocket_game_corner_guard_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -1233,6 +1275,13 @@ func finish_battle_placeholder(result: String) -> void:
 		set_flag("surge_respect_scene_seen", true)
 		set_flag("route_11_path_unlocked", true)
 		queue_vermilion_surge_gym_batch()
+	if active_battle_id == "rocket_game_corner_guard":
+		set_flag("rocket_game_corner_guard_battle_finished", true)
+		set_flag("rocket_hideout_switch_lead_seen", true)
+		set_flag("game_corner_hideout_entry_unlocked", true)
+		queue_worldlink_id("wl_rocket_game_corner_guard_battle_finished")
+		queue_worldlink_id("wl_rocket_hideout_switch_lead_seen")
+		queue_worldlink_id("wl_game_corner_hideout_entry_unlocked")
 	active_battle_id = ""
 
 

@@ -1,0 +1,50 @@
+{
+  "id": "celadon_game_corner_exterior_batch",
+  "feed": [
+    {
+      "id": "wl_game_corner_exterior_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached the Celadon Game Corner exterior instead of jumping straight into the hideout."
+    },
+    {
+      "id": "wl_red_game_corner_door_guard",
+      "speaker": "Red",
+      "text": "Red spotted a Rocket guard watching the Game Corner poster more closely than the door."
+    },
+    {
+      "id": "wl_bill_coin_case_signal",
+      "speaker": "Bill",
+      "text": "Bill detected the Silph Scope echo bouncing through a Coin Case signal near the Game Corner entrance."
+    },
+    {
+      "id": "wl_rocket_game_corner_guard_exposed",
+      "speaker": "WorldLink",
+      "text": "Rocket's public Game Corner guard has been exposed as the first Celadon hideout pressure point."
+    },
+    {
+      "id": "wl_team_moonlight_sleep_coin",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight's sleep coin ad is steering Celadon's nightlife away from the pattern Red and Bill found."
+    },
+    {
+      "id": "wl_game_corner_guard_battle_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Game Corner guard battle is unlocked."
+    },
+    {
+      "id": "wl_rocket_game_corner_guard_battle_finished",
+      "speaker": "WorldLink",
+      "text": "Antman defeated the Rocket Game Corner guard and forced Rocket's public front to slip."
+    },
+    {
+      "id": "wl_rocket_hideout_switch_lead_seen",
+      "speaker": "Red",
+      "text": "Red saw the guard protect the poster switch, confirming the hideout-entry lead."
+    },
+    {
+      "id": "wl_game_corner_hideout_entry_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Game Corner hideout-entry lead is unlocked for the next Celadon story beat."
+    }
+  ]
+}

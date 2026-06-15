@@ -176,6 +176,8 @@ Classic FireRed style, upgraded for native PC/Mac:
 - polished menus and WorldLink UI;
 - widescreen-native layout while preserving FireRed readability.
 
+Visual quality bar: the final native build should look identical in readability and game-feel to the best FireRed-style ROM hacks, and better where native resolution, lighting, animation, UI, and effects can improve it. Use original/custom or legally safe placeholder assets while matching the top-down GBA Pokemon composition: tile density, character scale, route readability, town silhouettes, battle framing, and menu clarity. Do not pivot to 3D, painterly art, or a modern phone-app interface to chase fidelity.
+
 ### QoL And Player Options
 
 Native build should include all requested QoL:

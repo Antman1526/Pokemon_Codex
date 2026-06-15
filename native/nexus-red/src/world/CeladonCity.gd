@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_celadon_underground_path
+signal go_to_game_corner_exterior
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_celadon_city_arrival_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_game_corner_exterior_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_celadon_underground_path()
 
@@ -127,5 +130,13 @@ func return_to_celadon_underground_path() -> void:
 	emit_signal("go_to_celadon_underground_path")
 
 
+func trigger_game_corner_exterior_entry() -> void:
+	if save_state == null or not save_state.story_flags.get("game_corner_investigation_unlocked", false):
+		dialogue_label.text = "Red: The Game Corner is the next pressure point, but scout Celadon first so Bill can lock the Silph Scope signal."
+		return
+	dialogue_label.text = "Red: The Game Corner exterior is our next step. We check the public door before Rocket gets to choose the room."
+	emit_signal("go_to_game_corner_exterior")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Welcome to Celadon. Press Z/Enter to scout the Game Corner exterior, Bill's Silph Scope signal, Rocket's public front, Team Moonlight's city ad, and Erika's gym tease. Press X/Esc to return to the Underground Path."
+	dialogue_label.text = "Red: Welcome to Celadon. Press Z/Enter to scout the Game Corner exterior, Bill's Silph Scope signal, Rocket's public front, Team Moonlight's city ad, and Erika's gym tease. Press Right for the Game Corner exterior or X/Esc to return to the Underground Path."

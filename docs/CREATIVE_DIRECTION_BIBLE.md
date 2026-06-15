@@ -37,6 +37,8 @@ All Pokemon are catchable before the final boss. The player should always have a
 
 Style: FireRed-first custom GBA style.
 
+Quality target: match or exceed the best-looking FireRed-style ROM hacks in clarity, color, animation smoothness, and interface polish while using original/custom or legally safe assets. The game should feel like an upgraded official GBA-era adventure running natively on PC/Mac, not a 3D remake and not a generic modern RPG skin.
+
 FireRed baseline:
 
 - Kanto clarity.

@@ -30,6 +30,7 @@ const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFir
 const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.tscn")
 const CeladonUndergroundPathScene := preload("res://scenes/world/CeladonUndergroundPath.tscn")
 const CeladonCityScene := preload("res://scenes/world/CeladonCity.tscn")
+const CeladonGameCornerExteriorScene := preload("res://scenes/world/CeladonGameCornerExterior.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -407,7 +408,20 @@ func _show_celadon_city() -> void:
 	var city := CeladonCityScene.instantiate()
 	city.save_state = save_state
 	city.go_to_celadon_underground_path.connect(_on_go_to_celadon_underground_path)
+	city.go_to_game_corner_exterior.connect(_on_go_to_game_corner_exterior)
 	_replace_screen(city)
+
+
+func _on_go_to_game_corner_exterior() -> void:
+	_show_celadon_game_corner_exterior()
+
+
+func _show_celadon_game_corner_exterior() -> void:
+	var exterior := CeladonGameCornerExteriorScene.instantiate()
+	exterior.save_state = save_state
+	exterior.go_to_celadon_city.connect(_on_go_to_celadon_city)
+	exterior.start_battle_placeholder.connect(_on_start_battle_placeholder)
+	_replace_screen(exterior)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:
@@ -484,6 +498,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_ss_anne_main_deck()
 	elif battle_return_scene == "vermilion_power_sabotage":
 		_show_vermilion_power_sabotage()
+	elif battle_return_scene == "celadon_game_corner_exterior":
+		_show_celadon_game_corner_exterior()
 	else:
 		_on_go_to_route_1()
 

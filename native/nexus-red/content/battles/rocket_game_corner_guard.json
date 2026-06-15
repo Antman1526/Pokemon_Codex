@@ -1,0 +1,42 @@
+{
+  "id": "rocket_game_corner_guard",
+  "display_title": "Celadon Game Corner - Rocket Guard",
+  "status": "placeholder",
+  "battle_type": "villain_grunt",
+  "location": "celadon_game_corner_exterior",
+  "level_cap": 31,
+  "difficulty_note": "First Celadon Rocket pressure fight. It should feel sharper than Cerulean's thief but still less punishing than Radical Red by default.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red blocks the public door so the guard cannot warn the basement crew before Antman battles."
+  },
+  "opponent": {
+    "id": "rocket_game_corner_guard",
+    "display_name": "Rocket Game Corner Guard",
+    "faction": "rocket",
+    "slots": [
+      {
+        "species": "Raticate",
+        "level": 29,
+        "role": "fast classic Rocket pressure"
+      },
+      {
+        "species": "Koffing",
+        "level": 30,
+        "role": "smoke-screen stall and hideout clue"
+      }
+    ],
+    "intent": "expose Rocket's public Game Corner front and unlock the hidden poster-switch lead without entering the full hideout yet"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "rocket_game_corner_guard_battle_started",
+      "rocket_game_corner_guard_battle_finished",
+      "rocket_hideout_switch_lead_seen",
+      "game_corner_hideout_entry_unlocked"
+    ]
+  }
+}
