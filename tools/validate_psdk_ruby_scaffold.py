@@ -140,6 +140,11 @@ REQUIRED_MARKERS = (
     "set_party_condition",
     "heal_team",
     "restore_species",
+    "module KantoStory",
+    "ensure_kanto_story",
+    "complete_brock",
+    "brock_rewards_applied?",
+    "field_healing_charges_for",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -181,6 +186,7 @@ REQUIRED_RUNTIME_FILES = (
     "party_storage.rb",
     "portable_pc.rb",
     "field_healing.rb",
+    "kanto_story.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -864,6 +870,40 @@ NexusRed::FieldHealing.unlock(expert_healing_state, source: 'Expert care kit', c
 raise 'expected expert FieldHealing route available' unless NexusRed::FieldHealing.available?(expert_healing_state, area_type: 'route')
 restricted_heal = NexusRed::FieldHealing.heal_team(expert_healing_state, location: 'Mt. Moon', area_type: 'cave')
 raise 'expected restricted FieldHealing cave guard' unless restricted_heal['status'] == 'restricted_area'
+
+kanto_story_state = NexusRed::RuntimeState.build
+kanto_story = NexusRed::KantoStory.ensure_kanto_story(kanto_story_state)
+raise 'expected KantoStory act 1 default' unless kanto_story['current_act'] == 'act_1_pallet_to_pewter'
+raise 'expected Brock rewards not applied by default' if NexusRed::KantoStory.brock_rewards_applied?(kanto_story_state)
+brock_clear = NexusRed::KantoStory.complete_brock(
+  kanto_story_state,
+  location: 'Pewter Gym',
+  area_type: 'route'
+)
+raise 'expected KantoStory Brock reward applied status' unless brock_clear['status'] == 'applied'
+raise 'expected KantoStory Brock flag recorded' unless kanto_story_state['story_flags'].include?('boulder_badge_obtained')
+raise 'expected KantoStory Nexus Boulder flag recorded' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BOULDER_BADGE')
+raise 'expected KantoStory Pewter Rocket alert flag recorded' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PEWTER_ROCKET_ALERT')
+raise 'expected KantoStory after Brock QoL tier recorded' unless kanto_story_state['gameplay_options']['latest_qol_unlock'] == 'after_brock'
+raise 'expected KantoStory portable PC lite QoL' unless kanto_story_state['gameplay_options']['unlocked_qol'].include?('portable_pc_lite')
+raise 'expected KantoStory rare candy mart unlocked' unless NexusRed::GameplayOptions.rare_candy_mart_available?(kanto_story_state)
+raise 'expected KantoStory Pewter mart rare candies' unless NexusRed::CenterMartServices.mart_inventory(kanto_story_state, 'pewter').include?('rare_candies')
+raise 'expected KantoStory PortablePC unlocked' unless NexusRed::PortablePC.unlocked?(kanto_story_state)
+raise 'expected KantoStory PortablePC lite access' unless kanto_story_state['portable_pc']['access_level'] == 'lite'
+raise 'expected KantoStory FieldHealing unlocked' unless NexusRed::FieldHealing.available?(kanto_story_state, area_type: 'route')
+raise 'expected KantoStory standard field healing charges' unless kanto_story_state['field_healing']['charges'] == 3
+raise 'expected KantoStory Red scene recorded' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('post_brock_field_kit')
+raise 'expected KantoStory Brock scene recorded' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('post_gym_respect')
+raise 'expected KantoStory Brock rewards applied helper' unless NexusRed::KantoStory.brock_rewards_applied?(kanto_story_state)
+second_brock_clear = NexusRed::KantoStory.complete_brock(kanto_story_state, location: 'Pewter Gym', area_type: 'route')
+raise 'expected KantoStory Brock rewards idempotent guard' unless second_brock_clear['status'] == 'already_applied'
+raise 'expected KantoStory no duplicate reward history' unless kanto_story_state['kanto_story']['reward_history'].length == 1
+casual_kanto_state = NexusRed::RuntimeState.build
+NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
+raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
+expert_kanto_state = NexusRed::RuntimeState.build
+NexusRed::GameplayOptions.set_difficulty(expert_kanto_state, 'expert')
+raise 'expected KantoStory expert field healing charge recommendation one' unless NexusRed::KantoStory.field_healing_charges_for(expert_kanto_state) == 1
 
 migration_state = NexusRed::RuntimeState.build
 migration = NexusRed::EarlyMigrationEncounters.ensure_migration(migration_state)
