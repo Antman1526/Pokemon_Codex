@@ -158,6 +158,13 @@ module NexusRed
     TEAM_CLOVER_PRESERVE_FRONT_EVENT_ID = 'team_clover_preserve_front'
     GOLD_DUST_SAFARI_BUYER_EVENT_ID = 'gold_dust_safari_buyer'
     ROCKET_WARDEN_SURVEILLANCE_EVENT_ID = 'rocket_warden_house_surveillance'
+    SAFARI_ZONE_ANOMALY_EVENT_ID = 'safari_zone_anomaly'
+    SAFARI_RARE_ENCOUNTER_EVENT_ID = 'safari_rare_encounter_manipulation'
+    TEAM_CLOVER_LUCK_LURE_EVENT_ID = 'team_clover_luck_lure_machine'
+    GOLD_DUST_POACHER_LEDGER_EVENT_ID = 'gold_dust_poacher_ledger'
+    ROCKET_WARDEN_FILE_EVENT_ID = 'rocket_warden_file_stolen'
+    KOGA_HAZARD_PREP_EVENT_ID = 'koga_hazard_prep_unlocked'
+    CLOVER_SAFARI_LURE_BATTLE_ID = 'clover_safari_lure_admin'
 
     module_function
 
@@ -2688,6 +2695,111 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == FUCHSIA_CITY_ARRIVAL_EVENT_ID }
     end
 
+    def complete_safari_zone_anomaly(state, location: 'Safari Zone', area_type: 'preserve')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_fuchsia_city_arrival', 'event_id' => SAFARI_ZONE_ANOMALY_EVENT_ID } unless fuchsia_city_arrival_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SAFARI_ZONE_ANOMALY_EVENT_ID } if safari_zone_anomaly_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SAFARI_ZONE_ANOMALY_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_SAFARI_RARE_ENCOUNTER_MANIPULATION')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_CLOVER_LUCK_LURE_MACHINE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_POACHER_LEDGER')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_WARDEN_FILE_STOLEN')
+      add_story_flag(state, 'FLAG_NEXUS_KOGA_HAZARD_PREP_UNLOCKED')
+      mark_cleared_event(story, SAFARI_ZONE_ANOMALY_EVENT_ID)
+      mark_cleared_event(story, SAFARI_RARE_ENCOUNTER_EVENT_ID)
+      mark_cleared_event(story, TEAM_CLOVER_LUCK_LURE_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_POACHER_LEDGER_EVENT_ID)
+      mark_cleared_event(story, ROCKET_WARDEN_FILE_EVENT_ID)
+      mark_cleared_event(story, KOGA_HAZARD_PREP_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_clover',
+        'kanto',
+        location,
+        'luck_lure_machine',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'poacher_ledger_market',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'warden_file_theft',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_clover',
+        'team_gold_dust',
+        location,
+        'Clover manipulates rare encounters while Gold Dust turns the same sightings into poacher ledgers',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_clover',
+        'team_rocket',
+        location,
+        'Clover needs the preserve trusted while Rocket steals Warden records for old field-tool intelligence',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'safari_preserve_guard',
+        location: location,
+        summary: 'Red keeps the Safari paths clear while Antman follows the rare-encounter distortion.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'safari_anomaly_water_route',
+        location: location,
+        summary: 'Misty tracks abnormal water-route behavior around the preserve ponds.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'clover_luck_lure_decode',
+        location: location,
+        summary: 'Bill identifies Clover luck-lure tech as probability pressure, not natural migration.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Safari Zone exposed Clover luck-lure manipulation, Gold Dust poacher ledgers, and Koga hazard prep as the next Fuchsia pressure point.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = safari_zone_anomaly_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def safari_zone_anomaly_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SAFARI_ZONE_ANOMALY_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3283,6 +3395,33 @@ module NexusRed
         'encounter_hooks' => %w[safari_preserve_rotation poison_hazard_training],
         'unlocks' => %w[safari_zone_gate koga_gym_tease],
         'next_hook' => 'safari_zone_anomaly'
+      }
+    end
+
+    def safari_zone_anomaly_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SAFARI_ZONE_ANOMALY_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          SAFARI_RARE_ENCOUNTER_EVENT_ID,
+          TEAM_CLOVER_LUCK_LURE_EVENT_ID,
+          GOLD_DUST_POACHER_LEDGER_EVENT_ID,
+          ROCKET_WARDEN_FILE_EVENT_ID,
+          KOGA_HAZARD_PREP_EVENT_ID
+        ],
+        'factions' => %w[team_clover team_gold_dust team_rocket],
+        'encounter_hooks' => %w[safari_preserve_rotation rare_encounter_luck_lure],
+        'battle_hook' => {
+          'battle_id' => CLOVER_SAFARI_LURE_BATTLE_ID,
+          'battle_type' => 'villain_admin',
+          'location' => 'safari_zone',
+          'level_cap' => 38,
+          'opponent_species' => %w[Chansey Pinsir Scyther],
+          'companion_support' => 'red_misty_bill_preserve_split'
+        },
+        'unlocks' => %w[koga_gym_prep safari_rotation_debug],
+        'next_hook' => 'koga_gym_prep'
       }
     end
 

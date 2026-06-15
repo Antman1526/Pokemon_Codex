@@ -97,6 +97,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_fuchsia_city_arrival(state, location:, area_type:)` resolves the first Fuchsia City setup beat. It introduces Koga's poison/hazard pressure, opens the Safari Zone gate, confirms the Safari anomaly, records Clover's preserve front, Gold Dust's rare buyer network, Rocket's Warden surveillance, and points the next hook to `safari_zone_anomaly`.
 
+`NexusRed::KantoStory.complete_safari_zone_anomaly(state, location:, area_type:)` resolves the first Safari Zone investigation. It records Clover's luck-lure machine manipulating rare encounters, Gold Dust's poacher ledger market, Rocket stealing Warden files, Red/Misty/Bill preserve support scenes, a Clover admin battle hook, and unlocks `koga_gym_prep` as the next Fuchsia beat.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

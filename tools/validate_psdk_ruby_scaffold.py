@@ -212,6 +212,8 @@ REQUIRED_MARKERS = (
     "route_12_fishing_pier_cleared?",
     "complete_fuchsia_city_arrival",
     "fuchsia_city_arrival_cleared?",
+    "complete_safari_zone_anomaly",
+    "safari_zone_anomaly_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1853,6 +1855,38 @@ raise 'expected KantoStory Fuchsia unlocks Safari gate' unless fuchsia_arrival['
 second_fuchsia_arrival = NexusRed::KantoStory.complete_fuchsia_city_arrival(kanto_story_state)
 raise 'expected KantoStory Fuchsia arrival idempotent guard' unless second_fuchsia_arrival['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Fuchsia arrival history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'fuchsia_city_arrival' } == 1
+pre_safari_anomaly = NexusRed::KantoStory.complete_safari_zone_anomaly(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Safari anomaly gated before Fuchsia arrival' unless pre_safari_anomaly['status'] == 'blocked_missing_fuchsia_city_arrival'
+safari_anomaly = NexusRed::KantoStory.complete_safari_zone_anomaly(
+  kanto_story_state,
+  location: 'Safari Zone',
+  area_type: 'preserve'
+)
+raise 'expected KantoStory Safari anomaly clear status' unless safari_anomaly['status'] == 'cleared'
+raise 'expected KantoStory Safari anomaly event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('safari_zone_anomaly')
+raise 'expected KantoStory Safari anomaly helper true' unless NexusRed::KantoStory.safari_zone_anomaly_cleared?(kanto_story_state)
+raise 'expected KantoStory Safari anomaly reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFARI_ZONE_ANOMALY_REACHED')
+raise 'expected KantoStory Safari rare encounter manipulation flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFARI_RARE_ENCOUNTER_MANIPULATION')
+raise 'expected KantoStory Clover lure machine flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_CLOVER_LUCK_LURE_MACHINE')
+raise 'expected KantoStory Gold Dust poacher ledger flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_POACHER_LEDGER')
+raise 'expected KantoStory Rocket Warden file flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_WARDEN_FILE_STOLEN')
+raise 'expected KantoStory Koga hazard prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KOGA_HAZARD_PREP_UNLOCKED')
+raise 'expected KantoStory Misty Safari anomaly support' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('safari_anomaly_water_route')
+raise 'expected KantoStory Bill Clover machine decode' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('clover_luck_lure_decode')
+raise 'expected KantoStory Red Safari preserve guard' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('safari_preserve_guard')
+raise 'expected KantoStory Clover lure machine activity' unless kanto_story_state['faction_progress']['team_clover']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Safari Zone' && activity['operation'] == 'luck_lure_machine' }
+raise 'expected KantoStory Gold Dust Safari poacher ledger activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Safari Zone' && activity['operation'] == 'poacher_ledger_market' }
+raise 'expected KantoStory Rocket Warden file activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Safari Zone' && activity['operation'] == 'warden_file_theft' }
+raise 'expected KantoStory Clover Gold Dust Safari conflict' unless kanto_story_state['faction_progress']['team_clover']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Safari Zone' }
+raise 'expected KantoStory Clover Rocket Safari conflict' unless kanto_story_state['faction_progress']['team_clover']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_rocket' && conflict['location'] == 'Safari Zone' }
+raise 'expected KantoStory Safari anomaly alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Clover') && message['text'].include?('Koga') }
+raise 'expected KantoStory Safari anomaly next hook Koga prep' unless safari_anomaly['next_hook'] == 'koga_gym_prep'
+raise 'expected KantoStory Safari anomaly encounter hooks' unless safari_anomaly['encounter_hooks'].include?('safari_preserve_rotation') && safari_anomaly['encounter_hooks'].include?('rare_encounter_luck_lure')
+raise 'expected KantoStory Safari anomaly battle hook' unless safari_anomaly['battle_hook']['battle_id'] == 'clover_safari_lure_admin'
+raise 'expected KantoStory Safari anomaly unlocks Koga prep' unless safari_anomaly['unlocks'].include?('koga_gym_prep')
+second_safari_anomaly = NexusRed::KantoStory.complete_safari_zone_anomaly(kanto_story_state)
+raise 'expected KantoStory Safari anomaly idempotent guard' unless second_safari_anomaly['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Safari anomaly history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'safari_zone_anomaly' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
