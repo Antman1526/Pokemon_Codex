@@ -21,8 +21,7 @@ module NexusRed
 
       selection['selected_partner'] = partner
       selection['rival_assignments'] = build_rival_assignments(partner['species'])
-      state['party_species'] ||= []
-      state['party_species'] << partner['species'] unless state['party_species'].include?(partner['species'])
+      PartyStorage.add_species(state, partner['species'])
       state['story_flags'] ||= []
       state['story_flags'] << 'starter_chosen' unless state['story_flags'].include?('starter_chosen')
 

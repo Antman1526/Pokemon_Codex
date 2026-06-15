@@ -24,7 +24,7 @@ module NexusRed
       state['last_wild_battle_result'] = result
 
       if result['outcome'] == 'caught'
-        result['storage'] = store_caught_species(state, result['species'])
+        result['storage'] = PartyStorage.add_species(state, result['species'])['storage']
         PokedexAvailability.record_caught(
           state,
           result['species'],
@@ -35,19 +35,6 @@ module NexusRed
       end
 
       result
-    end
-
-    def store_caught_species(state, species)
-      species_name = species.to_s
-      state['party_species'] ||= []
-      state['pc_box_species'] ||= []
-      if state['party_species'].length < 6
-        state['party_species'] << species_name unless state['party_species'].include?(species_name)
-        'party'
-      else
-        state['pc_box_species'] << species_name unless state['pc_box_species'].include?(species_name)
-        'pc'
-      end
     end
 
     def result_history(state)

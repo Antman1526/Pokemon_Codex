@@ -114,9 +114,13 @@ REQUIRED_MARKERS = (
     "launch_history",
     "module WildBattleResults",
     "record_result",
-    "store_caught_species",
     "result_history",
     "last_launch",
+    "module PartyStorage",
+    "add_species",
+    "party_full?",
+    "party_species",
+    "pc_box_species",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -155,6 +159,7 @@ REQUIRED_RUNTIME_FILES = (
     "route_migration_event_adapter.rb",
     "wild_battle_launcher.rb",
     "wild_battle_results.rb",
+    "party_storage.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -726,6 +731,17 @@ raise 'expected unknown starter rejected' unless begin
 rescue ArgumentError
   true
 end
+
+storage_state = NexusRed::RuntimeState.build
+storage_result = NexusRed::PartyStorage.add_species(storage_state, 'Pikachu')
+raise 'expected PartyStorage first add to party' unless storage_result['storage'] == 'party'
+raise 'expected PartyStorage party_species helper' unless NexusRed::PartyStorage.party_species(storage_state) == ['Pikachu']
+raise 'expected PartyStorage party not full' if NexusRed::PartyStorage.party_full?(storage_state)
+storage_state['party_species'] = %w[Bulbasaur Charmander Squirtle Pikachu Eevee Ralts]
+pc_storage_result = NexusRed::PartyStorage.add_species(storage_state, 'Rockruff')
+raise 'expected PartyStorage add to PC when party full' unless pc_storage_result['storage'] == 'pc'
+raise 'expected PartyStorage party full helper' unless NexusRed::PartyStorage.party_full?(storage_state)
+raise 'expected PartyStorage pc_box_species helper' unless NexusRed::PartyStorage.pc_box_species(storage_state).include?('Rockruff')
 
 migration_state = NexusRed::RuntimeState.build
 migration = NexusRed::EarlyMigrationEncounters.ensure_migration(migration_state)
