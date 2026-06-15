@@ -69,6 +69,12 @@ REQUIRED_MARKERS = (
     "terminal_available?",
     "mart_inventory",
     "unlock_mart_tier",
+    "module EncounterWorld",
+    "ensure_world",
+    "set_day_phase",
+    "set_weather",
+    "unlock_fishing_rod",
+    "daycare_enabled?",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -530,6 +536,55 @@ celadon_inventory = NexusRed::CenterMartServices.mart_inventory(state, 'celadon'
 raise 'expected Celadon specialty mart flag' unless celadon_inventory.include?('specialty_mart')
 raise 'expected unknown Nurse Joy service rejected' unless begin
   NexusRed::CenterMartServices.use_nurse_service(state, 'rocket_heal_discount', location: 'Celadon')
+  false
+rescue ArgumentError
+  true
+end
+
+world = NexusRed::EncounterWorld.ensure_world(state)
+raise 'expected default day phase' unless world['day_phase'] == 'day'
+raise 'expected default clear weather' unless world['weather'] == 'clear'
+raise 'expected night phase known' unless world['available_day_phases'].include?('night')
+raise 'expected thunderstorm weather known' unless world['available_weather'].include?('thunderstorm')
+raise 'expected no fishing rods unlocked initially' unless world['unlocked_fishing_rods'].empty?
+raise 'expected daycare disabled before unlock' if NexusRed::EncounterWorld.daycare_enabled?(state)
+raise 'expected following rollout policy copied' unless world['following_pokemon_policy'] == 'phased_starter_and_favorites_first'
+
+phase_message = NexusRed::EncounterWorld.set_day_phase(
+  state,
+  'night',
+  source: 'Johto time tracker',
+  area_type: 'route'
+)
+raise 'expected day phase update immediate delivery' unless phase_message['delivery'] == 'immediate'
+raise 'expected night phase applied' unless state['encounter_world']['day_phase'] == 'night'
+
+weather_message = NexusRed::EncounterWorld.set_weather(
+  state,
+  'thunderstorm',
+  source: 'Vermilion power sabotage',
+  area_type: 'route'
+)
+raise 'expected weather update immediate delivery' unless weather_message['delivery'] == 'immediate'
+raise 'expected thunderstorm weather applied' unless state['encounter_world']['weather'] == 'thunderstorm'
+
+rod_message = NexusRed::EncounterWorld.unlock_fishing_rod(
+  state,
+  'old_rod',
+  source: 'Vermilion fishing guru',
+  area_type: 'route'
+)
+raise 'expected Old Rod unlock immediate delivery' unless rod_message['delivery'] == 'immediate'
+raise 'expected Old Rod unlocked' unless state['encounter_world']['unlocked_fishing_rods'].include?('old_rod')
+
+NexusRed::EncounterWorld.unlock_daycare(state, location: 'Route 5 Daycare')
+raise 'expected daycare enabled after unlock' unless NexusRed::EncounterWorld.daycare_enabled?(state)
+NexusRed::EncounterWorld.enable_overworld_pokemon(state, zone: 'Viridian Forest')
+raise 'expected overworld Pokemon zone recorded' unless state['encounter_world']['overworld_pokemon_zones'].include?('Viridian Forest')
+NexusRed::EncounterWorld.enable_following_pokemon(state, species: 'Pikachu')
+raise 'expected following Pokemon species recorded' unless state['encounter_world']['following_pokemon_species'].include?('Pikachu')
+raise 'expected invalid weather rejected' unless begin
+  NexusRed::EncounterWorld.set_weather(state, 'rocket_smoke')
   false
 rescue ArgumentError
   true
