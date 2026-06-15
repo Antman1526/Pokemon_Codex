@@ -172,6 +172,11 @@ module NexusRed
     CLOVER_TOXIC_LURE_COUNTER_EVENT_ID = 'clover_toxic_lure_countermeasure'
     SOUL_BADGE_BATTLE_EVENT_ID = 'soul_badge_battle_unlocked'
     KOGA_SOUL_BADGE_BATTLE_ID = 'koga_soul_badge_battle'
+    SOUL_BADGE_OBTAINED_EVENT_ID = 'soul_badge_obtained'
+    TIDE_RIDER_UNLOCKED_EVENT_ID = 'tide_rider_unlocked'
+    POISON_HAZARD_LESSON_EVENT_ID = 'poison_hazard_lesson_mastered'
+    SAFFRON_CITY_PATH_EVENT_ID = 'saffron_city_path_unlocked'
+    ROCKET_SILPH_ESCALATION_EVENT_ID = 'rocket_silph_escalation_signal'
 
     module_function
 
@@ -2902,6 +2907,85 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == KOGA_GYM_PREP_EVENT_ID }
     end
 
+    def complete_koga_soul_badge_battle(state, location: 'Fuchsia Gym', result: 'badge_win', area_type: 'gym')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_koga_gym_prep', 'event_id' => KOGA_SOUL_BADGE_BATTLE_ID } unless koga_gym_prep_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => KOGA_SOUL_BADGE_BATTLE_ID } if koga_soul_badge_battle_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_KOGA_SOUL_BADGE_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_KOGA_SOUL_BADGE_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_SOUL_BADGE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_TIDE_RIDER_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_POISON_HAZARD_LESSON_MASTERED')
+      add_story_flag(state, 'FLAG_NEXUS_SAFFRON_CITY_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SILPH_ESCALATION_SIGNAL')
+      mark_cleared_event(story, KOGA_SOUL_BADGE_BATTLE_ID)
+      mark_cleared_event(story, SOUL_BADGE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, TIDE_RIDER_UNLOCKED_EVENT_ID)
+      mark_cleared_event(story, POISON_HAZARD_LESSON_EVENT_ID)
+      mark_cleared_event(story, SAFFRON_CITY_PATH_EVENT_ID)
+      mark_cleared_event(story, ROCKET_SILPH_ESCALATION_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'silph_takeover_signal_after_koga',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_clover',
+        'kanto',
+        location,
+        'toxic_lure_countermeasure_failed',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'koga_badge_exit',
+        location: location,
+        summary: 'Red waits outside the arena, proud but direct: the Soul Badge win means Rocket will stop treating Antman like a local Trainer.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'tide_rider_field_note',
+        location: location,
+        summary: 'Misty turns the Soul Badge reward into Tide Rider field advice for future water routes without forcing Surf onto the party.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'poison_recovery_review',
+        location: location,
+        summary: 'Brock reviews poison recovery after the match so the hazard lesson feels strategic instead of punishing.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman earned the Soul Badge from Koga, unlocked Tide Rider field travel, and triggered a Rocket escalation toward Saffron and Silph Co.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = koga_soul_badge_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def koga_soul_badge_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == KOGA_SOUL_BADGE_BATTLE_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3553,6 +3637,31 @@ module NexusRed
         },
         'unlocks' => %w[fuchsia_gym_access soul_badge_battle antidote_prep_station],
         'next_hook' => 'koga_soul_badge_battle'
+      }
+    end
+
+    def koga_soul_badge_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => KOGA_SOUL_BADGE_BATTLE_ID,
+        'battle_id' => KOGA_SOUL_BADGE_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'gym_leader' => 'Koga',
+        'badge' => 'Soul Badge',
+        'level_cap' => 38,
+        'opponent_species' => %w[Koffing Muk Crobat Weezing],
+        'companion_rule' => 'no_companion_assist_in_gym_battle',
+        'linked_events' => [
+          SOUL_BADGE_OBTAINED_EVENT_ID,
+          TIDE_RIDER_UNLOCKED_EVENT_ID,
+          POISON_HAZARD_LESSON_EVENT_ID,
+          SAFFRON_CITY_PATH_EVENT_ID,
+          ROCKET_SILPH_ESCALATION_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_clover],
+        'unlocks' => %w[soul_badge tide_rider saffron_city_path poison_hazard_mastery],
+        'next_hook' => 'saffron_city_arrival'
       }
     end
 

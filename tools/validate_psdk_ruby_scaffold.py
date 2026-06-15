@@ -216,6 +216,8 @@ REQUIRED_MARKERS = (
     "safari_zone_anomaly_cleared?",
     "complete_koga_gym_prep",
     "koga_gym_prep_cleared?",
+    "complete_koga_soul_badge_battle",
+    "koga_soul_badge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1923,6 +1925,39 @@ raise 'expected KantoStory Koga prep unlocks Soul Badge battle' unless koga_prep
 second_koga_prep = NexusRed::KantoStory.complete_koga_gym_prep(kanto_story_state)
 raise 'expected KantoStory Koga prep idempotent guard' unless second_koga_prep['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Koga prep history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'koga_gym_prep' } == 1
+pre_koga_battle = NexusRed::KantoStory.complete_koga_soul_badge_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Koga battle gated before prep' unless pre_koga_battle['status'] == 'blocked_missing_koga_gym_prep'
+koga_battle = NexusRed::KantoStory.complete_koga_soul_badge_battle(
+  kanto_story_state,
+  location: 'Fuchsia Gym',
+  result: 'badge_win',
+  area_type: 'gym'
+)
+raise 'expected KantoStory Koga battle clear status' unless koga_battle['status'] == 'cleared'
+raise 'expected KantoStory Koga battle event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('koga_soul_badge_battle')
+raise 'expected KantoStory Koga battle helper true' unless NexusRed::KantoStory.koga_soul_badge_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Koga battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KOGA_SOUL_BADGE_BATTLE_STARTED')
+raise 'expected KantoStory Koga battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KOGA_SOUL_BADGE_BATTLE_FINISHED')
+raise 'expected KantoStory Soul Badge obtained flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SOUL_BADGE_OBTAINED')
+raise 'expected KantoStory Tide Rider unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TIDE_RIDER_UNLOCKED')
+raise 'expected KantoStory poison hazard lesson mastered flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POISON_HAZARD_LESSON_MASTERED')
+raise 'expected KantoStory Saffron city path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFFRON_CITY_PATH_UNLOCKED')
+raise 'expected KantoStory Rocket Silph escalation flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_SILPH_ESCALATION_SIGNAL')
+raise 'expected KantoStory Red Koga badge exit' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('koga_badge_exit')
+raise 'expected KantoStory Misty Fuchsia water path note' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('tide_rider_field_note')
+raise 'expected KantoStory Brock poison recovery review' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('poison_recovery_review')
+raise 'expected KantoStory Rocket Silph escalation activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia Gym' && activity['operation'] == 'silph_takeover_signal_after_koga' }
+raise 'expected KantoStory Clover toxic lure failure activity' unless kanto_story_state['faction_progress']['team_clover']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia Gym' && activity['operation'] == 'toxic_lure_countermeasure_failed' }
+raise 'expected KantoStory Koga battle story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Soul Badge') && message['text'].include?('Saffron') }
+raise 'expected KantoStory Koga battle next hook Saffron' unless koga_battle['next_hook'] == 'saffron_city_arrival'
+raise 'expected KantoStory Koga battle badge Soul Badge' unless koga_battle['badge'] == 'Soul Badge'
+raise 'expected KantoStory Koga battle result propagated' unless koga_battle['result'] == 'badge_win'
+raise 'expected KantoStory Koga battle team species' unless koga_battle['opponent_species'] == %w[Koffing Muk Crobat Weezing]
+raise 'expected KantoStory Koga battle companion rule' unless koga_battle['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected KantoStory Koga battle unlocks Tide Rider' unless koga_battle['unlocks'].include?('tide_rider') && koga_battle['unlocks'].include?('saffron_city_path')
+second_koga_battle = NexusRed::KantoStory.complete_koga_soul_badge_battle(kanto_story_state)
+raise 'expected KantoStory Koga battle idempotent guard' unless second_koga_battle['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Koga battle history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'koga_soul_badge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

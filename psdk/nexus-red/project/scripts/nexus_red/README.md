@@ -101,6 +101,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_koga_gym_prep(state, location:, area_type:)` resolves the Fuchsia dojo preparation beat after the Safari anomaly. It unlocks Fuchsia Gym access, antidote prep, poison-hazard training, and the `koga_soul_badge_battle` hook while keeping Red as Antman's main companion and using Misty, Brock, and Bill for training/support scenes only before the actual gym battle.
 
+`NexusRed::KantoStory.complete_koga_soul_badge_battle(state, location:, result:, area_type:)` records Koga's Soul Badge battle result after the PSDK gym battle returns. It grants the Soul Badge, unlocks Tide Rider field travel as the HM-free Surf equivalent, resolves the poison/hazard lesson, records Red/Misty/Brock post-battle support, and opens `saffron_city_arrival` as the next Rocket/Silph escalation hook.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
