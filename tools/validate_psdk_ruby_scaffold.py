@@ -246,6 +246,8 @@ REQUIRED_MARKERS = (
     "pokemon_mansion_mewtwo_echoes_cleared?",
     "complete_blaine_revival_warning",
     "blaine_revival_warning_cleared?",
+    "complete_blaine_volcano_badge_prep",
+    "blaine_volcano_badge_prep_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2471,6 +2473,38 @@ raise 'expected KantoStory Blaine warning training hooks' unless blaine_warning[
 second_blaine_warning = NexusRed::KantoStory.complete_blaine_revival_warning(kanto_story_state)
 raise 'expected KantoStory Blaine warning idempotent guard' unless second_blaine_warning['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Blaine warning history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blaine_revival_warning' } == 1
+pre_blaine_prep = NexusRed::KantoStory.complete_blaine_volcano_badge_prep(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Blaine prep gated before Blaine warning' unless pre_blaine_prep['status'] == 'blocked_missing_blaine_revival_warning'
+blaine_prep = NexusRed::KantoStory.complete_blaine_volcano_badge_prep(
+  kanto_story_state,
+  location: 'Cinnabar Gym Courtyard',
+  area_type: 'city'
+)
+raise 'expected KantoStory Blaine prep clear status' unless blaine_prep['status'] == 'cleared'
+raise 'expected KantoStory Blaine prep helper true' unless NexusRed::KantoStory.blaine_volcano_badge_prep_cleared?(kanto_story_state)
+raise 'expected KantoStory Blaine prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLAINE_VOLCANO_BADGE_PREP')
+raise 'expected KantoStory Red sun pressure training flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SUN_PRESSURE_TRAINING')
+raise 'expected KantoStory Misty water answer drill flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MISTY_WATER_ANSWER_DRILL')
+raise 'expected KantoStory Brock rock ground planning flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_ROCK_GROUND_PLANNING')
+raise 'expected KantoStory Cinnabar gym ready flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_GYM_READY')
+raise 'expected KantoStory Red Blaine sun drill scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('blaine_sun_pressure_drill')
+raise 'expected KantoStory Misty Blaine water drill scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('blaine_water_answer_drill')
+raise 'expected KantoStory Brock Blaine rock ground scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('blaine_rock_ground_planning')
+raise 'expected KantoStory Phoenix Cinnabar Gym scout activity' unless kanto_story_state['faction_progress']['team_phoenix']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Gym Courtyard' && activity['operation'] == 'gym_heat_doctrine_scouts' }
+raise 'expected KantoStory Rocket Cinnabar Gym key ambush activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Gym Courtyard' && activity['operation'] == 'gym_key_ambush_cleanup' }
+raise 'expected KantoStory Nexus heat observer activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Gym Courtyard' && activity['operation'] == 'volcano_badge_heat_observer_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Blaine prep' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Blaine prep story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Misty') && message['text'].include?('Blaine') && message['text'].include?('Volcano Badge') }
+raise 'expected KantoStory Blaine prep next hook battle' unless blaine_prep['next_hook'] == 'blaine_volcano_badge_battle'
+raise 'expected KantoStory Blaine prep gym leader' unless blaine_prep['gym_leader'] == 'Blaine'
+raise 'expected KantoStory Blaine prep badge' unless blaine_prep['badge'] == 'Volcano Badge'
+raise 'expected KantoStory Blaine prep battle hook' unless blaine_prep['battle_hook']['battle_id'] == 'blaine_volcano_badge_battle'
+raise 'expected KantoStory Blaine prep companion support locked out of gym' unless blaine_prep['battle_hook']['companion_support'] == 'companions_train_only_no_gym_assist'
+raise 'expected KantoStory Blaine prep standard team' unless blaine_prep['battle_hook']['standard_team'].map { |slot| slot['species'] } == %w[Growlithe Rapidash Magmar]
+raise 'expected KantoStory Blaine prep training hooks' unless blaine_prep['training_hooks'].include?('sun_pressure') && blaine_prep['training_hooks'].include?('water_ground_rock_planning')
+second_blaine_prep = NexusRed::KantoStory.complete_blaine_volcano_badge_prep(kanto_story_state)
+raise 'expected KantoStory Blaine prep idempotent guard' unless second_blaine_prep['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Blaine prep history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blaine_volcano_badge_prep' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

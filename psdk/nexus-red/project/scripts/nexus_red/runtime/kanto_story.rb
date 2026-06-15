@@ -307,6 +307,14 @@ module NexusRed
     BILL_REVIVAL_MACHINE_AUDIT_EVENT_ID = 'bill_revival_machine_audit'
     NEXUS_ORDER_REVIVAL_OBSERVER_EVENT_ID = 'nexus_order_revival_energy_observer_hidden'
     BLAINE_VOLCANO_BADGE_BATTLE_ID = 'blaine_volcano_badge_battle'
+    BLAINE_VOLCANO_BADGE_PREP_EVENT_ID = 'blaine_volcano_badge_prep'
+    RED_SUN_PRESSURE_TRAINING_EVENT_ID = 'red_sun_pressure_training'
+    MISTY_WATER_ANSWER_DRILL_EVENT_ID = 'misty_water_answer_drill'
+    BROCK_ROCK_GROUND_PLANNING_EVENT_ID = 'brock_rock_ground_planning'
+    CINNABAR_GYM_READY_EVENT_ID = 'cinnabar_gym_ready'
+    PHOENIX_GYM_HEAT_SCOUTS_EVENT_ID = 'phoenix_gym_heat_scouts'
+    ROCKET_GYM_KEY_AMBUSH_CLEANUP_EVENT_ID = 'rocket_gym_key_ambush_cleanup'
+    NEXUS_ORDER_VOLCANO_HEAT_OBSERVER_EVENT_ID = 'nexus_order_volcano_badge_heat_observer_hidden'
 
     module_function
 
@@ -4653,6 +4661,94 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLAINE_REVIVAL_WARNING_EVENT_ID }
     end
 
+    def complete_blaine_volcano_badge_prep(state, location: 'Cinnabar Gym Courtyard', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_blaine_revival_warning', 'event_id' => BLAINE_VOLCANO_BADGE_PREP_EVENT_ID } unless blaine_revival_warning_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => BLAINE_VOLCANO_BADGE_PREP_EVENT_ID } if blaine_volcano_badge_prep_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_BLAINE_VOLCANO_BADGE_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SUN_PRESSURE_TRAINING')
+      add_story_flag(state, 'FLAG_NEXUS_MISTY_WATER_ANSWER_DRILL')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_ROCK_GROUND_PLANNING')
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_GYM_READY')
+      mark_cleared_event(story, BLAINE_VOLCANO_BADGE_PREP_EVENT_ID)
+      mark_cleared_event(story, RED_SUN_PRESSURE_TRAINING_EVENT_ID)
+      mark_cleared_event(story, MISTY_WATER_ANSWER_DRILL_EVENT_ID)
+      mark_cleared_event(story, BROCK_ROCK_GROUND_PLANNING_EVENT_ID)
+      mark_cleared_event(story, CINNABAR_GYM_READY_EVENT_ID)
+      mark_cleared_event(story, PHOENIX_GYM_HEAT_SCOUTS_EVENT_ID)
+      mark_cleared_event(story, ROCKET_GYM_KEY_AMBUSH_CLEANUP_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_VOLCANO_HEAT_OBSERVER_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_phoenix',
+        'kanto',
+        location,
+        'gym_heat_doctrine_scouts',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'gym_key_ambush_cleanup',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'volcano_badge_heat_observer_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'blaine_sun_pressure_drill',
+        location: location,
+        summary: 'Red drills Antman on staying calm under sun pressure before the Volcano Badge battle.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'blaine_water_answer_drill',
+        location: location,
+        summary: 'Misty helps Antman prepare Water-type answers without letting the plan rely on her stepping into the Gym battle.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'blaine_rock_ground_planning',
+        location: location,
+        summary: 'Brock reviews Rock- and Ground-type routes through Blaine teams and warns about overconfidence in bad sunlight.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Misty, Red, and Brock finished Blaine prep; Antman can enter the Cinnabar Gym for the Volcano Badge.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = blaine_volcano_badge_prep_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def blaine_volcano_badge_prep_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLAINE_VOLCANO_BADGE_PREP_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5765,6 +5861,55 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_revival_energy_unrevealed',
         'unlocks' => %w[cinnabar_gym_access volcano_badge_battle sun_pressure_training],
         'next_hook' => 'blaine_volcano_badge_prep'
+      }
+    end
+
+    def blaine_volcano_badge_prep_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => BLAINE_VOLCANO_BADGE_PREP_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_SUN_PRESSURE_TRAINING_EVENT_ID,
+          MISTY_WATER_ANSWER_DRILL_EVENT_ID,
+          BROCK_ROCK_GROUND_PLANNING_EVENT_ID,
+          CINNABAR_GYM_READY_EVENT_ID,
+          PHOENIX_GYM_HEAT_SCOUTS_EVENT_ID,
+          ROCKET_GYM_KEY_AMBUSH_CLEANUP_EVENT_ID,
+          NEXUS_ORDER_VOLCANO_HEAT_OBSERVER_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_phoenix nexus_order],
+        'companions' => %w[red misty brock],
+        'gym_leader' => 'Blaine',
+        'badge' => 'Volcano Badge',
+        'training_hooks' => %w[sun_pressure water_ground_rock_planning weather_counterplay],
+        'battle_hook' => {
+          'battle_id' => BLAINE_VOLCANO_BADGE_BATTLE_ID,
+          'battle_type' => 'gym_leader_blaine',
+          'location' => 'cinnabar_gym',
+          'level_cap' => 48,
+          'companion_support' => 'companions_train_only_no_gym_assist',
+          'standard_team' => [
+            { 'species' => 'Growlithe', 'level' => 45, 'role' => 'fire_intro' },
+            { 'species' => 'Rapidash', 'level' => 46, 'role' => 'speed_fire' },
+            { 'species' => 'Magmar', 'level' => 48, 'role' => 'ace' }
+          ],
+          'hard_team' => [
+            { 'species' => 'Ninetales', 'level' => 47, 'role' => 'sun_support' },
+            { 'species' => 'Rapidash', 'level' => 48, 'role' => 'speed_fire' },
+            { 'species' => 'Arcanine', 'level' => 50, 'role' => 'ace' }
+          ],
+          'expert_team' => [
+            { 'species' => 'Torkoal', 'level' => 47, 'role' => 'sun_setter_if_available' },
+            { 'species' => 'Ninetales', 'level' => 48, 'role' => 'sun_support' },
+            { 'species' => 'Magmar', 'level' => 49, 'role' => 'special_fire' },
+            { 'species' => 'Arcanine', 'level' => 50, 'role' => 'ace' }
+          ]
+        },
+        'gym_state' => 'volcano_badge_battle_ready',
+        'hidden_meta_signal' => 'nexus_order_volcano_heat_signal_unrevealed',
+        'unlocks' => %w[cinnabar_gym_puzzle blaine_volcano_badge_battle kanto_badge_seven_pressure],
+        'next_hook' => 'blaine_volcano_badge_battle'
       }
     end
 

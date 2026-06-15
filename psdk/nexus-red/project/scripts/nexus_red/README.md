@@ -131,6 +131,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_blaine_revival_warning(state, location:, area_type:)` resolves Blaine's Cinnabar Lab warning after the Mansion records. It recovers the Cinnabar Gym key, audits the revival machine with Bill, lets Red and Brock frame the ethics of Phoenix's doctrine, records Rocket burning lab evidence, keeps Nexus Order hidden, and opens `blaine_volcano_badge_prep`.
 
+`NexusRed::KantoStory.complete_blaine_volcano_badge_prep(state, location:, area_type:)` resolves the companion training beat before the Cinnabar Gym. Red drills sun-pressure discipline, Misty teaches water-answer planning, Brock covers rock/ground counterplay, Rocket and Phoenix leave final courtyard traces, Nexus Order stays hidden, and the hook opens `blaine_volcano_badge_battle`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
