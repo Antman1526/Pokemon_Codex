@@ -118,6 +118,9 @@ REQUIRED_MARKERS = (
     "last_launch",
     "module PartyStorage",
     "add_species",
+    "deposit_species",
+    "withdraw_species",
+    "swap_species",
     "party_full?",
     "party_species",
     "pc_box_species",
@@ -742,6 +745,25 @@ pc_storage_result = NexusRed::PartyStorage.add_species(storage_state, 'Rockruff'
 raise 'expected PartyStorage add to PC when party full' unless pc_storage_result['storage'] == 'pc'
 raise 'expected PartyStorage party full helper' unless NexusRed::PartyStorage.party_full?(storage_state)
 raise 'expected PartyStorage pc_box_species helper' unless NexusRed::PartyStorage.pc_box_species(storage_state).include?('Rockruff')
+deposit_result = NexusRed::PartyStorage.deposit_species(storage_state, 'Pikachu')
+raise 'expected PartyStorage deposit status' unless deposit_result['status'] == 'deposited'
+raise 'expected deposited species removed from party' if NexusRed::PartyStorage.party_species(storage_state).include?('Pikachu')
+raise 'expected deposited species added to PC' unless NexusRed::PartyStorage.pc_box_species(storage_state).include?('Pikachu')
+withdraw_result = NexusRed::PartyStorage.withdraw_species(storage_state, 'Rockruff')
+raise 'expected PartyStorage withdraw status' unless withdraw_result['status'] == 'withdrawn'
+raise 'expected withdrawn species added to party' unless NexusRed::PartyStorage.party_species(storage_state).include?('Rockruff')
+raise 'expected withdrawn species removed from PC' if NexusRed::PartyStorage.pc_box_species(storage_state).include?('Rockruff')
+swap_result = NexusRed::PartyStorage.swap_species(storage_state, party_species: 'Bulbasaur', pc_species: 'Pikachu')
+raise 'expected PartyStorage swap status' unless swap_result['status'] == 'swapped'
+raise 'expected swap moved PC species into party' unless NexusRed::PartyStorage.party_species(storage_state).include?('Pikachu')
+raise 'expected swap moved party species into PC' unless NexusRed::PartyStorage.pc_box_species(storage_state).include?('Bulbasaur')
+missing_deposit = NexusRed::PartyStorage.deposit_species(storage_state, 'Missingno')
+raise 'expected missing deposit guarded' unless missing_deposit['status'] == 'missing_from_party'
+blocked_withdraw_state = NexusRed::RuntimeState.build
+blocked_withdraw_state['party_species'] = %w[Bulbasaur Charmander Squirtle Pikachu Eevee Ralts]
+blocked_withdraw_state['pc_box_species'] = ['Rockruff']
+blocked_withdraw = NexusRed::PartyStorage.withdraw_species(blocked_withdraw_state, 'Rockruff')
+raise 'expected full party withdraw guarded' unless blocked_withdraw['status'] == 'party_full'
 
 migration_state = NexusRed::RuntimeState.build
 migration = NexusRed::EarlyMigrationEncounters.ensure_migration(migration_state)
