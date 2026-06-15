@@ -334,6 +334,11 @@ module NexusRed
     ROCKET_KANTO_GYM_COLLAPSE_EVENT_ID = 'rocket_kanto_gym_collapse'
     GIOVANNI_GLOBAL_SHADOW_EVENT_ID = 'giovanni_global_shadow'
     NEXUS_ORDER_INDIGO_OBSERVER_EVENT_ID = 'nexus_order_indigo_observer_hidden'
+    VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID = 'victory_road_rival_standings'
+    BLUE_PRE_LEAGUE_CHALLENGE_EVENT_ID = 'blue_pre_league_challenge_unlocked'
+    RIVAL_STANDINGS_WORLDLINK_DIGEST_EVENT_ID = 'rival_standings_worldlink_digest'
+    RED_INDIGO_WATCH_ROUTE_EVENT_ID = 'red_indigo_watch_route'
+    NEXUS_ORDER_INDIGO_STATIC_EVENT_ID = 'nexus_order_indigo_static_hidden'
 
     module_function
 
@@ -5046,6 +5051,87 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == GIOVANNI_EARTH_BADGE_BATTLE_ID }
     end
 
+    def complete_victory_road_rival_standings(state, location: 'Victory Road Gate', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_giovanni_earth_badge_battle', 'event_id' => VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID } unless giovanni_earth_badge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID } if victory_road_rival_standings_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_VICTORY_ROAD_RIVAL_STANDINGS')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_PRE_LEAGUE_CHALLENGE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_RIVAL_STANDINGS_WORLDLINK_DIGEST')
+      add_story_flag(state, 'FLAG_NEXUS_RED_INDIGO_WATCH_ROUTE')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_INDIGO_STATIC')
+      mark_cleared_event(story, VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID)
+      mark_cleared_event(story, BLUE_PRE_LEAGUE_CHALLENGE_EVENT_ID)
+      mark_cleared_event(story, RIVAL_STANDINGS_WORLDLINK_DIGEST_EVENT_ID)
+      mark_cleared_event(story, RED_INDIGO_WATCH_ROUTE_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_INDIGO_STATIC_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'indigo_static_observer_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'indigo_watch_route',
+        location: location,
+        summary: 'Red walks the Victory Road gate with Antman and treats Indigo as the point where the journey becomes bigger than Kanto.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'indigo_signal_watchlist',
+        location: location,
+        summary: 'Bill opens an Indigo watchlist after the rival standings digest shows the eight-badge signal clustering around Victory Road.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue is waiting near Victory Road and says Indigo is where the real Kanto race ends.',
+        area_type
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        location,
+        'Ava is checking Victory Road habitats and uploading research support before Indigo.',
+        area_type
+      )
+      record_rival_story_clue(
+        state,
+        'dax',
+        location,
+        'Dax is turning the League route into a pressure race and refuses to slow down before Indigo.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Victory Road standings updated: Blue is ready for Antman before Indigo while Ava and Dax take parallel League routes.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = victory_road_rival_standings_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def victory_road_rival_standings_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6318,6 +6404,43 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_indigo_signal_unrevealed',
         'unlocks' => %w[earth_badge victory_road_path indigo_plateau_lead kanto_badge_set_complete],
         'next_hook' => 'victory_road_rival_standings'
+      }
+    end
+
+    def victory_road_rival_standings_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => VICTORY_ROAD_RIVAL_STANDINGS_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          BLUE_PRE_LEAGUE_CHALLENGE_EVENT_ID,
+          RIVAL_STANDINGS_WORLDLINK_DIGEST_EVENT_ID,
+          RED_INDIGO_WATCH_ROUTE_EVENT_ID,
+          NEXUS_ORDER_INDIGO_STATIC_EVENT_ID
+        ],
+        'rivals' => %w[blue ava dax],
+        'companions' => %w[red bill],
+        'standings' => {
+          'blue' => {
+            'status' => 'ready_for_pre_league_battle',
+            'route' => 'victory_road_gate',
+            'pressure' => 'champion_race'
+          },
+          'ava' => {
+            'status' => 'research_support_route',
+            'route' => 'victory_road_habitats',
+            'pressure' => 'supportive'
+          },
+          'dax' => {
+            'status' => 'pressure_rival_route',
+            'route' => 'league_checkpoint',
+            'pressure' => 'aggressive'
+          }
+        },
+        'factions' => %w[nexus_order],
+        'hidden_meta_signal' => 'nexus_order_indigo_static_unrevealed',
+        'unlocks' => %w[blue_pre_league_battle indigo_plateau_route rival_standings_digest],
+        'next_hook' => 'blue_pre_league_or_champion_battle'
       }
     end
 

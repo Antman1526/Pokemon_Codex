@@ -139,6 +139,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_giovanni_earth_badge_battle(state, location:, result:, area_type:)` resolves Giovanni's solo Earth Badge battle. It awards the Earth Badge, collapses Rocket's public Kanto Gym cover, keeps Giovanni active as a global shadow, logs the hidden Indigo signal, and opens `victory_road_rival_standings`.
 
+`NexusRed::KantoStory.complete_victory_road_rival_standings(state, location:, area_type:)` resolves the first Indigo/Victory Road bridge after Giovanni. It keeps Red active, has Bill open the Indigo signal watchlist, posts a WorldLink standings digest for Blue, Ava, and Dax, keeps Nexus Order hidden in the static, and opens `blue_pre_league_or_champion_battle`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

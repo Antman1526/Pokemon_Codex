@@ -254,6 +254,8 @@ REQUIRED_MARKERS = (
     "viridian_gym_return_cleared?",
     "complete_giovanni_earth_badge_battle",
     "giovanni_earth_badge_battle_cleared?",
+    "complete_victory_road_rival_standings",
+    "victory_road_rival_standings_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2619,6 +2621,38 @@ raise 'expected KantoStory Giovanni Earth Badge unlocks Victory Road' unless gio
 second_giovanni_badge = NexusRed::KantoStory.complete_giovanni_earth_badge_battle(kanto_story_state)
 raise 'expected KantoStory Giovanni Earth Badge idempotent guard' unless second_giovanni_badge['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Giovanni Earth Badge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'giovanni_earth_badge_battle' } == 1
+pre_victory_standings = NexusRed::KantoStory.complete_victory_road_rival_standings(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Victory Road standings gated before Giovanni Earth Badge' unless pre_victory_standings['status'] == 'blocked_missing_giovanni_earth_badge_battle'
+victory_standings = NexusRed::KantoStory.complete_victory_road_rival_standings(
+  kanto_story_state,
+  location: 'Victory Road Gate',
+  area_type: 'route'
+)
+raise 'expected KantoStory Victory Road standings clear status' unless victory_standings['status'] == 'cleared'
+raise 'expected KantoStory Victory Road standings event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('victory_road_rival_standings')
+raise 'expected KantoStory Victory Road standings helper true' unless NexusRed::KantoStory.victory_road_rival_standings_cleared?(kanto_story_state)
+raise 'expected KantoStory Victory Road standings flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VICTORY_ROAD_RIVAL_STANDINGS')
+raise 'expected KantoStory Blue pre-League challenge flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_PRE_LEAGUE_CHALLENGE_UNLOCKED')
+raise 'expected KantoStory rival standings WorldLink digest flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RIVAL_STANDINGS_WORLDLINK_DIGEST')
+raise 'expected KantoStory Red Indigo watch route flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_INDIGO_WATCH_ROUTE')
+raise 'expected KantoStory Nexus Indigo static flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_INDIGO_STATIC')
+raise 'expected KantoStory Red Indigo watch route scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('indigo_watch_route')
+raise 'expected KantoStory Bill Indigo signal watchlist scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('indigo_signal_watchlist')
+raise 'expected KantoStory Blue Indigo rival clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Indigo')
+raise 'expected KantoStory Ava Victory Road clue' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Victory Road')
+raise 'expected KantoStory Dax League clue' unless kanto_story_state['rival_progress']['dax']['latest_activity']['summary'].include?('League')
+raise 'expected KantoStory Victory Road story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Victory Road') && message['text'].include?('Blue') && message['text'].include?('Indigo') }
+raise 'expected KantoStory Nexus Indigo static activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Victory Road Gate' && activity['operation'] == 'indigo_static_observer_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Victory Road standings' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Victory Road standings next hook Blue pre-League' unless victory_standings['next_hook'] == 'blue_pre_league_or_champion_battle'
+raise 'expected KantoStory Victory Road rivals' unless victory_standings['rivals'].include?('blue') && victory_standings['rivals'].include?('ava') && victory_standings['rivals'].include?('dax')
+raise 'expected KantoStory Blue ready status' unless victory_standings['standings']['blue']['status'] == 'ready_for_pre_league_battle'
+raise 'expected KantoStory Ava support status' unless victory_standings['standings']['ava']['status'] == 'research_support_route'
+raise 'expected KantoStory Dax pressure status' unless victory_standings['standings']['dax']['status'] == 'pressure_rival_route'
+raise 'expected KantoStory Victory Road standings unlocks' unless victory_standings['unlocks'].include?('blue_pre_league_battle') && victory_standings['unlocks'].include?('indigo_plateau_route')
+second_victory_standings = NexusRed::KantoStory.complete_victory_road_rival_standings(kanto_story_state)
+raise 'expected KantoStory Victory Road standings idempotent guard' unless second_victory_standings['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Victory Road standings history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'victory_road_rival_standings' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
