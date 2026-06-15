@@ -111,6 +111,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_silph_co_3f_warp_panel_ambush(state, location:, area_type:)` resolves the first Silph warp-panel trap. It records Red holding the employee rescue route, Blue interrupting the ambush through a side warp, Bill confirming Master Ball pressure from a hidden Nexus Order sponsor trace, and opens `silph_co_5f_elevator_route`.
 
+`NexusRed::KantoStory.complete_silph_co_5f_elevator_route(state, location:, area_type:)` resolves the Card Key/elevator routing checkpoint. It records Red guarding the stairwell fallback, Bill rerouting the elevator grid toward 7F, Blue pressuring Rocket guards, Rocket moving Master Ball files, and Gold Dust/Moonlight interference while opening `silph_co_7f_executive_floor`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

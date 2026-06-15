@@ -217,6 +217,16 @@ module NexusRed
     NEXUS_ORDER_MASTER_BALL_SPONSOR_EVENT_ID = 'nexus_order_master_ball_sponsor_trace'
     SILPH_5F_ELEVATOR_ROUTE_EVENT_ID = 'silph_5f_elevator_route_unlocked'
     ROCKET_SILPH_3F_WARP_BATTLE_ID = 'rocket_silph_3f_warp_ambush'
+    SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID = 'silph_co_5f_elevator_route'
+    RED_SILPH_5F_STAIRWELL_EVENT_ID = 'red_silph_5f_stairwell_guard'
+    BLUE_SILPH_5F_RIVAL_EVENT_ID = 'blue_silph_5f_rival_pressure'
+    BILL_ELEVATOR_REROUTE_EVENT_ID = 'bill_elevator_reroute'
+    ROCKET_MASTER_BALL_FILES_EVENT_ID = 'rocket_master_ball_files'
+    GOLD_DUST_SILPH_BID_LEDGER_EVENT_ID = 'gold_dust_silph_bid_ledger'
+    MOONLIGHT_EXECUTIVE_SLEEPWALK_EVENT_ID = 'moonlight_executive_sleepwalk'
+    NEXUS_ORDER_EXECUTIVE_SPONSOR_EVENT_ID = 'nexus_order_executive_sponsor_trace'
+    SILPH_7F_EXECUTIVE_FLOOR_EVENT_ID = 'silph_7f_executive_floor_unlocked'
+    ROCKET_SILPH_5F_FILE_BATTLE_ID = 'rocket_silph_5f_file_guard'
 
     module_function
 
@@ -3486,6 +3496,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_3F_WARP_AMBUSH_EVENT_ID }
     end
 
+    def complete_silph_co_5f_elevator_route(state, location: 'Silph Co 5F Elevator Hall', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_co_3f_warp_panel_ambush', 'event_id' => SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID } unless silph_co_3f_warp_panel_ambush_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID } if silph_co_5f_elevator_route_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_5F_ELEVATOR_ROUTE')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SILPH_5F_STAIRWELL_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_SILPH_5F_RIVAL_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ELEVATOR_REROUTE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_MASTER_BALL_FILES')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_SILPH_BID_LEDGER')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_EXECUTIVE_SLEEPWALK')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_EXECUTIVE_SPONSOR_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_7F_EXECUTIVE_FLOOR_UNLOCKED')
+      mark_cleared_event(story, SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID)
+      mark_cleared_event(story, RED_SILPH_5F_STAIRWELL_EVENT_ID)
+      mark_cleared_event(story, BLUE_SILPH_5F_RIVAL_EVENT_ID)
+      mark_cleared_event(story, BILL_ELEVATOR_REROUTE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_MASTER_BALL_FILES_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_SILPH_BID_LEDGER_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_EXECUTIVE_SLEEPWALK_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_EXECUTIVE_SPONSOR_EVENT_ID)
+      mark_cleared_event(story, SILPH_7F_EXECUTIVE_FLOOR_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'master_ball_file_transfer',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'silph_bid_ledger',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'executive_sleepwalk_static',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'executive_sponsor_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket is moving Master Ball files upward while Gold Dust ledgers expose who has been bidding on Silph prototypes',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Moonlight sleepwalk static is pulling executives out of lockdown before Rocket can secure their credentials',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'silph_5f_stairwell_guard',
+        location: location,
+        summary: 'Red guards the 5F stairwell so rescued employees and Antman have a stable route if Rocket cuts elevator power.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_elevator_reroute',
+        location: location,
+        summary: 'Bill uses the Card Key clue to reroute the elevator grid and open the 7F executive floor without exposing the party to every warp trap.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue pressured Rocket guards near the 5F elevator and confirmed that the real executive trail continues on 7F.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Silph Co 5F elevator route is open: Bill rerouted the grid, Red is holding the stairwell, and the 7F executive floor is exposed.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = silph_co_5f_elevator_route_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def silph_co_5f_elevator_route_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -4283,6 +4412,40 @@ module NexusRed
         'locked_systems' => %w[executive_warp_boardroom_master_lock],
         'unlocks' => %w[silph_co_5f_elevator_route master_ball_pressure_trace blue_tag_interruption],
         'next_hook' => 'silph_co_5f_elevator_route'
+      }
+    end
+
+    def silph_co_5f_elevator_route_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_SILPH_5F_STAIRWELL_EVENT_ID,
+          BLUE_SILPH_5F_RIVAL_EVENT_ID,
+          BILL_ELEVATOR_REROUTE_EVENT_ID,
+          ROCKET_MASTER_BALL_FILES_EVENT_ID,
+          GOLD_DUST_SILPH_BID_LEDGER_EVENT_ID,
+          MOONLIGHT_EXECUTIVE_SLEEPWALK_EVENT_ID,
+          NEXUS_ORDER_EXECUTIVE_SPONSOR_EVENT_ID,
+          SILPH_7F_EXECUTIVE_FLOOR_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'dungeon_state' => '5f_elevator_route_open',
+        'battle_hook' => {
+          'battle_id' => ROCKET_SILPH_5F_FILE_BATTLE_ID,
+          'battle_type' => 'villain_file_guard',
+          'location' => 'silph_co_5f_elevator_hall',
+          'level_cap' => 43,
+          'opponent_species' => %w[Weezing Magneton Persian],
+          'route_advantage' => 'card_key_elevator_reroute',
+          'companion_support' => 'red_holds_stairwell_escape_route'
+        },
+        'prototype_pressure' => 'master_ball_files_moved_to_executive_floor',
+        'elevator_state' => 'rerouted_to_7f',
+        'locked_systems' => %w[boardroom_master_lock_president_suite],
+        'unlocks' => %w[silph_co_7f_executive_floor elevator_reroute master_ball_file_trace],
+        'next_hook' => 'silph_co_7f_executive_floor'
       }
     end
 
