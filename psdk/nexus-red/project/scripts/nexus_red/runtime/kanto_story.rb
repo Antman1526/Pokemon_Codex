@@ -80,6 +80,13 @@ module NexusRed
     ROCKET_HIDEOUT_SWITCH_LEAD_EVENT_ID = 'rocket_hideout_switch_lead_seen'
     GAME_CORNER_HIDEOUT_ENTRY_EVENT_ID = 'game_corner_hideout_entry_unlocked'
     ROCKET_GAME_CORNER_GUARD_BATTLE_ID = 'rocket_game_corner_guard'
+    CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID = 'celadon_rocket_hideout_entry'
+    RED_HIDEOUT_ENTRY_WATCH_EVENT_ID = 'red_hideout_entry_watch'
+    BILL_HIDEOUT_ELEVATOR_SIGNAL_EVENT_ID = 'bill_hideout_elevator_signal'
+    ROCKET_LIFT_KEY_REQUIRED_EVENT_ID = 'rocket_lift_key_required'
+    GIOVANNI_HIDEOUT_COMMAND_EVENT_ID = 'giovanni_hideout_command'
+    TEAM_MOONLIGHT_ROCKET_INTERFERENCE_EVENT_ID = 'team_moonlight_rocket_interference'
+    ROCKET_HIDEOUT_B1F_PATH_EVENT_ID = 'rocket_hideout_b1f_path_unlocked'
 
     module_function
 
@@ -1550,6 +1557,96 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCKET_GAME_CORNER_GUARD_BATTLE_EVENT_ID }
     end
 
+    def complete_celadon_rocket_hideout_entry(state, location: 'Celadon Rocket Hideout Entry', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_game_corner_guard_battle', 'event_id' => CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID } unless rocket_game_corner_guard_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID } if celadon_rocket_hideout_entry_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_ENTRY_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_HIDEOUT_ENTRY_WATCH')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_HIDEOUT_ELEVATOR_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_LIFT_KEY_REQUIRED')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_HIDEOUT_COMMAND')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_ROCKET_INTERFERENCE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_B1F_PATH_UNLOCKED')
+      mark_cleared_event(story, CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID)
+      mark_cleared_event(story, RED_HIDEOUT_ENTRY_WATCH_EVENT_ID)
+      mark_cleared_event(story, BILL_HIDEOUT_ELEVATOR_SIGNAL_EVENT_ID)
+      mark_cleared_event(story, ROCKET_LIFT_KEY_REQUIRED_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_HIDEOUT_COMMAND_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_ROCKET_INTERFERENCE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_HIDEOUT_B1F_PATH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'hideout_entry_control',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'lift_key_barrier',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'rocket_signal_interference',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Giovanni expected Antman to follow the Silph Scope trail while Moonlight scraped Rocket elevator signals',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_entry_watch',
+        location: location,
+        summary: 'Red holds the entry stairs and warns Antman that Rocket built the hideout to split trainers up.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'hideout_elevator_signal',
+        location: location,
+        summary: 'Bill traces the Silph Scope echo through the Rocket Hideout elevator signal.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rocket Hideout entry confirmed the Lift Key barrier, Giovanni command terminal, and Moonlight interference around the elevator signal.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_rocket_hideout_entry_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_rocket_hideout_entry_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1882,6 +1979,26 @@ module NexusRed
         ],
         'factions' => %w[team_rocket],
         'next_hook' => 'celadon_rocket_hideout_entry'
+      }
+    end
+
+    def celadon_rocket_hideout_entry_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_HIDEOUT_ENTRY_WATCH_EVENT_ID,
+          BILL_HIDEOUT_ELEVATOR_SIGNAL_EVENT_ID,
+          ROCKET_LIFT_KEY_REQUIRED_EVENT_ID,
+          GIOVANNI_HIDEOUT_COMMAND_EVENT_ID,
+          TEAM_MOONLIGHT_ROCKET_INTERFERENCE_EVENT_ID,
+          ROCKET_HIDEOUT_B1F_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight],
+        'required_key_item' => 'lift_key',
+        'giovanni_presence' => 'command_terminal',
+        'next_hook' => 'celadon_rocket_hideout_b1f'
       }
     end
 

@@ -186,6 +186,8 @@ REQUIRED_MARKERS = (
     "celadon_game_corner_exterior_cleared?",
     "complete_rocket_game_corner_guard_battle",
     "rocket_game_corner_guard_battle_cleared?",
+    "complete_celadon_rocket_hideout_entry",
+    "celadon_rocket_hideout_entry_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1465,6 +1467,34 @@ raise 'expected KantoStory Rocket guard next hook hideout entry' unless guard_ba
 second_guard_battle = NexusRed::KantoStory.complete_rocket_game_corner_guard_battle(kanto_story_state)
 raise 'expected KantoStory Rocket Game Corner guard idempotent guard' unless second_guard_battle['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Rocket Game Corner guard history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'rocket_game_corner_guard_battle' } == 1
+pre_guard_hideout_entry = NexusRed::KantoStory.complete_celadon_rocket_hideout_entry(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Rocket Hideout entry gated before guard battle' unless pre_guard_hideout_entry['status'] == 'blocked_missing_game_corner_guard_battle'
+hideout_entry = NexusRed::KantoStory.complete_celadon_rocket_hideout_entry(
+  kanto_story_state,
+  location: 'Celadon Rocket Hideout Entry',
+  area_type: 'villain_hideout'
+)
+raise 'expected KantoStory Rocket Hideout entry clear status' unless hideout_entry['status'] == 'cleared'
+raise 'expected KantoStory Rocket Hideout entry event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('celadon_rocket_hideout_entry')
+raise 'expected KantoStory Rocket Hideout entry helper true' unless NexusRed::KantoStory.celadon_rocket_hideout_entry_cleared?(kanto_story_state)
+raise 'expected KantoStory Rocket Hideout entry reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_ENTRY_REACHED')
+raise 'expected KantoStory Red hideout entry watch flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_HIDEOUT_ENTRY_WATCH')
+raise 'expected KantoStory Bill hideout elevator signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_HIDEOUT_ELEVATOR_SIGNAL')
+raise 'expected KantoStory Rocket Lift Key required flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_LIFT_KEY_REQUIRED')
+raise 'expected KantoStory Giovanni hideout command flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_HIDEOUT_COMMAND')
+raise 'expected KantoStory Moonlight Rocket interference flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_ROCKET_INTERFERENCE')
+raise 'expected KantoStory Rocket Hideout B1F path unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_HIDEOUT_B1F_PATH_UNLOCKED')
+raise 'expected KantoStory Rocket hideout entry activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout Entry' && activity['operation'] == 'hideout_entry_control' }
+raise 'expected KantoStory Rocket Lift Key activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout Entry' && activity['operation'] == 'lift_key_barrier' }
+raise 'expected KantoStory Moonlight Rocket interference activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Hideout Entry' && activity['operation'] == 'rocket_signal_interference' }
+raise 'expected KantoStory Rocket Moonlight hideout conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Celadon Rocket Hideout Entry' }
+raise 'expected KantoStory Red hideout entry scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('hideout_entry_watch')
+raise 'expected KantoStory Bill hideout elevator scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('hideout_elevator_signal')
+raise 'expected KantoStory Rocket Hideout entry story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Lift Key') && message['text'].include?('Giovanni') }
+raise 'expected KantoStory Rocket Hideout entry next hook B1F' unless hideout_entry['next_hook'] == 'celadon_rocket_hideout_b1f'
+second_hideout_entry = NexusRed::KantoStory.complete_celadon_rocket_hideout_entry(kanto_story_state)
+raise 'expected KantoStory Rocket Hideout entry idempotent guard' unless second_hideout_entry['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Rocket Hideout entry history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_rocket_hideout_entry' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
