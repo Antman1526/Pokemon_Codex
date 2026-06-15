@@ -1132,6 +1132,26 @@ python3 tools/validate_native_celadon_rocket_hideout_b3f.py
 godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_b3f_test.gd
 ```
 
+### Task 7.58: Add Celadon Rocket Hideout elevator command route
+
+Acceptance:
+
+- Rocket Hideout B3F keeps the elevator locked until the Rocket Admin is beaten and the Rocket Lift Key/elevator path are unlocked.
+- After the Lift Key is obtained, Antman can transition into a playable Celadon Rocket Hideout elevator scene.
+- Red remains the active full-game companion and guards the elevator line while Antman restores the route.
+- Bill decodes a Nexus Order elevator override hidden under Rocket's command wiring, strengthening the hidden meta-villain thread inside Celadon.
+- The elevator scene contains a restored Rocket panel, Gold Dust ledger clue, Team Moonlight sleep signal, and Giovanni command floor route.
+- Inspecting the elevator records the command floor route and unlocks the Rocket command floor path for the next slice.
+- Save state and WorldLink record Rocket Hideout elevator reached, Red's elevator guard, Bill's Nexus Order elevator override, Rocket elevator panel restored, Gold Dust ledger decoded, Team Moonlight sleep signal, Giovanni command floor route, and Rocket command floor path unlock.
+- WorldLink checklist adds Reach Rocket Hideout elevator, Decode Nexus Order elevator override, Restore Rocket elevator panel, Find Giovanni command floor route, and Unlock Rocket command floor milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_rocket_hideout_elevator.py
+godot --headless --path native/nexus-red --script tests/celadon_rocket_hideout_elevator_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

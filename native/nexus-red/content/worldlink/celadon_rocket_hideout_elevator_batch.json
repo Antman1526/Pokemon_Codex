@@ -1,0 +1,46 @@
+{
+  "id": "celadon_rocket_hideout_elevator_batch",
+  "name": "Celadon Rocket Hideout Elevator Batch",
+  "feed": [
+    {
+      "id": "wl_celadon_rocket_hideout_elevator_reached",
+      "speaker": "WorldLink",
+      "text": "Antman reached the Rocket Hideout elevator beneath Celadon."
+    },
+    {
+      "id": "wl_red_hideout_elevator_guard",
+      "speaker": "Red",
+      "text": "Red is guarding the elevator line so Antman can work the panel without a Rocket ambush."
+    },
+    {
+      "id": "wl_bill_nexus_order_elevator_override",
+      "speaker": "Bill",
+      "text": "Bill decoded a Nexus Order elevator override hidden under Rocket's wiring."
+    },
+    {
+      "id": "wl_rocket_elevator_panel_restored",
+      "speaker": "WorldLink",
+      "text": "The Rocket elevator panel has been restored with the Lift Key."
+    },
+    {
+      "id": "wl_gold_dust_elevator_ledger_decoded",
+      "speaker": "WorldLink",
+      "text": "A Gold Dust ledger points toward Giovanni's command floor."
+    },
+    {
+      "id": "wl_team_moonlight_elevator_sleep_signal",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight left a sleep signal inside the elevator shaft."
+    },
+    {
+      "id": "wl_giovanni_command_floor_route_seen",
+      "speaker": "WorldLink",
+      "text": "Giovanni's command floor route has been found."
+    },
+    {
+      "id": "wl_rocket_command_floor_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Rocket command floor is unlocked for the next Celadon push."
+    }
+  ]
+}

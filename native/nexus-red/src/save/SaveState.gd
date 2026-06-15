@@ -318,6 +318,15 @@ func start_new_game(name: String) -> void:
 		"rocket_lift_key_obtained": false,
 		"rocket_hideout_elevator_path_unlocked": false,
 		"worldlink_celadon_rocket_hideout_b3f_batch_queued": false,
+		"celadon_rocket_hideout_elevator_reached": false,
+		"red_hideout_elevator_guard_seen": false,
+		"bill_nexus_order_elevator_override_seen": false,
+		"rocket_elevator_panel_restored_seen": false,
+		"gold_dust_elevator_ledger_decoded_seen": false,
+		"team_moonlight_elevator_sleep_signal_seen": false,
+		"giovanni_command_floor_route_seen": false,
+		"rocket_command_floor_path_unlocked": false,
+		"worldlink_celadon_rocket_hideout_elevator_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1281,6 +1290,39 @@ func queue_celadon_rocket_hideout_b3f_batch() -> void:
 		"wl_gold_dust_ledger_recovered",
 		"wl_team_moonlight_sleep_panel",
 		"wl_giovanni_elevator_route_seen",
+	])
+
+
+func enter_celadon_rocket_hideout_elevator() -> void:
+	current_scene = "celadon_rocket_hideout_elevator"
+	active_companion = "red"
+	set_flag("celadon_rocket_hideout_elevator_reached", true)
+	queue_worldlink_id("wl_celadon_rocket_hideout_elevator_reached")
+
+
+func record_celadon_rocket_hideout_elevator_scene() -> void:
+	active_companion = "red"
+	set_flag("red_hideout_elevator_guard_seen", true)
+	set_flag("bill_nexus_order_elevator_override_seen", true)
+	set_flag("rocket_elevator_panel_restored_seen", true)
+	set_flag("gold_dust_elevator_ledger_decoded_seen", true)
+	set_flag("team_moonlight_elevator_sleep_signal_seen", true)
+	set_flag("giovanni_command_floor_route_seen", true)
+	set_flag("rocket_command_floor_path_unlocked", true)
+	queue_celadon_rocket_hideout_elevator_batch()
+
+
+func queue_celadon_rocket_hideout_elevator_batch() -> void:
+	set_flag("worldlink_celadon_rocket_hideout_elevator_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_rocket_hideout_elevator_reached",
+		"wl_red_hideout_elevator_guard",
+		"wl_bill_nexus_order_elevator_override",
+		"wl_rocket_elevator_panel_restored",
+		"wl_gold_dust_elevator_ledger_decoded",
+		"wl_team_moonlight_elevator_sleep_signal",
+		"wl_giovanni_command_floor_route_seen",
+		"wl_rocket_command_floor_path_unlocked",
 	])
 
 
