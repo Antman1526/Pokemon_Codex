@@ -284,6 +284,8 @@ REQUIRED_MARKERS = (
     "slowpoke_well_crisis_cleared?",
     "complete_bugsy_hive_badge_prep",
     "bugsy_hive_badge_prep_cleared?",
+    "complete_bugsy_hive_badge_battle",
+    "bugsy_hive_badge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3226,6 +3228,57 @@ raise 'expected JohtoStory Bugsy prep unlocks' unless bugsy_prep['unlocks'].incl
 second_bugsy_prep = NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(kanto_story_state)
 raise 'expected JohtoStory Bugsy prep idempotent guard' unless second_bugsy_prep['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Bugsy prep history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'bugsy_hive_badge_prep' } == 1
+pre_bugsy_battle = NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Bugsy battle gated before Johto unlock' unless pre_bugsy_battle['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_bugsy_prep = NexusRed::RuntimeState.build
+johto_before_bugsy_prep['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_bugsy_prep)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_bugsy_prep)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_bugsy_prep)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_bugsy_prep)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_bugsy_prep)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_bugsy_prep)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_bugsy_prep)
+raise 'expected JohtoStory Bugsy battle gated before prep' unless NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_bugsy_prep)['status'] == 'blocked_missing_bugsy_hive_badge_prep'
+bugsy_battle = NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(
+  kanto_story_state,
+  location: 'Azalea Gym',
+  result: 'won',
+  area_type: 'gym'
+)
+raise 'expected JohtoStory Bugsy battle clear status' unless bugsy_battle['status'] == 'cleared'
+raise 'expected JohtoStory Bugsy battle event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('bugsy_hive_badge_battle')
+raise 'expected JohtoStory Bugsy battle helper true' unless NexusRed::JohtoStory.bugsy_hive_badge_battle_cleared?(kanto_story_state)
+raise 'expected JohtoStory Hive Badge event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('hive_badge_obtained')
+raise 'expected JohtoStory Ilex Forest unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('ilex_forest_path_unlocked')
+raise 'expected JohtoStory Hive Badge flag' unless kanto_story_state['story_flags'].include?('hive_badge_obtained')
+raise 'expected JohtoStory Nexus Hive flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_HIVE_BADGE')
+raise 'expected JohtoStory Bugsy battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BUGSY_BATTLE_STARTED')
+raise 'expected JohtoStory Bugsy battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BUGSY_BATTLE_FINISHED')
+raise 'expected JohtoStory Red post Bugsy flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_POST_BUGSY')
+raise 'expected JohtoStory Brock post Bugsy flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_POST_BUGSY')
+raise 'expected JohtoStory Bill Hive signal decoded flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_HIVE_SIGNAL_DECODED')
+raise 'expected JohtoStory Ilex Forest path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ILEX_FOREST_PATH_UNLOCKED')
+raise 'expected JohtoStory current act Ilex' unless kanto_story_state['johto_story']['current_act'] == 'act_7_ilex_forest_and_goldenrod_road'
+raise 'expected JohtoStory Red post Bugsy scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('post_bugsy_respect')
+raise 'expected JohtoStory Brock post Bugsy scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('post_bugsy_recovery_review')
+raise 'expected JohtoStory Bill Hive decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('hive_signal_decode')
+raise 'expected JohtoStory Silver Ilex race activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Ilex')
+raise 'expected JohtoStory Moonlight spore collapse activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'dream_spore_residue_collapse' }
+raise 'expected JohtoStory Rocket Ilex retreat activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ilex_cut_through_retreat' }
+raise 'expected JohtoStory Gold Dust Ilex relic activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ilex_charcoal_relic_bid' }
+raise 'expected JohtoStory Nexus Order Hive badge activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'hive_badge_pattern_hidden' }
+raise 'expected JohtoStory Nexus Order still hidden after Bugsy battle' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Bugsy battle story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Hive Badge') && message['text'].include?('Ilex Forest') && message['text'].include?('Red') }
+raise 'expected JohtoStory Bugsy battle result won' unless bugsy_battle['result'] == 'won'
+raise 'expected JohtoStory Bugsy battle badge' unless bugsy_battle['badge'] == 'Hive Badge'
+raise 'expected JohtoStory Bugsy battle next hook Ilex' unless bugsy_battle['next_hook'] == 'ilex_forest_path'
+raise 'expected JohtoStory Bugsy battle current act' unless bugsy_battle['current_act'] == 'act_7_ilex_forest_and_goldenrod_road'
+raise 'expected JohtoStory Bugsy battle no companion assist' unless bugsy_battle['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected JohtoStory Bugsy battle unlocks Ilex and rematch' unless bugsy_battle['unlocks'].include?('ilex_forest_path') && bugsy_battle['unlocks'].include?('bugsy_rematch_board_tier_1')
+second_bugsy_battle = NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(kanto_story_state)
+raise 'expected JohtoStory Bugsy battle idempotent guard' unless second_bugsy_battle['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Bugsy battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'bugsy_hive_badge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

@@ -167,6 +167,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(state, location:, area_type:)` resolves the Azalea Gym setup after Slowpoke Well. The beat stays classic Johto in structure but adds the Nexus Red twist: Red steadies Antman outside the gym, Brock teaches bug-type counterplay, Bill scans Moonlight dream-spore residue, Silver pressures the badge race, Rocket retreat traffic clashes with Moonlight interference, Gold Dust sells Hive Badge charms, Nexus Order remains hidden in the hive-pattern signal, and the method returns a solo `bugsy_hive_badge_battle` hook.
 
+`NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(state, location:, result:, area_type:)` records the Bugsy gym battle after PSDK returns the battle result. It awards the Hive Badge, confirms companions did not assist inside the gym, records Red/Brock/Bill post-battle scenes, collapses the Moonlight dream-spore residue, sends Rocket retreat traffic toward Ilex, lets Gold Dust pivot to charcoal relic bids, keeps Nexus Order hidden in badge-pattern data, pushes Silver into the next route race, and opens `ilex_forest_path`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
