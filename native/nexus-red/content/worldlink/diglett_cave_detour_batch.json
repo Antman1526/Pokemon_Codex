@@ -1,0 +1,35 @@
+{
+  "id": "diglett_cave_detour_batch",
+  "feed": [
+    {
+      "id": "wl_diglett_cave_detour_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red entered Diglett's Cave as the physical detour around the sleeping Route 12 roadblock."
+    },
+    {
+      "id": "wl_red_diglett_cave_guard",
+      "speaker": "Red",
+      "text": "Red is guarding the cave split and keeping Antman on the world route instead of relying on instant travel."
+    },
+    {
+      "id": "wl_bill_diglett_cave_relay_map",
+      "speaker": "Bill",
+      "text": "Bill mapped a Nexus relay running under Diglett's Cave, tying Route 11's signal to the eastern Kanto tunnel network."
+    },
+    {
+      "id": "wl_rocket_gold_dust_cave_argument",
+      "speaker": "WorldLink",
+      "text": "Rocket and Team Gold Dust were caught arguing over cave survey crates and mineral maps."
+    },
+    {
+      "id": "wl_snorlax_route_12_block_confirmed",
+      "speaker": "WorldLink",
+      "text": "The Route 12 road remains blocked by a sleeping Snorlax, confirming the cave detour is mandatory."
+    },
+    {
+      "id": "wl_echo_flute_lead_seen",
+      "speaker": "Bill",
+      "text": "Bill flagged the Echo Flute as the next field-tool lead for waking sleeping roadblocks later in Kanto."
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_vermilion_power_sabotage
+signal go_to_diglett_cave_detour
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_route_11_handoff_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_diglett_cave_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_vermilion_power_sabotage()
 
@@ -113,9 +116,17 @@ func trigger_route_11_handoff_scene() -> void:
 	dialogue_label.text = "Red: Route 11 is our first road after Surge, and I am staying with you, Antman. Misty says she will rotate to water-route support after this checkpoint. Bill decoded a Nexus pulse from the relay pole, Rocket and Team Gas are fighting over who poisoned the grid, and a Snorlax roadblock is forcing everyone toward Diglett's Cave."
 
 
+func trigger_diglett_cave_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("snorlax_roadblock_teased", false)):
+		dialogue_label.text = "Red: Check the Snorlax roadblock first. Bill thinks Diglett's Cave is the real detour, but we need to confirm why Route 12 is asleep."
+		return
+	dialogue_label.text = "Red: Diglett's Cave is open as the physical detour. We keep walking the world route by route."
+	emit_signal("go_to_diglett_cave_detour")
+
+
 func return_to_vermilion_power_sabotage() -> void:
 	emit_signal("go_to_vermilion_power_sabotage")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Thunder Badge opened Route 11. Press Z/Enter to read the eastbound road with Misty and Bill, or X/Esc to return to the Vermilion service yard."
+	dialogue_label.text = "Red: Thunder Badge opened Route 11. Press Z/Enter to read the eastbound road with Misty and Bill, Right for Diglett's Cave after checking the Snorlax roadblock, or X/Esc to return to the Vermilion service yard."

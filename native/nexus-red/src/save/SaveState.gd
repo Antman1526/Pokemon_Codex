@@ -195,6 +195,13 @@ func start_new_game(name: String) -> void:
 		"rocket_gas_route_11_fallout_seen": false,
 		"snorlax_roadblock_teased": false,
 		"worldlink_route_11_handoff_batch_queued": false,
+		"diglett_cave_detour_reached": false,
+		"red_diglett_cave_guard_seen": false,
+		"bill_diglett_cave_relay_map_seen": false,
+		"rocket_gold_dust_cave_argument_seen": false,
+		"snorlax_route_12_block_confirmed": false,
+		"echo_flute_lead_seen": false,
+		"worldlink_diglett_cave_detour_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -724,6 +731,35 @@ func queue_route_11_handoff_batch() -> void:
 		"wl_bill_route_11_signal_decode",
 		"wl_rocket_gas_route_11_fallout",
 		"wl_snorlax_roadblock_teased",
+	])
+
+
+func enter_diglett_cave_detour() -> void:
+	current_scene = "diglett_cave_detour"
+	active_companion = "red"
+	set_flag("diglett_cave_detour_reached", true)
+	queue_worldlink_id("wl_diglett_cave_detour_reached")
+
+
+func record_diglett_cave_detour_scene() -> void:
+	active_companion = "red"
+	set_flag("red_diglett_cave_guard_seen", true)
+	set_flag("bill_diglett_cave_relay_map_seen", true)
+	set_flag("rocket_gold_dust_cave_argument_seen", true)
+	set_flag("snorlax_route_12_block_confirmed", true)
+	set_flag("echo_flute_lead_seen", true)
+	queue_diglett_cave_detour_batch()
+
+
+func queue_diglett_cave_detour_batch() -> void:
+	set_flag("worldlink_diglett_cave_detour_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_diglett_cave_detour_reached",
+		"wl_red_diglett_cave_guard",
+		"wl_bill_diglett_cave_relay_map",
+		"wl_rocket_gold_dust_cave_argument",
+		"wl_snorlax_route_12_block_confirmed",
+		"wl_echo_flute_lead_seen",
 	])
 
 

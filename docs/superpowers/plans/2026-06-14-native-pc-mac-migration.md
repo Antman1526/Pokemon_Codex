@@ -834,6 +834,25 @@ python3 tools/validate_native_route11_handoff.py
 godot --headless --path native/nexus-red --script tests/route11_handoff_test.gd
 ```
 
+### Task 7.44: Add Diglett's Cave detour and Echo Flute lead
+
+Acceptance:
+
+- Route 11 keeps Diglett's Cave locked until the Route 11 handoff confirms the Snorlax roadblock.
+- After the Route 11 handoff, Antman can enter a playable Diglett's Cave detour scene from Route 11.
+- Diglett's Cave records Red as the active full-game companion and uses Bill to map a Nexus relay under the tunnel.
+- Rocket and Team Gold Dust continue the faction-war thread through cave survey crates and mineral maps.
+- The scene confirms Snorlax still blocks Route 12 and introduces the Echo Flute as the next field-tool lead rather than clearing Snorlax immediately.
+- Save state and WorldLink record Diglett's Cave reached, Red's cave guard beat, Bill's relay map, Rocket/Gold Dust argument, Snorlax Route 12 block confirmation, and Echo Flute lead.
+- WorldLink checklist adds Diglett's Cave, the cave Nexus relay, Route 12 Snorlax confirmation, and Echo Flute lead milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_diglett_cave_detour.py
+godot --headless --path native/nexus-red --script tests/diglett_cave_detour_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

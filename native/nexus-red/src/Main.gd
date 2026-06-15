@@ -21,6 +21,7 @@ const Route5UndergroundPathScene := preload("res://scenes/world/Route5Undergroun
 const VermilionCityScene := preload("res://scenes/world/VermilionCity.tscn")
 const VermilionPowerSabotageScene := preload("res://scenes/world/VermilionPowerSabotage.tscn")
 const Route11Scene := preload("res://scenes/world/Route11.tscn")
+const DiglettCaveDetourScene := preload("res://scenes/world/DiglettCaveDetour.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -290,7 +291,19 @@ func _show_route_11() -> void:
 	var route11 := Route11Scene.instantiate()
 	route11.save_state = save_state
 	route11.go_to_vermilion_power_sabotage.connect(_on_go_to_vermilion_power_sabotage)
+	route11.go_to_diglett_cave_detour.connect(_on_go_to_diglett_cave_detour)
 	_replace_screen(route11)
+
+
+func _on_go_to_diglett_cave_detour() -> void:
+	_show_diglett_cave_detour()
+
+
+func _show_diglett_cave_detour() -> void:
+	var cave := DiglettCaveDetourScene.instantiate()
+	cave.save_state = save_state
+	cave.go_to_route_11.connect(_on_go_to_route_11)
+	_replace_screen(cave)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:
