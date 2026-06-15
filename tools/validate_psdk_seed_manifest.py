@@ -46,6 +46,10 @@ def source_path(manifest_entry: dict) -> Path:
     return ROOT / manifest_entry.get("source_path", "")
 
 
+def target_path(manifest_entry: dict) -> Path:
+    return ROOT / "psdk" / "nexus-red" / manifest_entry.get("psdk_target", "")
+
+
 def validate_manifest_shape(manifest: dict) -> list[str]:
     errors: list[str] = []
     if manifest.get("schema_version") != 1:
@@ -67,6 +71,8 @@ def validate_manifest_shape(manifest: dict) -> list[str]:
             errors.append(f"manifest source_path does not exist: {entry.get('source_path')}")
         if not entry.get("psdk_target", "").startswith("project/Data/nexus_red_seed/generated/"):
             errors.append(f"{entry.get('id')} must target generated seed data under project/Data/nexus_red_seed/generated/")
+        if not target_path(entry).exists():
+            errors.append(f"manifest psdk_target does not exist: {entry.get('psdk_target')}")
         if "psdk" not in entry.get("psdk_system", "") and "pokemon_studio" not in entry.get("psdk_system", ""):
             errors.append(f"{entry.get('id')} must describe a PSDK/Studio import system")
 
@@ -83,6 +89,7 @@ def validate_manifest_shape(manifest: dict) -> list[str]:
 def validate_starter_import(entry: dict) -> list[str]:
     errors: list[str] = []
     data = read_json(source_path(entry))
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
     starters = data.get("starters", [])
     species = [item.get("species") for item in starters]
     official = species[:27]
@@ -115,12 +122,23 @@ def validate_starter_import(entry: dict) -> list[str]:
     if context.get("protagonist") != "Antman":
         errors.append("starter story_context must keep Antman as protagonist")
 
+    generated_species = [item.get("species") for item in generated.get("selectable_partners", [])]
+    if generated.get("seed_type") != "psdk_oak_lab_first_partner_selector":
+        errors.append("generated starter seed must use seed_type psdk_oak_lab_first_partner_selector")
+    if generated_species != species:
+        errors.append("generated starter seed species order must match source starter order")
+    if generated.get("blue_counter_rules") != data.get("blue_counter_rules"):
+        errors.append("generated starter seed blue_counter_rules must match source")
+    if generated.get("story_context", {}).get("primary_companion") != "Red":
+        errors.append("generated starter seed must keep Red as primary companion")
+
     return errors
 
 
 def validate_encounter_import(entry: dict) -> list[str]:
     errors: list[str] = []
     data = read_json(source_path(entry))
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
     encounters = data.get("encounters", [])
     species = [item.get("species") for item in encounters]
     routes = {item.get("route_id") for item in encounters}
@@ -164,6 +182,18 @@ def validate_encounter_import(entry: dict) -> list[str]:
     for rule in ("all_39_first_partner_species_catchable_before_brock", "local_kanto_wildlife_remains_common"):
         if rule not in rules:
             errors.append(f"encounter import preserve_rules missing {rule}")
+
+    if generated.get("seed_type") != "psdk_routes_1_to_3_migration_encounters":
+        errors.append("generated encounter seed must use seed_type psdk_routes_1_to_3_migration_encounters")
+    generated_routes = generated.get("route_targets", {})
+    generated_species: list[str] = []
+    for route_id in REQUIRED_ROUTES:
+        route_data = generated_routes.get(route_id, {})
+        generated_species.extend(item.get("species") for item in route_data.get("encounters", []))
+        if len(route_data.get("encounters", [])) != 13:
+            errors.append(f"generated {route_id} must contain 13 migration encounters")
+    if sorted(generated_species) != sorted(REQUIRED_SPECIES):
+        errors.append("generated encounter seed must contain all 39 first-partner species")
 
     return errors
 

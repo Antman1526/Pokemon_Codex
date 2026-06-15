@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "seed_type": "psdk_oak_lab_first_partner_selector",
+  "source_import_id": "oak_lab_39_first_partner_selector",
+  "source_path": "native/nexus-red/content/starters/starter_choices.json",
+  "story_context": {
+    "map": "Oak Lab",
+    "professor": "Oak",
+    "protagonist": "Antman",
+    "primary_companion": "Red",
+    "starting_rivals": [
+      "Blue",
+      "Ava",
+      "Dax"
+    ]
+  },
+  "selection_rules": {
+    "required_selectable_count": 39,
+    "required_official_count": 27,
+    "required_special_count": 12,
+    "preserve_rules": [
+      "official_starters_first_in_generation_order",
+      "special_starters_after_official_set",
+      "blue_counter_pick_rules",
+      "ava_priority_pool",
+      "dax_priority_pool",
+      "starter_chosen_story_flag",
+      "add_selected_species_to_party"
+    ],
+    "on_confirm": [
+      "set_flag:starter_chosen",
+      "add_selected_species_to_party",
+      "assign_blue_counter_pick",
+      "assign_ava_priority_pick",
+      "assign_dax_priority_pick",
+      "queue_worldlink_starter_notifications"
+    ]
+  },
+  "selectable_partners": [
+    {
+      "slot": 1,
+      "species": "Bulbasaur",
+      "origin_region": "kanto",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "BULBASAUR"
+    },
+    {
+      "slot": 2,
+      "species": "Charmander",
+      "origin_region": "kanto",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "CHARMANDER"
+    },
+    {
+      "slot": 3,
+      "species": "Squirtle",
+      "origin_region": "kanto",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "SQUIRTLE"
+    },
+    {
+      "slot": 4,
+      "species": "Chikorita",
+      "origin_region": "johto",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "CHIKORITA"
+    },
+    {
+      "slot": 5,
+      "species": "Cyndaquil",
+      "origin_region": "johto",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "CYNDAQUIL"
+    },
+    {
+      "slot": 6,
+      "species": "Totodile",
+      "origin_region": "johto",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "TOTODILE"
+    },
+    {
+      "slot": 7,
+      "species": "Treecko",
+      "origin_region": "hoenn",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "TREECKO"
+    },
+    {
+      "slot": 8,
+      "species": "Torchic",
+      "origin_region": "hoenn",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "TORCHIC"
+    },
+    {
+      "slot": 9,
+      "species": "Mudkip",
+      "origin_region": "hoenn",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "MUDKIP"
+    },
+    {
+      "slot": 10,
+      "species": "Turtwig",
+      "origin_region": "sinnoh",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "TURTWIG"
+    },
+    {
+      "slot": 11,
+      "species": "Chimchar",
+      "origin_region": "sinnoh",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "CHIMCHAR"
+    },
+    {
+      "slot": 12,
+      "species": "Piplup",
+      "origin_region": "sinnoh",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "PIPLUP"
+    },
+    {
+      "slot": 13,
+      "species": "Snivy",
+      "origin_region": "unova",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "SNIVY"
+    },
+    {
+      "slot": 14,
+      "species": "Tepig",
+      "origin_region": "unova",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "TEPIG"
+    },
+    {
+      "slot": 15,
+      "species": "Oshawott",
+      "origin_region": "unova",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "OSHAWOTT"
+    },
+    {
+      "slot": 16,
+      "species": "Chespin",
+      "origin_region": "kalos",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "CHESPIN"
+    },
+    {
+      "slot": 17,
+      "species": "Fennekin",
+      "origin_region": "kalos",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "FENNEKIN"
+    },
+    {
+      "slot": 18,
+      "species": "Froakie",
+      "origin_region": "kalos",
+      "tags": [
+        "official_starter",
+        "safe_early",
+        "high_value"
+      ],
+      "psdk_species_key": "FROAKIE"
+    },
+    {
+      "slot": 19,
+      "species": "Rowlet",
+      "origin_region": "alola",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "ROWLET"
+    },
+    {
+      "slot": 20,
+      "species": "Litten",
+      "origin_region": "alola",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "LITTEN"
+    },
+    {
+      "slot": 21,
+      "species": "Popplio",
+      "origin_region": "alola",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "POPPLIO"
+    },
+    {
+      "slot": 22,
+      "species": "Grookey",
+      "origin_region": "galar",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "GROOKEY"
+    },
+    {
+      "slot": 23,
+      "species": "Scorbunny",
+      "origin_region": "galar",
+      "tags": [
+        "official_starter",
+        "safe_early",
+        "high_value"
+      ],
+      "psdk_species_key": "SCORBUNNY"
+    },
+    {
+      "slot": 24,
+      "species": "Sobble",
+      "origin_region": "galar",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "SOBBLE"
+    },
+    {
+      "slot": 25,
+      "species": "Sprigatito",
+      "origin_region": "paldea",
+      "tags": [
+        "official_starter",
+        "safe_early",
+        "high_value"
+      ],
+      "psdk_species_key": "SPRIGATITO"
+    },
+    {
+      "slot": 26,
+      "species": "Fuecoco",
+      "origin_region": "paldea",
+      "tags": [
+        "official_starter",
+        "safe_early",
+        "high_value"
+      ],
+      "psdk_species_key": "FUECOCO"
+    },
+    {
+      "slot": 27,
+      "species": "Quaxly",
+      "origin_region": "paldea",
+      "tags": [
+        "official_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "QUAXLY"
+    },
+    {
+      "slot": 28,
+      "species": "Eevee",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "safe_early",
+        "evolution_flexible"
+      ],
+      "psdk_species_key": "EEVEE"
+    },
+    {
+      "slot": 29,
+      "species": "Pikachu",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "safe_early",
+        "mascot"
+      ],
+      "psdk_species_key": "PIKACHU"
+    },
+    {
+      "slot": 30,
+      "species": "Dratini",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "high_power",
+        "rare_early",
+        "evolves_late"
+      ],
+      "psdk_species_key": "DRATINI"
+    },
+    {
+      "slot": 31,
+      "species": "Abra",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "safe_early",
+        "high_escape_risk"
+      ],
+      "psdk_species_key": "ABRA"
+    },
+    {
+      "slot": 32,
+      "species": "Gastly",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "night_encounter",
+        "trade_evolution_adjusted"
+      ],
+      "psdk_species_key": "GASTLY"
+    },
+    {
+      "slot": 33,
+      "species": "Larvitar",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "high_power",
+        "rare_early",
+        "evolves_late"
+      ],
+      "psdk_species_key": "LARVITAR"
+    },
+    {
+      "slot": 34,
+      "species": "Sandile",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "safe_early"
+      ],
+      "psdk_species_key": "SANDILE"
+    },
+    {
+      "slot": 35,
+      "species": "Kubfu",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "legendary_like",
+        "event_recommended",
+        "high_power"
+      ],
+      "psdk_species_key": "KUBFU"
+    },
+    {
+      "slot": 36,
+      "species": "Staryu",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "water",
+        "stone_evolution"
+      ],
+      "psdk_species_key": "STARYU"
+    },
+    {
+      "slot": 37,
+      "species": "Shroomish",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "safe_early",
+        "status"
+      ],
+      "psdk_species_key": "SHROOMISH"
+    },
+    {
+      "slot": 38,
+      "species": "Rockruff",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "time_sensitive_evolution"
+      ],
+      "psdk_species_key": "ROCKRUFF"
+    },
+    {
+      "slot": 39,
+      "species": "Ralts",
+      "origin_region": "special",
+      "tags": [
+        "special_starter",
+        "rare_early",
+        "high_value"
+      ],
+      "psdk_species_key": "RALTS"
+    }
+  ],
+  "blue_counter_rules": {
+    "Bulbasaur": "Charmander",
+    "Charmander": "Squirtle",
+    "Squirtle": "Bulbasaur",
+    "Chikorita": "Cyndaquil",
+    "Cyndaquil": "Totodile",
+    "Totodile": "Chikorita",
+    "Treecko": "Torchic",
+    "Torchic": "Mudkip",
+    "Mudkip": "Treecko",
+    "Turtwig": "Chimchar",
+    "Chimchar": "Piplup",
+    "Piplup": "Turtwig",
+    "Snivy": "Tepig",
+    "Tepig": "Oshawott",
+    "Oshawott": "Snivy",
+    "Chespin": "Fennekin",
+    "Fennekin": "Froakie",
+    "Froakie": "Chespin",
+    "Rowlet": "Litten",
+    "Litten": "Popplio",
+    "Popplio": "Rowlet",
+    "Grookey": "Scorbunny",
+    "Scorbunny": "Sobble",
+    "Sobble": "Grookey",
+    "Sprigatito": "Fuecoco",
+    "Fuecoco": "Quaxly",
+    "Quaxly": "Sprigatito",
+    "Eevee": "Charmander",
+    "Pikachu": "Bulbasaur",
+    "Dratini": "Squirtle",
+    "Abra": "Charmander",
+    "Gastly": "Squirtle",
+    "Larvitar": "Bulbasaur",
+    "Sandile": "Squirtle",
+    "Kubfu": "Charmander",
+    "Staryu": "Bulbasaur",
+    "Shroomish": "Charmander",
+    "Rockruff": "Squirtle",
+    "Ralts": "Charmander"
+  },
+  "ava_priority_pool": [
+    "Chikorita",
+    "Popplio",
+    "Sprigatito",
+    "Ralts",
+    "Eevee",
+    "Rowlet"
+  ],
+  "ava_fallback": "Chikorita",
+  "dax_priority_pool": [
+    "Cyndaquil",
+    "Torchic",
+    "Chimchar",
+    "Scorbunny",
+    "Fuecoco",
+    "Froakie"
+  ],
+  "dax_fallback": "Cyndaquil"
+}

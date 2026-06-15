@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "seed_type": "psdk_routes_1_to_3_migration_encounters",
+  "source_import_id": "routes_1_to_3_migration_encounters",
+  "source_path": "native/nexus-red/content/encounters/route_1_to_3_migration_encounters.json",
+  "level_cap_context": "pre_brock",
+  "allowed_level_range": [
+    4,
+    7
+  ],
+  "preserve_rules": [
+    "all_39_first_partner_species_catchable_before_brock",
+    "route_1_kanto_johto_plus_early_specials",
+    "route_2_hoenn_sinnoh_unova_plus_rare_power_species",
+    "route_3_kalos_alola_galar_paldea_plus_kubfu",
+    "dratini_larvitar_kubfu_weight_1",
+    "time_of_day_flavor_when_supported",
+    "local_kanto_wildlife_remains_common"
+  ],
+  "route_targets": {
+    "route_1": {
+      "display_name": "Route 1",
+      "psdk_map_id": "kanto_route_1",
+      "level_band": [
+        4,
+        5
+      ],
+      "story_unlock": "starter_chosen",
+      "encounters": [
+        {
+          "id": "route_1_migration_bulbasaur",
+          "species": "Bulbasaur",
+          "psdk_species_key": "BULBASAUR",
+          "level": 4,
+          "weight": 4,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "kanto",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_migration_charmander",
+          "species": "Charmander",
+          "psdk_species_key": "CHARMANDER",
+          "level": 4,
+          "weight": 4,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "kanto",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_migration_squirtle",
+          "species": "Squirtle",
+          "psdk_species_key": "SQUIRTLE",
+          "level": 4,
+          "weight": 4,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "kanto",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_migration_chikorita",
+          "species": "Chikorita",
+          "psdk_species_key": "CHIKORITA",
+          "level": 4,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "johto",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_migration_cyndaquil",
+          "species": "Cyndaquil",
+          "psdk_species_key": "CYNDAQUIL",
+          "level": 4,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "johto",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_migration_totodile",
+          "species": "Totodile",
+          "psdk_species_key": "TOTODILE",
+          "level": 4,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "johto",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_eevee",
+          "species": "Eevee",
+          "psdk_species_key": "EEVEE",
+          "level": 4,
+          "weight": 3,
+          "time": "any",
+          "tags": [
+            "bonus_starter",
+            "evolution_flexible",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_pikachu",
+          "species": "Pikachu",
+          "psdk_species_key": "PIKACHU",
+          "level": 5,
+          "weight": 2,
+          "time": "morning",
+          "tags": [
+            "bonus_starter",
+            "mascot",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_abra",
+          "species": "Abra",
+          "psdk_species_key": "ABRA",
+          "level": 5,
+          "weight": 2,
+          "time": "day",
+          "tags": [
+            "bonus_starter",
+            "psychic",
+            "high_escape_risk",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_gastly",
+          "species": "Gastly",
+          "psdk_species_key": "GASTLY",
+          "level": 5,
+          "weight": 2,
+          "time": "night",
+          "tags": [
+            "bonus_starter",
+            "ghost",
+            "night_encounter",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_ralts",
+          "species": "Ralts",
+          "psdk_species_key": "RALTS",
+          "level": 5,
+          "weight": 2,
+          "time": "morning",
+          "tags": [
+            "bonus_starter",
+            "psychic",
+            "fairy",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_shroomish",
+          "species": "Shroomish",
+          "psdk_species_key": "SHROOMISH",
+          "level": 5,
+          "weight": 2,
+          "time": "morning",
+          "tags": [
+            "bonus_starter",
+            "grass",
+            "status",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_1_bonus_rockruff",
+          "species": "Rockruff",
+          "psdk_species_key": "ROCKRUFF",
+          "level": 5,
+          "weight": 2,
+          "time": "day",
+          "tags": [
+            "bonus_starter",
+            "rock",
+            "time_sensitive_evolution",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        }
+      ]
+    },
+    "route_2": {
+      "display_name": "Route 2",
+      "psdk_map_id": "kanto_route_2_forest_gate",
+      "level_band": [
+        5,
+        6
+      ],
+      "story_unlock": "route_2_forest_gate_reached",
+      "encounters": [
+        {
+          "id": "route_2_migration_treecko",
+          "species": "Treecko",
+          "psdk_species_key": "TREECKO",
+          "level": 5,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "hoenn",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_torchic",
+          "species": "Torchic",
+          "psdk_species_key": "TORCHIC",
+          "level": 5,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "hoenn",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_mudkip",
+          "species": "Mudkip",
+          "psdk_species_key": "MUDKIP",
+          "level": 5,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "hoenn",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_turtwig",
+          "species": "Turtwig",
+          "psdk_species_key": "TURTWIG",
+          "level": 5,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "sinnoh",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_chimchar",
+          "species": "Chimchar",
+          "psdk_species_key": "CHIMCHAR",
+          "level": 5,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "sinnoh",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_piplup",
+          "species": "Piplup",
+          "psdk_species_key": "PIPLUP",
+          "level": 5,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "sinnoh",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_snivy",
+          "species": "Snivy",
+          "psdk_species_key": "SNIVY",
+          "level": 5,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "unova",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_tepig",
+          "species": "Tepig",
+          "psdk_species_key": "TEPIG",
+          "level": 5,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "unova",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_migration_oshawott",
+          "species": "Oshawott",
+          "psdk_species_key": "OSHAWOTT",
+          "level": 5,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "unova",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_bonus_sandile",
+          "species": "Sandile",
+          "psdk_species_key": "SANDILE",
+          "level": 6,
+          "weight": 2,
+          "time": "day",
+          "tags": [
+            "bonus_starter",
+            "ground",
+            "dark",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_bonus_staryu",
+          "species": "Staryu",
+          "psdk_species_key": "STARYU",
+          "level": 6,
+          "weight": 2,
+          "time": "evening",
+          "tags": [
+            "bonus_starter",
+            "water",
+            "stone_evolution",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_bonus_dratini",
+          "species": "Dratini",
+          "psdk_species_key": "DRATINI",
+          "level": 6,
+          "weight": 1,
+          "time": "night",
+          "tags": [
+            "bonus_starter",
+            "dragon",
+            "high_power",
+            "rare_early",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_2_bonus_larvitar",
+          "species": "Larvitar",
+          "psdk_species_key": "LARVITAR",
+          "level": 6,
+          "weight": 1,
+          "time": "night",
+          "tags": [
+            "bonus_starter",
+            "rock",
+            "ground",
+            "high_power",
+            "rare_early",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        }
+      ]
+    },
+    "route_3": {
+      "display_name": "Route 3",
+      "psdk_map_id": "kanto_route_3",
+      "level_band": [
+        6,
+        7
+      ],
+      "story_unlock": "boulder_badge_obtained",
+      "encounters": [
+        {
+          "id": "route_3_migration_chespin",
+          "species": "Chespin",
+          "psdk_species_key": "CHESPIN",
+          "level": 6,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "kalos",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_fennekin",
+          "species": "Fennekin",
+          "psdk_species_key": "FENNEKIN",
+          "level": 6,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "kalos",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_froakie",
+          "species": "Froakie",
+          "psdk_species_key": "FROAKIE",
+          "level": 6,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "kalos",
+            "water",
+            "high_value",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_rowlet",
+          "species": "Rowlet",
+          "psdk_species_key": "ROWLET",
+          "level": 6,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "alola",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_litten",
+          "species": "Litten",
+          "psdk_species_key": "LITTEN",
+          "level": 6,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "alola",
+            "fire",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_popplio",
+          "species": "Popplio",
+          "psdk_species_key": "POPPLIO",
+          "level": 6,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "alola",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_grookey",
+          "species": "Grookey",
+          "psdk_species_key": "GROOKEY",
+          "level": 7,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "galar",
+            "grass",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_scorbunny",
+          "species": "Scorbunny",
+          "psdk_species_key": "SCORBUNNY",
+          "level": 7,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "galar",
+            "fire",
+            "high_value",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_sobble",
+          "species": "Sobble",
+          "psdk_species_key": "SOBBLE",
+          "level": 7,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "galar",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_sprigatito",
+          "species": "Sprigatito",
+          "psdk_species_key": "SPRIGATITO",
+          "level": 7,
+          "weight": 3,
+          "time": "morning",
+          "tags": [
+            "official_starter",
+            "paldea",
+            "grass",
+            "high_value",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_fuecoco",
+          "species": "Fuecoco",
+          "psdk_species_key": "FUECOCO",
+          "level": 7,
+          "weight": 3,
+          "time": "day",
+          "tags": [
+            "official_starter",
+            "paldea",
+            "fire",
+            "high_value",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_migration_quaxly",
+          "species": "Quaxly",
+          "psdk_species_key": "QUAXLY",
+          "level": 7,
+          "weight": 3,
+          "time": "evening",
+          "tags": [
+            "official_starter",
+            "paldea",
+            "water",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        },
+        {
+          "id": "route_3_bonus_kubfu",
+          "species": "Kubfu",
+          "psdk_species_key": "KUBFU",
+          "level": 7,
+          "weight": 1,
+          "time": "day",
+          "tags": [
+            "bonus_starter",
+            "fighting",
+            "legendary_like",
+            "event_recommended",
+            "high_power",
+            "route_1_to_3_migration_pool",
+            "pre_brock_balanced"
+          ]
+        }
+      ]
+    }
+  }
+}

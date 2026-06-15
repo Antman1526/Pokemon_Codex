@@ -27,6 +27,7 @@ psdk/nexus-red/
 - Identify the source-of-truth project files Studio expects.
 - Decide which generated files must be ignored.
 - Map the existing Godot prototype data into PSDK concepts before importing content.
+- Generate the PSDK seed files with `python3 tools/generate_psdk_seed_data.py`.
 
 ## Migration Source Material
 
@@ -42,3 +43,11 @@ psdk/nexus-red/
 - Starter and early-route import contract: `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`
 - PSDK import seed manifest: `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`
 - Ignore guardrails: `psdk/nexus-red/.gitignore`
+
+## Seed Data Commands
+
+```bash
+python3 tools/generate_psdk_seed_data.py
+python3 tools/generate_psdk_seed_data.py --check
+python3 tools/validate_psdk_seed_manifest.py
+```
