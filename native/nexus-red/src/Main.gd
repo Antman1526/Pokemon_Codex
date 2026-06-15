@@ -18,6 +18,7 @@ const NuggetBridgeScene := preload("res://scenes/world/NuggetBridge.tscn")
 const Route25BillScene := preload("res://scenes/world/Route25Bill.tscn")
 const CeruleanRocketHouseScene := preload("res://scenes/world/CeruleanRocketHouse.tscn")
 const Route5UndergroundPathScene := preload("res://scenes/world/Route5UndergroundPath.tscn")
+const VermilionCityScene := preload("res://scenes/world/VermilionCity.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -245,7 +246,19 @@ func _show_route_5_underground_path() -> void:
 	var route5 := Route5UndergroundPathScene.instantiate()
 	route5.save_state = save_state
 	route5.go_to_cerulean_city.connect(_on_go_to_cerulean_city)
+	route5.go_to_vermilion_city.connect(_on_go_to_vermilion_city)
 	_replace_screen(route5)
+
+
+func _on_go_to_vermilion_city() -> void:
+	_show_vermilion_city()
+
+
+func _show_vermilion_city() -> void:
+	var vermilion := VermilionCityScene.instantiate()
+	vermilion.save_state = save_state
+	vermilion.go_to_route_5_underground_path.connect(_on_go_to_route_5_underground_path)
+	_replace_screen(vermilion)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_cerulean_city
+signal go_to_vermilion_city
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_underground_path_scouting()
+	if event.is_action_pressed("ui_right"):
+		trigger_vermilion_city_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_cerulean_city()
 
@@ -87,9 +90,17 @@ func trigger_underground_path_scouting() -> void:
 	dialogue_label.text = "Red: Underground Path is open. Misty says the tunnel is watched, and Bill traced the stolen TM route to Vermilion's docks. We are close to Surge, the S.S. Anne, and Rocket's shipping lane."
 
 
+func trigger_vermilion_city_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("vermilion_shipping_lead_seen", false)):
+		dialogue_label.text = "Red: Scout Underground Path first. We need Bill's Vermilion shipping lead before walking into the port."
+		return
+	dialogue_label.text = "Red: Vermilion is ahead. We take the tunnel, not a WorldLink shortcut."
+	emit_signal("go_to_vermilion_city")
+
+
 func return_to_cerulean_city() -> void:
 	emit_signal("go_to_cerulean_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Route 5 is the road south from Cerulean. Press Z/Enter to scout Underground Path with Misty and Bill's notes, or X/Esc to return to Cerulean."
+	dialogue_label.text = "Red: Route 5 is the road south from Cerulean. Press Z/Enter to scout Underground Path with Misty and Bill's notes, Right for Vermilion, or X/Esc to return to Cerulean."

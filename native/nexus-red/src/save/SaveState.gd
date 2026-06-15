@@ -139,6 +139,11 @@ func start_new_game(name: String) -> void:
 		"vermilion_shipping_lead_seen": false,
 		"vermilion_city_teased": false,
 		"worldlink_route_5_underground_path_batch_queued": false,
+		"vermilion_city_reached": false,
+		"vermilion_harbor_scouted": false,
+		"ss_anne_ticket_lead_seen": false,
+		"surge_power_sabotage_teased": false,
+		"worldlink_vermilion_city_arrival_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -452,6 +457,31 @@ func queue_route_5_underground_path_batch() -> void:
 		"wl_underground_path_scouted",
 		"wl_vermilion_shipping_lead",
 		"wl_vermilion_city_teased",
+	])
+
+
+func enter_vermilion_city() -> void:
+	current_scene = "vermilion_city"
+	active_companion = "red"
+	set_flag("vermilion_city_reached", true)
+	queue_worldlink_id("wl_vermilion_city_reached")
+
+
+func record_vermilion_arrival_scene() -> void:
+	active_companion = "red"
+	set_flag("vermilion_harbor_scouted", true)
+	set_flag("ss_anne_ticket_lead_seen", true)
+	set_flag("surge_power_sabotage_teased", true)
+	queue_vermilion_city_arrival_batch()
+
+
+func queue_vermilion_city_arrival_batch() -> void:
+	set_flag("worldlink_vermilion_city_arrival_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_vermilion_city_reached",
+		"wl_vermilion_harbor_scouted",
+		"wl_ss_anne_ticket_lead",
+		"wl_surge_power_sabotage_teased",
 	])
 
 

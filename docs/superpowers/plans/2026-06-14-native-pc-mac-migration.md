@@ -670,6 +670,24 @@ python3 tools/validate_native_route5_underground_path.py
 godot --headless --path native/nexus-red --script tests/route5_underground_path_test.gd
 ```
 
+### Task 7.35: Add Vermilion City arrival shell
+
+Acceptance:
+
+- Route 5 keeps Vermilion locked until Underground Path scouting records the Vermilion shipping lead.
+- Route 5 can transition to a playable Vermilion City shell after the shipping lead is seen.
+- Vermilion City visually represents the Pokemon Center, Mart, Lt. Surge's gym, and harbor/S.S. Anne area.
+- The arrival scene records Red as the active companion while Misty scouts the harbor and Bill follows the S.S. Anne manifest lead.
+- Save state and WorldLink record Vermilion reached, harbor scouted, S.S. Anne ticket lead, and Surge power-sabotage tease.
+- The slice sets up the next S.S. Anne or Surge sabotage chapter without implementing those events yet.
+
+Verification:
+
+```sh
+python3 tools/validate_native_vermilion_city_arrival.py
+godot --headless --path native/nexus-red --script tests/vermilion_city_arrival_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

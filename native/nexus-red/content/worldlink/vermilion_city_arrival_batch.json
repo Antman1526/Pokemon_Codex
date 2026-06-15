@@ -1,0 +1,30 @@
+{
+  "id": "vermilion_city_arrival_batch",
+  "name": "Vermilion City Arrival Batch",
+  "feed": [
+    {
+      "id": "wl_vermilion_city_reached",
+      "speaker": "WorldLink",
+      "category": "travel",
+      "text": "Antman reached Vermilion City through the Underground Path route from Cerulean."
+    },
+    {
+      "id": "wl_vermilion_harbor_scouted",
+      "speaker": "Misty",
+      "category": "companion",
+      "text": "Misty scouted Vermilion harbor and found cargo traffic matching the stolen TM resale route."
+    },
+    {
+      "id": "wl_ss_anne_ticket_lead",
+      "speaker": "Bill",
+      "category": "research",
+      "text": "Bill flagged an S.S. Anne ticket lead connected to passenger manifests and unusual storage-network pings."
+    },
+    {
+      "id": "wl_surge_power_sabotage_teased",
+      "speaker": "Red",
+      "category": "alert",
+      "text": "Red spotted unstable gym power readings near Lt. Surge's district. Rocket may be testing a sabotage route."
+    }
+  ]
+}
