@@ -73,6 +73,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_celadon_rocket_hideout_entry(state, location:, area_type:)` resolves the first Rocket Hideout entry room after the Game Corner poster switch. It requires the Rocket Game Corner guard battle, keeps Red active, records Bill's elevator/Silph Scope signal, the Lift Key requirement, Giovanni's command terminal, Team Moonlight interference inside Rocket's signal, and unlocks the B1F hideout path while keeping deeper access gated.
 
+`NexusRed::KantoStory.complete_celadon_rocket_hideout_b1f(state, location:, area_type:)` resolves the first full Rocket Hideout dungeon floor. It requires the hideout entry room, records Red guarding the spinner maze, Bill tracing the Silph Scope machine pattern, Rocket's maze control, Gold Dust infiltration, Team Moonlight signal bleed, and unlocks the B2F path while the Lift Key trail continues deeper.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

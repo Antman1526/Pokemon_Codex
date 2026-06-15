@@ -87,6 +87,14 @@ module NexusRed
     GIOVANNI_HIDEOUT_COMMAND_EVENT_ID = 'giovanni_hideout_command'
     TEAM_MOONLIGHT_ROCKET_INTERFERENCE_EVENT_ID = 'team_moonlight_rocket_interference'
     ROCKET_HIDEOUT_B1F_PATH_EVENT_ID = 'rocket_hideout_b1f_path_unlocked'
+    CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID = 'celadon_rocket_hideout_b1f'
+    RED_HIDEOUT_B1F_MAZE_GUARD_EVENT_ID = 'red_hideout_b1f_maze_guard'
+    BILL_SILPH_SCOPE_MACHINE_TRACE_EVENT_ID = 'bill_silph_scope_machine_trace'
+    ROCKET_SPINNER_MAZE_EVENT_ID = 'rocket_spinner_maze'
+    GOLD_DUST_HIDEOUT_INFILTRATION_EVENT_ID = 'gold_dust_hideout_infiltration'
+    TEAM_MOONLIGHT_HIDEOUT_SIGNAL_BLEED_EVENT_ID = 'team_moonlight_hideout_signal_bleed'
+    LIFT_KEY_DEEPER_TRAIL_EVENT_ID = 'lift_key_deeper_trail'
+    ROCKET_HIDEOUT_B2F_PATH_EVENT_ID = 'rocket_hideout_b2f_path_unlocked'
 
     module_function
 
@@ -1647,6 +1655,116 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_ENTRY_EVENT_ID }
     end
 
+    def complete_celadon_rocket_hideout_b1f(state, location: 'Celadon Rocket Hideout B1F', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_entry', 'event_id' => CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID } unless celadon_rocket_hideout_entry_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID } if celadon_rocket_hideout_b1f_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_B1F_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_HIDEOUT_B1F_MAZE_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_SILPH_SCOPE_MACHINE_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SPINNER_MAZE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_HIDEOUT_INFILTRATION')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_HIDEOUT_SIGNAL_BLEED')
+      add_story_flag(state, 'FLAG_NEXUS_LIFT_KEY_DEEPER_TRAIL')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_B2F_PATH_UNLOCKED')
+      mark_cleared_event(story, CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID)
+      mark_cleared_event(story, RED_HIDEOUT_B1F_MAZE_GUARD_EVENT_ID)
+      mark_cleared_event(story, BILL_SILPH_SCOPE_MACHINE_TRACE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_SPINNER_MAZE_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_HIDEOUT_INFILTRATION_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_HIDEOUT_SIGNAL_BLEED_EVENT_ID)
+      mark_cleared_event(story, LIFT_KEY_DEEPER_TRAIL_EVENT_ID)
+      mark_cleared_event(story, ROCKET_HIDEOUT_B2F_PATH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'spinner_maze_control',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'silph_scope_machine_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'hideout_coin_cache_infiltration',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'hideout_signal_bleed',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Gold Dust slipped into Rocket B1F for a coin cache and stolen relic ledger',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Moonlight signal bleed warps Rocket spinner maze controls around the Silph Scope machine trace',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_b1f_maze_guard',
+        location: location,
+        summary: 'Red takes point at the first spinner maze so Rocket cannot separate Antman from support.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_scope_machine_trace',
+        location: location,
+        summary: 'Bill traces the Silph Scope machine pattern through the B1F equipment bank.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rocket Hideout B1F mapped the spinner maze, Gold Dust infiltration, Moonlight signal bleed, and the B2F Lift Key trail.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_rocket_hideout_b1f_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_rocket_hideout_b1f_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1999,6 +2117,27 @@ module NexusRed
         'required_key_item' => 'lift_key',
         'giovanni_presence' => 'command_terminal',
         'next_hook' => 'celadon_rocket_hideout_b1f'
+      }
+    end
+
+    def celadon_rocket_hideout_b1f_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_ROCKET_HIDEOUT_B1F_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_HIDEOUT_B1F_MAZE_GUARD_EVENT_ID,
+          BILL_SILPH_SCOPE_MACHINE_TRACE_EVENT_ID,
+          ROCKET_SPINNER_MAZE_EVENT_ID,
+          GOLD_DUST_HIDEOUT_INFILTRATION_EVENT_ID,
+          TEAM_MOONLIGHT_HIDEOUT_SIGNAL_BLEED_EVENT_ID,
+          LIFT_KEY_DEEPER_TRAIL_EVENT_ID,
+          ROCKET_HIDEOUT_B2F_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight],
+        'dungeon_hazard' => 'spinner_maze',
+        'key_item_trail' => 'lift_key_deeper_trail',
+        'next_hook' => 'celadon_rocket_hideout_b2f'
       }
     end
 
