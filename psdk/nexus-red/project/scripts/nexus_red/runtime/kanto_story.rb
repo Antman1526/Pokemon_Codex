@@ -315,6 +315,13 @@ module NexusRed
     PHOENIX_GYM_HEAT_SCOUTS_EVENT_ID = 'phoenix_gym_heat_scouts'
     ROCKET_GYM_KEY_AMBUSH_CLEANUP_EVENT_ID = 'rocket_gym_key_ambush_cleanup'
     NEXUS_ORDER_VOLCANO_HEAT_OBSERVER_EVENT_ID = 'nexus_order_volcano_badge_heat_observer_hidden'
+    VOLCANO_BADGE_OBTAINED_EVENT_ID = 'volcano_badge_obtained'
+    FIRE_WEATHER_LESSON_EVENT_ID = 'fire_weather_lesson_mastered'
+    VIRIDIAN_GYM_RETURN_EVENT_ID = 'viridian_gym_return_unlocked'
+    GIOVANNI_EARTH_BADGE_LEAD_EVENT_ID = 'giovanni_earth_badge_lead'
+    ROCKET_VIRIDIAN_RECALL_EVENT_ID = 'rocket_viridian_recall_signal'
+    PHOENIX_CINNABAR_SETBACK_EVENT_ID = 'phoenix_cinnabar_setback'
+    NEXUS_ORDER_VOLCANO_BADGE_SIGNAL_EVENT_ID = 'nexus_order_volcano_badge_energy_logged_hidden'
 
     module_function
 
@@ -4749,6 +4756,107 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLAINE_VOLCANO_BADGE_PREP_EVENT_ID }
     end
 
+    def complete_blaine_volcano_badge_battle(state, location: 'Cinnabar Gym', result: 'badge_win', area_type: 'gym')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_blaine_volcano_badge_prep', 'event_id' => BLAINE_VOLCANO_BADGE_BATTLE_ID } unless blaine_volcano_badge_prep_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => BLAINE_VOLCANO_BADGE_BATTLE_ID } if blaine_volcano_badge_battle_cleared?(state)
+
+      story['current_act'] = 'act_6_cinnabar_viridian'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_BLAINE_VOLCANO_BADGE_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_BLAINE_VOLCANO_BADGE_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_VOLCANO_BADGE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_FIRE_WEATHER_LESSON_MASTERED')
+      add_story_flag(state, 'FLAG_NEXUS_VIRIDIAN_GYM_RETURN_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_EARTH_BADGE_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_VIRIDIAN_RECALL_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_PHOENIX_CINNABAR_SETBACK')
+      mark_cleared_event(story, BLAINE_VOLCANO_BADGE_BATTLE_ID)
+      mark_cleared_event(story, VOLCANO_BADGE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, FIRE_WEATHER_LESSON_EVENT_ID)
+      mark_cleared_event(story, VIRIDIAN_GYM_RETURN_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_EARTH_BADGE_LEAD_EVENT_ID)
+      mark_cleared_event(story, ROCKET_VIRIDIAN_RECALL_EVENT_ID)
+      mark_cleared_event(story, PHOENIX_CINNABAR_SETBACK_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_VOLCANO_BADGE_SIGNAL_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'viridian_gym_recall_after_blaine',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_phoenix',
+        'kanto',
+        location,
+        'volcano_badge_heat_doctrine_broken',
+        threat_delta: -2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'volcano_badge_energy_logged_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_phoenix',
+        location,
+        'Blaine rejects Phoenix revival doctrine while Rocket pivots the post-badge heat signal back toward Viridian Gym',
+        intensity: 3,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'blaine_badge_exit',
+        location: location,
+        summary: 'Red meets Antman after the Volcano Badge win and says Giovanni will not ignore a seven-badge Trainer.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'cinnabar_water_followup',
+        location: location,
+        summary: 'Misty turns the Cinnabar win into a lesson about using Water answers without letting one type solve every fight.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'heat_recovery_review',
+        location: location,
+        summary: 'Brock checks recovery after the hot arena and frames the weather lesson as preparation for Giovanni.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman earned the Volcano Badge from Blaine; Rocket recall traffic points back to Viridian, and Giovanni is moving.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = blaine_volcano_badge_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def blaine_volcano_badge_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLAINE_VOLCANO_BADGE_BATTLE_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5910,6 +6018,36 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_volcano_heat_signal_unrevealed',
         'unlocks' => %w[cinnabar_gym_puzzle blaine_volcano_badge_battle kanto_badge_seven_pressure],
         'next_hook' => 'blaine_volcano_badge_battle'
+      }
+    end
+
+    def blaine_volcano_badge_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => BLAINE_VOLCANO_BADGE_BATTLE_ID,
+        'battle_id' => BLAINE_VOLCANO_BADGE_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'gym_leader' => 'Blaine',
+        'badge' => 'Volcano Badge',
+        'level_cap' => 48,
+        'opponent_species' => %w[Growlithe Rapidash Magmar],
+        'companion_rule' => 'no_companion_assist_in_gym_battle',
+        'linked_events' => [
+          VOLCANO_BADGE_OBTAINED_EVENT_ID,
+          FIRE_WEATHER_LESSON_EVENT_ID,
+          VIRIDIAN_GYM_RETURN_EVENT_ID,
+          GIOVANNI_EARTH_BADGE_LEAD_EVENT_ID,
+          ROCKET_VIRIDIAN_RECALL_EVENT_ID,
+          PHOENIX_CINNABAR_SETBACK_EVENT_ID,
+          NEXUS_ORDER_VOLCANO_BADGE_SIGNAL_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_phoenix nexus_order],
+        'gym_state' => 'volcano_badge_obtained_viridian_return_open',
+        'giovanni_state' => 'viridian_gym_recall_signal_active',
+        'hidden_meta_signal' => 'nexus_order_volcano_badge_energy_logged_unrevealed',
+        'unlocks' => %w[volcano_badge fire_weather_mastery viridian_gym_return giovanni_earth_badge_lead],
+        'next_hook' => 'viridian_gym_return'
       }
     end
 

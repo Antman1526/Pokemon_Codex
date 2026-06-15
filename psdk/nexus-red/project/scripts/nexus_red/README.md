@@ -133,6 +133,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_blaine_volcano_badge_prep(state, location:, area_type:)` resolves the companion training beat before the Cinnabar Gym. Red drills sun-pressure discipline, Misty teaches water-answer planning, Brock covers rock/ground counterplay, Rocket and Phoenix leave final courtyard traces, Nexus Order stays hidden, and the hook opens `blaine_volcano_badge_battle`.
 
+`NexusRed::KantoStory.complete_blaine_volcano_badge_battle(state, location:, result:, area_type:)` resolves the solo Volcano Badge battle. It awards the Volcano Badge, closes the Cinnabar Phoenix setback, records Rocket recall traffic toward Viridian, keeps Nexus Order hidden, and opens `viridian_gym_return` for Giovanni's final Kanto badge arc.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

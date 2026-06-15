@@ -248,6 +248,8 @@ REQUIRED_MARKERS = (
     "blaine_revival_warning_cleared?",
     "complete_blaine_volcano_badge_prep",
     "blaine_volcano_badge_prep_cleared?",
+    "complete_blaine_volcano_badge_battle",
+    "blaine_volcano_badge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2505,6 +2507,44 @@ raise 'expected KantoStory Blaine prep training hooks' unless blaine_prep['train
 second_blaine_prep = NexusRed::KantoStory.complete_blaine_volcano_badge_prep(kanto_story_state)
 raise 'expected KantoStory Blaine prep idempotent guard' unless second_blaine_prep['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Blaine prep history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blaine_volcano_badge_prep' } == 1
+pre_blaine_battle = NexusRed::KantoStory.complete_blaine_volcano_badge_battle(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Blaine battle gated before prep' unless pre_blaine_battle['status'] == 'blocked_missing_blaine_volcano_badge_prep'
+blaine_battle = NexusRed::KantoStory.complete_blaine_volcano_badge_battle(
+  kanto_story_state,
+  location: 'Cinnabar Gym',
+  result: 'badge_win',
+  area_type: 'gym'
+)
+raise 'expected KantoStory Blaine battle clear status' unless blaine_battle['status'] == 'cleared'
+raise 'expected KantoStory Blaine battle event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('blaine_volcano_badge_battle')
+raise 'expected KantoStory Blaine battle helper true' unless NexusRed::KantoStory.blaine_volcano_badge_battle_cleared?(kanto_story_state)
+raise 'expected KantoStory Blaine battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLAINE_VOLCANO_BADGE_BATTLE_STARTED')
+raise 'expected KantoStory Blaine battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLAINE_VOLCANO_BADGE_BATTLE_FINISHED')
+raise 'expected KantoStory Volcano Badge obtained flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VOLCANO_BADGE_OBTAINED')
+raise 'expected KantoStory fire weather lesson mastered flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FIRE_WEATHER_LESSON_MASTERED')
+raise 'expected KantoStory Viridian gym return unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VIRIDIAN_GYM_RETURN_UNLOCKED')
+raise 'expected KantoStory Giovanni Earth Badge lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_EARTH_BADGE_LEAD')
+raise 'expected KantoStory Rocket Viridian recall flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_VIRIDIAN_RECALL_SIGNAL')
+raise 'expected KantoStory Phoenix Cinnabar setback flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PHOENIX_CINNABAR_SETBACK')
+raise 'expected KantoStory current act remains Cinnabar Viridian after Blaine' unless kanto_story_state['kanto_story']['current_act'] == 'act_6_cinnabar_viridian'
+raise 'expected KantoStory Red Blaine badge exit scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('blaine_badge_exit')
+raise 'expected KantoStory Misty Cinnabar water followup scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('cinnabar_water_followup')
+raise 'expected KantoStory Brock heat recovery review scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('heat_recovery_review')
+raise 'expected KantoStory Rocket Viridian recall activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Gym' && activity['operation'] == 'viridian_gym_recall_after_blaine' }
+raise 'expected KantoStory Phoenix Cinnabar setback activity' unless kanto_story_state['faction_progress']['team_phoenix']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Gym' && activity['operation'] == 'volcano_badge_heat_doctrine_broken' }
+raise 'expected KantoStory Nexus Volcano badge signal activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Gym' && activity['operation'] == 'volcano_badge_energy_logged_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Blaine battle' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Phoenix Blaine battle conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_phoenix' && conflict['location'] == 'Cinnabar Gym' }
+raise 'expected KantoStory Blaine battle story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Volcano Badge') && message['text'].include?('Viridian') && message['text'].include?('Giovanni') }
+raise 'expected KantoStory Blaine battle next hook Viridian' unless blaine_battle['next_hook'] == 'viridian_gym_return'
+raise 'expected KantoStory Blaine battle badge Volcano Badge' unless blaine_battle['badge'] == 'Volcano Badge'
+raise 'expected KantoStory Blaine battle result propagated' unless blaine_battle['result'] == 'badge_win'
+raise 'expected KantoStory Blaine battle team species' unless blaine_battle['opponent_species'] == %w[Growlithe Rapidash Magmar]
+raise 'expected KantoStory Blaine battle companion rule' unless blaine_battle['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected KantoStory Blaine battle unlocks Viridian return' unless blaine_battle['unlocks'].include?('volcano_badge') && blaine_battle['unlocks'].include?('viridian_gym_return')
+second_blaine_battle = NexusRed::KantoStory.complete_blaine_volcano_badge_battle(kanto_story_state)
+raise 'expected KantoStory Blaine battle idempotent guard' unless second_blaine_battle['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Blaine battle history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blaine_volcano_badge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
