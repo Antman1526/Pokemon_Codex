@@ -10,6 +10,7 @@ Status: setup scaffold only. Do not vendor PSDK binaries, generated caches, comm
 psdk/nexus-red/
   project/
     Data/
+      nexus_red_seed/
     Graphics/
     Audio/
     scripts/
@@ -39,4 +40,5 @@ psdk/nexus-red/
 - Setup audit: `docs/psdk/PSDK_SETUP_AUDIT_2026-06-15.md`
 - Kanto migration map: `psdk/nexus-red/docs/content-migration/KANTO_VERTICAL_SLICE_MAPPING.md`
 - Starter and early-route import contract: `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`
+- PSDK import seed manifest: `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`
 - Ignore guardrails: `psdk/nexus-red/.gitignore`

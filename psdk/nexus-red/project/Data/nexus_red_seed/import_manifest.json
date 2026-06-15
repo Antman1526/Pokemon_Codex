@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "status": "psdk_import_seed_manifest",
+  "game_title": "POKEMON NEXUS RED",
+  "target_engine": "pokemon_studio_psdk",
+  "source_reference_engine": "godot_4_reference",
+  "design_contract": "psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md",
+  "imports": [
+    {
+      "id": "oak_lab_39_first_partner_selector",
+      "source_path": "native/nexus-red/content/starters/starter_choices.json",
+      "psdk_target": "project/Data/nexus_red_seed/generated/oak_lab_first_partner_selector.json",
+      "psdk_system": "psdk_event_script_plus_ruby_helper",
+      "required_selectable_count": 39,
+      "required_official_count": 27,
+      "required_special_count": 12,
+      "preserve_rules": [
+        "official_starters_first_in_generation_order",
+        "special_starters_after_official_set",
+        "blue_counter_pick_rules",
+        "ava_priority_pool",
+        "dax_priority_pool",
+        "starter_chosen_story_flag",
+        "add_selected_species_to_party"
+      ],
+      "story_context": {
+        "map": "Oak Lab",
+        "professor": "Oak",
+        "protagonist": "Antman",
+        "primary_companion": "Red",
+        "starting_rivals": ["Blue", "Ava", "Dax"]
+      }
+    },
+    {
+      "id": "routes_1_to_3_migration_encounters",
+      "source_path": "native/nexus-red/content/encounters/route_1_to_3_migration_encounters.json",
+      "psdk_target": "project/Data/nexus_red_seed/generated/routes_1_to_3_migration_encounters.json",
+      "psdk_system": "pokemon_studio_encounter_zones_or_custom_ruby_table",
+      "required_encounter_count": 39,
+      "required_routes": ["route_1", "route_2", "route_3"],
+      "level_cap_context": "pre_brock",
+      "allowed_level_range": [4, 7],
+      "preserve_rules": [
+        "all_39_first_partner_species_catchable_before_brock",
+        "route_1_kanto_johto_plus_early_specials",
+        "route_2_hoenn_sinnoh_unova_plus_rare_power_species",
+        "route_3_kalos_alola_galar_paldea_plus_kubfu",
+        "dratini_larvitar_kubfu_weight_1",
+        "time_of_day_flavor_when_supported",
+        "local_kanto_wildlife_remains_common"
+      ],
+      "route_targets": {
+        "route_1": {
+          "display_name": "Route 1",
+          "psdk_map_id": "kanto_route_1",
+          "level_band": [4, 5],
+          "story_unlock": "starter_chosen"
+        },
+        "route_2": {
+          "display_name": "Route 2",
+          "psdk_map_id": "kanto_route_2_forest_gate",
+          "level_band": [5, 6],
+          "story_unlock": "route_2_forest_gate_reached"
+        },
+        "route_3": {
+          "display_name": "Route 3",
+          "psdk_map_id": "kanto_route_3",
+          "level_band": [6, 7],
+          "story_unlock": "boulder_badge_obtained"
+        }
+      }
+    }
+  ],
+  "first_psdk_slice_flags": [
+    "bedroom_intro_seen",
+    "mom_intro_seen",
+    "red_companion_intro_seen",
+    "oak_lab_reached",
+    "starter_chosen",
+    "blue_opening_battle_ready",
+    "route_1_reached",
+    "worldlink_stub_unlocked"
+  ],
+  "do_not_import": [
+    "commercial_rom_assets",
+    "ripped_assets",
+    "psdk_binaries",
+    "generated_exports",
+    "local_save_files"
+  ]
+}

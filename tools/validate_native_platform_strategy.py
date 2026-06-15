@@ -26,6 +26,7 @@ PSDK_GITIGNORE = ROOT / "psdk" / "nexus-red" / ".gitignore"
 PSDK_SETUP_AUDIT = ROOT / "docs" / "psdk" / "PSDK_SETUP_AUDIT_2026-06-15.md"
 PSDK_KANTO_MAPPING = ROOT / "psdk" / "nexus-red" / "docs" / "content-migration" / "KANTO_VERTICAL_SLICE_MAPPING.md"
 PSDK_STARTER_IMPORT_CONTRACT = ROOT / "psdk" / "nexus-red" / "docs" / "studio-data-notes" / "STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md"
+PSDK_SEED_MANIFEST = ROOT / "psdk" / "nexus-red" / "project" / "Data" / "nexus_red_seed" / "import_manifest.json"
 
 
 def read(path: Path) -> str:
@@ -100,6 +101,7 @@ def validate_docs() -> list[str]:
         (PSDK_SETUP_AUDIT, "PSDK setup audit"),
         (PSDK_KANTO_MAPPING, "PSDK Kanto migration mapping"),
         (PSDK_STARTER_IMPORT_CONTRACT, "PSDK starter import contract"),
+        (PSDK_SEED_MANIFEST, "PSDK seed manifest"),
     ):
         if not path.exists():
             errors.append(f"missing {label}: {path.relative_to(ROOT)}")
@@ -180,6 +182,7 @@ def validate_docs() -> list[str]:
         "native/nexus-red",
         "KANTO_VERTICAL_SLICE_MAPPING.md",
         "STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md",
+        "import_manifest.json",
     ):
         if marker not in scaffold:
             errors.append(f"PSDK scaffold missing marker: {marker}")
@@ -214,6 +217,7 @@ def validate_docs() -> list[str]:
         "Red",
         "native/nexus-red/content/starters/starter_choices.json",
         "STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md",
+        "import_manifest.json",
     ):
         if marker not in kanto_mapping:
             errors.append(f"PSDK Kanto mapping missing marker: {marker}")
@@ -233,6 +237,20 @@ def validate_docs() -> list[str]:
     ):
         if marker not in starter_import:
             errors.append(f"PSDK starter import contract missing marker: {marker}")
+
+    seed_manifest = read(PSDK_SEED_MANIFEST)
+    for marker in (
+        "psdk_import_seed_manifest",
+        "oak_lab_39_first_partner_selector",
+        "routes_1_to_3_migration_encounters",
+        "native/nexus-red/content/starters/starter_choices.json",
+        "native/nexus-red/content/encounters/route_1_to_3_migration_encounters.json",
+        "Red",
+        "Antman",
+        "worldlink_stub_unlocked",
+    ):
+        if marker not in seed_manifest:
+            errors.append(f"PSDK seed manifest missing marker: {marker}")
 
     return errors
 

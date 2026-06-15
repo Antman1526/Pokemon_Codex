@@ -8,6 +8,7 @@ This file maps the current Godot reference prototype into Pokemon Studio / PSDK 
 - Starter data: `native/nexus-red/content/starters/starter_choices.json`
 - Early migration pool: `native/nexus-red/content/encounters/route_1_to_3_migration_encounters.json`
 - PSDK import contract: `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`
+- PSDK import seed manifest: `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`
 - WorldLink batches: `native/nexus-red/content/worldlink/`
 - Main story docs: `docs/POKEMON_NEXUS_RED_FRAMEWORK.md`
 - PSDK strategy: `docs/PSDK_NATIVE_BUILD_STRATEGY.md`
@@ -52,6 +53,7 @@ The first PSDK import must preserve:
 - pre-Brock level safety.
 
 Detailed import rows live in `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`.
+Machine-readable source/target mappings live in `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`.
 
 ## Routes 1-3 Catchability Contract
 
