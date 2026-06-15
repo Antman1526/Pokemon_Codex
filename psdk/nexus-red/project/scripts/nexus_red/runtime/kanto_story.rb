@@ -48,6 +48,14 @@ module NexusRed
     CUBONE_MR_FUJI_EVENT_ID = 'cubone_mr_fuji_thread'
     SILPH_SCOPE_NEED_EVENT_ID = 'silph_scope_need_seen'
     POKEMON_TOWER_DEEPER_LOCK_EVENT_ID = 'pokemon_tower_deeper_path_locked'
+    ROUTE_8_CELADON_EVENT_ID = 'route_8_celadon_road'
+    RED_ROUTE_8_WESTBOUND_EVENT_ID = 'red_route_8_westbound'
+    BILL_SILPH_SCOPE_CELADON_EVENT_ID = 'bill_silph_scope_celadon_trace'
+    ROCKET_CELADON_GAME_CORNER_EVENT_ID = 'rocket_celadon_game_corner_lead'
+    TEAM_MOONLIGHT_ROUTE_8_EVENT_ID = 'team_moonlight_route_8_shadow'
+    UNDERGROUND_PATH_CELADON_EVENT_ID = 'underground_path_to_celadon_unlocked'
+    CELADON_CITY_TEASED_EVENT_ID = 'celadon_city_teased'
+    BLUE_ROUTE_8_CROSSING_EVENT_ID = 'blue_route_8_silph_scope_crossing'
 
     module_function
 
@@ -1142,6 +1150,95 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == POKEMON_TOWER_FIRST_FLOOR_EVENT_ID }
     end
 
+    def complete_route_8_celadon_road(state, location: 'Route 8', area_type: 'route', rival_id: 'blue')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_pokemon_tower_first_floor', 'event_id' => ROUTE_8_CELADON_EVENT_ID } unless pokemon_tower_first_floor_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROUTE_8_CELADON_EVENT_ID } if route_8_celadon_road_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE8_CELADON_ROAD_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ROUTE8_WESTBOUND')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_SILPH_SCOPE_CELADON_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_CELADON_GAME_CORNER_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_ROUTE8_SHADOW')
+      add_story_flag(state, 'FLAG_NEXUS_UNDERGROUND_PATH_TO_CELADON_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_CITY_TEASED')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_ROUTE8_SILPH_SCOPE_CROSSING')
+      mark_cleared_event(story, ROUTE_8_CELADON_EVENT_ID)
+      mark_cleared_event(story, RED_ROUTE_8_WESTBOUND_EVENT_ID)
+      mark_cleared_event(story, BILL_SILPH_SCOPE_CELADON_EVENT_ID)
+      mark_cleared_event(story, ROCKET_CELADON_GAME_CORNER_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_ROUTE_8_EVENT_ID)
+      mark_cleared_event(story, UNDERGROUND_PATH_CELADON_EVENT_ID)
+      mark_cleared_event(story, CELADON_CITY_TEASED_EVENT_ID)
+      mark_cleared_event(story, BLUE_ROUTE_8_CROSSING_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'celadon_game_corner_lead',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'route_8_dream_shadow',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket points the Silph Scope trace toward Celadon while Moonlight shadows the road from Lavender',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'route_8_westbound',
+        location: location,
+        summary: 'Red keeps Antman on the westbound road toward Celadon instead of skipping the route network.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_scope_celadon_trace',
+        location: location,
+        summary: 'Bill traces the Silph Scope signal from Pokemon Tower toward Celadon Game Corner.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        rival_id,
+        location,
+        "#{rival_display_name(rival_id)} crossed Route 8 chasing the Silph Scope lead toward Celadon.",
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Route 8 tied the Silph Scope lead to Celadon Game Corner, with Moonlight shadows still leaking from Lavender.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = route_8_celadon_event_result(location, rival_id)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def route_8_celadon_road_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_8_CELADON_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1375,6 +1472,26 @@ module NexusRed
         'factions' => %w[team_moonlight team_rocket],
         'locked_until' => 'silph_scope',
         'next_hook' => 'route_8_celadon_road'
+      }
+    end
+
+    def route_8_celadon_event_result(location, rival_id)
+      {
+        'status' => 'cleared',
+        'event_id' => ROUTE_8_CELADON_EVENT_ID,
+        'location' => location.to_s,
+        'rival_id' => rival_id.to_s,
+        'linked_events' => [
+          RED_ROUTE_8_WESTBOUND_EVENT_ID,
+          BILL_SILPH_SCOPE_CELADON_EVENT_ID,
+          ROCKET_CELADON_GAME_CORNER_EVENT_ID,
+          TEAM_MOONLIGHT_ROUTE_8_EVENT_ID,
+          UNDERGROUND_PATH_CELADON_EVENT_ID,
+          CELADON_CITY_TEASED_EVENT_ID,
+          BLUE_ROUTE_8_CROSSING_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight],
+        'next_hook' => 'celadon_underground_path'
       }
     end
 

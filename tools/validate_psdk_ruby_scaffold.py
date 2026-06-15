@@ -176,6 +176,8 @@ REQUIRED_MARKERS = (
     "lavender_outskirts_cleared?",
     "complete_pokemon_tower_first_floor",
     "pokemon_tower_first_floor_cleared?",
+    "complete_route_8_celadon_road",
+    "route_8_celadon_road_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1321,6 +1323,36 @@ raise 'expected KantoStory Pokemon Tower next hook Route 8' unless pokemon_tower
 second_pokemon_tower = NexusRed::KantoStory.complete_pokemon_tower_first_floor(kanto_story_state)
 raise 'expected KantoStory Pokemon Tower idempotent guard' unless second_pokemon_tower['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Pokemon Tower history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pokemon_tower_first_floor' } == 1
+pre_tower_route_8 = NexusRed::KantoStory.complete_route_8_celadon_road(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Route 8 gated before Pokemon Tower' unless pre_tower_route_8['status'] == 'blocked_missing_pokemon_tower_first_floor'
+route_8_celadon = NexusRed::KantoStory.complete_route_8_celadon_road(
+  kanto_story_state,
+  location: 'Route 8',
+  area_type: 'route',
+  rival_id: 'blue'
+)
+raise 'expected KantoStory Route 8 clear status' unless route_8_celadon['status'] == 'cleared'
+raise 'expected KantoStory Route 8 event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('route_8_celadon_road')
+raise 'expected KantoStory Route 8 helper true' unless NexusRed::KantoStory.route_8_celadon_road_cleared?(kanto_story_state)
+raise 'expected KantoStory Route 8 reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE8_CELADON_ROAD_REACHED')
+raise 'expected KantoStory Red Route 8 westbound flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_ROUTE8_WESTBOUND')
+raise 'expected KantoStory Bill Silph Scope Celadon trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_SILPH_SCOPE_CELADON_TRACE')
+raise 'expected KantoStory Rocket Celadon Game Corner lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_CELADON_GAME_CORNER_LEAD')
+raise 'expected KantoStory Moonlight Route 8 shadow flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_ROUTE8_SHADOW')
+raise 'expected KantoStory Underground Path unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_UNDERGROUND_PATH_TO_CELADON_UNLOCKED')
+raise 'expected KantoStory Celadon city tease flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_CITY_TEASED')
+raise 'expected KantoStory Blue Route 8 crossing flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_ROUTE8_SILPH_SCOPE_CROSSING')
+raise 'expected KantoStory Rocket Game Corner lead activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 8' && activity['operation'] == 'celadon_game_corner_lead' }
+raise 'expected KantoStory Moonlight Route 8 shadow activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 8' && activity['operation'] == 'route_8_dream_shadow' }
+raise 'expected KantoStory Rocket Moonlight Route 8 conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Route 8' }
+raise 'expected KantoStory Red Route 8 scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('route_8_westbound')
+raise 'expected KantoStory Bill Silph Scope Celadon trace scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_scope_celadon_trace')
+raise 'expected KantoStory Blue Route 8 rival clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Silph Scope')
+raise 'expected KantoStory Route 8 story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Game Corner') }
+raise 'expected KantoStory Route 8 next hook Celadon Underground Path' unless route_8_celadon['next_hook'] == 'celadon_underground_path'
+second_route_8_celadon = NexusRed::KantoStory.complete_route_8_celadon_road(kanto_story_state)
+raise 'expected KantoStory Route 8 idempotent guard' unless second_route_8_celadon['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Route 8 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_8_celadon_road' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
