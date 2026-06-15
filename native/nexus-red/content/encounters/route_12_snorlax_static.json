@@ -1,0 +1,19 @@
+{
+  "id": "route_12_snorlax_static",
+  "route_id": "route_12",
+  "route_name": "Route 12",
+  "species": "Snorlax",
+  "level": 35,
+  "encounter_type": "static_story",
+  "return_scene": "route_12_snorlax_wake",
+  "capture_allowed": true,
+  "story_role": "Poke Flute wake encounter that clears the Route 12 roadblock after Mr. Fuji is rescued.",
+  "tags": [
+    "kanto",
+    "static",
+    "snorlax",
+    "poke_flute",
+    "roadblock_clear",
+    "pre_fuchsia_balanced"
+  ]
+}

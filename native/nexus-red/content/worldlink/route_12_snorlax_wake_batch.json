@@ -1,0 +1,40 @@
+{
+  "id": "route_12_snorlax_wake_batch",
+  "feed": [
+    {
+      "id": "wl_route_12_snorlax_wake_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Route 12 with the Poke Flute."
+    },
+    {
+      "id": "wl_red_route_12_flute_guard",
+      "speaker": "Red",
+      "text": "Red guarded the Route 12 boardwalk while Antman prepared to wake Snorlax."
+    },
+    {
+      "id": "wl_bill_poke_flute_signal_confirmed",
+      "speaker": "Bill",
+      "text": "Bill confirmed the Poke Flute signal can cut through the last sleep echo on Route 12."
+    },
+    {
+      "id": "wl_snorlax_static_encounter_seen",
+      "speaker": "WorldLink",
+      "text": "Snorlax woke as a Route 12 static encounter."
+    },
+    {
+      "id": "wl_team_moonlight_sleep_echo_cleared",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight's sleep echo on Route 12 was cleared."
+    },
+    {
+      "id": "wl_snorlax_roadblock_cleared",
+      "speaker": "WorldLink",
+      "text": "The Snorlax roadblock has been cleared."
+    },
+    {
+      "id": "wl_route_12_south_path_unlocked",
+      "speaker": "Bill",
+      "text": "Bill marked Route 12's southbound path as open for the next Kanto leg."
+    }
+  ]
+}

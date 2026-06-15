@@ -29,6 +29,7 @@ const LavenderOutskirtsScene := preload("res://scenes/world/LavenderOutskirts.ts
 const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFirstFloor.tscn")
 const PokemonTowerSilphScopeFloorScene := preload("res://scenes/world/PokemonTowerSilphScopeFloor.tscn")
 const PokemonTowerFujiRescueScene := preload("res://scenes/world/PokemonTowerFujiRescue.tscn")
+const Route12SnorlaxWakeScene := preload("res://scenes/world/Route12SnorlaxWake.tscn")
 const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.tscn")
 const CeladonUndergroundPathScene := preload("res://scenes/world/CeladonUndergroundPath.tscn")
 const CeladonCityScene := preload("res://scenes/world/CeladonCity.tscn")
@@ -405,8 +406,21 @@ func _show_pokemon_tower_fuji_rescue() -> void:
 	var tower := PokemonTowerFujiRescueScene.instantiate()
 	tower.save_state = save_state
 	tower.go_to_pokemon_tower_silph_scope_floor.connect(_on_go_to_pokemon_tower_silph_scope_floor)
+	tower.go_to_route_12_snorlax_wake.connect(_on_go_to_route_12_snorlax_wake)
 	tower.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(tower)
+
+
+func _on_go_to_route_12_snorlax_wake() -> void:
+	_show_route_12_snorlax_wake()
+
+
+func _show_route_12_snorlax_wake() -> void:
+	var route12 := Route12SnorlaxWakeScene.instantiate()
+	route12.save_state = save_state
+	route12.go_to_pokemon_tower_fuji_rescue.connect(_on_go_to_pokemon_tower_fuji_rescue)
+	route12.start_wild_encounter.connect(_on_start_wild_encounter)
+	_replace_screen(route12)
 
 
 func _on_go_to_route_8_celadon_road() -> void:
@@ -641,6 +655,8 @@ func _return_from_wild_encounter(return_scene: String) -> void:
 		_show_route_2_forest_gate()
 	elif return_scene == "route_3":
 		_show_route_3()
+	elif return_scene == "route_12_snorlax_wake":
+		_show_route_12_snorlax_wake()
 	else:
 		_on_go_to_route_1()
 

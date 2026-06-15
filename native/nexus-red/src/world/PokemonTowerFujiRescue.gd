@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_pokemon_tower_silph_scope_floor
+signal go_to_route_12_snorlax_wake
 signal start_battle_placeholder(battle_id)
 
 const FUJI_RESCUE_BATTLE_ID := "rocket_tower_fuji_guard"
@@ -21,6 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_pokemon_tower_fuji_rescue_scene()
 	if event.is_action_pressed("ui_down"):
 		trigger_fuji_rescue_battle()
+	if event.is_action_pressed("ui_right"):
+		trigger_route_12_snorlax_wake_path()
 	if event.is_action_pressed("cancel"):
 		return_to_pokemon_tower_silph_scope_floor()
 
@@ -166,9 +169,17 @@ func trigger_fuji_rescue_battle() -> void:
 	emit_signal("start_battle_placeholder", FUJI_RESCUE_BATTLE_ID)
 
 
+func trigger_route_12_snorlax_wake_path() -> void:
+	if save_state == null or not bool(save_state.story_flags.get("poke_flute_obtained", false)) or not bool(save_state.story_flags.get("snorlax_wake_path_unlocked", false)):
+		dialogue_label.text = "Red: Route 12 stays blocked until we rescue Mr. Fuji and recover the Poke Flute."
+		return
+	dialogue_label.text = "Red: Route 12 is open to try now. Bill says the Poke Flute should wake Snorlax and clear the sleeping-road block."
+	emit_signal("go_to_route_12_snorlax_wake")
+
+
 func return_to_pokemon_tower_silph_scope_floor() -> void:
 	emit_signal("go_to_pokemon_tower_silph_scope_floor")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is Mr. Fuji's rescue floor. Press Z/Enter to mark Bill's clean signal, Rocket's guard, Moonlight's retreat, the Poke Flute, and the Snorlax wake path. Press Down to battle or X/Esc to return."
+	dialogue_label.text = "Red: This is Mr. Fuji's rescue floor. Press Z/Enter to mark Bill's clean signal, Rocket's guard, Moonlight's retreat, the Poke Flute, and the Snorlax wake path. Press Down to battle, Right for Route 12, or X/Esc to return."

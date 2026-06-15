@@ -265,6 +265,14 @@ func start_new_game(name: String) -> void:
 		"poke_flute_obtained": false,
 		"snorlax_wake_path_unlocked": false,
 		"worldlink_pokemon_tower_fuji_rescue_batch_queued": false,
+		"route_12_snorlax_wake_reached": false,
+		"red_route_12_flute_guard_seen": false,
+		"bill_poke_flute_signal_confirmed": false,
+		"snorlax_static_encounter_seen": false,
+		"team_moonlight_sleep_echo_cleared": false,
+		"snorlax_roadblock_cleared": false,
+		"route_12_south_path_unlocked": false,
+		"worldlink_route_12_snorlax_wake_batch_queued": false,
 		"route_8_celadon_road_reached": false,
 		"red_route_8_westbound_seen": false,
 		"bill_silph_scope_celadon_trace_seen": false,
@@ -1142,6 +1150,40 @@ func queue_pokemon_tower_fuji_rescue_batch() -> void:
 		"wl_rocket_tower_fuji_guard_seen",
 		"wl_team_moonlight_retreat_signal",
 		"wl_fuji_rescue_battle_unlocked",
+	])
+
+
+func enter_route_12_snorlax_wake() -> void:
+	current_scene = "route_12_snorlax_wake"
+	active_companion = "red"
+	set_flag("route_12_snorlax_wake_reached", true)
+	queue_worldlink_id("wl_route_12_snorlax_wake_reached")
+
+
+func record_route_12_snorlax_wake_scene() -> void:
+	active_companion = "red"
+	set_flag("red_route_12_flute_guard_seen", true)
+	set_flag("bill_poke_flute_signal_confirmed", true)
+	set_flag("team_moonlight_sleep_echo_cleared", true)
+	set_flag("snorlax_roadblock_cleared", true)
+	set_flag("route_12_south_path_unlocked", true)
+	queue_route_12_snorlax_wake_batch()
+
+
+func record_route_12_snorlax_static_encounter() -> void:
+	set_flag("snorlax_static_encounter_seen", true)
+	queue_worldlink_id("wl_snorlax_static_encounter_seen")
+
+
+func queue_route_12_snorlax_wake_batch() -> void:
+	set_flag("worldlink_route_12_snorlax_wake_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_12_snorlax_wake_reached",
+		"wl_red_route_12_flute_guard",
+		"wl_bill_poke_flute_signal_confirmed",
+		"wl_team_moonlight_sleep_echo_cleared",
+		"wl_snorlax_roadblock_cleared",
+		"wl_route_12_south_path_unlocked",
 	])
 
 
