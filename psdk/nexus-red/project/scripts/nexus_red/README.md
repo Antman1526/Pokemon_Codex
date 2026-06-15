@@ -85,6 +85,14 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_celadon_rocket_hideout_elevator(state, location:, area_type:)` resolves the restored elevator route after the Rocket Lift Key is obtained. It records Red guarding the elevator line, Bill decoding the Nexus Order override, Rocket's panel restoration, Gold Dust ledger decoding, Team Moonlight's elevator sleep signal, Giovanni's command-floor route, and unlocks the next hook `celadon_rocket_command_floor`.
 
+`NexusRed::KantoStory.complete_celadon_rocket_command_floor(state, location:, area_type:)` resolves the Giovanni command-floor confrontation after the elevator route. It records Red guarding the entrance, Bill decoding the hidden Nexus Order terminal, Rocket command-terminal activity, the Silph Scope reward, and unlocks Pokemon Tower's deeper path plus Erika's gym path.
+
+`NexusRed::KantoStory.complete_pokemon_tower_silph_scope_floor(state, location:, area_type:)` resolves the return to Pokemon Tower after the Silph Scope is obtained. It reveals the Marowak spirit, records Team Moonlight's fading spirit pressure, logs Red/Bill support scenes, and opens Mr. Fuji's rescue path plus the Poke Flute lead.
+
+`NexusRed::KantoStory.complete_pokemon_tower_fuji_rescue(state, location:, area_type:)` resolves the Mr. Fuji rescue floor after the Silph Scope tower beat. It records Rocket's tower guard losing control, Red covering the stairwell, Mr. Fuji's rescue, the Poke Flute reward, and unlocks the Route 12 Snorlax wake path.
+
+`NexusRed::KantoStory.complete_route_12_snorlax_wake(state, location:, area_type:)` resolves the Poke Flute roadblock clear. It marks the Route 12 Snorlax static encounter at level 35, clears Team Moonlight's sleep echo, unlocks the southbound path toward Fuchsia, and turns on the Super Rod tier in the four-rod fishing progression.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

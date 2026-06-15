@@ -200,6 +200,14 @@ REQUIRED_MARKERS = (
     "rocket_hideout_b3f_admin_battle_cleared?",
     "complete_celadon_rocket_hideout_elevator",
     "celadon_rocket_hideout_elevator_cleared?",
+    "complete_celadon_rocket_command_floor",
+    "celadon_rocket_command_floor_cleared?",
+    "complete_pokemon_tower_silph_scope_floor",
+    "pokemon_tower_silph_scope_floor_cleared?",
+    "complete_pokemon_tower_fuji_rescue",
+    "pokemon_tower_fuji_rescue_cleared?",
+    "complete_route_12_snorlax_wake",
+    "route_12_snorlax_wake_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1684,6 +1692,101 @@ raise 'expected KantoStory Rocket Hideout elevator command floor path' unless hi
 second_hideout_elevator = NexusRed::KantoStory.complete_celadon_rocket_hideout_elevator(kanto_story_state)
 raise 'expected KantoStory Rocket Hideout elevator idempotent guard' unless second_hideout_elevator['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Rocket Hideout elevator history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_rocket_hideout_elevator' } == 1
+pre_elevator_command_floor = NexusRed::KantoStory.complete_celadon_rocket_command_floor(NexusRed::RuntimeState.build)
+raise 'expected KantoStory command floor gated before elevator' unless pre_elevator_command_floor['status'] == 'blocked_missing_rocket_hideout_elevator'
+command_floor = NexusRed::KantoStory.complete_celadon_rocket_command_floor(
+  kanto_story_state,
+  location: 'Celadon Rocket Command Floor',
+  area_type: 'villain_hideout'
+)
+raise 'expected KantoStory command floor clear status' unless command_floor['status'] == 'cleared'
+raise 'expected KantoStory command floor event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('celadon_rocket_command_floor')
+raise 'expected KantoStory command floor helper true' unless NexusRed::KantoStory.celadon_rocket_command_floor_cleared?(kanto_story_state)
+raise 'expected KantoStory command floor reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_ROCKET_COMMAND_FLOOR_REACHED')
+raise 'expected KantoStory Giovanni command terminal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_COMMAND_TERMINAL')
+raise 'expected KantoStory Silph Scope obtained flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_SCOPE_OBTAINED')
+raise 'expected KantoStory Pokemon Tower deeper unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_DEEPER_PATH_UNLOCKED')
+raise 'expected KantoStory Erika gym path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ERIKA_GYM_PATH_UNLOCKED')
+raise 'expected KantoStory Rocket command floor activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Command Floor' && activity['operation'] == 'giovanni_command_terminal' }
+raise 'expected KantoStory Nexus Order command terminal activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon Rocket Command Floor' && activity['operation'] == 'command_terminal_shadow' }
+raise 'expected KantoStory Red command floor scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('command_floor_guard')
+raise 'expected KantoStory Bill command terminal scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('command_terminal_decode')
+raise 'expected KantoStory command floor story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Silph Scope') }
+raise 'expected KantoStory command floor next hook Tower return' unless command_floor['next_hook'] == 'pokemon_tower_silph_scope_floor'
+raise 'expected KantoStory command floor key item reward' unless command_floor['key_item_reward'] == 'silph_scope'
+second_command_floor = NexusRed::KantoStory.complete_celadon_rocket_command_floor(kanto_story_state)
+raise 'expected KantoStory command floor idempotent guard' unless second_command_floor['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate command floor history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_rocket_command_floor' } == 1
+pre_command_tower_scope = NexusRed::KantoStory.complete_pokemon_tower_silph_scope_floor(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Silph Scope floor gated before command floor' unless pre_command_tower_scope['status'] == 'blocked_missing_silph_scope'
+tower_scope = NexusRed::KantoStory.complete_pokemon_tower_silph_scope_floor(
+  kanto_story_state,
+  location: 'Pokemon Tower Silph Scope Floor',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Silph Scope floor clear status' unless tower_scope['status'] == 'cleared'
+raise 'expected KantoStory Silph Scope floor event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('pokemon_tower_silph_scope_floor')
+raise 'expected KantoStory Silph Scope floor helper true' unless NexusRed::KantoStory.pokemon_tower_silph_scope_floor_cleared?(kanto_story_state)
+raise 'expected KantoStory Silph Scope floor reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_SILPH_SCOPE_FLOOR_REACHED')
+raise 'expected KantoStory Marowak spirit reveal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MAROWAK_SPIRIT_REVEALED')
+raise 'expected KantoStory Fuji rescue path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MR_FUJI_RESCUE_PATH_UNLOCKED')
+raise 'expected KantoStory Poke Flute lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKE_FLUTE_LEAD_SEEN')
+raise 'expected KantoStory Moonlight spirit pressure activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Tower Silph Scope Floor' && activity['operation'] == 'marowak_spirit_pressure' }
+raise 'expected KantoStory Red Silph Scope scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('tower_silph_scope_guard')
+raise 'expected KantoStory Bill spirit decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('marowak_signal_decode')
+raise 'expected KantoStory Silph Scope floor alert paused in dungeon' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Mr. Fuji') }
+raise 'expected KantoStory Silph Scope floor next hook Fuji rescue' unless tower_scope['next_hook'] == 'pokemon_tower_fuji_rescue'
+second_tower_scope = NexusRed::KantoStory.complete_pokemon_tower_silph_scope_floor(kanto_story_state)
+raise 'expected KantoStory Silph Scope floor idempotent guard' unless second_tower_scope['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Silph Scope floor history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pokemon_tower_silph_scope_floor' } == 1
+pre_scope_fuji = NexusRed::KantoStory.complete_pokemon_tower_fuji_rescue(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Fuji rescue gated before Silph Scope floor' unless pre_scope_fuji['status'] == 'blocked_missing_silph_scope_floor'
+fuji_rescue = NexusRed::KantoStory.complete_pokemon_tower_fuji_rescue(
+  kanto_story_state,
+  location: 'Pokemon Tower Fuji Rescue Floor',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Fuji rescue clear status' unless fuji_rescue['status'] == 'cleared'
+raise 'expected KantoStory Fuji rescue event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('pokemon_tower_fuji_rescue')
+raise 'expected KantoStory Fuji rescue helper true' unless NexusRed::KantoStory.pokemon_tower_fuji_rescue_cleared?(kanto_story_state)
+raise 'expected KantoStory Fuji rescue reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_FUJI_RESCUE_REACHED')
+raise 'expected KantoStory Mr Fuji rescued flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MR_FUJI_RESCUED')
+raise 'expected KantoStory Poke Flute obtained flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKE_FLUTE_OBTAINED')
+raise 'expected KantoStory Snorlax wake path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SNORLAX_WAKE_PATH_UNLOCKED')
+raise 'expected KantoStory Rocket tower guard activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Tower Fuji Rescue Floor' && activity['operation'] == 'fuji_rescue_guard' }
+raise 'expected KantoStory Red Fuji rescue scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('fuji_rescue_guard')
+raise 'expected KantoStory Fuji rescue story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Poke Flute') }
+raise 'expected KantoStory Fuji rescue next hook Route 12' unless fuji_rescue['next_hook'] == 'route_12_snorlax_wake'
+raise 'expected KantoStory Fuji rescue key item reward' unless fuji_rescue['key_item_reward'] == 'poke_flute'
+second_fuji_rescue = NexusRed::KantoStory.complete_pokemon_tower_fuji_rescue(kanto_story_state)
+raise 'expected KantoStory Fuji rescue idempotent guard' unless second_fuji_rescue['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Fuji rescue history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pokemon_tower_fuji_rescue' } == 1
+pre_fuji_route_12 = NexusRed::KantoStory.complete_route_12_snorlax_wake(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Route 12 gated before Fuji rescue' unless pre_fuji_route_12['status'] == 'blocked_missing_poke_flute'
+route_12_wake = NexusRed::KantoStory.complete_route_12_snorlax_wake(
+  kanto_story_state,
+  location: 'Route 12',
+  area_type: 'route'
+)
+raise 'expected KantoStory Route 12 wake clear status' unless route_12_wake['status'] == 'cleared'
+raise 'expected KantoStory Route 12 wake event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('route_12_snorlax_wake')
+raise 'expected KantoStory Route 12 helper true' unless NexusRed::KantoStory.route_12_snorlax_wake_cleared?(kanto_story_state)
+raise 'expected KantoStory Route 12 reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE12_SNORLAX_WAKE_REACHED')
+raise 'expected KantoStory Snorlax static encounter flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SNORLAX_STATIC_ENCOUNTER_SEEN')
+raise 'expected KantoStory Moonlight sleep echo cleared flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_SLEEP_ECHO_CLEARED')
+raise 'expected KantoStory Snorlax roadblock cleared flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SNORLAX_ROADBLOCK_CLEARED')
+raise 'expected KantoStory Route 12 south path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE12_SOUTH_PATH_UNLOCKED')
+raise 'expected KantoStory Super Rod unlocked after Route 12' unless kanto_story_state['encounter_world']['unlocked_fishing_rods'].include?('super_rod')
+raise 'expected KantoStory Moonlight Route 12 activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 12' && activity['operation'] == 'route_12_sleep_echo' }
+raise 'expected KantoStory Red Route 12 scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('route_12_flute_guard')
+raise 'expected KantoStory Bill Route 12 scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('poke_flute_signal_confirmed')
+raise 'expected KantoStory Route 12 story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Route 12') && message['text'].include?('Snorlax') }
+raise 'expected KantoStory Route 12 next hook Fuchsia' unless route_12_wake['next_hook'] == 'route_12_fishing_pier'
+raise 'expected KantoStory Route 12 static encounter payload' unless route_12_wake['static_encounter']['species'] == 'Snorlax' && route_12_wake['static_encounter']['level'] == 35
+raise 'expected KantoStory Route 12 unlocks Super Rod' unless route_12_wake['unlocks'].include?('super_rod')
+second_route_12_wake = NexusRed::KantoStory.complete_route_12_snorlax_wake(kanto_story_state)
+raise 'expected KantoStory Route 12 idempotent guard' unless second_route_12_wake['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Route 12 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_12_snorlax_wake' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

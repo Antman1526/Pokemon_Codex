@@ -124,6 +124,26 @@ module NexusRed
     TEAM_MOONLIGHT_ELEVATOR_SLEEP_SIGNAL_EVENT_ID = 'team_moonlight_elevator_sleep_signal'
     GIOVANNI_COMMAND_FLOOR_ROUTE_EVENT_ID = 'giovanni_command_floor_route_seen'
     ROCKET_COMMAND_FLOOR_PATH_EVENT_ID = 'rocket_command_floor_path_unlocked'
+    CELADON_ROCKET_COMMAND_FLOOR_EVENT_ID = 'celadon_rocket_command_floor'
+    GIOVANNI_COMMAND_TERMINAL_EVENT_ID = 'giovanni_command_terminal'
+    SILPH_SCOPE_OBTAINED_EVENT_ID = 'silph_scope_obtained'
+    POKEMON_TOWER_DEEPER_UNLOCK_EVENT_ID = 'pokemon_tower_deeper_path_unlocked'
+    ERIKA_GYM_PATH_EVENT_ID = 'erika_gym_path_unlocked'
+    NEXUS_ORDER_COMMAND_TERMINAL_EVENT_ID = 'nexus_order_command_terminal_shadow'
+    POKEMON_TOWER_SILPH_SCOPE_FLOOR_EVENT_ID = 'pokemon_tower_silph_scope_floor'
+    MAROWAK_SPIRIT_REVEALED_EVENT_ID = 'marowak_spirit_revealed'
+    MR_FUJI_RESCUE_PATH_EVENT_ID = 'mr_fuji_rescue_path_unlocked'
+    POKE_FLUTE_LEAD_EVENT_ID = 'poke_flute_lead_seen'
+    POKEMON_TOWER_FUJI_RESCUE_EVENT_ID = 'pokemon_tower_fuji_rescue'
+    ROCKET_TOWER_FUJI_GUARD_EVENT_ID = 'rocket_tower_fuji_guard'
+    MR_FUJI_RESCUED_EVENT_ID = 'mr_fuji_rescued'
+    POKE_FLUTE_OBTAINED_EVENT_ID = 'poke_flute_obtained'
+    SNORLAX_WAKE_PATH_EVENT_ID = 'snorlax_wake_path_unlocked'
+    ROUTE_12_SNORLAX_WAKE_EVENT_ID = 'route_12_snorlax_wake'
+    SNORLAX_STATIC_ENCOUNTER_EVENT_ID = 'snorlax_static_encounter_seen'
+    TEAM_MOONLIGHT_SLEEP_ECHO_CLEARED_EVENT_ID = 'team_moonlight_sleep_echo_cleared'
+    SNORLAX_ROADBLOCK_CLEARED_EVENT_ID = 'snorlax_roadblock_cleared'
+    ROUTE_12_SOUTH_PATH_EVENT_ID = 'route_12_south_path_unlocked'
 
     module_function
 
@@ -2232,6 +2252,242 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_ELEVATOR_EVENT_ID }
     end
 
+    def complete_celadon_rocket_command_floor(state, location: 'Celadon Rocket Command Floor', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_elevator', 'event_id' => CELADON_ROCKET_COMMAND_FLOOR_EVENT_ID } unless celadon_rocket_hideout_elevator_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_ROCKET_COMMAND_FLOOR_EVENT_ID } if celadon_rocket_command_floor_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_ROCKET_COMMAND_FLOOR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_COMMAND_TERMINAL')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_SCOPE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_DEEPER_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_ERIKA_GYM_PATH_UNLOCKED')
+      mark_cleared_event(story, CELADON_ROCKET_COMMAND_FLOOR_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_COMMAND_TERMINAL_EVENT_ID)
+      mark_cleared_event(story, SILPH_SCOPE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, POKEMON_TOWER_DEEPER_UNLOCK_EVENT_ID)
+      mark_cleared_event(story, ERIKA_GYM_PATH_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_COMMAND_TERMINAL_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'giovanni_command_terminal',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'command_terminal_shadow',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'command_floor_guard',
+        location: location,
+        summary: 'Red holds the command-floor entrance while Antman faces Giovanni and secures the Silph Scope.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'command_terminal_decode',
+        location: location,
+        summary: 'Bill decodes a hidden Nexus Order terminal under Giovanni command routing.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Giovanni retreated from the Celadon command floor, the Silph Scope was recovered, and Pokemon Tower deeper access reopened.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_rocket_command_floor_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_rocket_command_floor_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_COMMAND_FLOOR_EVENT_ID }
+    end
+
+    def complete_pokemon_tower_silph_scope_floor(state, location: 'Pokemon Tower Silph Scope Floor', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_scope', 'event_id' => POKEMON_TOWER_SILPH_SCOPE_FLOOR_EVENT_ID } unless has_story_flag?(state, 'FLAG_NEXUS_SILPH_SCOPE_OBTAINED')
+      return { 'status' => 'already_cleared', 'event_id' => POKEMON_TOWER_SILPH_SCOPE_FLOOR_EVENT_ID } if pokemon_tower_silph_scope_floor_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_SILPH_SCOPE_FLOOR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_MAROWAK_SPIRIT_REVEALED')
+      add_story_flag(state, 'FLAG_NEXUS_MR_FUJI_RESCUE_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_POKE_FLUTE_LEAD_SEEN')
+      mark_cleared_event(story, POKEMON_TOWER_SILPH_SCOPE_FLOOR_EVENT_ID)
+      mark_cleared_event(story, MAROWAK_SPIRIT_REVEALED_EVENT_ID)
+      mark_cleared_event(story, MR_FUJI_RESCUE_PATH_EVENT_ID)
+      mark_cleared_event(story, POKE_FLUTE_LEAD_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'marowak_spirit_pressure',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'tower_silph_scope_guard',
+        location: location,
+        summary: 'Red shields Antman while the Silph Scope reveals the Marowak spirit.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'marowak_signal_decode',
+        location: location,
+        summary: 'Bill confirms the Silph Scope is cutting through Moonlight spirit-pressure residue.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The Silph Scope revealed Marowak, cleared the tower pressure, and opened the rescue route to Mr. Fuji.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = pokemon_tower_silph_scope_floor_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def pokemon_tower_silph_scope_floor_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == POKEMON_TOWER_SILPH_SCOPE_FLOOR_EVENT_ID }
+    end
+
+    def complete_pokemon_tower_fuji_rescue(state, location: 'Pokemon Tower Fuji Rescue Floor', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_scope_floor', 'event_id' => POKEMON_TOWER_FUJI_RESCUE_EVENT_ID } unless pokemon_tower_silph_scope_floor_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => POKEMON_TOWER_FUJI_RESCUE_EVENT_ID } if pokemon_tower_fuji_rescue_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_FUJI_RESCUE_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_MR_FUJI_RESCUED')
+      add_story_flag(state, 'FLAG_NEXUS_POKE_FLUTE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_SNORLAX_WAKE_PATH_UNLOCKED')
+      mark_cleared_event(story, POKEMON_TOWER_FUJI_RESCUE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_TOWER_FUJI_GUARD_EVENT_ID)
+      mark_cleared_event(story, MR_FUJI_RESCUED_EVENT_ID)
+      mark_cleared_event(story, POKE_FLUTE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, SNORLAX_WAKE_PATH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'fuji_rescue_guard',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'fuji_rescue_guard',
+        location: location,
+        summary: 'Red covers the tower stairwell while Antman rescues Mr. Fuji and receives the Poke Flute.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Mr. Fuji was rescued, Rocket lost the tower floor, and the Poke Flute opened the Route 12 Snorlax wake path.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = pokemon_tower_fuji_rescue_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def pokemon_tower_fuji_rescue_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == POKEMON_TOWER_FUJI_RESCUE_EVENT_ID }
+    end
+
+    def complete_route_12_snorlax_wake(state, location: 'Route 12', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_poke_flute', 'event_id' => ROUTE_12_SNORLAX_WAKE_EVENT_ID } unless has_story_flag?(state, 'FLAG_NEXUS_POKE_FLUTE_OBTAINED')
+      return { 'status' => 'already_cleared', 'event_id' => ROUTE_12_SNORLAX_WAKE_EVENT_ID } if route_12_snorlax_wake_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE12_SNORLAX_WAKE_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_SNORLAX_STATIC_ENCOUNTER_SEEN')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_SLEEP_ECHO_CLEARED')
+      add_story_flag(state, 'FLAG_NEXUS_SNORLAX_ROADBLOCK_CLEARED')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE12_SOUTH_PATH_UNLOCKED')
+      mark_cleared_event(story, ROUTE_12_SNORLAX_WAKE_EVENT_ID)
+      mark_cleared_event(story, SNORLAX_STATIC_ENCOUNTER_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_SLEEP_ECHO_CLEARED_EVENT_ID)
+      mark_cleared_event(story, SNORLAX_ROADBLOCK_CLEARED_EVENT_ID)
+      mark_cleared_event(story, ROUTE_12_SOUTH_PATH_EVENT_ID)
+      EncounterWorld.unlock_fishing_rod(state, 'super_rod', source: 'Route 12 Fishing Guru after Snorlax wake', area_type: area_type)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'route_12_sleep_echo',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'route_12_flute_guard',
+        location: location,
+        summary: 'Red guards the boardwalk while Antman wakes Snorlax with the Poke Flute.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'poke_flute_signal_confirmed',
+        location: location,
+        summary: 'Bill confirms the Poke Flute signal clears the last Team Moonlight sleep echo.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Route 12 opened after Snorlax woke, the sleep echo broke, and the Super Rod tier came online for the southbound path.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = route_12_snorlax_wake_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def route_12_snorlax_wake_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_12_SNORLAX_WAKE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -2712,6 +2968,80 @@ module NexusRed
         'key_item_required' => 'rocket_lift_key',
         'unlocks_path' => 'rocket_command_floor',
         'next_hook' => 'celadon_rocket_command_floor'
+      }
+    end
+
+    def celadon_rocket_command_floor_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_ROCKET_COMMAND_FLOOR_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          GIOVANNI_COMMAND_TERMINAL_EVENT_ID,
+          SILPH_SCOPE_OBTAINED_EVENT_ID,
+          POKEMON_TOWER_DEEPER_UNLOCK_EVENT_ID,
+          ERIKA_GYM_PATH_EVENT_ID,
+          NEXUS_ORDER_COMMAND_TERMINAL_EVENT_ID
+        ],
+        'factions' => %w[team_rocket nexus_order],
+        'key_item_reward' => 'silph_scope',
+        'unlocks_path' => 'pokemon_tower_deeper_floor',
+        'next_hook' => 'pokemon_tower_silph_scope_floor'
+      }
+    end
+
+    def pokemon_tower_silph_scope_floor_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => POKEMON_TOWER_SILPH_SCOPE_FLOOR_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          MAROWAK_SPIRIT_REVEALED_EVENT_ID,
+          MR_FUJI_RESCUE_PATH_EVENT_ID,
+          POKE_FLUTE_LEAD_EVENT_ID
+        ],
+        'factions' => %w[team_moonlight],
+        'required_key_item' => 'silph_scope',
+        'next_hook' => 'pokemon_tower_fuji_rescue'
+      }
+    end
+
+    def pokemon_tower_fuji_rescue_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => POKEMON_TOWER_FUJI_RESCUE_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          ROCKET_TOWER_FUJI_GUARD_EVENT_ID,
+          MR_FUJI_RESCUED_EVENT_ID,
+          POKE_FLUTE_OBTAINED_EVENT_ID,
+          SNORLAX_WAKE_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket],
+        'key_item_reward' => 'poke_flute',
+        'next_hook' => 'route_12_snorlax_wake'
+      }
+    end
+
+    def route_12_snorlax_wake_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ROUTE_12_SNORLAX_WAKE_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          SNORLAX_STATIC_ENCOUNTER_EVENT_ID,
+          TEAM_MOONLIGHT_SLEEP_ECHO_CLEARED_EVENT_ID,
+          SNORLAX_ROADBLOCK_CLEARED_EVENT_ID,
+          ROUTE_12_SOUTH_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_moonlight],
+        'static_encounter' => {
+          'species' => 'Snorlax',
+          'level' => 35,
+          'capture_allowed' => true
+        },
+        'unlocks' => %w[super_rod route_12_south_path],
+        'next_hook' => 'route_12_fishing_pier'
       }
     end
 
