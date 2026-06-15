@@ -230,6 +230,8 @@ REQUIRED_MARKERS = (
     "silph_co_5f_elevator_route_cleared?",
     "complete_silph_co_7f_executive_floor",
     "silph_co_7f_executive_floor_cleared?",
+    "complete_silph_co_10f_president_suite",
+    "silph_co_10f_president_suite_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2180,6 +2182,41 @@ raise 'expected KantoStory Silph 7F unlocks 10F president suite' unless silph_7f
 second_silph_7f = NexusRed::KantoStory.complete_silph_co_7f_executive_floor(kanto_story_state)
 raise 'expected KantoStory Silph 7F idempotent guard' unless second_silph_7f['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Silph 7F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_7f_executive_floor' } == 1
+pre_silph_10f = NexusRed::KantoStory.complete_silph_co_10f_president_suite(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Silph 10F gated before 7F' unless pre_silph_10f['status'] == 'blocked_missing_silph_co_7f_executive_floor'
+silph_10f = NexusRed::KantoStory.complete_silph_co_10f_president_suite(
+  kanto_story_state,
+  location: 'Silph Co 10F President Suite',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Silph 10F clear status' unless silph_10f['status'] == 'cleared'
+raise 'expected KantoStory Silph 10F event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('silph_co_10f_president_suite')
+raise 'expected KantoStory Silph 10F helper true' unless NexusRed::KantoStory.silph_co_10f_president_suite_cleared?(kanto_story_state)
+raise 'expected KantoStory Silph 10F flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CO_10F_PRESIDENT_SUITE')
+raise 'expected KantoStory Red Silph 10F rescue route flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SILPH_10F_RESCUE_ROUTE')
+raise 'expected KantoStory Blue Silph boardroom trail flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_SILPH_BOARDROOM_TRAIL')
+raise 'expected KantoStory Bill president suite unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_PRESIDENT_SUITE_UNLOCK')
+raise 'expected KantoStory Rocket president hostage flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_PRESIDENT_HOSTAGE')
+raise 'expected KantoStory Gold Dust Master Ball buyer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_MASTER_BALL_BUYER')
+raise 'expected KantoStory Moonlight president memory flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_PRESIDENT_MEMORY_STATIC')
+raise 'expected KantoStory Nexus president sponsor trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_PRESIDENT_SPONSOR_TRACE')
+raise 'expected KantoStory Giovanni boardroom route flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_BOARDROOM_ROUTE_UNLOCKED')
+raise 'expected KantoStory Red Silph 10F scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('silph_10f_rescue_route')
+raise 'expected KantoStory Bill Silph 10F scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_president_suite_unlock')
+raise 'expected KantoStory Blue Silph 10F clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Giovanni')
+raise 'expected KantoStory Rocket Silph 10F activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 10F President Suite' && activity['operation'] == 'president_hostage_control' }
+raise 'expected KantoStory Gold Dust Silph 10F activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 10F President Suite' && activity['operation'] == 'master_ball_buyer_trace' }
+raise 'expected KantoStory Moonlight Silph 10F activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 10F President Suite' && activity['operation'] == 'president_memory_static' }
+raise 'expected KantoStory Nexus Silph 10F activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 10F President Suite' && activity['operation'] == 'president_sponsor_trace' }
+raise 'expected KantoStory Nexus Order still hidden after Silph 10F' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Gold Dust Silph 10F conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Silph Co 10F President Suite' }
+raise 'expected KantoStory Silph 10F story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('10F') && message['text'].include?('Giovanni') && message['text'].include?('boardroom') }
+raise 'expected KantoStory Silph 10F next hook Giovanni boardroom' unless silph_10f['next_hook'] == 'silph_co_giovanni_boardroom'
+raise 'expected KantoStory Silph 10F factions' unless silph_10f['factions'].include?('team_rocket') && silph_10f['factions'].include?('nexus_order')
+raise 'expected KantoStory Silph 10F unlocks Giovanni boardroom' unless silph_10f['unlocks'].include?('silph_co_giovanni_boardroom') && silph_10f['unlocks'].include?('president_rescue')
+second_silph_10f = NexusRed::KantoStory.complete_silph_co_10f_president_suite(kanto_story_state)
+raise 'expected KantoStory Silph 10F idempotent guard' unless second_silph_10f['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Silph 10F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_10f_president_suite' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
