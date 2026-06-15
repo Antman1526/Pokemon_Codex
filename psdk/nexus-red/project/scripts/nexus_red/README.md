@@ -13,3 +13,11 @@ Seed refresh command:
 ```bash
 python3 tools/generate_psdk_seed_data.py
 ```
+
+Validation:
+
+```bash
+python3 tools/validate_psdk_ruby_scaffold.py
+```
+
+That validation includes a Ruby syntax check and a runtime smoke check that requires `000_seed_loader.rb` from the PSDK project root and reads every generated registry.
