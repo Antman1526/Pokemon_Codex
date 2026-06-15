@@ -51,6 +51,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_diglett_cave_detour(state, location:, area_type:)` resolves the physical cave detour around the sleeping roadblock. It requires Route 11 completion, records Red's cave guard scene, Bill's Nexus relay map, Rocket and Gold Dust arguing over stolen survey crates, Route 12 Snorlax confirmation, and the Echo Flute lead toward the Route 2 east field lab.
 
+`NexusRed::KantoStory.complete_route_2_east_field_lab(state, location:, area_type:)` resolves the Route 2 east field lab after Diglett's Cave. It turns the Echo Flute lead into Bill's sleep-frequency decoder, records Oak's aide field-tool brief through the story flags, links Rocket residue with Team Moonlight's Lavender sleep signal, and unlocks Route 9 toward Rock Tunnel as the next physical path.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

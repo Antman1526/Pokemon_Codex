@@ -166,6 +166,8 @@ REQUIRED_MARKERS = (
     "route_11_handoff_cleared?",
     "complete_diglett_cave_detour",
     "diglett_cave_detour_cleared?",
+    "complete_route_2_east_field_lab",
+    "route_2_east_field_lab_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1169,6 +1171,33 @@ raise 'expected KantoStory Diglett Cave next hook Route 2 lab' unless diglett_de
 second_diglett_detour = NexusRed::KantoStory.complete_diglett_cave_detour(kanto_story_state)
 raise 'expected KantoStory Diglett Cave idempotent guard' unless second_diglett_detour['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Diglett Cave history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'diglett_cave_detour' } == 1
+pre_diglett_lab = NexusRed::KantoStory.complete_route_2_east_field_lab(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Route 2 east lab gated before Diglett Cave' unless pre_diglett_lab['status'] == 'blocked_missing_diglett_cave_detour'
+route_2_lab = NexusRed::KantoStory.complete_route_2_east_field_lab(
+  kanto_story_state,
+  location: 'Route 2 East Field Lab',
+  area_type: 'route'
+)
+raise 'expected KantoStory Route 2 east lab clear status' unless route_2_lab['status'] == 'cleared'
+raise 'expected KantoStory Route 2 east lab event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('route_2_east_field_lab')
+raise 'expected KantoStory Route 2 east lab helper true' unless NexusRed::KantoStory.route_2_east_field_lab_cleared?(kanto_story_state)
+raise 'expected KantoStory Route 2 east lab reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE2_EAST_FIELD_LAB_REACHED')
+raise 'expected KantoStory Red Route 2 east exit flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_ROUTE2_EAST_EXIT')
+raise 'expected KantoStory Bill Echo Flute decoder flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ECHO_FLUTE_DECODER')
+raise 'expected KantoStory Oak aide field tool brief flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_OAK_AIDE_FIELD_TOOL_BRIEF')
+raise 'expected KantoStory Rocket Moonlight sleep signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_MOONLIGHT_SLEEP_SIGNAL')
+raise 'expected KantoStory Lavender signal path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LAVENDER_SIGNAL_PATH_TEASED')
+raise 'expected KantoStory Route 9 path unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE9_ROCK_TUNNEL_PATH_UNLOCKED')
+raise 'expected KantoStory Rocket sleep residue activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 2 East Field Lab' && activity['operation'] == 'sleep_signal_residue' }
+raise 'expected KantoStory Moonlight sleep signal activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 2 East Field Lab' && activity['operation'] == 'lavender_sleep_frequency' }
+raise 'expected KantoStory Rocket Moonlight overlap conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Route 2 East Field Lab' }
+raise 'expected KantoStory Red Route 2 east scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('route_2_east_exit')
+raise 'expected KantoStory Bill Echo Flute decoder scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('echo_flute_decoder')
+raise 'expected KantoStory Route 2 east lab story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Rock Tunnel') }
+raise 'expected KantoStory Route 2 east lab next hook Route 9' unless route_2_lab['next_hook'] == 'route_9_rock_tunnel_approach'
+second_route_2_lab = NexusRed::KantoStory.complete_route_2_east_field_lab(kanto_story_state)
+raise 'expected KantoStory Route 2 east lab idempotent guard' unless second_route_2_lab['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Route 2 east lab history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_2_east_field_lab' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

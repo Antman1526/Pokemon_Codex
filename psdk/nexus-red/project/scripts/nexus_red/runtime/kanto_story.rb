@@ -22,6 +22,8 @@ module NexusRed
     ROUTE_11_EVENT_ID = 'route_11_handoff'
     DIGLETT_CAVE_EVENT_ID = 'diglett_cave_detour'
     ROCKET_GOLD_DUST_CAVE_EVENT_ID = 'rocket_gold_dust_cave_argument'
+    ROUTE_2_EAST_LAB_EVENT_ID = 'route_2_east_field_lab'
+    ROCKET_MOONLIGHT_SLEEP_EVENT_ID = 'rocket_moonlight_sleep_signal'
 
     module_function
 
@@ -716,6 +718,81 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == DIGLETT_CAVE_EVENT_ID }
     end
 
+    def complete_route_2_east_field_lab(state, location: 'Route 2 East Field Lab', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_diglett_cave_detour', 'event_id' => ROUTE_2_EAST_LAB_EVENT_ID } unless diglett_cave_detour_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROUTE_2_EAST_LAB_EVENT_ID } if route_2_east_field_lab_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE2_EAST_FIELD_LAB_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ROUTE2_EAST_EXIT')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ECHO_FLUTE_DECODER')
+      add_story_flag(state, 'FLAG_NEXUS_OAK_AIDE_FIELD_TOOL_BRIEF')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_MOONLIGHT_SLEEP_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_LAVENDER_SIGNAL_PATH_TEASED')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE9_ROCK_TUNNEL_PATH_UNLOCKED')
+      mark_cleared_event(story, ROUTE_2_EAST_LAB_EVENT_ID)
+      mark_cleared_event(story, ROCKET_MOONLIGHT_SLEEP_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'sleep_signal_residue',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'lavender_sleep_frequency',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket traces overlap with Moonlight sleep residue aimed at Lavender',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'route_2_east_exit',
+        location: location,
+        summary: 'Red confirms the Route 2 east exit keeps the Kanto journey physical.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'echo_flute_decoder',
+        location: location,
+        summary: 'Bill and an Oak aide tune the Echo Flute lead into a sleep-frequency decoder.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Route 2 east decoded the Echo Flute lead, tied Rocket to Moonlight sleep traces, and opened Route 9 toward Rock Tunnel.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = route_2_east_lab_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def route_2_east_field_lab_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_2_EAST_LAB_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -866,6 +943,17 @@ module NexusRed
         'linked_events' => [ROCKET_GOLD_DUST_CAVE_EVENT_ID, 'snorlax_route_12_block_confirmed', 'echo_flute_lead_seen'],
         'factions' => %w[team_rocket team_gold_dust],
         'next_hook' => 'route_2_east_field_lab'
+      }
+    end
+
+    def route_2_east_lab_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ROUTE_2_EAST_LAB_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [ROCKET_MOONLIGHT_SLEEP_EVENT_ID, 'bill_echo_flute_decoder', 'oak_aide_field_tool_brief', 'lavender_signal_path_teased'],
+        'factions' => %w[team_rocket team_moonlight],
+        'next_hook' => 'route_9_rock_tunnel_approach'
       }
     end
 
