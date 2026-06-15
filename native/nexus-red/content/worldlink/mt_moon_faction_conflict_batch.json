@@ -1,0 +1,31 @@
+{
+  "id": "mt_moon_faction_conflict_batch",
+  "name": "Mt. Moon Faction Conflict Batch",
+  "trigger": "mt_moon_rocket_gold_dust_fossil_conflict",
+  "feed": [
+    {
+      "id": "wl_red_mt_moon_warning",
+      "category": "companion",
+      "rival": "red",
+      "text": "Red reached the Mt. Moon entrance with Antman and warned that the cave traffic feels organized."
+    },
+    {
+      "id": "wl_rocket_mt_moon_fossil_grab",
+      "category": "faction",
+      "faction": "team_rocket",
+      "text": "Team Rocket moved fossil crates into Mt. Moon after the Pewter Museum reading."
+    },
+    {
+      "id": "wl_gold_dust_mt_moon_arrival",
+      "category": "faction",
+      "faction": "team_gold_dust",
+      "text": "Team Gold Dust arrived at Mt. Moon with hired miners and claimed Rocket is stealing relics from their territory."
+    },
+    {
+      "id": "wl_nexus_fossil_hint",
+      "category": "mystery",
+      "artifact": "nexus_fossil",
+      "text": "A third fossil signal appeared under Mt. Moon: not Dome, not Helix, and not listed in any Kanto museum catalog."
+    }
+  ]
+}

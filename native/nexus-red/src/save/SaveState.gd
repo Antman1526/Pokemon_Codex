@@ -78,6 +78,11 @@ func start_new_game(name: String) -> void:
 		"brock_pewter_badge_earned": false,
 		"pewter_museum_anomaly_seen": false,
 		"worldlink_pewter_museum_batch_queued": false,
+		"mt_moon_entrance_reached": false,
+		"red_mt_moon_warning_seen": false,
+		"rocket_gold_dust_mt_moon_conflict_seen": false,
+		"nexus_fossil_hint_seen": false,
+		"worldlink_mt_moon_faction_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -172,6 +177,31 @@ func queue_pewter_museum_batch() -> void:
 		"wl_red_pewter_museum_scan",
 		"wl_rocket_pewter_museum_anomaly",
 		"wl_bill_fossil_energy_ping",
+	])
+
+
+func enter_mt_moon_entrance() -> void:
+	current_scene = "mt_moon_entrance"
+	active_companion = "red"
+	set_flag("mt_moon_entrance_reached", true)
+	set_flag("red_mt_moon_warning_seen", true)
+	queue_worldlink_id("wl_red_mt_moon_warning")
+
+
+func record_mt_moon_faction_conflict() -> void:
+	active_companion = "red"
+	set_flag("rocket_gold_dust_mt_moon_conflict_seen", true)
+	set_flag("nexus_fossil_hint_seen", true)
+	queue_mt_moon_faction_batch()
+
+
+func queue_mt_moon_faction_batch() -> void:
+	set_flag("worldlink_mt_moon_faction_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_red_mt_moon_warning",
+		"wl_rocket_mt_moon_fossil_grab",
+		"wl_gold_dust_mt_moon_arrival",
+		"wl_nexus_fossil_hint",
 	])
 
 

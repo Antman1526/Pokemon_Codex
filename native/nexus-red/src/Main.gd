@@ -9,6 +9,7 @@ const Route2ForestGateScene := preload("res://scenes/world/Route2ForestGate.tscn
 const ViridianForestScene := preload("res://scenes/world/ViridianForest.tscn")
 const Route3Scene := preload("res://scenes/world/Route3.tscn")
 const PewterCityScene := preload("res://scenes/world/PewterCity.tscn")
+const MtMoonEntranceScene := preload("res://scenes/world/MtMoonEntrance.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -123,8 +124,20 @@ func _show_pewter_city() -> void:
 	var pewter := PewterCityScene.instantiate()
 	pewter.save_state = save_state
 	pewter.go_to_route_3.connect(_on_go_to_route_3)
+	pewter.go_to_mt_moon_entrance.connect(_on_go_to_mt_moon_entrance)
 	pewter.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(pewter)
+
+
+func _on_go_to_mt_moon_entrance() -> void:
+	_show_mt_moon_entrance()
+
+
+func _show_mt_moon_entrance() -> void:
+	var mt_moon := MtMoonEntranceScene.instantiate()
+	mt_moon.save_state = save_state
+	mt_moon.go_to_pewter_city.connect(_on_go_to_pewter_city)
+	_replace_screen(mt_moon)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

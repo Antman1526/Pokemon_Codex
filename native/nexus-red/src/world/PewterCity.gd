@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_3
+signal go_to_mt_moon_entrance
 signal start_battle_placeholder(battle_id)
 
 var save_state
@@ -23,6 +24,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_brock_gym_challenge()
 	if event.is_action_pressed("ui_right"):
 		investigate_museum_anomaly()
+	if event.is_action_pressed("ui_left"):
+		trigger_mt_moon_departure()
 	if event.is_action_pressed("cancel"):
 		return_to_route_3()
 
@@ -126,9 +129,17 @@ func investigate_museum_anomaly() -> void:
 	dialogue_label.text = "Pewter Museum: The fossil glass flashes with a region-map pattern. Red blocks a Rocket thief at the door while Bill pings WorldLink: this energy is older than Kanto."
 
 
+func trigger_mt_moon_departure() -> void:
+	if save_state and not bool(save_state.story_flags.get("pewter_museum_anomaly_seen", false)):
+		dialogue_label.text = "Red: Mt. Moon can wait. The museum anomaly is the reason Rocket moved this early."
+		return
+	dialogue_label.text = "Red: Mt. Moon is where Rocket's fossil trail goes next. Stay close; someone else is chasing the same signal."
+	emit_signal("go_to_mt_moon_entrance")
+
+
 func return_to_route_3() -> void:
 	emit_signal("go_to_route_3")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Pewter City opens around the gym and museum. Press Z/Enter for Brock, Down for Red's training advice, Up for the gym challenge, Right for the museum anomaly, or X/Esc to return to Route 3."
+	dialogue_label.text = "Pewter City opens around the gym and museum. Press Z/Enter for Brock, Down for Red's training advice, Up for the gym challenge, Right for the museum anomaly, Left for Mt. Moon, or X/Esc to return to Route 3."

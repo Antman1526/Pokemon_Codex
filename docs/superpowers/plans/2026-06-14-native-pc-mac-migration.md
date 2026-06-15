@@ -441,6 +441,23 @@ python3 tools/validate_native_pewter_museum_anomaly.py
 godot --headless --path native/nexus-red --script tests/pewter_museum_anomaly_test.gd
 ```
 
+### Task 7.22: Add Mt. Moon entrance faction-conflict shell
+
+Acceptance:
+
+- Pewter City can transition forward to Mt. Moon only after the museum anomaly.
+- Red remains the active companion and warns Antman at the cave mouth.
+- Team Rocket and Team Gold Dust appear in conflict over fossil crates.
+- The scene introduces a Nexus Fossil mystery item without resolving the full dungeon.
+- Save state and WorldLink record Mt. Moon entrance progress and faction conflict.
+
+Verification:
+
+```sh
+python3 tools/validate_native_mt_moon_entrance_slice.py
+godot --headless --path native/nexus-red --script tests/mt_moon_entrance_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:
