@@ -33,6 +33,13 @@ module NexusRed
     ROCKET_DARK_CACHE_EVENT_ID = 'rocket_dark_cache'
     FLASH_LANTERN_EVENT_ID = 'flash_lantern_needed'
     LAVENDER_EXIT_EVENT_ID = 'lavender_exit_path_unlocked'
+    LAVENDER_OUTSKIRTS_EVENT_ID = 'lavender_outskirts'
+    RED_LAVENDER_ARRIVAL_EVENT_ID = 'red_lavender_arrival'
+    BILL_POKEMON_TOWER_SIGNAL_EVENT_ID = 'bill_pokemon_tower_signal_decode'
+    TEAM_MOONLIGHT_LAVENDER_EVENT_ID = 'team_moonlight_lavender_presence'
+    ROCKET_LAVENDER_SURVEILLANCE_EVENT_ID = 'rocket_lavender_surveillance'
+    POKEMON_TOWER_SIGNAL_EVENT_ID = 'pokemon_tower_signal_confirmed'
+    POKEMON_TOWER_ENTRY_EVENT_ID = 'pokemon_tower_entry_unlocked'
 
     module_function
 
@@ -964,6 +971,86 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCK_TUNNEL_EVENT_ID }
     end
 
+    def complete_lavender_outskirts(state, location: 'Lavender Outskirts', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rock_tunnel', 'event_id' => LAVENDER_OUTSKIRTS_EVENT_ID } unless rock_tunnel_interior_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => LAVENDER_OUTSKIRTS_EVENT_ID } if lavender_outskirts_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_LAVENDER_OUTSKIRTS_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_LAVENDER_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_POKEMON_TOWER_SIGNAL_DECODE')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_LAVENDER_PRESENCE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_LAVENDER_SURVEILLANCE')
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_SIGNAL_CONFIRMED')
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_ENTRY_UNLOCKED')
+      mark_cleared_event(story, LAVENDER_OUTSKIRTS_EVENT_ID)
+      mark_cleared_event(story, RED_LAVENDER_ARRIVAL_EVENT_ID)
+      mark_cleared_event(story, BILL_POKEMON_TOWER_SIGNAL_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_LAVENDER_EVENT_ID)
+      mark_cleared_event(story, ROCKET_LAVENDER_SURVEILLANCE_EVENT_ID)
+      mark_cleared_event(story, POKEMON_TOWER_SIGNAL_EVENT_ID)
+      mark_cleared_event(story, POKEMON_TOWER_ENTRY_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'lavender_grief_pressure',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'pokemon_tower_surveillance',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket scouts watch Pokemon Tower while Moonlight hides behind Lavender grief pressure',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'lavender_arrival',
+        location: location,
+        summary: 'Red slows the journey at Lavender so Antman can feel the town before investigating it.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'pokemon_tower_signal_decode',
+        location: location,
+        summary: 'Bill decodes the Echo Flute pulse as a Pokemon Tower signal.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Lavender Outskirts confirmed Pokemon Tower as the Echo Flute source while Moonlight stayed hidden in the town pressure.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = lavender_outskirts_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def lavender_outskirts_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == LAVENDER_OUTSKIRTS_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1159,6 +1246,24 @@ module NexusRed
         'factions' => %w[team_moonlight team_rocket],
         'unlocks' => %w[cave_lantern lavender_exit_path],
         'next_hook' => 'lavender_outskirts'
+      }
+    end
+
+    def lavender_outskirts_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => LAVENDER_OUTSKIRTS_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_LAVENDER_ARRIVAL_EVENT_ID,
+          BILL_POKEMON_TOWER_SIGNAL_EVENT_ID,
+          TEAM_MOONLIGHT_LAVENDER_EVENT_ID,
+          ROCKET_LAVENDER_SURVEILLANCE_EVENT_ID,
+          POKEMON_TOWER_SIGNAL_EVENT_ID,
+          POKEMON_TOWER_ENTRY_EVENT_ID
+        ],
+        'factions' => %w[team_moonlight team_rocket],
+        'next_hook' => 'pokemon_tower_first_floor'
       }
     end
 

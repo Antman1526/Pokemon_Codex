@@ -172,6 +172,8 @@ REQUIRED_MARKERS = (
     "route_9_rock_tunnel_approach_cleared?",
     "complete_rock_tunnel_interior",
     "rock_tunnel_interior_cleared?",
+    "complete_lavender_outskirts",
+    "lavender_outskirts_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1261,6 +1263,33 @@ raise 'expected KantoStory Rock Tunnel next hook Lavender' unless rock_tunnel['n
 second_rock_tunnel = NexusRed::KantoStory.complete_rock_tunnel_interior(kanto_story_state)
 raise 'expected KantoStory Rock Tunnel idempotent guard' unless second_rock_tunnel['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Rock Tunnel history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'rock_tunnel_interior' } == 1
+pre_rock_tunnel_lavender = NexusRed::KantoStory.complete_lavender_outskirts(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Lavender gated before Rock Tunnel' unless pre_rock_tunnel_lavender['status'] == 'blocked_missing_rock_tunnel'
+lavender_outskirts = NexusRed::KantoStory.complete_lavender_outskirts(
+  kanto_story_state,
+  location: 'Lavender Outskirts',
+  area_type: 'route'
+)
+raise 'expected KantoStory Lavender clear status' unless lavender_outskirts['status'] == 'cleared'
+raise 'expected KantoStory Lavender event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('lavender_outskirts')
+raise 'expected KantoStory Lavender helper true' unless NexusRed::KantoStory.lavender_outskirts_cleared?(kanto_story_state)
+raise 'expected KantoStory Lavender reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LAVENDER_OUTSKIRTS_REACHED')
+raise 'expected KantoStory Red Lavender arrival flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_LAVENDER_ARRIVAL')
+raise 'expected KantoStory Bill Pokemon Tower signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_POKEMON_TOWER_SIGNAL_DECODE')
+raise 'expected KantoStory Moonlight Lavender presence flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_LAVENDER_PRESENCE')
+raise 'expected KantoStory Rocket Lavender surveillance flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_LAVENDER_SURVEILLANCE')
+raise 'expected KantoStory Pokemon Tower signal confirmed flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_SIGNAL_CONFIRMED')
+raise 'expected KantoStory Pokemon Tower entry unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_ENTRY_UNLOCKED')
+raise 'expected KantoStory Moonlight Lavender pressure activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Lavender Outskirts' && activity['operation'] == 'lavender_grief_pressure' }
+raise 'expected KantoStory Rocket Lavender surveillance activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Lavender Outskirts' && activity['operation'] == 'pokemon_tower_surveillance' }
+raise 'expected KantoStory Rocket Moonlight Lavender conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Lavender Outskirts' }
+raise 'expected KantoStory Red Lavender arrival scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('lavender_arrival')
+raise 'expected KantoStory Bill Pokemon Tower decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('pokemon_tower_signal_decode')
+raise 'expected KantoStory Lavender story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Pokemon Tower') }
+raise 'expected KantoStory Lavender next hook Pokemon Tower' unless lavender_outskirts['next_hook'] == 'pokemon_tower_first_floor'
+second_lavender_outskirts = NexusRed::KantoStory.complete_lavender_outskirts(kanto_story_state)
+raise 'expected KantoStory Lavender idempotent guard' unless second_lavender_outskirts['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Lavender history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'lavender_outskirts' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

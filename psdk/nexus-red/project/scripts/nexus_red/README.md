@@ -57,6 +57,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_rock_tunnel_interior(state, location:, area_type:)` resolves the Rock Tunnel interior after Route 9. It records Red guiding Antman through a blackout, Bill tracing the Echo Flute toward Lavender, Team Moonlight pressuring the cave, Rocket's dark cache, unlocks `cave_lantern` as the Flash field-tool replacement, and opens the Lavender outskirts hook.
 
+`NexusRed::KantoStory.complete_lavender_outskirts(state, location:, area_type:)` resolves the Lavender arrival after Rock Tunnel. It keeps the scene emotional and investigative, records Red grounding Antman at the town edge, Bill decoding Pokemon Tower as the Echo Flute source, Team Moonlight hiding behind Lavender grief pressure, Rocket surveillance around the tower route, and unlocks the Pokemon Tower first-floor hook.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
