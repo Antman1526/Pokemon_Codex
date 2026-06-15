@@ -4,6 +4,7 @@ var player_name := "Antman"
 var current_region := "kanto"
 var current_scene := "bedroom"
 var active_companion := "red"
+var player_money := 100000
 var player_starter := ""
 var player_starter_group := ""
 var blue_starter := ""
@@ -25,6 +26,7 @@ func start_new_game(name: String) -> void:
 	current_region = "kanto"
 	current_scene = "bedroom"
 	active_companion = "red"
+	player_money = 100000
 	player_starter = ""
 	player_starter_group = ""
 	blue_starter = ""
@@ -51,6 +53,9 @@ func start_new_game(name: String) -> void:
 		"worldlink_route_1_rival_batch_queued": false,
 		"route_1_first_wild_seen": false,
 		"route_1_first_wild_caught": false,
+		"viridian_city_reached": false,
+		"viridian_center_visited": false,
+		"viridian_mart_visited": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -78,6 +83,22 @@ func enter_route_1() -> void:
 	current_scene = "route_1"
 	set_flag("route_1_reached", true)
 	queue_worldlink_id("route_1_reached")
+
+
+func enter_viridian_city() -> void:
+	current_scene = "viridian_city"
+	set_flag("viridian_city_reached", true)
+	queue_worldlink_id("viridian_city_reached")
+
+
+func record_viridian_center_visit() -> void:
+	set_flag("viridian_center_visited", true)
+	queue_worldlink_id("viridian_center_visited")
+
+
+func record_viridian_mart_visit() -> void:
+	set_flag("viridian_mart_visited", true)
+	queue_worldlink_id("viridian_mart_visited")
 
 
 func choose_starter(selection: Dictionary) -> void:

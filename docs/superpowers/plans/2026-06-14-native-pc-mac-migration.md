@@ -264,6 +264,23 @@ python3 tools/validate_native_route1_party_panel_slice.py
 godot --headless --path native/nexus-red --script tests/route1_party_panel_test.gd
 ```
 
+### Task 7.11: Add Viridian City shell
+
+Acceptance:
+
+- Route 1 can transition north into Viridian City.
+- Viridian City is a playable world scene with upgraded FireRed-style placeholder layout.
+- The city includes a Pokemon Center shell with Nurse Joy dialogue and a healing flag.
+- The city includes a Poke Mart shell that reflects Antman's starting $100000 travel fund.
+- Save state records Viridian arrival, Center visit, and Mart visit.
+
+Verification:
+
+```sh
+python3 tools/validate_native_viridian_city_slice.py
+godot --headless --path native/nexus-red --script tests/viridian_city_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

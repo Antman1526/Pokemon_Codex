@@ -9,6 +9,7 @@ const BLUE_BATTLE_FLAG := "blue_battle_placeholder_seen"
 
 signal start_battle_placeholder(battle_id)
 signal start_wild_encounter(encounter_data)
+signal go_to_viridian_city
 
 var save_state
 var dialogue_label: Label
@@ -36,6 +37,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_toggle_worldlink()
 	if event.is_action_pressed("menu"):
 		_toggle_party_panel()
+	if event.is_action_pressed("ui_up"):
+		trigger_viridian_city_entry()
 
 
 func _build_route() -> void:
@@ -86,7 +89,7 @@ func _build_route() -> void:
 	add_child(player)
 
 	dialogue_label = Label.new()
-	dialogue_label.text = "Route 1 opens north. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press W for WorldLink. Press Tab for party."
+	dialogue_label.text = "Route 1 opens north toward Viridian City. Press arrows to move. Press Z or Enter for Red's first companion scene, then Blue's battle placeholder. Press X or Esc to check the grass. Press W for WorldLink. Press Tab for party."
 	dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	dialogue_label.anchor_left = 0.06
 	dialogue_label.anchor_top = 0.82
@@ -119,6 +122,11 @@ func trigger_route_1_wild_encounter() -> void:
 		save_state.start_wild_encounter(encounter)
 	dialogue_label.text = "The grass shakes. Red raises a hand: first wild encounter incoming."
 	emit_signal("start_wild_encounter", encounter)
+
+
+func trigger_viridian_city_entry() -> void:
+	dialogue_label.text = "Red: Viridian City is just ahead. Center first, Mart second, then we start watching Rocket."
+	emit_signal("go_to_viridian_city")
 
 
 func _toggle_worldlink() -> void:
