@@ -107,6 +107,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_silph_co_lobby_lockdown(state, location:, area_type:)` resolves the first Silph Co infiltration checkpoint. It records Red holding the lobby, Bill tracing the Silph firewall, Rocket locking elevators and card-key doors, Gold Dust buyers chasing components, Moonlight dream static leaking through Sabrina's pressure, and a hidden Nexus Order boardroom sponsor trace while opening `silph_co_2f_key_search`.
 
+`NexusRed::KantoStory.complete_silph_co_2f_key_search(state, location:, area_type:)` resolves the first office-floor Silph Co checkpoint. It keeps Red as the active companion while he escorts employees, records Bill tracing a Card Key backdoor under a hidden Nexus Order sponsor account, escalates Rocket/Gold Dust/Moonlight faction pressure, and opens `silph_co_3f_warp_panel_ambush`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

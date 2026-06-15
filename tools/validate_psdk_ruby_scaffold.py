@@ -222,6 +222,8 @@ REQUIRED_MARKERS = (
     "saffron_city_arrival_cleared?",
     "complete_silph_co_lobby_lockdown",
     "silph_co_lobby_lockdown_cleared?",
+    "complete_silph_co_2f_key_search",
+    "silph_co_2f_key_search_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2032,6 +2034,41 @@ raise 'expected KantoStory Silph lobby unlocks 2F key search' unless silph_lobby
 second_silph_lobby = NexusRed::KantoStory.complete_silph_co_lobby_lockdown(kanto_story_state)
 raise 'expected KantoStory Silph lobby idempotent guard' unless second_silph_lobby['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Silph lobby history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_lobby_lockdown' } == 1
+pre_silph_2f = NexusRed::KantoStory.complete_silph_co_2f_key_search(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Silph 2F gated before lobby' unless pre_silph_2f['status'] == 'blocked_missing_silph_co_lobby_lockdown'
+silph_2f = NexusRed::KantoStory.complete_silph_co_2f_key_search(
+  kanto_story_state,
+  location: 'Silph Co 2F',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Silph 2F clear status' unless silph_2f['status'] == 'cleared'
+raise 'expected KantoStory Silph 2F event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('silph_co_2f_key_search')
+raise 'expected KantoStory Silph 2F helper true' unless NexusRed::KantoStory.silph_co_2f_key_search_cleared?(kanto_story_state)
+raise 'expected KantoStory Silph 2F flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CO_2F_KEY_SEARCH')
+raise 'expected KantoStory Red Silph 2F escort flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SILPH_2F_EMPLOYEE_ESCORT')
+raise 'expected KantoStory Bill Silph card key trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_CARD_KEY_BACKDOOR_TRACE')
+raise 'expected KantoStory Rocket card key patrol flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_CARD_KEY_PATROL')
+raise 'expected KantoStory Gold Dust card key auction flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_CARD_KEY_AUCTION')
+raise 'expected KantoStory Moonlight sleeping employee flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_SLEEPING_EMPLOYEES')
+raise 'expected KantoStory Nexus card key backdoor flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_CARD_KEY_BACKDOOR')
+raise 'expected KantoStory Silph card key clue flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CARD_KEY_CLUE_OBTAINED')
+raise 'expected KantoStory Silph 3F warp panel flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_3F_WARP_PANEL_UNLOCKED')
+raise 'expected KantoStory Red Silph 2F scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('silph_2f_employee_escort')
+raise 'expected KantoStory Bill Silph 2F scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_card_key_backdoor_trace')
+raise 'expected KantoStory Blue Silph 2F clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Card Key')
+raise 'expected KantoStory Rocket Silph 2F activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 2F' && activity['operation'] == 'card_key_patrol' }
+raise 'expected KantoStory Gold Dust Silph 2F activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 2F' && activity['operation'] == 'card_key_auction' }
+raise 'expected KantoStory Moonlight Silph 2F activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 2F' && activity['operation'] == 'sleeping_employee_static' }
+raise 'expected KantoStory Nexus Silph 2F activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 2F' && activity['operation'] == 'card_key_backdoor_trace' }
+raise 'expected KantoStory Nexus Order still hidden after Silph 2F' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Gold Dust Silph 2F conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Silph Co 2F' }
+raise 'expected KantoStory Silph 2F story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('2F') && message['text'].include?('Card Key') && message['text'].include?('3F') }
+raise 'expected KantoStory Silph 2F next hook 3F warp ambush' unless silph_2f['next_hook'] == 'silph_co_3f_warp_panel_ambush'
+raise 'expected KantoStory Silph 2F factions' unless silph_2f['factions'].include?('team_rocket') && silph_2f['factions'].include?('nexus_order')
+raise 'expected KantoStory Silph 2F card key clue unlock' unless silph_2f['unlocks'].include?('card_key_clue') && silph_2f['unlocks'].include?('silph_co_3f_warp_panel')
+second_silph_2f = NexusRed::KantoStory.complete_silph_co_2f_key_search(kanto_story_state)
+raise 'expected KantoStory Silph 2F idempotent guard' unless second_silph_2f['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Silph 2F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_2f_key_search' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

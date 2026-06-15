@@ -197,6 +197,16 @@ module NexusRed
     SILPH_EMPLOYEE_RESCUE_LEAD_EVENT_ID = 'silph_employee_rescue_lead'
     SILPH_2F_KEY_SEARCH_EVENT_ID = 'silph_co_2f_key_search_unlocked'
     ROCKET_SILPH_LOBBY_GUARD_BATTLE_ID = 'rocket_silph_lobby_guard'
+    SILPH_CO_2F_KEY_SEARCH_EVENT_ID = 'silph_co_2f_key_search'
+    RED_SILPH_2F_ESCORT_EVENT_ID = 'red_silph_2f_employee_escort'
+    BILL_CARD_KEY_BACKDOOR_EVENT_ID = 'bill_card_key_backdoor_trace'
+    ROCKET_CARD_KEY_PATROL_EVENT_ID = 'rocket_card_key_patrol'
+    GOLD_DUST_CARD_KEY_AUCTION_EVENT_ID = 'gold_dust_card_key_auction'
+    MOONLIGHT_SLEEPING_EMPLOYEES_EVENT_ID = 'moonlight_sleeping_employees'
+    NEXUS_ORDER_CARD_KEY_BACKDOOR_EVENT_ID = 'nexus_order_card_key_backdoor'
+    CARD_KEY_CLUE_OBTAINED_EVENT_ID = 'card_key_clue_obtained'
+    SILPH_3F_WARP_PANEL_EVENT_ID = 'silph_3f_warp_panel_unlocked'
+    ROCKET_SILPH_2F_PATROL_BATTLE_ID = 'rocket_silph_2f_card_key_patrol'
 
     module_function
 
@@ -3228,6 +3238,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_LOBBY_LOCKDOWN_EVENT_ID }
     end
 
+    def complete_silph_co_2f_key_search(state, location: 'Silph Co 2F', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_co_lobby_lockdown', 'event_id' => SILPH_CO_2F_KEY_SEARCH_EVENT_ID } unless silph_co_lobby_lockdown_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SILPH_CO_2F_KEY_SEARCH_EVENT_ID } if silph_co_2f_key_search_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_2F_KEY_SEARCH')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SILPH_2F_EMPLOYEE_ESCORT')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_CARD_KEY_BACKDOOR_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_CARD_KEY_PATROL')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_CARD_KEY_AUCTION')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_SLEEPING_EMPLOYEES')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_CARD_KEY_BACKDOOR')
+      add_story_flag(state, 'FLAG_NEXUS_CARD_KEY_CLUE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_3F_WARP_PANEL_UNLOCKED')
+      mark_cleared_event(story, SILPH_CO_2F_KEY_SEARCH_EVENT_ID)
+      mark_cleared_event(story, RED_SILPH_2F_ESCORT_EVENT_ID)
+      mark_cleared_event(story, BILL_CARD_KEY_BACKDOOR_EVENT_ID)
+      mark_cleared_event(story, ROCKET_CARD_KEY_PATROL_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_CARD_KEY_AUCTION_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_SLEEPING_EMPLOYEES_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_CARD_KEY_BACKDOOR_EVENT_ID)
+      mark_cleared_event(story, CARD_KEY_CLUE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, SILPH_3F_WARP_PANEL_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'card_key_patrol',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'card_key_auction',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'sleeping_employee_static',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'card_key_backdoor_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket patrols are hunting the Card Key while Gold Dust brokers try to auction copies to the highest faction bidder',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Moonlight static keeps putting rescued employees to sleep before Rocket can finish interrogating them',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'silph_2f_employee_escort',
+        location: location,
+        summary: 'Red escorts frightened Silph employees into a safe room while Antman searches the 2F offices for the Card Key trail.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_card_key_backdoor_trace',
+        location: location,
+        summary: 'Bill finds a card-key backdoor hidden under a Nexus Order sponsor account and marks the 3F warp panel as the next breach point.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue intercepted a Card Key fragment near the copy room and warned that the 3F warp panel is being baited.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Silph Co 2F Card Key search is active: Red is moving employees, Bill found a sponsor backdoor, and the 3F warp panel route is opening.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = silph_co_2f_key_search_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def silph_co_2f_key_search_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_2F_KEY_SEARCH_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3960,6 +4089,38 @@ module NexusRed
         'locked_systems' => %w[elevators_card_key_doors_boardroom],
         'unlocks' => %w[silph_co_2f_key_search employee_rescue_lead firewall_trace],
         'next_hook' => 'silph_co_2f_key_search'
+      }
+    end
+
+    def silph_co_2f_key_search_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SILPH_CO_2F_KEY_SEARCH_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_SILPH_2F_ESCORT_EVENT_ID,
+          BILL_CARD_KEY_BACKDOOR_EVENT_ID,
+          ROCKET_CARD_KEY_PATROL_EVENT_ID,
+          GOLD_DUST_CARD_KEY_AUCTION_EVENT_ID,
+          MOONLIGHT_SLEEPING_EMPLOYEES_EVENT_ID,
+          NEXUS_ORDER_CARD_KEY_BACKDOOR_EVENT_ID,
+          CARD_KEY_CLUE_OBTAINED_EVENT_ID,
+          SILPH_3F_WARP_PANEL_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'dungeon_state' => '2f_key_search',
+        'battle_hook' => {
+          'battle_id' => ROCKET_SILPH_2F_PATROL_BATTLE_ID,
+          'battle_type' => 'villain_double_patrol',
+          'location' => 'silph_co_2f',
+          'level_cap' => 41,
+          'opponent_species' => %w[Hypno Weezing Electrode],
+          'companion_support' => 'red_escorts_employees_between_patrols'
+        },
+        'key_item_hook' => 'card_key_clue',
+        'locked_systems' => %w[upper_warp_panels_boardroom_master_lock],
+        'unlocks' => %w[card_key_clue silph_co_3f_warp_panel employee_safe_room],
+        'next_hook' => 'silph_co_3f_warp_panel_ambush'
       }
     end
 
