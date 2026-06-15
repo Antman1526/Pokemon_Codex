@@ -114,6 +114,7 @@ REQUIRED_MARKERS = (
     "launch_history",
     "module WildBattleResults",
     "record_result",
+    "store_caught_species",
     "result_history",
     "last_launch",
     "module Route1MigrationEvent",
@@ -825,10 +826,21 @@ capture_result = NexusRed::WildBattleResults.record_result(route_1_launch_state,
 raise 'expected captured battle result status' unless capture_result['status'] == 'recorded'
 raise 'expected captured battle result outcome' unless capture_result['outcome'] == 'caught'
 raise 'expected captured battle result species' unless capture_result['species'] == 'Bulbasaur'
+raise 'expected captured battle result stored in party' unless capture_result['storage'] == 'party'
 raise 'expected captured battle result recorded in history' unless NexusRed::WildBattleResults.result_history(route_1_launch_state).last == capture_result
 raise 'expected captured species in Pokedex caught state' unless route_1_launch_state['pokedex']['caught_species'].key?('Bulbasaur')
+raise 'expected captured species added to party' unless route_1_launch_state['party_species'].include?('Bulbasaur')
 next_after_capture = NexusRed::Route1MigrationEvent.trigger(route_1_launch_state, time: 'morning', max_level: 5)
 raise 'expected Route 1 migration result handler advances to Chikorita after caught Bulbasaur' unless next_after_capture['species'] == 'Chikorita'
+full_party_state = NexusRed::RuntimeState.build
+full_party_state['party_species'] = %w[Charmander Squirtle Pikachu Eevee Ralts Rockruff]
+full_party_state['story_flags'] = ['starter_chosen']
+NexusRed::Route1MigrationEvent.trigger(full_party_state, time: 'morning', max_level: 5)
+NexusRed::WildBattleLauncher.launch_pending_request(full_party_state)
+pc_capture_result = NexusRed::WildBattleResults.record_result(full_party_state, outcome: 'caught')
+raise 'expected full-party capture stored in PC' unless pc_capture_result['storage'] == 'pc'
+raise 'expected PC box species initialized' unless full_party_state['pc_box_species'].include?('Bulbasaur')
+raise 'expected full party length unchanged' unless full_party_state['party_species'].length == 6
 seen_result_state = NexusRed::RuntimeState.build
 NexusRed::StarterSelection.select_partner(seen_result_state, 'Bulbasaur')
 NexusRed::Route1MigrationEvent.trigger(seen_result_state, time: 'morning', max_level: 5)
