@@ -171,6 +171,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_ilex_forest_path(state, location:, area_type:)` resolves the classic Ilex Forest travel beat after the Hive Badge instead of jumping to Goldenrod. Red guides Antman through the forest, Brock handles field care and charcoal-kiln context, Bill traces the shrine relay, the Farfetchd chase becomes the Trail Cutter field-tool lead, Rocket and Gold Dust clash over retreat crates and charcoal relic bids, Moonlight residue lingers in the woods, Nexus Order remains hidden in the shrine pattern, and `goldenrod_road` opens through Route 34 and the daycare lead.
 
+`NexusRed::JohtoStory.complete_goldenrod_road(state, location:, area_type:)` resolves the Route 34 and Goldenrod City arrival beat after Ilex Forest. It unlocks the Route 34 Daycare plus the daycare remote terminal, makes Goldenrod's specialty mart available, keeps Red as the grounding travel companion, lets Brock teach breeding/daycare responsibility, lets Bill trace Radio Tower static, updates Blue/Ava/Silver through WorldLink, introduces Rocket/Gold Dust/Team Gas pressure in the city, keeps Nexus Order hidden in the broadcast frequency, and opens `whitney_plain_badge_prep` while leaving `goldenrod_radio_tower_shadow` as the secondary city-crisis hook.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

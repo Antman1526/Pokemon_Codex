@@ -110,6 +110,23 @@ module NexusRed
     MOONLIGHT_ILEX_RESIDUE_EVENT_ID = 'moonlight_ilex_residue'
     NEXUS_ORDER_ILEX_SHRINE_PATTERN_EVENT_ID = 'nexus_order_ilex_shrine_pattern_hidden'
     GOLDENROD_ROAD_UNLOCKED_EVENT_ID = 'goldenrod_road_unlocked'
+    GOLDENROD_ROAD_EVENT_ID = 'goldenrod_road'
+    ROUTE34_DAYCARE_OPENED_EVENT_ID = 'route_34_daycare_opened'
+    GOLDENROD_CITY_ARRIVAL_EVENT_ID = 'goldenrod_city_arrival'
+    GOLDENROD_RADIO_TOWER_TEASE_EVENT_ID = 'goldenrod_radio_tower_tease'
+    WHITNEY_GYM_TEASE_EVENT_ID = 'whitney_gym_tease'
+    RED_GOLDENROD_ROAD_TRAINING_EVENT_ID = 'red_goldenrod_road_training'
+    BROCK_ROUTE34_DAYCARE_ADVICE_EVENT_ID = 'brock_route34_daycare_advice'
+    BILL_GOLDENROD_SIGNAL_SCAN_EVENT_ID = 'bill_goldenrod_signal_scan'
+    BLUE_GOLDENROD_STANDINGS_EVENT_ID = 'blue_goldenrod_standings_ping'
+    AVA_ROUTE34_DAYCARE_RESEARCH_EVENT_ID = 'ava_route34_daycare_research'
+    SILVER_GOLDENROD_PRESSURE_EVENT_ID = 'silver_goldenrod_pressure'
+    ROCKET_GOLDENROD_RADIO_SHADOW_EVENT_ID = 'rocket_goldenrod_radio_tower_shadow'
+    GOLD_DUST_GOLDENROD_COIN_MARKET_EVENT_ID = 'gold_dust_goldenrod_coin_market'
+    TEAM_GAS_GOLDENROD_UNDERGROUND_EVENT_ID = 'team_gas_goldenrod_underground_vent_probe'
+    MOONLIGHT_GOLDENROD_RADIO_JINGLE_EVENT_ID = 'moonlight_goldenrod_radio_sleep_jingle'
+    NEXUS_ORDER_GOLDENROD_FREQUENCY_EVENT_ID = 'nexus_order_goldenrod_frequency_hidden'
+    WHITNEY_PLAIN_BADGE_PREP_UNLOCKED_EVENT_ID = 'whitney_plain_badge_prep_unlocked'
 
     module_function
 
@@ -1781,6 +1798,222 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_ilex_shrine_pattern_unrevealed',
         'unlocks' => %w[goldenrod_road route_34_daycare_lead trail_cutter_farfetchd_lead ilex_shrine_rumor],
         'next_hook' => 'goldenrod_road'
+      }
+    end
+
+    def complete_goldenrod_road(state, location: 'Route 34', area_type: 'route')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => GOLDENROD_ROAD_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_ilex_forest_path', 'event_id' => GOLDENROD_ROAD_EVENT_ID } unless ilex_forest_path_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => GOLDENROD_ROAD_EVENT_ID } if goldenrod_road_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_ROAD')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE34_DAYCARE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_CITY_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_RADIO_TOWER_TEASE')
+      add_story_flag(state, 'FLAG_NEXUS_WHITNEY_GYM_TEASE')
+      add_story_flag(state, 'FLAG_NEXUS_WHITNEY_PLAIN_BADGE_PREP_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_GOLDENROD_ROAD_TRAINING')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_ROUTE34_DAYCARE_ADVICE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_GOLDENROD_SIGNAL_SCAN')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GOLDENROD_RADIO_SHADOW')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_GOLDENROD_COIN_MARKET')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_GOLDENROD_UNDERGROUND')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_GOLDENROD_RADIO_JINGLE')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_GOLDENROD_FREQUENCY')
+
+      [
+        GOLDENROD_ROAD_EVENT_ID,
+        ROUTE34_DAYCARE_OPENED_EVENT_ID,
+        GOLDENROD_CITY_ARRIVAL_EVENT_ID,
+        GOLDENROD_RADIO_TOWER_TEASE_EVENT_ID,
+        WHITNEY_GYM_TEASE_EVENT_ID,
+        RED_GOLDENROD_ROAD_TRAINING_EVENT_ID,
+        BROCK_ROUTE34_DAYCARE_ADVICE_EVENT_ID,
+        BILL_GOLDENROD_SIGNAL_SCAN_EVENT_ID,
+        BLUE_GOLDENROD_STANDINGS_EVENT_ID,
+        AVA_ROUTE34_DAYCARE_RESEARCH_EVENT_ID,
+        SILVER_GOLDENROD_PRESSURE_EVENT_ID,
+        ROCKET_GOLDENROD_RADIO_SHADOW_EVENT_ID,
+        GOLD_DUST_GOLDENROD_COIN_MARKET_EVENT_ID,
+        TEAM_GAS_GOLDENROD_UNDERGROUND_EVENT_ID,
+        MOONLIGHT_GOLDENROD_RADIO_JINGLE_EVENT_ID,
+        NEXUS_ORDER_GOLDENROD_FREQUENCY_EVENT_ID,
+        WHITNEY_PLAIN_BADGE_PREP_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      EncounterWorld.unlock_daycare(state, location: 'Route 34 Daycare')
+      CenterMartServices.unlock_terminal_feature(state, 'daycare_remote_check')
+      CenterMartServices.unlock_mart_tier(state, 'goldenrod_specialty')
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'goldenrod_road_training',
+        location: location,
+        summary: 'Red slows Antman down on Route 34, turning the busy trainer lane into a warm training walk before the pressure of Goldenrod City.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'route34_daycare_breeding_advice',
+        location: 'Route 34 Daycare',
+        summary: 'Brock explains breeding, eggs, and responsible daycare use while making sure Antman treats the Route 34 Daycare as more than a shortcut to power.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'goldenrod_signal_scan',
+        location: 'Goldenrod City',
+        summary: 'Bill scans Goldenrod Radio Tower and finds the Ilex shrine relay turning into a stronger citywide broadcast shadow.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Goldenrod Gym Plaza',
+        'Silver reached Goldenrod ahead of Antman and is pressuring Whitney for a fast Plain Badge challenge.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        'Goldenrod Station',
+        'Blue checked the Goldenrod standings board and warned that Johto trainers punish sloppy teams harder than Kanto did.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Route 34 Daycare',
+        'Ava uploaded daycare research notes from Route 34, flagging egg moves and rare lineage rumors for WorldLink.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Goldenrod Radio Tower',
+        'goldenrod_radio_tower_shadow',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Game Corner',
+        'goldenrod_coin_market',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Underground',
+        'underground_vent_probe',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower',
+        'radio_sleep_jingle',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower',
+        'goldenrod_frequency_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        'Goldenrod Game Corner',
+        'Rocket broadcast money and Gold Dust coin-market laundering overlap before either side is ready to show its hand.',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_gas',
+        'team_rocket',
+        'Goldenrod Underground',
+        'Team Gas vent probes interrupt Rocket cable taps below the city.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_9_goldenrod_hub_and_plain_badge'
+      event = goldenrod_road_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Goldenrod opens as a real Johto hub: Route 34 daycare is online, Red keeps Antman grounded, Whitney is waiting, and Radio Tower static hints that Rocket is moving again.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def goldenrod_road_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == GOLDENROD_ROAD_EVENT_ID }
+    end
+
+    def goldenrod_road_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => GOLDENROD_ROAD_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_9_goldenrod_hub_and_plain_badge',
+        'route_chain' => ['Ilex Forest Gate', 'Route 34', 'Route 34 Daycare', 'Goldenrod City'],
+        'companions' => %w[red brock bill],
+        'rivals' => %w[blue ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          ROUTE34_DAYCARE_OPENED_EVENT_ID,
+          GOLDENROD_CITY_ARRIVAL_EVENT_ID,
+          GOLDENROD_RADIO_TOWER_TEASE_EVENT_ID,
+          WHITNEY_GYM_TEASE_EVENT_ID,
+          RED_GOLDENROD_ROAD_TRAINING_EVENT_ID,
+          BROCK_ROUTE34_DAYCARE_ADVICE_EVENT_ID,
+          BILL_GOLDENROD_SIGNAL_SCAN_EVENT_ID,
+          BLUE_GOLDENROD_STANDINGS_EVENT_ID,
+          AVA_ROUTE34_DAYCARE_RESEARCH_EVENT_ID,
+          SILVER_GOLDENROD_PRESSURE_EVENT_ID,
+          ROCKET_GOLDENROD_RADIO_SHADOW_EVENT_ID,
+          GOLD_DUST_GOLDENROD_COIN_MARKET_EVENT_ID,
+          TEAM_GAS_GOLDENROD_UNDERGROUND_EVENT_ID,
+          MOONLIGHT_GOLDENROD_RADIO_JINGLE_EVENT_ID,
+          NEXUS_ORDER_GOLDENROD_FREQUENCY_EVENT_ID,
+          WHITNEY_PLAIN_BADGE_PREP_UNLOCKED_EVENT_ID
+        ],
+        'hub_services' => %w[route_34_daycare goldenrod_specialty_mart daycare_remote_check],
+        'hidden_meta_signal' => 'nexus_order_goldenrod_frequency_unrevealed',
+        'unlocks' => %w[route_34_daycare daycare_remote_check goldenrod_specialty_mart whitney_plain_badge_prep radio_tower_shadow_lead],
+        'secondary_hook' => 'goldenrod_radio_tower_shadow',
+        'next_hook' => 'whitney_plain_badge_prep'
       }
     end
   end

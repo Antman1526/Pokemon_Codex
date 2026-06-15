@@ -288,6 +288,8 @@ REQUIRED_MARKERS = (
     "bugsy_hive_badge_battle_cleared?",
     "complete_ilex_forest_path",
     "ilex_forest_path_cleared?",
+    "complete_goldenrod_road",
+    "goldenrod_road_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3336,6 +3338,66 @@ raise 'expected JohtoStory Ilex factions' unless %w[team_rocket team_gold_dust t
 second_ilex_path = NexusRed::JohtoStory.complete_ilex_forest_path(kanto_story_state)
 raise 'expected JohtoStory Ilex path idempotent guard' unless second_ilex_path['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Ilex path history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'ilex_forest_path' } == 1
+pre_goldenrod_road = NexusRed::JohtoStory.complete_goldenrod_road(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Goldenrod road gated before Johto unlock' unless pre_goldenrod_road['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_ilex_path = NexusRed::RuntimeState.build
+johto_before_ilex_path['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_ilex_path)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(johto_before_ilex_path)
+raise 'expected JohtoStory Goldenrod road gated before Ilex path' unless NexusRed::JohtoStory.complete_goldenrod_road(johto_before_ilex_path)['status'] == 'blocked_missing_ilex_forest_path'
+goldenrod_road = NexusRed::JohtoStory.complete_goldenrod_road(
+  kanto_story_state,
+  location: 'Route 34',
+  area_type: 'route'
+)
+raise 'expected JohtoStory Goldenrod road clear status' unless goldenrod_road['status'] == 'cleared'
+raise 'expected JohtoStory Goldenrod road event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_road')
+raise 'expected JohtoStory Goldenrod helper true' unless NexusRed::JohtoStory.goldenrod_road_cleared?(kanto_story_state)
+raise 'expected JohtoStory Route 34 daycare event' unless kanto_story_state['johto_story']['cleared_events'].include?('route_34_daycare_opened')
+raise 'expected JohtoStory Radio Tower tease event' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_radio_tower_tease')
+raise 'expected JohtoStory Whitney prep unlock event' unless kanto_story_state['johto_story']['cleared_events'].include?('whitney_plain_badge_prep_unlocked')
+raise 'expected JohtoStory Goldenrod road flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_ROAD')
+raise 'expected JohtoStory Route 34 daycare flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE34_DAYCARE_UNLOCKED')
+raise 'expected JohtoStory Goldenrod city arrival flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_CITY_ARRIVAL')
+raise 'expected JohtoStory Radio Tower tease flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_RADIO_TOWER_TEASE')
+raise 'expected JohtoStory Whitney prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_WHITNEY_PLAIN_BADGE_PREP_UNLOCKED')
+raise 'expected JohtoStory current act Goldenrod hub' unless kanto_story_state['johto_story']['current_act'] == 'act_9_goldenrod_hub_and_plain_badge'
+raise 'expected JohtoStory daycare enabled' unless NexusRed::EncounterWorld.daycare_enabled?(kanto_story_state)
+raise 'expected JohtoStory daycare location Route 34' unless kanto_story_state['encounter_world']['daycare_location'] == 'Route 34 Daycare'
+raise 'expected JohtoStory daycare remote terminal unlocked' unless NexusRed::CenterMartServices.terminal_available?(kanto_story_state, 'daycare_remote_check')
+raise 'expected JohtoStory Goldenrod specialty mart available' unless NexusRed::CenterMartServices.mart_inventory(kanto_story_state, 'goldenrod').include?('specialty_mart')
+raise 'expected JohtoStory Red Goldenrod road scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('goldenrod_road_training')
+raise 'expected JohtoStory Brock daycare scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('route34_daycare_breeding_advice')
+raise 'expected JohtoStory Bill Goldenrod scan scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('goldenrod_signal_scan')
+raise 'expected JohtoStory Silver Goldenrod activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Goldenrod') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Whitney')
+raise 'expected JohtoStory Blue Goldenrod activity' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Goldenrod')
+raise 'expected JohtoStory Ava daycare activity' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('daycare')
+raise 'expected JohtoStory Rocket Radio Tower activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'goldenrod_radio_tower_shadow' && activity['location'] == 'Goldenrod Radio Tower' }
+raise 'expected JohtoStory Gold Dust coin market activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'goldenrod_coin_market' }
+raise 'expected JohtoStory Team Gas underground vent activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['johto'].any? { |activity| activity['operation'] == 'underground_vent_probe' }
+raise 'expected JohtoStory Moonlight radio jingle activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'radio_sleep_jingle' }
+raise 'expected JohtoStory Nexus Order Goldenrod frequency activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'goldenrod_frequency_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust Goldenrod conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Goldenrod Game Corner' }
+raise 'expected JohtoStory Team Gas Rocket Goldenrod conflict' unless kanto_story_state['faction_progress']['team_gas']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_rocket' && conflict['location'] == 'Goldenrod Underground' }
+raise 'expected JohtoStory Nexus Order still hidden after Goldenrod road' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Goldenrod story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Goldenrod') && message['text'].include?('daycare') && message['text'].include?('Radio Tower') }
+raise 'expected JohtoStory Goldenrod road route chain' unless goldenrod_road['route_chain'] == ['Ilex Forest Gate', 'Route 34', 'Route 34 Daycare', 'Goldenrod City']
+raise 'expected JohtoStory Goldenrod next hook Whitney' unless goldenrod_road['next_hook'] == 'whitney_plain_badge_prep'
+raise 'expected JohtoStory Goldenrod secondary hook Radio Tower' unless goldenrod_road['secondary_hook'] == 'goldenrod_radio_tower_shadow'
+raise 'expected JohtoStory Goldenrod unlocks daycare and Whitney' unless goldenrod_road['unlocks'].include?('route_34_daycare') && goldenrod_road['unlocks'].include?('goldenrod_specialty_mart') && goldenrod_road['unlocks'].include?('whitney_plain_badge_prep')
+raise 'expected JohtoStory Goldenrod companions' unless %w[red brock bill].all? { |companion| goldenrod_road['companions'].include?(companion) }
+raise 'expected JohtoStory Goldenrod rivals' unless %w[blue ava silver].all? { |rival| goldenrod_road['rivals'].include?(rival) }
+raise 'expected JohtoStory Goldenrod factions' unless %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order].all? { |faction| goldenrod_road['factions'].include?(faction) }
+second_goldenrod_road = NexusRed::JohtoStory.complete_goldenrod_road(kanto_story_state)
+raise 'expected JohtoStory Goldenrod road idempotent guard' unless second_goldenrod_road['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Goldenrod history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'goldenrod_road' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
