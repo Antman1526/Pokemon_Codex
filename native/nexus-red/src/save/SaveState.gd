@@ -76,6 +76,8 @@ func start_new_game(name: String) -> void:
 		"brock_pewter_gym_started": false,
 		"brock_pewter_gym_finished": false,
 		"brock_pewter_badge_earned": false,
+		"pewter_museum_anomaly_seen": false,
+		"worldlink_pewter_museum_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -156,6 +158,21 @@ func record_red_pewter_training() -> void:
 	active_companion = "red"
 	set_flag("red_pewter_training_seen", true)
 	queue_worldlink_id("red_pewter_training_seen")
+
+
+func record_pewter_museum_anomaly() -> void:
+	active_companion = "red"
+	set_flag("pewter_museum_anomaly_seen", true)
+	queue_pewter_museum_batch()
+
+
+func queue_pewter_museum_batch() -> void:
+	set_flag("worldlink_pewter_museum_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_red_pewter_museum_scan",
+		"wl_rocket_pewter_museum_anomaly",
+		"wl_bill_fossil_energy_ping",
+	])
 
 
 func record_viridian_center_visit() -> void:

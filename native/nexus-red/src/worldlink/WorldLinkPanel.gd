@@ -3,6 +3,7 @@ extends PanelContainer
 const OPENING_FEED_PATH := "res://content/worldlink/opening_feed.json"
 const ROUTE_1_BATCH_PATH := "res://content/worldlink/route_1_rival_batch.json"
 const VIRIDIAN_BATCH_PATH := "res://content/worldlink/viridian_story_batch.json"
+const PEWTER_MUSEUM_BATCH_PATH := "res://content/worldlink/pewter_museum_anomaly_batch.json"
 const ROUTE_1_RUMORS_PATH := "res://content/encounters/route_1_rumors.json"
 
 var save_state
@@ -64,7 +65,7 @@ func _build_feed_text() -> String:
 
 
 func _build_checklist_text() -> String:
-	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue" % [
+	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly" % [
 		_checkmark(_flag("mom_opening_scene_seen")),
 		_checkmark(_flag("starter_chosen")),
 		_checkmark(_flag("route_1_reached")),
@@ -73,6 +74,9 @@ func _build_checklist_text() -> String:
 		_checkmark(_flag("viridian_city_reached")),
 		_checkmark(_flag("viridian_red_scene_seen")),
 		_checkmark(_flag("viridian_rocket_clue_found")),
+		_checkmark(_flag("pewter_city_reached")),
+		_checkmark(_flag("brock_pewter_badge_earned")),
+		_checkmark(_flag("pewter_museum_anomaly_seen")),
 	]
 
 
@@ -104,6 +108,7 @@ func _build_item_index() -> Dictionary:
 	_add_feed_items(index, OPENING_FEED_PATH, "feed")
 	_add_feed_items(index, ROUTE_1_BATCH_PATH, "feed")
 	_add_feed_items(index, VIRIDIAN_BATCH_PATH, "feed")
+	_add_feed_items(index, PEWTER_MUSEUM_BATCH_PATH, "feed")
 	_add_feed_items(index, ROUTE_1_RUMORS_PATH, "rumors")
 	return index
 

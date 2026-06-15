@@ -425,6 +425,22 @@ python3 tools/validate_native_brock_gym_placeholder.py
 godot --headless --path native/nexus-red --script tests/brock_gym_placeholder_test.gd
 ```
 
+### Task 7.21: Add post-Brock Pewter Museum anomaly hook
+
+Acceptance:
+
+- Pewter Museum anomaly interaction is gated behind Brock's badge.
+- Red stays as the active companion and helps stop a Rocket fossil-reading theft.
+- Bill pings WorldLink with the first explicit fossil/Nexus energy connection.
+- Save state and WorldLink record the museum anomaly for the Kanto story checklist.
+
+Verification:
+
+```sh
+python3 tools/validate_native_pewter_museum_anomaly.py
+godot --headless --path native/nexus-red --script tests/pewter_museum_anomaly_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

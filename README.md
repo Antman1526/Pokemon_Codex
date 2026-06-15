@@ -63,6 +63,7 @@ python3 tools/validate_native_route3_migration_scene.py
 python3 tools/validate_native_viridian_forest_slice.py
 python3 tools/validate_native_pewter_city_slice.py
 python3 tools/validate_native_brock_gym_placeholder.py
+python3 tools/validate_native_pewter_museum_anomaly.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -83,6 +84,7 @@ godot --headless --path native/nexus-red --script tests/route3_migration_scene_t
 godot --headless --path native/nexus-red --script tests/viridian_forest_test.gd
 godot --headless --path native/nexus-red --script tests/pewter_city_test.gd
 godot --headless --path native/nexus-red --script tests/brock_gym_placeholder_test.gd
+godot --headless --path native/nexus-red --script tests/pewter_museum_anomaly_test.gd
 ```
 
 ## Legal Rule

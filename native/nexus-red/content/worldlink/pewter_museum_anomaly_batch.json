@@ -1,0 +1,25 @@
+{
+  "id": "pewter_museum_anomaly_batch",
+  "name": "Pewter Museum Anomaly Batch",
+  "trigger": "post_brock_pewter_museum_anomaly",
+  "feed": [
+    {
+      "id": "wl_red_pewter_museum_scan",
+      "category": "companion",
+      "rival": "red",
+      "text": "Red stayed beside Antman in the Pewter Museum fossil wing and marked the first true Nexus energy pattern."
+    },
+    {
+      "id": "wl_rocket_pewter_museum_anomaly",
+      "category": "faction",
+      "faction": "team_rocket",
+      "text": "A Team Rocket thief tried to steal a fossil glass reading after Brock's badge ceremony."
+    },
+    {
+      "id": "wl_bill_fossil_energy_ping",
+      "category": "ally",
+      "character": "bill",
+      "text": "Bill remotely confirmed that Pewter's fossil energy matches the same hidden signal behind the Route 1 migration surge."
+    }
+  ]
+}

@@ -21,6 +21,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_red_training()
 	if event.is_action_pressed("ui_up"):
 		trigger_brock_gym_challenge()
+	if event.is_action_pressed("ui_right"):
+		investigate_museum_anomaly()
 	if event.is_action_pressed("cancel"):
 		return_to_route_3()
 
@@ -115,9 +117,18 @@ func trigger_brock_gym_challenge() -> void:
 	emit_signal("start_battle_placeholder", "brock_pewter_gym")
 
 
+func investigate_museum_anomaly() -> void:
+	if save_state and not bool(save_state.story_flags.get("brock_pewter_badge_earned", false)):
+		dialogue_label.text = "The Pewter Museum staff are nervous, but Brock asks Antman to finish the gym challenge before stepping into the fossil wing."
+		return
+	if save_state:
+		save_state.record_pewter_museum_anomaly()
+	dialogue_label.text = "Pewter Museum: The fossil glass flashes with a region-map pattern. Red blocks a Rocket thief at the door while Bill pings WorldLink: this energy is older than Kanto."
+
+
 func return_to_route_3() -> void:
 	emit_signal("go_to_route_3")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Pewter City opens around the gym and museum. Press Z/Enter for Brock, Down for Red's training advice, Up for the gym challenge, or X/Esc to return to Route 3."
+	dialogue_label.text = "Pewter City opens around the gym and museum. Press Z/Enter for Brock, Down for Red's training advice, Up for the gym challenge, Right for the museum anomaly, or X/Esc to return to Route 3."
