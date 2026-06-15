@@ -16,6 +16,7 @@ const BATTLE_DATA_PATHS := {
 	"rocket_game_corner_guard": "res://content/battles/rocket_game_corner_guard.json",
 	"rocket_hideout_b2f_patrol": "res://content/battles/rocket_hideout_b2f_patrol.json",
 	"rocket_hideout_b3f_admin": "res://content/battles/rocket_hideout_b3f_admin.json",
+	"giovanni_celadon_command_floor": "res://content/battles/giovanni_celadon_command_floor.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

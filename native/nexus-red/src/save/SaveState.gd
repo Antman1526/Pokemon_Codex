@@ -327,6 +327,20 @@ func start_new_game(name: String) -> void:
 		"giovanni_command_floor_route_seen": false,
 		"rocket_command_floor_path_unlocked": false,
 		"worldlink_celadon_rocket_hideout_elevator_batch_queued": false,
+		"celadon_rocket_command_floor_reached": false,
+		"red_command_floor_door_guard_seen": false,
+		"bill_nexus_order_command_terminal_seen": false,
+		"giovanni_first_confrontation_seen": false,
+		"rocket_silph_scope_cache_seen": false,
+		"gold_dust_command_floor_ledger_seen": false,
+		"team_moonlight_command_floor_signal_seen": false,
+		"giovanni_command_floor_battle_unlocked": false,
+		"giovanni_command_floor_battle_started": false,
+		"giovanni_command_floor_battle_finished": false,
+		"silph_scope_obtained": false,
+		"pokemon_tower_deeper_path_unlocked": false,
+		"erika_gym_path_unlocked": false,
+		"worldlink_celadon_rocket_command_floor_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -1326,6 +1340,39 @@ func queue_celadon_rocket_hideout_elevator_batch() -> void:
 	])
 
 
+func enter_celadon_rocket_command_floor() -> void:
+	current_scene = "celadon_rocket_command_floor"
+	active_companion = "red"
+	set_flag("celadon_rocket_command_floor_reached", true)
+	queue_worldlink_id("wl_celadon_rocket_command_floor_reached")
+
+
+func record_celadon_rocket_command_floor_scene() -> void:
+	active_companion = "red"
+	set_flag("red_command_floor_door_guard_seen", true)
+	set_flag("bill_nexus_order_command_terminal_seen", true)
+	set_flag("giovanni_first_confrontation_seen", true)
+	set_flag("rocket_silph_scope_cache_seen", true)
+	set_flag("gold_dust_command_floor_ledger_seen", true)
+	set_flag("team_moonlight_command_floor_signal_seen", true)
+	set_flag("giovanni_command_floor_battle_unlocked", true)
+	queue_celadon_rocket_command_floor_batch()
+
+
+func queue_celadon_rocket_command_floor_batch() -> void:
+	set_flag("worldlink_celadon_rocket_command_floor_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_rocket_command_floor_reached",
+		"wl_red_command_floor_door_guard",
+		"wl_bill_nexus_order_command_terminal",
+		"wl_giovanni_first_confrontation",
+		"wl_rocket_silph_scope_cache",
+		"wl_gold_dust_command_floor_ledger",
+		"wl_team_moonlight_command_floor_signal",
+		"wl_giovanni_command_floor_battle_unlocked",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -1435,6 +1482,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("rocket_hideout_b2f_patrol_battle_started", true)
 	if battle_id == "rocket_hideout_b3f_admin":
 		set_flag("rocket_admin_lift_key_battle_started", true)
+	if battle_id == "giovanni_celadon_command_floor":
+		set_flag("giovanni_command_floor_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -1506,6 +1555,15 @@ func finish_battle_placeholder(result: String) -> void:
 		queue_worldlink_id("wl_rocket_admin_lift_key_battle_finished")
 		queue_worldlink_id("wl_rocket_lift_key_obtained")
 		queue_worldlink_id("wl_rocket_hideout_elevator_path_unlocked")
+	if active_battle_id == "giovanni_celadon_command_floor":
+		set_flag("giovanni_command_floor_battle_finished", true)
+		set_flag("silph_scope_obtained", true)
+		set_flag("pokemon_tower_deeper_path_unlocked", true)
+		set_flag("erika_gym_path_unlocked", true)
+		queue_worldlink_id("wl_giovanni_command_floor_battle_finished")
+		queue_worldlink_id("wl_silph_scope_obtained")
+		queue_worldlink_id("wl_pokemon_tower_deeper_path_unlocked")
+		queue_worldlink_id("wl_erika_gym_path_unlocked")
 	active_battle_id = ""
 
 

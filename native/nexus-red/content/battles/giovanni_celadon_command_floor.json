@@ -1,0 +1,48 @@
+{
+  "id": "giovanni_celadon_command_floor",
+  "display_title": "Celadon Rocket Command Floor - Giovanni",
+  "status": "placeholder",
+  "battle_type": "villain_boss",
+  "location": "celadon_rocket_command_floor",
+  "level_cap": 35,
+  "difficulty_note": "First direct Giovanni fight. It should feel like the Game Corner boss payoff while staying fair on default difficulty.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red holds the command-floor door so Giovanni cannot flood the room with Rocket reinforcements."
+  },
+  "opponent": {
+    "id": "giovanni",
+    "display_name": "Giovanni",
+    "faction": "rocket",
+    "slots": [
+      {
+        "species": "Onix",
+        "level": 34,
+        "role": "classic Rocket ground pressure and command-floor wall"
+      },
+      {
+        "species": "Rhyhorn",
+        "level": 34,
+        "role": "early Giovanni identity and physical pressure"
+      },
+      {
+        "species": "Kangaskhan",
+        "level": 35,
+        "role": "boss ace with speed, money, and intimidation motif"
+      }
+    ],
+    "intent": "protect the Silph Scope cache, test Antman directly, and retreat once the Nexus Order terminal proves Rocket is being manipulated"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "giovanni_command_floor_battle_started",
+      "giovanni_command_floor_battle_finished",
+      "silph_scope_obtained",
+      "pokemon_tower_deeper_path_unlocked",
+      "erika_gym_path_unlocked"
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "celadon_rocket_command_floor_batch",
+  "name": "Celadon Rocket Command Floor Batch",
+  "feed": [
+    {
+      "id": "wl_celadon_rocket_command_floor_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Giovanni's Rocket command floor beneath Celadon."
+    },
+    {
+      "id": "wl_red_command_floor_door_guard",
+      "speaker": "Red",
+      "text": "Red is holding the command-floor door so Giovanni cannot call Rocket reinforcements."
+    },
+    {
+      "id": "wl_bill_nexus_order_command_terminal",
+      "speaker": "Bill",
+      "text": "Bill found a Nexus Order terminal trace inside Giovanni's command system."
+    },
+    {
+      "id": "wl_giovanni_first_confrontation",
+      "speaker": "WorldLink",
+      "text": "Giovanni confronted Antman directly for the first time in Celadon."
+    },
+    {
+      "id": "wl_rocket_silph_scope_cache",
+      "speaker": "WorldLink",
+      "text": "Rocket's Silph Scope cache is on the command floor."
+    },
+    {
+      "id": "wl_gold_dust_command_floor_ledger",
+      "speaker": "WorldLink",
+      "text": "A Gold Dust ledger prices the Silph Scope and Rocket's stolen research."
+    },
+    {
+      "id": "wl_team_moonlight_command_floor_signal",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight left a dream signal in Giovanni's command terminal."
+    },
+    {
+      "id": "wl_giovanni_command_floor_battle_unlocked",
+      "speaker": "WorldLink",
+      "text": "Giovanni's command-floor battle is unlocked."
+    },
+    {
+      "id": "wl_giovanni_command_floor_battle_finished",
+      "speaker": "WorldLink",
+      "text": "Giovanni retreated from the Celadon command floor."
+    },
+    {
+      "id": "wl_silph_scope_obtained",
+      "speaker": "WorldLink",
+      "text": "Antman obtained the Silph Scope."
+    },
+    {
+      "id": "wl_pokemon_tower_deeper_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Pokemon Tower's deeper route is unlocked."
+    },
+    {
+      "id": "wl_erika_gym_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Erika's gym path is open as Celadon stabilizes after Rocket's retreat."
+    }
+  ]
+}

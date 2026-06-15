@@ -36,6 +36,7 @@ const CeladonRocketHideoutB1FScene := preload("res://scenes/world/CeladonRocketH
 const CeladonRocketHideoutB2FScene := preload("res://scenes/world/CeladonRocketHideoutB2F.tscn")
 const CeladonRocketHideoutB3FScene := preload("res://scenes/world/CeladonRocketHideoutB3F.tscn")
 const CeladonRocketHideoutElevatorScene := preload("res://scenes/world/CeladonRocketHideoutElevator.tscn")
+const CeladonRocketCommandFloorScene := preload("res://scenes/world/CeladonRocketCommandFloor.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -488,7 +489,20 @@ func _show_celadon_rocket_hideout_elevator() -> void:
 	var elevator := CeladonRocketHideoutElevatorScene.instantiate()
 	elevator.save_state = save_state
 	elevator.go_to_rocket_hideout_b3f.connect(_on_go_to_rocket_hideout_b3f)
+	elevator.go_to_rocket_command_floor.connect(_on_go_to_rocket_command_floor)
 	_replace_screen(elevator)
+
+
+func _on_go_to_rocket_command_floor() -> void:
+	_show_celadon_rocket_command_floor()
+
+
+func _show_celadon_rocket_command_floor() -> void:
+	var command_floor := CeladonRocketCommandFloorScene.instantiate()
+	command_floor.save_state = save_state
+	command_floor.go_to_rocket_hideout_elevator.connect(_on_go_to_rocket_hideout_elevator)
+	command_floor.start_battle_placeholder.connect(_on_start_battle_placeholder)
+	_replace_screen(command_floor)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:
@@ -571,6 +585,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_celadon_rocket_hideout_b2f()
 	elif battle_return_scene == "celadon_rocket_hideout_b3f":
 		_show_celadon_rocket_hideout_b3f()
+	elif battle_return_scene == "celadon_rocket_command_floor":
+		_show_celadon_rocket_command_floor()
 	else:
 		_on_go_to_route_1()
 
