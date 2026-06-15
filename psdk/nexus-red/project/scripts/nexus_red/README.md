@@ -33,6 +33,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_pewter_museum_anomaly(state, location:, area_type:, partner_id:)` resolves the post-Brock museum service tunnel event. It requires the Boulder Badge, marks the museum Rocket event flag, records Team Rocket fossil-scanner theft activity, adds an early Team Phoenix conflict clue, records the partner backup scene, and queues a paused story alert when called from a villain hideout area.
 
+`NexusRed::KantoStory.complete_mt_moon_operation(state, location:, area_type:, rival_id:)` resolves the Act 2 Mt. Moon story bridge. It requires the museum clue, records Rocket Moon Stone extraction, marks the Gold Dust invoice hint and Ava Clefairy night notes, logs the Rocket/Gold Dust double-cross, records Ava as a rival story clue, and pauses the story alert while the player is inside the cave.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

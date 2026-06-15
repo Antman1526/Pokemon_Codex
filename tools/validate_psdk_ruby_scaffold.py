@@ -146,6 +146,9 @@ REQUIRED_MARKERS = (
     "brock_rewards_applied?",
     "complete_pewter_museum_anomaly",
     "museum_anomaly_cleared?",
+    "complete_mt_moon_operation",
+    "mt_moon_operation_cleared?",
+    "gold_dust_invoice_found?",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
@@ -920,6 +923,29 @@ raise 'expected KantoStory museum WorldLink paused in hideout' unless kanto_stor
 second_museum_clear = NexusRed::KantoStory.complete_pewter_museum_anomaly(kanto_story_state)
 raise 'expected KantoStory museum clear idempotent guard' unless second_museum_clear['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate museum history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pewter_rocket_fossil_scan_theft' } == 1
+pre_museum_mt_moon = NexusRed::KantoStory.complete_mt_moon_operation(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Mt Moon gated before museum clue' unless pre_museum_mt_moon['status'] == 'blocked_missing_museum_clue'
+mt_moon_clear = NexusRed::KantoStory.complete_mt_moon_operation(
+  kanto_story_state,
+  location: 'Mt. Moon Depths',
+  area_type: 'cave',
+  rival_id: 'ava'
+)
+raise 'expected KantoStory Mt Moon clear status' unless mt_moon_clear['status'] == 'cleared'
+raise 'expected KantoStory Mt Moon operation event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('mt_moon_rocket_moon_stone_operation')
+raise 'expected KantoStory Gold Dust invoice event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('gold_dust_invoice_hint')
+raise 'expected KantoStory Ava Clefairy notes event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('ava_clefairy_night_notes')
+raise 'expected KantoStory Mt Moon helper true' unless NexusRed::KantoStory.mt_moon_operation_cleared?(kanto_story_state)
+raise 'expected KantoStory Gold Dust invoice helper true' unless NexusRed::KantoStory.gold_dust_invoice_found?(kanto_story_state)
+raise 'expected KantoStory Rocket Mt Moon activity recorded' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Mt. Moon Depths' && activity['operation'] == 'moon_stone_extraction' }
+raise 'expected KantoStory Gold Dust invoice activity recorded' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['operation'] == 'invoice_laundering_hint' }
+raise 'expected KantoStory Rocket Gold Dust conflict recorded' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Mt. Moon Depths' }
+raise 'expected KantoStory Ava Mt Moon rival clue recorded' unless kanto_story_state['rival_progress']['ava']['latest_activity']['category'] == 'rival_story_clue'
+raise 'expected KantoStory Ava Clefairy note summary' unless kanto_story_state['rival_progress']['ava']['latest_activity']['summary'].include?('Clefairy')
+raise 'expected KantoStory Mt Moon story alert paused in cave' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Mt. Moon') }
+second_mt_moon_clear = NexusRed::KantoStory.complete_mt_moon_operation(kanto_story_state)
+raise 'expected KantoStory Mt Moon idempotent guard' unless second_mt_moon_clear['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Mt Moon history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'mt_moon_rocket_moon_stone_operation' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

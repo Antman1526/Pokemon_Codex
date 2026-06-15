@@ -4,6 +4,9 @@ module NexusRed
   module KantoStory
     BROCK_REWARD_ID = 'brock_red_field_kit'
     MUSEUM_EVENT_ID = 'pewter_rocket_fossil_scan_theft'
+    MT_MOON_EVENT_ID = 'mt_moon_rocket_moon_stone_operation'
+    GOLD_DUST_INVOICE_EVENT_ID = 'gold_dust_invoice_hint'
+    AVA_CLEFAIRY_EVENT_ID = 'ava_clefairy_night_notes'
 
     module_function
 
@@ -114,6 +117,72 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == MUSEUM_EVENT_ID }
     end
 
+    def complete_mt_moon_operation(state, location: 'Mt. Moon Depths', area_type: 'cave', rival_id: 'ava')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_museum_clue', 'event_id' => MT_MOON_EVENT_ID } unless museum_anomaly_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => MT_MOON_EVENT_ID } if mt_moon_operation_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_MT_MOON_ROCKET_OPERATION_DONE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_INVOICE_HINT')
+      mark_cleared_event(story, MT_MOON_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_INVOICE_EVENT_ID)
+      mark_cleared_event(story, AVA_CLEFAIRY_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'moon_stone_extraction',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'invoice_laundering_hint',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Moon Stone extraction invoice double-cross',
+        intensity: 2,
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        rival_id,
+        location,
+        'Ava found Clefairy night notes beside a gold-stamped invoice.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Mt. Moon linked Rocket Moon Stone extraction to a gold-stamped invoice trail.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = mt_moon_event_result(location, rival_id)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def mt_moon_operation_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == MT_MOON_EVENT_ID }
+    end
+
+    def gold_dust_invoice_found?(state)
+      ensure_kanto_story(state)['cleared_events'].include?(GOLD_DUST_INVOICE_EVENT_ID)
+    end
+
     def field_healing_charges_for(state)
       case FieldHealing.policy(state)
       when 'full'
@@ -159,6 +228,29 @@ module NexusRed
         'factions' => %w[team_rocket team_phoenix],
         'next_hook' => 'mt_moon_rocket_moon_stone_operation'
       }
+    end
+
+    def mt_moon_event_result(location, rival_id)
+      {
+        'status' => 'cleared',
+        'event_id' => MT_MOON_EVENT_ID,
+        'location' => location.to_s,
+        'rival_id' => rival_id.to_s,
+        'factions' => %w[team_rocket team_gold_dust],
+        'linked_events' => [GOLD_DUST_INVOICE_EVENT_ID, AVA_CLEFAIRY_EVENT_ID],
+        'next_hook' => 'nugget_bridge_world_circuit_qualifier'
+      }
+    end
+
+    def record_rival_story_clue(state, rival_id, location, summary, area_type)
+      rival = RivalProgress.ensure_rival(state, rival_id)
+      activity = {
+        'category' => 'rival_story_clue',
+        'location' => location.to_s,
+        'summary' => summary.to_s
+      }
+      RivalProgress.record_activity(rival, activity)
+      WorldLink.queue_message(state, activity['category'], activity['summary'], source: rival['rival_id'], area_type: area_type)
     end
 
     def companion_display_name(companion_id)
