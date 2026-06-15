@@ -232,6 +232,8 @@ REQUIRED_MARKERS = (
     "silph_co_7f_executive_floor_cleared?",
     "complete_silph_co_10f_president_suite",
     "silph_co_10f_president_suite_cleared?",
+    "complete_silph_co_giovanni_boardroom",
+    "silph_co_giovanni_boardroom_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2217,6 +2219,42 @@ raise 'expected KantoStory Silph 10F unlocks Giovanni boardroom' unless silph_10
 second_silph_10f = NexusRed::KantoStory.complete_silph_co_10f_president_suite(kanto_story_state)
 raise 'expected KantoStory Silph 10F idempotent guard' unless second_silph_10f['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Silph 10F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_10f_president_suite' } == 1
+pre_giovanni_boardroom = NexusRed::KantoStory.complete_silph_co_giovanni_boardroom(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Giovanni boardroom gated before 10F' unless pre_giovanni_boardroom['status'] == 'blocked_missing_silph_co_10f_president_suite'
+giovanni_boardroom = NexusRed::KantoStory.complete_silph_co_giovanni_boardroom(
+  kanto_story_state,
+  location: 'Silph Co Giovanni Boardroom',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Giovanni boardroom clear status' unless giovanni_boardroom['status'] == 'cleared'
+raise 'expected KantoStory Giovanni boardroom event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('silph_co_giovanni_boardroom')
+raise 'expected KantoStory Giovanni boardroom helper true' unless NexusRed::KantoStory.silph_co_giovanni_boardroom_cleared?(kanto_story_state)
+raise 'expected KantoStory Giovanni boardroom flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CO_GIOVANNI_BOARDROOM')
+raise 'expected KantoStory Silph takeover cleared flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_TAKEOVER_CLEARED')
+raise 'expected KantoStory Giovanni retreats global arc flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GIOVANNI_GLOBAL_RETREAT')
+raise 'expected KantoStory Master Ball prototype secured flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MASTER_BALL_PROTOTYPE_SECURED')
+raise 'expected KantoStory Red Silph boardroom stand flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SILPH_BOARDROOM_STAND')
+raise 'expected KantoStory Blue Silph boardroom challenge flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_SILPH_BOARDROOM_CHALLENGE')
+raise 'expected KantoStory Bill Nexus signal cache flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_NEXUS_SIGNAL_CACHE')
+raise 'expected KantoStory Nexus Order still hidden signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_SILPH_SIGNAL_STILL_HIDDEN')
+raise 'expected KantoStory Saffron aftermath unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFFRON_AFTER_MATH_UNLOCKED')
+raise 'expected KantoStory Red Silph boardroom scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('silph_boardroom_stand')
+raise 'expected KantoStory Bill Silph boardroom scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_nexus_signal_cache')
+raise 'expected KantoStory Blue Silph boardroom clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Giovanni')
+raise 'expected KantoStory Rocket boardroom activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Giovanni Boardroom' && activity['operation'] == 'giovanni_boardroom_retreat' }
+raise 'expected KantoStory Gold Dust boardroom activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Giovanni Boardroom' && activity['operation'] == 'master_ball_buyer_disrupted' }
+raise 'expected KantoStory Moonlight boardroom activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Giovanni Boardroom' && activity['operation'] == 'boardroom_memory_afterimage' }
+raise 'expected KantoStory Nexus boardroom activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co Giovanni Boardroom' && activity['operation'] == 'silph_signal_cache_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Giovanni boardroom' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Gold Dust boardroom conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Silph Co Giovanni Boardroom' }
+raise 'expected KantoStory Giovanni boardroom story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Giovanni') && message['text'].include?('Silph') && message['text'].include?('Sabrina') }
+raise 'expected KantoStory Giovanni boardroom next hook Saffron aftermath' unless giovanni_boardroom['next_hook'] == 'saffron_sabrina_aftermath'
+raise 'expected KantoStory Giovanni boardroom factions' unless giovanni_boardroom['factions'].include?('team_rocket') && giovanni_boardroom['factions'].include?('nexus_order')
+raise 'expected KantoStory Giovanni boardroom unlocks Saffron aftermath' unless giovanni_boardroom['unlocks'].include?('saffron_sabrina_aftermath') && giovanni_boardroom['unlocks'].include?('master_ball_prototype')
+raise 'expected KantoStory Giovanni escapes full arc' unless giovanni_boardroom['giovanni_state'] == 'retreated_with_nexus_signal_data'
+second_giovanni_boardroom = NexusRed::KantoStory.complete_silph_co_giovanni_boardroom(kanto_story_state)
+raise 'expected KantoStory Giovanni boardroom idempotent guard' unless second_giovanni_boardroom['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Giovanni boardroom history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_giovanni_boardroom' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

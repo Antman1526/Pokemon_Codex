@@ -247,6 +247,16 @@ module NexusRed
     NEXUS_ORDER_PRESIDENT_SPONSOR_EVENT_ID = 'nexus_order_president_sponsor_trace'
     GIOVANNI_BOARDROOM_ROUTE_EVENT_ID = 'giovanni_boardroom_route_unlocked'
     ROCKET_SILPH_10F_HOSTAGE_BATTLE_ID = 'rocket_silph_10f_hostage_guard'
+    SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID = 'silph_co_giovanni_boardroom'
+    SILPH_TAKEOVER_CLEARED_EVENT_ID = 'silph_takeover_cleared'
+    GIOVANNI_GLOBAL_RETREAT_EVENT_ID = 'giovanni_global_retreat'
+    MASTER_BALL_PROTOTYPE_SECURED_EVENT_ID = 'master_ball_prototype_secured'
+    RED_SILPH_BOARDROOM_STAND_EVENT_ID = 'red_silph_boardroom_stand'
+    BLUE_SILPH_BOARDROOM_CHALLENGE_EVENT_ID = 'blue_silph_boardroom_challenge'
+    BILL_NEXUS_SIGNAL_CACHE_EVENT_ID = 'bill_nexus_signal_cache'
+    NEXUS_ORDER_SILPH_SIGNAL_HIDDEN_EVENT_ID = 'nexus_order_silph_signal_still_hidden'
+    SAFFRON_AFTER_MATH_UNLOCKED_EVENT_ID = 'saffron_sabrina_aftermath_unlocked'
+    GIOVANNI_SILPH_BOARDROOM_BATTLE_ID = 'giovanni_silph_boardroom'
 
     module_function
 
@@ -3873,6 +3883,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_10F_PRESIDENT_SUITE_EVENT_ID }
     end
 
+    def complete_silph_co_giovanni_boardroom(state, location: 'Silph Co Giovanni Boardroom', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_co_10f_president_suite', 'event_id' => SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID } unless silph_co_10f_president_suite_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID } if silph_co_giovanni_boardroom_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_GIOVANNI_BOARDROOM')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_TAKEOVER_CLEARED')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_GLOBAL_RETREAT')
+      add_story_flag(state, 'FLAG_NEXUS_MASTER_BALL_PROTOTYPE_SECURED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SILPH_BOARDROOM_STAND')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_SILPH_BOARDROOM_CHALLENGE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_NEXUS_SIGNAL_CACHE')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_SILPH_SIGNAL_STILL_HIDDEN')
+      add_story_flag(state, 'FLAG_NEXUS_SAFFRON_AFTER_MATH_UNLOCKED')
+      mark_cleared_event(story, SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID)
+      mark_cleared_event(story, SILPH_TAKEOVER_CLEARED_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_GLOBAL_RETREAT_EVENT_ID)
+      mark_cleared_event(story, MASTER_BALL_PROTOTYPE_SECURED_EVENT_ID)
+      mark_cleared_event(story, RED_SILPH_BOARDROOM_STAND_EVENT_ID)
+      mark_cleared_event(story, BLUE_SILPH_BOARDROOM_CHALLENGE_EVENT_ID)
+      mark_cleared_event(story, BILL_NEXUS_SIGNAL_CACHE_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_SILPH_SIGNAL_HIDDEN_EVENT_ID)
+      mark_cleared_event(story, SAFFRON_AFTER_MATH_UNLOCKED_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'giovanni_boardroom_retreat',
+        threat_delta: -3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'master_ball_buyer_disrupted',
+        threat_delta: -1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'boardroom_memory_afterimage',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'silph_signal_cache_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Giovanni abandons the Silph acquisition while Gold Dust buyers lose their chance to purchase the Master Ball prototype',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Moonlight afterimages leak through the boardroom as Rocket deletes evidence of the hidden sponsor signal',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'silph_boardroom_stand',
+        location: location,
+        summary: 'Red stands with Antman at the boardroom entrance, blocking Rocket reinforcements while Giovanni retreats.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_nexus_signal_cache',
+        location: location,
+        summary: 'Bill caches a fragment of the Silph sponsor signal before Giovanni wipes the boardroom terminals.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue challenged Giovanni’s escape route and confirmed Rocket is retreating from Silph, not giving up globally.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Giovanni has retreated from Silph Co.; the Master Ball prototype is secured, but Sabrina still senses the hidden boardroom signal.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = silph_co_giovanni_boardroom_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def silph_co_giovanni_boardroom_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -4772,6 +4901,40 @@ module NexusRed
         'locked_systems' => %w[giovanni_boardroom_final_lock],
         'unlocks' => %w[silph_co_giovanni_boardroom president_rescue master_ball_prototype_secured],
         'next_hook' => 'silph_co_giovanni_boardroom'
+      }
+    end
+
+    def silph_co_giovanni_boardroom_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SILPH_CO_GIOVANNI_BOARDROOM_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          SILPH_TAKEOVER_CLEARED_EVENT_ID,
+          GIOVANNI_GLOBAL_RETREAT_EVENT_ID,
+          MASTER_BALL_PROTOTYPE_SECURED_EVENT_ID,
+          RED_SILPH_BOARDROOM_STAND_EVENT_ID,
+          BLUE_SILPH_BOARDROOM_CHALLENGE_EVENT_ID,
+          BILL_NEXUS_SIGNAL_CACHE_EVENT_ID,
+          NEXUS_ORDER_SILPH_SIGNAL_HIDDEN_EVENT_ID,
+          SAFFRON_AFTER_MATH_UNLOCKED_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'dungeon_state' => 'silph_takeover_cleared',
+        'battle_hook' => {
+          'battle_id' => GIOVANNI_SILPH_BOARDROOM_BATTLE_ID,
+          'battle_type' => 'boss_giovanni',
+          'location' => 'silph_co_giovanni_boardroom',
+          'level_cap' => 46,
+          'opponent_species' => %w[Nidoqueen Kangaskhan Rhyhorn Persian],
+          'tag_support' => 'blue_blocks_escape_route',
+          'companion_support' => 'red_blocks_rocket_reinforcements'
+        },
+        'giovanni_state' => 'retreated_with_nexus_signal_data',
+        'silph_state' => 'president_rescued_master_ball_prototype_secured',
+        'hidden_meta_signal' => 'nexus_order_still_unrevealed',
+        'unlocks' => %w[saffron_sabrina_aftermath master_ball_prototype silph_employee_rematches],
+        'next_hook' => 'saffron_sabrina_aftermath'
       }
     end
 
