@@ -210,6 +210,8 @@ REQUIRED_MARKERS = (
     "route_12_snorlax_wake_cleared?",
     "complete_route_12_fishing_pier",
     "route_12_fishing_pier_cleared?",
+    "complete_fuchsia_city_arrival",
+    "fuchsia_city_arrival_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1820,6 +1822,37 @@ raise 'expected KantoStory Route 12 fishing pier route unlock' unless route_12_p
 second_route_12_pier = NexusRed::KantoStory.complete_route_12_fishing_pier(kanto_story_state)
 raise 'expected KantoStory Route 12 fishing pier idempotent guard' unless second_route_12_pier['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Route 12 fishing pier history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_12_fishing_pier' } == 1
+pre_fuchsia_arrival = NexusRed::KantoStory.complete_fuchsia_city_arrival(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Fuchsia arrival gated before Route 12 pier' unless pre_fuchsia_arrival['status'] == 'blocked_missing_route_12_fishing_pier'
+fuchsia_arrival = NexusRed::KantoStory.complete_fuchsia_city_arrival(
+  kanto_story_state,
+  location: 'Fuchsia City',
+  area_type: 'city'
+)
+raise 'expected KantoStory Fuchsia arrival clear status' unless fuchsia_arrival['status'] == 'cleared'
+raise 'expected KantoStory Fuchsia arrival event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('fuchsia_city_arrival')
+raise 'expected KantoStory Fuchsia arrival helper true' unless NexusRed::KantoStory.fuchsia_city_arrival_cleared?(kanto_story_state)
+raise 'expected KantoStory Fuchsia arrival flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FUCHSIA_CITY_ARRIVAL')
+raise 'expected KantoStory Koga gym tease flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KOGA_GYM_TEASED')
+raise 'expected KantoStory Safari gate flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFARI_ZONE_GATE_UNLOCKED')
+raise 'expected KantoStory Safari anomaly confirmed flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFARI_ANOMALY_CONFIRMED')
+raise 'expected KantoStory Clover preserve front flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_CLOVER_PRESERVE_FRONT')
+raise 'expected KantoStory Gold Dust Safari buyer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_SAFARI_BUYER')
+raise 'expected KantoStory Red Fuchsia scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('fuchsia_city_arrival')
+raise 'expected KantoStory Misty Safari scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('safari_water_anomaly')
+raise 'expected KantoStory Bill preserve scan scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('safari_preserve_scan')
+raise 'expected KantoStory Clover preserve activity' unless kanto_story_state['faction_progress']['team_clover']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia City' && activity['operation'] == 'safari_preserve_front' }
+raise 'expected KantoStory Gold Dust Safari buyer activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia City' && activity['operation'] == 'rare_safari_buyer_network' }
+raise 'expected KantoStory Rocket Safari surveillance activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Fuchsia City' && activity['operation'] == 'warden_house_surveillance' }
+raise 'expected KantoStory Clover Rocket Fuchsia conflict' unless kanto_story_state['faction_progress']['team_clover']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_rocket' && conflict['location'] == 'Fuchsia City' }
+raise 'expected KantoStory Fuchsia story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Koga') && message['text'].include?('Safari') }
+raise 'expected KantoStory Fuchsia next hook Safari anomaly' unless fuchsia_arrival['next_hook'] == 'safari_zone_anomaly'
+raise 'expected KantoStory Fuchsia gym leader Koga' unless fuchsia_arrival['gym_leader'] == 'Koga'
+raise 'expected KantoStory Fuchsia encounter hooks' unless fuchsia_arrival['encounter_hooks'].include?('safari_preserve_rotation') && fuchsia_arrival['encounter_hooks'].include?('poison_hazard_training')
+raise 'expected KantoStory Fuchsia unlocks Safari gate' unless fuchsia_arrival['unlocks'].include?('safari_zone_gate')
+second_fuchsia_arrival = NexusRed::KantoStory.complete_fuchsia_city_arrival(kanto_story_state)
+raise 'expected KantoStory Fuchsia arrival idempotent guard' unless second_fuchsia_arrival['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Fuchsia arrival history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'fuchsia_city_arrival' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

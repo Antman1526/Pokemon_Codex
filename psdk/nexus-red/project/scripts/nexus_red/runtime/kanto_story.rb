@@ -151,6 +151,13 @@ module NexusRed
     FUCHSIA_APPROACH_EVENT_ID = 'fuchsia_approach_unlocked'
     SAFARI_ZONE_ANOMALY_LEAD_EVENT_ID = 'safari_zone_anomaly_lead'
     TEAM_CLOVER_SAFARI_CLUE_EVENT_ID = 'team_clover_safari_clue'
+    FUCHSIA_CITY_ARRIVAL_EVENT_ID = 'fuchsia_city_arrival'
+    KOGA_GYM_TEASED_EVENT_ID = 'koga_gym_teased'
+    SAFARI_ZONE_GATE_EVENT_ID = 'safari_zone_gate_unlocked'
+    SAFARI_ANOMALY_CONFIRMED_EVENT_ID = 'safari_anomaly_confirmed'
+    TEAM_CLOVER_PRESERVE_FRONT_EVENT_ID = 'team_clover_preserve_front'
+    GOLD_DUST_SAFARI_BUYER_EVENT_ID = 'gold_dust_safari_buyer'
+    ROCKET_WARDEN_SURVEILLANCE_EVENT_ID = 'rocket_warden_house_surveillance'
 
     module_function
 
@@ -2584,6 +2591,103 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_12_FISHING_PIER_EVENT_ID }
     end
 
+    def complete_fuchsia_city_arrival(state, location: 'Fuchsia City', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_route_12_fishing_pier', 'event_id' => FUCHSIA_CITY_ARRIVAL_EVENT_ID } unless route_12_fishing_pier_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => FUCHSIA_CITY_ARRIVAL_EVENT_ID } if fuchsia_city_arrival_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_FUCHSIA_CITY_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_KOGA_GYM_TEASED')
+      add_story_flag(state, 'FLAG_NEXUS_SAFARI_ZONE_GATE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_SAFARI_ANOMALY_CONFIRMED')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_CLOVER_PRESERVE_FRONT')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_SAFARI_BUYER')
+      mark_cleared_event(story, FUCHSIA_CITY_ARRIVAL_EVENT_ID)
+      mark_cleared_event(story, KOGA_GYM_TEASED_EVENT_ID)
+      mark_cleared_event(story, SAFARI_ZONE_GATE_EVENT_ID)
+      mark_cleared_event(story, SAFARI_ANOMALY_CONFIRMED_EVENT_ID)
+      mark_cleared_event(story, TEAM_CLOVER_PRESERVE_FRONT_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_SAFARI_BUYER_EVENT_ID)
+      mark_cleared_event(story, ROCKET_WARDEN_SURVEILLANCE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_clover',
+        'kanto',
+        location,
+        'safari_preserve_front',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'rare_safari_buyer_network',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'warden_house_surveillance',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_clover',
+        'team_rocket',
+        location,
+        'Clover wants the Safari preserve trusted while Rocket watches the Warden for old hidden-machine intelligence',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'fuchsia_city_arrival',
+        location: location,
+        summary: 'Red slows the pace in Fuchsia so Antman can read the Safari and Koga pressure before charging ahead.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'safari_water_anomaly',
+        location: location,
+        summary: 'Misty identifies strange water-route behavior spilling out of the Safari preserve.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'safari_preserve_scan',
+        location: location,
+        summary: 'Bill scans Safari rare-encounter spikes and flags them as manipulated rather than natural migration.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Fuchsia City opened Koga pressure, Safari anomaly access, and a Clover preserve front under Rocket surveillance.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = fuchsia_city_arrival_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def fuchsia_city_arrival_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == FUCHSIA_CITY_ARRIVAL_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3158,6 +3262,27 @@ module NexusRed
         'encounter_hooks' => %w[super_rod_chain safari_anomaly_rumor],
         'unlocks' => %w[fuchsia_approach safari_anomaly_lead],
         'next_hook' => 'fuchsia_city_arrival'
+      }
+    end
+
+    def fuchsia_city_arrival_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => FUCHSIA_CITY_ARRIVAL_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          KOGA_GYM_TEASED_EVENT_ID,
+          SAFARI_ZONE_GATE_EVENT_ID,
+          SAFARI_ANOMALY_CONFIRMED_EVENT_ID,
+          TEAM_CLOVER_PRESERVE_FRONT_EVENT_ID,
+          GOLD_DUST_SAFARI_BUYER_EVENT_ID,
+          ROCKET_WARDEN_SURVEILLANCE_EVENT_ID
+        ],
+        'factions' => %w[team_clover team_gold_dust team_rocket],
+        'gym_leader' => 'Koga',
+        'encounter_hooks' => %w[safari_preserve_rotation poison_hazard_training],
+        'unlocks' => %w[safari_zone_gate koga_gym_tease],
+        'next_hook' => 'safari_zone_anomaly'
       }
     end
 

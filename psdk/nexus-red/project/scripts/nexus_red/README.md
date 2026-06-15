@@ -95,6 +95,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_route_12_fishing_pier(state, location:, area_type:)` resolves the first southbound Route 12 stop after Snorlax. It records the Fishing Guru beat, Misty's Super Rod/water-route advice, Bill tracing Safari anomaly spikes, Clover and Gold Dust competing over rare-encounter rumors, and opens `fuchsia_city_arrival` as the next Kanto hook.
 
+`NexusRed::KantoStory.complete_fuchsia_city_arrival(state, location:, area_type:)` resolves the first Fuchsia City setup beat. It introduces Koga's poison/hazard pressure, opens the Safari Zone gate, confirms the Safari anomaly, records Clover's preserve front, Gold Dust's rare buyer network, Rocket's Warden surveillance, and points the next hook to `safari_zone_anomaly`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
