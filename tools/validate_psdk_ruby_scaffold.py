@@ -272,6 +272,8 @@ REQUIRED_MARKERS = (
     "new_bark_arrival_cleared?",
     "complete_violet_city_path",
     "violet_city_path_cleared?",
+    "complete_sprout_tower_entry",
+    "sprout_tower_entry_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2916,6 +2918,56 @@ raise 'expected JohtoStory Violet unlocks' unless violet_path['unlocks'].include
 second_violet_path = NexusRed::JohtoStory.complete_violet_city_path(kanto_story_state)
 raise 'expected JohtoStory Violet path idempotent guard' unless second_violet_path['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Violet history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'violet_city_path' } == 1
+pre_sprout_tower = NexusRed::JohtoStory.complete_sprout_tower_entry(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Sprout Tower gated before Johto unlock' unless pre_sprout_tower['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_violet_path = NexusRed::RuntimeState.build
+johto_before_violet_path['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_violet_path)
+raise 'expected JohtoStory Sprout Tower gated before Violet path' unless NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_violet_path)['status'] == 'blocked_missing_violet_city_path'
+sprout_tower = NexusRed::JohtoStory.complete_sprout_tower_entry(
+  kanto_story_state,
+  location: 'Sprout Tower',
+  area_type: 'ruins'
+)
+raise 'expected JohtoStory Sprout Tower clear status' unless sprout_tower['status'] == 'cleared'
+raise 'expected JohtoStory Sprout Tower event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('sprout_tower_entry')
+raise 'expected JohtoStory Sprout Tower helper true' unless NexusRed::JohtoStory.sprout_tower_entry_cleared?(kanto_story_state)
+raise 'expected JohtoStory Elder Li trial event' unless kanto_story_state['johto_story']['cleared_events'].include?('elder_li_tower_trial')
+raise 'expected JohtoStory Falkner prep event' unless kanto_story_state['johto_story']['cleared_events'].include?('falkner_zephyr_badge_prep_unlocked')
+raise 'expected JohtoStory Sprout Tower flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SPROUT_TOWER_ENTRY')
+raise 'expected JohtoStory Elder Li trial flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ELDER_LI_TOWER_TRIAL')
+raise 'expected JohtoStory Red tower respect flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SPROUT_TOWER_RESPECT')
+raise 'expected JohtoStory Brock tower lore flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_SPROUT_TOWER_LORE')
+raise 'expected JohtoStory Silver sage conflict flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILVER_SAGE_CONFLICT')
+raise 'expected JohtoStory Moonlight ritual flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_SPROUT_TOWER_RITUAL')
+raise 'expected JohtoStory Rocket antenna flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_BELLSPROUT_RADIO_ANTENNA')
+raise 'expected JohtoStory Gold Dust relic offer flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_TOWER_RELIC_OFFER')
+raise 'expected JohtoStory Nexus Order root flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_SPROUT_ROOT_STATIC')
+raise 'expected JohtoStory Falkner prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FALKNER_ZEPHYR_PREP_UNLOCKED')
+raise 'expected JohtoStory current act Falkner prep' unless kanto_story_state['johto_story']['current_act'] == 'act_3_falkner_zephyr_badge'
+raise 'expected JohtoStory Red tower scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('sprout_tower_respect')
+raise 'expected JohtoStory Brock tower lore scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('sprout_tower_lore')
+raise 'expected JohtoStory Bill tower root scan scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('sprout_tower_root_scan')
+raise 'expected JohtoStory Silver Sage activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Elder Li')
+raise 'expected JohtoStory Moonlight ritual activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'sprout_tower_dream_ritual' }
+raise 'expected JohtoStory Rocket antenna activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'bellsprout_radio_antenna' }
+raise 'expected JohtoStory Gold Dust relic offer activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'tower_relic_purchase_offer' }
+raise 'expected JohtoStory Nexus Order tower root activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'sprout_tower_deep_root_static_hidden' }
+raise 'expected JohtoStory Nexus Order still hidden after Sprout Tower' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Rocket Moonlight tower conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Sprout Tower' }
+raise 'expected JohtoStory Sprout Tower story alert paused in ruins' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Sprout Tower') && message['text'].include?('Red') && message['text'].include?('Silver') && message['text'].include?('Moonlight') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory Sprout Tower result region' unless sprout_tower['region'] == 'johto'
+raise 'expected JohtoStory Sprout Tower elder' unless sprout_tower['elder'] == 'Elder Li'
+raise 'expected JohtoStory Sprout Tower next hook Falkner' unless sprout_tower['next_hook'] == 'falkner_zephyr_badge_prep'
+raise 'expected JohtoStory Sprout Tower current act' unless sprout_tower['current_act'] == 'act_3_falkner_zephyr_badge'
+raise 'expected JohtoStory Sprout Tower trial type' unless sprout_tower['trial_type'] == 'sage_tower_trial'
+raise 'expected JohtoStory Falkner observes' unless sprout_tower['gym_leader_tease'] == 'Falkner'
+raise 'expected JohtoStory Sprout Tower companions' unless %w[red brock bill].all? { |companion| sprout_tower['companions'].include?(companion) }
+raise 'expected JohtoStory Sprout Tower factions' unless %w[team_rocket team_gold_dust team_moonlight nexus_order].all? { |faction| sprout_tower['factions'].include?(faction) }
+raise 'expected JohtoStory Sprout Tower unlocks' unless sprout_tower['unlocks'].include?('falkner_zephyr_badge_prep') && sprout_tower['unlocks'].include?('violet_gym_access')
+second_sprout_tower = NexusRed::JohtoStory.complete_sprout_tower_entry(kanto_story_state)
+raise 'expected JohtoStory Sprout Tower idempotent guard' unless second_sprout_tower['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Sprout Tower history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'sprout_tower_entry' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

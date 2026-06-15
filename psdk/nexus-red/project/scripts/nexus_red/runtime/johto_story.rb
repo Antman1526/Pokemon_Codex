@@ -21,6 +21,16 @@ module NexusRed
     NEXUS_ORDER_SPROUT_TOWER_STATIC_EVENT_ID = 'nexus_order_sprout_tower_static_hidden'
     SPROUT_TOWER_PATH_EVENT_ID = 'sprout_tower_path_unlocked'
     FALKNER_GYM_TEASE_EVENT_ID = 'falkner_gym_teased'
+    SPROUT_TOWER_ENTRY_EVENT_ID = 'sprout_tower_entry'
+    ELDER_LI_TOWER_TRIAL_EVENT_ID = 'elder_li_tower_trial'
+    RED_SPROUT_TOWER_RESPECT_EVENT_ID = 'red_sprout_tower_respect'
+    BROCK_SPROUT_TOWER_LORE_EVENT_ID = 'brock_sprout_tower_lore'
+    SILVER_SAGE_CONFLICT_EVENT_ID = 'silver_sage_conflict'
+    MOONLIGHT_SPROUT_TOWER_RITUAL_EVENT_ID = 'moonlight_sprout_tower_ritual'
+    ROCKET_BELLSPROUT_RADIO_ANTENNA_EVENT_ID = 'rocket_bellsprout_radio_antenna'
+    GOLD_DUST_TOWER_RELIC_OFFER_EVENT_ID = 'gold_dust_tower_relic_offer'
+    NEXUS_ORDER_SPROUT_ROOT_STATIC_EVENT_ID = 'nexus_order_sprout_root_static_hidden'
+    FALKNER_ZEPHYR_BADGE_PREP_EVENT_ID = 'falkner_zephyr_badge_prep_unlocked'
 
     module_function
 
@@ -362,6 +372,167 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_sprout_tower_root_static_unrevealed',
         'unlocks' => %w[violet_city_services sprout_tower_entry falkner_gym_tease dark_cave_rumor],
         'next_hook' => 'sprout_tower_entry'
+      }
+    end
+
+    def complete_sprout_tower_entry(state, location: 'Sprout Tower', area_type: 'ruins')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => SPROUT_TOWER_ENTRY_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_violet_city_path', 'event_id' => SPROUT_TOWER_ENTRY_EVENT_ID } unless violet_city_path_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SPROUT_TOWER_ENTRY_EVENT_ID } if sprout_tower_entry_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_SPROUT_TOWER_ENTRY')
+      add_story_flag(state, 'FLAG_NEXUS_ELDER_LI_TOWER_TRIAL')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SPROUT_TOWER_RESPECT')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_SPROUT_TOWER_LORE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_SAGE_CONFLICT')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_SPROUT_TOWER_RITUAL')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_BELLSPROUT_RADIO_ANTENNA')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_TOWER_RELIC_OFFER')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_SPROUT_ROOT_STATIC')
+      add_story_flag(state, 'FLAG_NEXUS_FALKNER_ZEPHYR_PREP_UNLOCKED')
+
+      [
+        SPROUT_TOWER_ENTRY_EVENT_ID,
+        ELDER_LI_TOWER_TRIAL_EVENT_ID,
+        RED_SPROUT_TOWER_RESPECT_EVENT_ID,
+        BROCK_SPROUT_TOWER_LORE_EVENT_ID,
+        SILVER_SAGE_CONFLICT_EVENT_ID,
+        MOONLIGHT_SPROUT_TOWER_RITUAL_EVENT_ID,
+        ROCKET_BELLSPROUT_RADIO_ANTENNA_EVENT_ID,
+        GOLD_DUST_TOWER_RELIC_OFFER_EVENT_ID,
+        NEXUS_ORDER_SPROUT_ROOT_STATIC_EVENT_ID,
+        FALKNER_ZEPHYR_BADGE_PREP_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'sprout_tower_respect',
+        location: location,
+        summary: 'Red tells Antman that Sprout Tower is not a shortcut to Falkner; it is Johto asking whether a trainer can slow down and listen.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'sprout_tower_lore',
+        location: location,
+        summary: 'Brock explains how old Johto towers were built as living lessons instead of simple battle halls.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'sprout_tower_root_scan',
+        location: location,
+        summary: 'Bill traces the tower sway into a deep root signal that looks older than Rocket radio and cleaner than Moonlight dream static.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver rejected Elder Li at Sprout Tower, calling the sage trial a waste before chasing the same hidden signal Antman found.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'sprout_tower_dream_ritual',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'bellsprout_radio_antenna',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        location,
+        'tower_relic_purchase_offer',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        location,
+        'sprout_tower_deep_root_static_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket antenna work disturbs Moonlight ritual static under Elder Li\'s tower trial.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_3_falkner_zephyr_badge'
+      event = sprout_tower_entry_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Sprout Tower shifts under Antman and Red: Elder Li starts the sage trial, Silver storms ahead, Moonlight ritual static rises, and Rocket antenna parts are hidden in the beams.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def sprout_tower_entry_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == SPROUT_TOWER_ENTRY_EVENT_ID }
+    end
+
+    def sprout_tower_entry_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SPROUT_TOWER_ENTRY_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_3_falkner_zephyr_badge',
+        'elder' => 'Elder Li',
+        'trial_type' => 'sage_tower_trial',
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          ELDER_LI_TOWER_TRIAL_EVENT_ID,
+          RED_SPROUT_TOWER_RESPECT_EVENT_ID,
+          BROCK_SPROUT_TOWER_LORE_EVENT_ID,
+          SILVER_SAGE_CONFLICT_EVENT_ID,
+          MOONLIGHT_SPROUT_TOWER_RITUAL_EVENT_ID,
+          ROCKET_BELLSPROUT_RADIO_ANTENNA_EVENT_ID,
+          GOLD_DUST_TOWER_RELIC_OFFER_EVENT_ID,
+          NEXUS_ORDER_SPROUT_ROOT_STATIC_EVENT_ID,
+          FALKNER_ZEPHYR_BADGE_PREP_EVENT_ID
+        ],
+        'gym_leader_tease' => 'Falkner',
+        'tower_signal' => 'sprout_tower_root_static_active',
+        'hidden_meta_signal' => 'nexus_order_sprout_tower_root_static_unrevealed',
+        'unlocks' => %w[falkner_zephyr_badge_prep violet_gym_access elder_li_rematch_lead],
+        'next_hook' => 'falkner_zephyr_badge_prep'
       }
     end
   end
