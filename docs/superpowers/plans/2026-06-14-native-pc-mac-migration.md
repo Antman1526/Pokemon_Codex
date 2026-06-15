@@ -616,6 +616,24 @@ python3 tools/validate_native_misty_gym_placeholder.py
 godot --headless --path native/nexus-red --script tests/misty_gym_placeholder_test.gd
 ```
 
+### Task 7.32: Add Route 25 Bill intro and first Nexus network decode
+
+Acceptance:
+
+- Cerulean City keeps Route 25 locked until Antman earns the Cascade Badge.
+- After Cascade Badge, Cerulean can transition to Route 25 and Bill's cottage.
+- Route 25 records Red as the active companion and positions Misty as a recurring friend after her gym arc.
+- Bill introduces the storage-network anomaly as the first explicit Nexus network decode, not a quick-travel WorldLink jump.
+- Save state and WorldLink record Route 25 reached, Bill's intro, the storage-network clue, and the first Nexus decode.
+- WorldLink checklist adds Route 25, Bill, and first Nexus network decode milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route25_bill_intro.py
+godot --headless --path native/nexus-red --script tests/route25_bill_intro_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

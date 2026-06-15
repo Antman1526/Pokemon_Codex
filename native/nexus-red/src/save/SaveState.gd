@@ -120,6 +120,12 @@ func start_new_game(name: String) -> void:
 		"misty_cerulean_gym_started": false,
 		"misty_cerulean_gym_finished": false,
 		"cascade_badge_earned": false,
+		"misty_recurring_friend_unlocked": false,
+		"route_25_bill_reached": false,
+		"bill_route25_intro_seen": false,
+		"bill_storage_network_clue_seen": false,
+		"nexus_network_first_decode_seen": false,
+		"worldlink_route_25_bill_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -365,6 +371,31 @@ func queue_nugget_bridge_batch() -> void:
 	])
 
 
+func enter_route_25_bill() -> void:
+	current_scene = "route_25_bill"
+	active_companion = "red"
+	set_flag("route_25_bill_reached", true)
+	queue_worldlink_id("wl_route_25_bill_reached")
+
+
+func record_bill_route25_intro() -> void:
+	active_companion = "red"
+	set_flag("bill_route25_intro_seen", true)
+	set_flag("bill_storage_network_clue_seen", true)
+	set_flag("nexus_network_first_decode_seen", true)
+	queue_route_25_bill_batch()
+
+
+func queue_route_25_bill_batch() -> void:
+	set_flag("worldlink_route_25_bill_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_25_bill_reached",
+		"wl_bill_route25_intro",
+		"wl_bill_storage_network_clue",
+		"wl_nexus_network_first_decode",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -492,8 +523,10 @@ func finish_battle_placeholder(result: String) -> void:
 	if active_battle_id == "misty_cerulean_gym":
 		set_flag("misty_cerulean_gym_finished", true)
 		set_flag("cascade_badge_earned", true)
+		set_flag("misty_recurring_friend_unlocked", true)
 		queue_worldlink_id("wl_misty_cerulean_gym_finished")
 		queue_worldlink_id("wl_misty_cascade_badge_earned")
+		queue_worldlink_id("wl_misty_recurring_friend_unlocked")
 	active_battle_id = ""
 
 

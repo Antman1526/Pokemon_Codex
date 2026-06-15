@@ -10,6 +10,7 @@ const MT_MOON_FOSSIL_DECISION_BATCH_PATH := "res://content/worldlink/mt_moon_fos
 const ROUTE_4_CERULEAN_BATCH_PATH := "res://content/worldlink/route_4_cerulean_approach_batch.json"
 const CERULEAN_CITY_BATCH_PATH := "res://content/worldlink/cerulean_city_intro_batch.json"
 const NUGGET_BRIDGE_BATCH_PATH := "res://content/worldlink/nugget_bridge_recruiter_batch.json"
+const ROUTE_25_BILL_BATCH_PATH := "res://content/worldlink/route_25_bill_batch.json"
 const ROUTE_1_RUMORS_PATH := "res://content/encounters/route_1_rumors.json"
 
 var save_state
@@ -71,7 +72,7 @@ func _build_feed_text() -> String:
 
 
 func _build_checklist_text() -> String:
-	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat\n%s Reach Nugget Bridge\n%s Scout bridge recruiters\n%s Defeat first bridge recruiter\n%s Defeat bridge captain\n%s Clear Nugget Bridge crisis\n%s Challenge Misty's gym\n%s Earn Cascade Badge" % [
+	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat\n%s Reach Nugget Bridge\n%s Scout bridge recruiters\n%s Defeat first bridge recruiter\n%s Defeat bridge captain\n%s Clear Nugget Bridge crisis\n%s Challenge Misty's gym\n%s Earn Cascade Badge\n%s Unlock Misty as recurring friend\n%s Reach Route 25\n%s Meet Bill\n%s Decode first Nexus network clue" % [
 		_checkmark(_flag("mom_opening_scene_seen")),
 		_checkmark(_flag("starter_chosen")),
 		_checkmark(_flag("route_1_reached")),
@@ -101,6 +102,10 @@ func _build_checklist_text() -> String:
 		_checkmark(_flag("nugget_bridge_crisis_cleared")),
 		_checkmark(_flag("misty_cerulean_gym_started")),
 		_checkmark(_flag("cascade_badge_earned")),
+		_checkmark(_flag("misty_recurring_friend_unlocked")),
+		_checkmark(_flag("route_25_bill_reached")),
+		_checkmark(_flag("bill_route25_intro_seen")),
+		_checkmark(_flag("nexus_network_first_decode_seen")),
 	]
 
 
@@ -139,6 +144,7 @@ func _build_item_index() -> Dictionary:
 	_add_feed_items(index, ROUTE_4_CERULEAN_BATCH_PATH, "feed")
 	_add_feed_items(index, CERULEAN_CITY_BATCH_PATH, "feed")
 	_add_feed_items(index, NUGGET_BRIDGE_BATCH_PATH, "feed")
+	_add_feed_items(index, ROUTE_25_BILL_BATCH_PATH, "feed")
 	_add_feed_items(index, ROUTE_1_RUMORS_PATH, "rumors")
 	return index
 
@@ -182,6 +188,8 @@ func _message_text(message_id: String, item: Dictionary) -> String:
 		return "Misty's Cerulean Gym battle is complete. Red says Antman handled the pressure cleanly."
 	if message_id == "wl_misty_cascade_badge_earned":
 		return "Antman earned the Cascade Badge. Cerulean is clear enough for the Route 25 Bill thread to begin."
+	if message_id == "wl_misty_recurring_friend_unlocked":
+		return "Misty is now a recurring friend contact for water routes, fishing, and battle-tempo advice."
 	return "Update: " + _pretty_id(message_id)
 
 

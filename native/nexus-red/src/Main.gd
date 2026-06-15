@@ -15,6 +15,7 @@ const MtMoonFossilDecisionScene := preload("res://scenes/world/MtMoonFossilDecis
 const Route4CeruleanApproachScene := preload("res://scenes/world/Route4CeruleanApproach.tscn")
 const CeruleanCityScene := preload("res://scenes/world/CeruleanCity.tscn")
 const NuggetBridgeScene := preload("res://scenes/world/NuggetBridge.tscn")
+const Route25BillScene := preload("res://scenes/world/Route25Bill.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -193,6 +194,7 @@ func _show_cerulean_city() -> void:
 	cerulean.go_to_route_4_cerulean_approach.connect(_on_go_to_route_4_cerulean_approach)
 	cerulean.go_to_nugget_bridge.connect(_on_go_to_nugget_bridge)
 	cerulean.start_battle_placeholder.connect(_on_start_battle_placeholder)
+	cerulean.go_to_route_25_bill.connect(_on_go_to_route_25_bill)
 	_replace_screen(cerulean)
 
 
@@ -206,6 +208,17 @@ func _show_nugget_bridge() -> void:
 	bridge.go_to_cerulean_city.connect(_on_go_to_cerulean_city)
 	bridge.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(bridge)
+
+
+func _on_go_to_route_25_bill() -> void:
+	_show_route_25_bill()
+
+
+func _show_route_25_bill() -> void:
+	var route25 := Route25BillScene.instantiate()
+	route25.save_state = save_state
+	route25.go_to_cerulean_city.connect(_on_go_to_cerulean_city)
+	_replace_screen(route25)
 
 
 func _on_start_battle_placeholder(battle_id: String) -> void:

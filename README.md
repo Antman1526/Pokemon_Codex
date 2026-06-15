@@ -74,6 +74,7 @@ python3 tools/validate_native_cerulean_city_intro.py
 python3 tools/validate_native_nugget_bridge_recruiter.py
 python3 tools/validate_native_nugget_bridge_resolution.py
 python3 tools/validate_native_misty_gym_placeholder.py
+python3 tools/validate_native_route25_bill_intro.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -105,6 +106,7 @@ godot --headless --path native/nexus-red --script tests/cerulean_city_intro_test
 godot --headless --path native/nexus-red --script tests/nugget_bridge_recruiter_test.gd
 godot --headless --path native/nexus-red --script tests/nugget_bridge_resolution_test.gd
 godot --headless --path native/nexus-red --script tests/misty_gym_placeholder_test.gd
+godot --headless --path native/nexus-red --script tests/route25_bill_intro_test.gd
 ```
 
 ## Legal Rule

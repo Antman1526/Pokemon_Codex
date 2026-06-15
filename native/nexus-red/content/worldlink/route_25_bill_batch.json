@@ -1,0 +1,30 @@
+{
+  "id": "route_25_bill_batch",
+  "name": "Route 25 Bill Batch",
+  "feed": [
+    {
+      "id": "wl_route_25_bill_reached",
+      "speaker": "Red",
+      "category": "companion",
+      "text": "Red and Antman reached Route 25 after Misty reopened the path beyond Cerulean."
+    },
+    {
+      "id": "wl_bill_route25_intro",
+      "speaker": "Bill",
+      "category": "research",
+      "text": "Bill invited Antman inside the Sea Cottage to compare WorldLink readings against his storage network."
+    },
+    {
+      "id": "wl_bill_storage_network_clue",
+      "speaker": "Bill",
+      "category": "research",
+      "text": "Bill found impossible storage metadata: Pokemon from distant regions are leaving matching traces before those routes are open."
+    },
+    {
+      "id": "wl_nexus_network_first_decode",
+      "speaker": "WorldLink",
+      "category": "nexus",
+      "text": "First Nexus network decode logged. The signal is not a teleport path; it is a living map beneath the regions."
+    }
+  ]
+}

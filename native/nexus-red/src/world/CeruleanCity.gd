@@ -3,6 +3,7 @@ extends Control
 signal go_to_route_4_cerulean_approach
 signal go_to_nugget_bridge
 signal start_battle_placeholder(battle_id)
+signal go_to_route_25_bill
 
 var save_state
 var dialogue_label: Label
@@ -22,6 +23,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_nugget_bridge_entry()
 	if event.is_action_pressed("ui_right"):
 		trigger_misty_gym_battle()
+	if event.is_action_pressed("ui_down"):
+		trigger_route_25_bill_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_4_cerulean_approach()
 
@@ -133,5 +136,13 @@ func trigger_misty_gym_battle() -> void:
 	emit_signal("start_battle_placeholder", "misty_cerulean_gym")
 
 
+func trigger_route_25_bill_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("cascade_badge_earned", false)):
+		dialogue_label.text = "Misty: Route 25 can wait. Earn the Cascade Badge first, then I will point you and Red toward Bill's cottage."
+		return
+	dialogue_label.text = "Misty: Bill's cottage is past Route 25. Red, keep Antman close - Bill said his WorldLink scan found something that does not fit Kanto."
+	emit_signal("go_to_route_25_bill")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, or X/Esc to step back to Route 4."
+	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, Down for Route 25, or X/Esc to step back to Route 4."
