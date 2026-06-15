@@ -258,6 +258,8 @@ REQUIRED_MARKERS = (
     "victory_road_rival_standings_cleared?",
     "complete_blue_pre_league_or_champion_battle",
     "blue_pre_league_or_champion_battle_cleared?",
+    "complete_red_watches_league",
+    "red_watches_league_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2690,6 +2692,34 @@ raise 'expected KantoStory Blue pre-League unlocks' unless blue_pre_league['unlo
 second_blue_pre_league = NexusRed::KantoStory.complete_blue_pre_league_or_champion_battle(kanto_story_state)
 raise 'expected KantoStory Blue pre-League idempotent guard' unless second_blue_pre_league['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Blue pre-League history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blue_pre_league_or_champion_battle' } == 1
+pre_red_watches = NexusRed::KantoStory.complete_red_watches_league(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Red watches League gated before Blue pre-League' unless pre_red_watches['status'] == 'blocked_missing_blue_pre_league_or_champion_battle'
+red_watches = NexusRed::KantoStory.complete_red_watches_league(
+  kanto_story_state,
+  location: 'Indigo Plateau Lobby',
+  area_type: 'league'
+)
+raise 'expected KantoStory Red watches League clear status' unless red_watches['status'] == 'cleared'
+raise 'expected KantoStory Red watches League event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('red_watches_league')
+raise 'expected KantoStory Red watches League helper true' unless NexusRed::KantoStory.red_watches_league_cleared?(kanto_story_state)
+raise 'expected KantoStory Red watches League scene flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_WATCHES_LEAGUE_SCENE')
+raise 'expected KantoStory Red League vow flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_COMPANION_LEAGUE_VOW')
+raise 'expected KantoStory Bill Elite Four signal map flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ELITE_FOUR_SIGNAL_MAP')
+raise 'expected KantoStory Elite Four challenge flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ELITE_FOUR_CHALLENGE_UNLOCKED')
+raise 'expected KantoStory Lance warning lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LANCE_LEGENDARY_ENERGY_WARNING_LEAD')
+raise 'expected KantoStory Nexus League bracket static flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_NEXUS_ORDER_LEAGUE_BRACKET_STATIC')
+raise 'expected KantoStory Red League vow scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('league_watch_vow')
+raise 'expected KantoStory Bill Elite Four signal map scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('elite_four_signal_map')
+raise 'expected KantoStory Nexus League bracket static activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Indigo Plateau Lobby' && activity['operation'] == 'league_bracket_static_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Red watches League' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Red watches League story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Red') && message['text'].include?('Elite Four') && message['text'].include?('Indigo') }
+raise 'expected KantoStory Red watches League companions' unless red_watches['companions'].include?('red') && red_watches['companions'].include?('bill')
+raise 'expected KantoStory Red watches League state' unless red_watches['league_state'] == 'elite_four_challenge_ready'
+raise 'expected KantoStory Red watches League next hook Elite Four' unless red_watches['next_hook'] == 'elite_four'
+raise 'expected KantoStory Red watches League unlocks' unless red_watches['unlocks'].include?('elite_four_challenge') && red_watches['unlocks'].include?('lance_warning_lead')
+second_red_watches = NexusRed::KantoStory.complete_red_watches_league(kanto_story_state)
+raise 'expected KantoStory Red watches League idempotent guard' unless second_red_watches['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Red watches League history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'red_watches_league' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

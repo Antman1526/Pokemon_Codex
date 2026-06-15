@@ -344,6 +344,11 @@ module NexusRed
     RED_WATCHES_LEAGUE_EVENT_ID = 'red_watches_league'
     ELITE_FOUR_PATH_EVENT_ID = 'elite_four_path_unlocked'
     NEXUS_ORDER_CHAMPION_ROOM_STATIC_EVENT_ID = 'nexus_order_champion_room_static_hidden'
+    RED_COMPANION_LEAGUE_VOW_EVENT_ID = 'red_companion_league_vow'
+    BILL_ELITE_FOUR_SIGNAL_MAP_EVENT_ID = 'bill_elite_four_signal_map'
+    ELITE_FOUR_CHALLENGE_EVENT_ID = 'elite_four_challenge_unlocked'
+    LANCE_LEGENDARY_WARNING_LEAD_EVENT_ID = 'lance_legendary_energy_warning_lead'
+    NEXUS_ORDER_LEAGUE_BRACKET_STATIC_EVENT_ID = 'nexus_order_league_bracket_static_hidden'
 
     module_function
 
@@ -5207,6 +5212,68 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLUE_PRE_LEAGUE_OR_CHAMPION_BATTLE_ID }
     end
 
+    def complete_red_watches_league(state, location: 'Indigo Plateau Lobby', area_type: 'league')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_blue_pre_league_or_champion_battle', 'event_id' => RED_WATCHES_LEAGUE_EVENT_ID } unless blue_pre_league_or_champion_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => RED_WATCHES_LEAGUE_EVENT_ID } if red_watches_league_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_RED_WATCHES_LEAGUE_SCENE')
+      add_story_flag(state, 'FLAG_NEXUS_RED_COMPANION_LEAGUE_VOW')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ELITE_FOUR_SIGNAL_MAP')
+      add_story_flag(state, 'FLAG_NEXUS_ELITE_FOUR_CHALLENGE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_LANCE_LEGENDARY_ENERGY_WARNING_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_LEAGUE_BRACKET_STATIC')
+      mark_cleared_event(story, RED_WATCHES_LEAGUE_EVENT_ID)
+      mark_cleared_event(story, RED_COMPANION_LEAGUE_VOW_EVENT_ID)
+      mark_cleared_event(story, BILL_ELITE_FOUR_SIGNAL_MAP_EVENT_ID)
+      mark_cleared_event(story, ELITE_FOUR_CHALLENGE_EVENT_ID)
+      mark_cleared_event(story, LANCE_LEGENDARY_WARNING_LEAD_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_LEAGUE_BRACKET_STATIC_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'league_bracket_static_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'league_watch_vow',
+        location: location,
+        summary: 'Red stays beside Antman at Indigo, promises to watch every League room, and lets Antman take the Elite Four alone.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'elite_four_signal_map',
+        location: location,
+        summary: 'Bill maps hidden static through the Elite Four rooms and warns that Lance may sense the same legendary energy.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Red is watching from Indigo while Antman steps toward the Elite Four; Bill marked a hidden League signal under the bracket.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = red_watches_league_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def red_watches_league_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == RED_WATCHES_LEAGUE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6574,6 +6641,29 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_champion_room_static_unrevealed',
         'unlocks' => %w[red_watches_league elite_four_path champion_room_static_watch],
         'next_hook' => 'red_watches_league'
+      }
+    end
+
+    def red_watches_league_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => RED_WATCHES_LEAGUE_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_COMPANION_LEAGUE_VOW_EVENT_ID,
+          BILL_ELITE_FOUR_SIGNAL_MAP_EVENT_ID,
+          ELITE_FOUR_CHALLENGE_EVENT_ID,
+          LANCE_LEGENDARY_WARNING_LEAD_EVENT_ID,
+          NEXUS_ORDER_LEAGUE_BRACKET_STATIC_EVENT_ID
+        ],
+        'companions' => %w[red bill],
+        'factions' => %w[nexus_order],
+        'league_state' => 'elite_four_challenge_ready',
+        'red_state' => 'watching_antman_take_indigo_without_assist',
+        'bill_state' => 'tracking_elite_four_signal_map',
+        'hidden_meta_signal' => 'nexus_order_league_bracket_static_unrevealed',
+        'unlocks' => %w[elite_four_challenge lance_warning_lead indigo_plateau_watch],
+        'next_hook' => 'elite_four'
       }
     end
 
