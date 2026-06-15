@@ -153,6 +153,9 @@ REQUIRED_MARKERS = (
     "nugget_bridge_qualifier_cleared?",
     "complete_misty_battle",
     "misty_battle_cleared?",
+    "complete_bill_storage_anomaly",
+    "bill_storage_anomaly_cleared?",
+    "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
@@ -998,6 +1001,30 @@ raise 'expected KantoStory Misty story alert immediate' unless kanto_story_state
 second_misty_clear = NexusRed::KantoStory.complete_misty_battle(kanto_story_state)
 raise 'expected KantoStory Misty idempotent guard' unless second_misty_clear['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Misty history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'misty_battle' } == 1
+pre_misty_bill = NexusRed::KantoStory.complete_bill_storage_anomaly(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Bill gated before Misty' unless pre_misty_bill['status'] == 'blocked_missing_misty_clear'
+bill_clear = NexusRed::KantoStory.complete_bill_storage_anomaly(
+  kanto_story_state,
+  location: "Bill's House",
+  area_type: 'route'
+)
+raise 'expected KantoStory Bill clear status' unless bill_clear['status'] == 'cleared'
+raise 'expected KantoStory Bill event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('bill_storage_metadata_anomaly')
+raise 'expected KantoStory Bill helper true' unless NexusRed::KantoStory.bill_storage_anomaly_cleared?(kanto_story_state)
+raise 'expected KantoStory Bill storage flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_STORAGE_METADATA_ANOMALY')
+raise 'expected KantoStory Route 25 systems flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE25_SYSTEMS_HOOK')
+raise 'expected KantoStory Bill companion active' unless kanto_story_state['companion_progress']['bill']['active'] == true
+raise 'expected KantoStory Bill still not following' if kanto_story_state['companion_progress']['bill']['following']
+raise 'expected KantoStory Bill storage intro scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('storage_intro')
+raise 'expected KantoStory Bill Route 25 systems scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('route_25_systems_hook')
+raise 'expected KantoStory Rocket storage probe activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == "Bill's House" && activity['operation'] == 'storage_metadata_probe' }
+raise 'expected KantoStory storage anomaly recorded' unless NexusRed::KantoStory.storage_anomalies(kanto_story_state).any? { |anomaly| anomaly['anomaly_id'] == 'route_25_storage_metadata_echo' && anomaly['source'] == 'Bill' }
+raise 'expected KantoStory storage anomaly links PortablePC' unless NexusRed::KantoStory.storage_anomalies(kanto_story_state).first['linked_systems'].include?('portable_pc')
+raise 'expected KantoStory Bill story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Bill') }
+raise 'expected KantoStory current act remains Act 3' unless kanto_story_state['kanto_story']['current_act'] == 'act_3_cerulean_to_vermilion'
+second_bill_clear = NexusRed::KantoStory.complete_bill_storage_anomaly(kanto_story_state)
+raise 'expected KantoStory Bill idempotent guard' unless second_bill_clear['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Bill history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'bill_storage_metadata_anomaly' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

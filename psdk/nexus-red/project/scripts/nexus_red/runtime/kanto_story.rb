@@ -9,6 +9,8 @@ module NexusRed
     AVA_CLEFAIRY_EVENT_ID = 'ava_clefairy_night_notes'
     NUGGET_BRIDGE_EVENT_ID = 'nugget_bridge_world_circuit_qualifier'
     MISTY_EVENT_ID = 'misty_battle'
+    BILL_EVENT_ID = 'bill_storage_metadata_anomaly'
+    BILL_STORAGE_ANOMALY_ID = 'route_25_storage_metadata_echo'
 
     module_function
 
@@ -299,6 +301,71 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == MISTY_EVENT_ID }
     end
 
+    def complete_bill_storage_anomaly(state, location: "Bill's House", area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_misty_clear', 'event_id' => BILL_EVENT_ID } unless misty_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => BILL_EVENT_ID } if bill_storage_anomaly_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_BILL_STORAGE_METADATA_ANOMALY')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE25_SYSTEMS_HOOK')
+      mark_cleared_event(story, BILL_EVENT_ID)
+      CompanionProgress.activate_companion(
+        state,
+        'bill',
+        location: location,
+        reason: 'decoded an impossible storage metadata echo',
+        following: false,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'storage_intro',
+        location: location,
+        summary: 'Bill shows Antman how the storage network is carrying impossible route metadata.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'route_25_systems_hook',
+        location: location,
+        summary: 'Bill links Route 25 storage echoes to the wider region network mystery.',
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'storage_metadata_probe',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      anomaly = storage_anomaly_result(location)
+      storage_anomalies(state) << anomaly
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Bill found a storage metadata echo that points beyond Kanto.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = bill_event_result(location, anomaly)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def bill_storage_anomaly_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BILL_EVENT_ID }
+    end
+
+    def storage_anomalies(state)
+      state['storage_anomalies'] ||= []
+    end
+
     def field_healing_charges_for(state)
       case FieldHealing.policy(state)
       when 'full'
@@ -378,6 +445,27 @@ module NexusRed
         'badge' => 'Cascade Badge',
         'unlocks' => %w[old_rod rematch_board_tier_1 misty_following_companion],
         'next_hook' => 'bill_storage_metadata_anomaly'
+      }
+    end
+
+    def bill_event_result(location, anomaly)
+      {
+        'status' => 'cleared',
+        'event_id' => BILL_EVENT_ID,
+        'location' => location.to_s,
+        'companion_id' => 'bill',
+        'anomaly_id' => anomaly['anomaly_id'],
+        'next_hook' => 'ss_anne_foreign_trainers'
+      }
+    end
+
+    def storage_anomaly_result(location)
+      {
+        'anomaly_id' => BILL_STORAGE_ANOMALY_ID,
+        'source' => 'Bill',
+        'location' => location.to_s,
+        'linked_systems' => %w[pc portable_pc worldlink_feed region_progress],
+        'summary' => 'Storage metadata points to region IDs Antman has not unlocked yet.'
       }
     end
 

@@ -39,6 +39,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_misty_battle(state, gym_location:, join_location:, area_type:)` resolves the Cascade Badge and Route 25 companion entry. It requires Nugget Bridge completion, records the Misty battle, unlocks the Old Rod and rematch board tier flag, marks Misty's Route 25 companion flag, makes Misty follow Antman, and advances Kanto into Act 3 toward Bill and Vermilion.
 
+`NexusRed::KantoStory.complete_bill_storage_anomaly(state, location:, area_type:)` resolves Bill's Route 25 storage metadata hook. It requires Misty completion, activates Bill as a non-following technical ally, records storage intro and Route 25 systems scenes, logs Rocket storage metadata probing, stores a reusable storage anomaly record linked to PC, Portable PC, WorldLink, and region progression, and points the Act 3 route toward S.S. Anne.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
