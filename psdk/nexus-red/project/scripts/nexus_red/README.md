@@ -47,6 +47,10 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_lt_surge_battle(state, location:, area_type:)` resolves the Thunder Badge battle after the power sabotage is cleared. It marks the Thunder Badge and Route 11 path flags, unlocks the Good Rod and VS Seeker lead, records Red and Misty post-Surge scenes, and advances Kanto into the Rock Tunnel/Celadon/Lavender act.
 
+`NexusRed::KantoStory.complete_route_11_handoff(state, location:, area_type:)` resolves the eastbound road after Surge. It requires the Thunder Badge, records Red's full-game companion scene, Misty's route-support handoff, Bill's Route 11 relay decode, Rocket/Team Gas fallout, and the Snorlax roadblock that pushes the player toward Diglett's Cave.
+
+`NexusRed::KantoStory.complete_diglett_cave_detour(state, location:, area_type:)` resolves the physical cave detour around the sleeping roadblock. It requires Route 11 completion, records Red's cave guard scene, Bill's Nexus relay map, Rocket and Gold Dust arguing over stolen survey crates, Route 12 Snorlax confirmation, and the Echo Flute lead toward the Route 2 east field lab.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

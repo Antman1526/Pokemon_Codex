@@ -162,6 +162,10 @@ REQUIRED_MARKERS = (
     "vermilion_power_sabotage_cleared?",
     "complete_lt_surge_battle",
     "lt_surge_battle_cleared?",
+    "complete_route_11_handoff",
+    "route_11_handoff_cleared?",
+    "complete_diglett_cave_detour",
+    "diglett_cave_detour_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1113,6 +1117,58 @@ raise 'expected KantoStory Surge next hook Route 11' unless surge_clear['next_ho
 second_surge_clear = NexusRed::KantoStory.complete_lt_surge_battle(kanto_story_state)
 raise 'expected KantoStory Surge idempotent guard' unless second_surge_clear['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Surge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'lt_surge_battle' } == 1
+pre_surge_route_11 = NexusRed::KantoStory.complete_route_11_handoff(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Route 11 gated before Surge' unless pre_surge_route_11['status'] == 'blocked_missing_thunder_badge'
+route_11_handoff = NexusRed::KantoStory.complete_route_11_handoff(
+  kanto_story_state,
+  location: 'Route 11',
+  area_type: 'route'
+)
+raise 'expected KantoStory Route 11 clear status' unless route_11_handoff['status'] == 'cleared'
+raise 'expected KantoStory Route 11 event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('route_11_handoff')
+raise 'expected KantoStory Route 11 helper true' unless NexusRed::KantoStory.route_11_handoff_cleared?(kanto_story_state)
+raise 'expected KantoStory Route 11 reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE11_REACHED')
+raise 'expected KantoStory Route 11 Red scene flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_ROUTE11_EASTBOUND')
+raise 'expected KantoStory Route 11 Misty farewell flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MISTY_ROUTE11_FAREWELL')
+raise 'expected KantoStory Route 11 Bill signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ROUTE11_SIGNAL_DECODE')
+raise 'expected KantoStory Route 11 Rocket Gas fallout flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GAS_ROUTE11_FALLOUT')
+raise 'expected KantoStory Route 11 Snorlax roadblock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SNORLAX_ROADBLOCK_TEASED')
+raise 'expected KantoStory Route 11 Team Gas fallout activity' unless kanto_story_state['faction_progress']['team_gas']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 11' && activity['operation'] == 'route_11_fallout' }
+raise 'expected KantoStory Route 11 Rocket blame activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 11' && activity['operation'] == 'post_surge_blame_shift' }
+raise 'expected KantoStory Red Route 11 scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('route_11_eastbound')
+raise 'expected KantoStory Misty Route 11 farewell scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('route_11_farewell')
+raise 'expected KantoStory Bill Route 11 signal scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('route_11_signal_decode')
+raise 'expected KantoStory Route 11 story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Snorlax') }
+raise 'expected KantoStory Route 11 next hook Diglett' unless route_11_handoff['next_hook'] == 'diglett_cave_detour'
+second_route_11_handoff = NexusRed::KantoStory.complete_route_11_handoff(kanto_story_state)
+raise 'expected KantoStory Route 11 idempotent guard' unless second_route_11_handoff['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Route 11 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_11_handoff' } == 1
+pre_route_11_diglett = NexusRed::KantoStory.complete_diglett_cave_detour(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Diglett Cave gated before Route 11' unless pre_route_11_diglett['status'] == 'blocked_missing_route_11_handoff'
+diglett_detour = NexusRed::KantoStory.complete_diglett_cave_detour(
+  kanto_story_state,
+  location: "Diglett's Cave",
+  area_type: 'cave'
+)
+raise 'expected KantoStory Diglett Cave clear status' unless diglett_detour['status'] == 'cleared'
+raise 'expected KantoStory Diglett Cave event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('diglett_cave_detour')
+raise 'expected KantoStory Diglett Cave helper true' unless NexusRed::KantoStory.diglett_cave_detour_cleared?(kanto_story_state)
+raise 'expected KantoStory Diglett Cave reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_DIGLETT_CAVE_DETOUR_REACHED')
+raise 'expected KantoStory Diglett Cave Red guard flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_DIGLETT_CAVE_GUARD')
+raise 'expected KantoStory Diglett Cave Bill relay flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_DIGLETT_CAVE_RELAY_MAP')
+raise 'expected KantoStory Diglett Cave Rocket Gold Dust flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GOLD_DUST_CAVE_ARGUMENT')
+raise 'expected KantoStory Diglett Cave Snorlax confirm flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SNORLAX_ROUTE12_BLOCK_CONFIRMED')
+raise 'expected KantoStory Echo Flute lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ECHO_FLUTE_LEAD_SEEN')
+raise 'expected KantoStory Diglett Cave Rocket survey activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == "Diglett's Cave" && activity['operation'] == 'stolen_cave_survey_crates' }
+raise 'expected KantoStory Diglett Cave Gold Dust survey activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == "Diglett's Cave" && activity['operation'] == 'cave_survey_claim' }
+raise 'expected KantoStory Diglett Cave Rocket Gold Dust conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == "Diglett's Cave" }
+raise 'expected KantoStory Red Diglett Cave scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('diglett_cave_guard')
+raise 'expected KantoStory Bill Diglett Cave scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('diglett_cave_relay_map')
+raise 'expected KantoStory Diglett Cave story alert paused in cave' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Echo Flute') }
+raise 'expected KantoStory Diglett Cave next hook Route 2 lab' unless diglett_detour['next_hook'] == 'route_2_east_field_lab'
+second_diglett_detour = NexusRed::KantoStory.complete_diglett_cave_detour(kanto_story_state)
+raise 'expected KantoStory Diglett Cave idempotent guard' unless second_diglett_detour['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Diglett Cave history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'diglett_cave_detour' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

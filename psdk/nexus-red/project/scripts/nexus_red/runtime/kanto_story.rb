@@ -19,6 +19,9 @@ module NexusRed
     TEAM_GAS_DEBUT_EVENT_ID = 'team_gas_kanto_debut'
     BILL_POWER_GRID_EVENT_ID = 'bill_power_grid_decode'
     LT_SURGE_EVENT_ID = 'lt_surge_battle'
+    ROUTE_11_EVENT_ID = 'route_11_handoff'
+    DIGLETT_CAVE_EVENT_ID = 'diglett_cave_detour'
+    ROCKET_GOLD_DUST_CAVE_EVENT_ID = 'rocket_gold_dust_cave_argument'
 
     module_function
 
@@ -567,6 +570,152 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == LT_SURGE_EVENT_ID }
     end
 
+    def complete_route_11_handoff(state, location: 'Route 11', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_thunder_badge', 'event_id' => ROUTE_11_EVENT_ID } unless lt_surge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROUTE_11_EVENT_ID } if route_11_handoff_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE11_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ROUTE11_EASTBOUND')
+      add_story_flag(state, 'FLAG_NEXUS_MISTY_ROUTE11_FAREWELL')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ROUTE11_SIGNAL_DECODE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GAS_ROUTE11_FALLOUT')
+      add_story_flag(state, 'FLAG_NEXUS_SNORLAX_ROADBLOCK_TEASED')
+      mark_cleared_event(story, ROUTE_11_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'post_surge_blame_shift',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'kanto',
+        location,
+        'route_11_fallout',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'route_11_eastbound',
+        location: location,
+        summary: 'Red stays with Antman as the journey turns east from Vermilion.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'route_11_farewell',
+        location: location,
+        summary: 'Misty rotates to water-route support after the Route 11 checkpoint.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'route_11_signal_decode',
+        location: location,
+        summary: 'Bill decodes a Nexus pulse from the Route 11 relay pole.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Route 11 opened after Surge, but a Snorlax roadblock is forcing the Diglett Cave detour.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = route_11_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def route_11_handoff_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_11_EVENT_ID }
+    end
+
+    def complete_diglett_cave_detour(state, location: "Diglett's Cave", area_type: 'cave')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_route_11_handoff', 'event_id' => DIGLETT_CAVE_EVENT_ID } unless route_11_handoff_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => DIGLETT_CAVE_EVENT_ID } if diglett_cave_detour_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_DIGLETT_CAVE_DETOUR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_DIGLETT_CAVE_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_DIGLETT_CAVE_RELAY_MAP')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GOLD_DUST_CAVE_ARGUMENT')
+      add_story_flag(state, 'FLAG_NEXUS_SNORLAX_ROUTE12_BLOCK_CONFIRMED')
+      add_story_flag(state, 'FLAG_NEXUS_ECHO_FLUTE_LEAD_SEEN')
+      mark_cleared_event(story, DIGLETT_CAVE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_GOLD_DUST_CAVE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'stolen_cave_survey_crates',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'cave_survey_claim',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'stolen Diglett Cave survey crates expose the next resource dispute',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'diglett_cave_guard',
+        location: location,
+        summary: 'Red keeps Antman moving through the cave detour instead of quick-jumping the route.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'diglett_cave_relay_map',
+        location: location,
+        summary: 'Bill maps a Nexus relay under Diglett Cave and marks the Echo Flute lead.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Diglett Cave confirmed the Snorlax block and exposed the Echo Flute as the next waking lead.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = diglett_cave_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def diglett_cave_detour_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == DIGLETT_CAVE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -696,6 +845,27 @@ module NexusRed
         'badge' => 'Thunder Badge',
         'unlocks' => %w[good_rod vs_seeker route_11_path],
         'next_hook' => 'route_11_handoff'
+      }
+    end
+
+    def route_11_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ROUTE_11_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => %w[red_route_11_eastbound misty_route_11_farewell bill_route_11_signal_decode rocket_gas_route_11_fallout snorlax_roadblock_teased],
+        'next_hook' => 'diglett_cave_detour'
+      }
+    end
+
+    def diglett_cave_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => DIGLETT_CAVE_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [ROCKET_GOLD_DUST_CAVE_EVENT_ID, 'snorlax_route_12_block_confirmed', 'echo_flute_lead_seen'],
+        'factions' => %w[team_rocket team_gold_dust],
+        'next_hook' => 'route_2_east_field_lab'
       }
     end
 
