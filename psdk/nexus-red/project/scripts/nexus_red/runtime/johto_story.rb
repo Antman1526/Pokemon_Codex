@@ -153,6 +153,20 @@ module NexusRed
     MOONLIGHT_PLAIN_BADGE_JINGLE_COLLAPSE_EVENT_ID = 'moonlight_plain_badge_jingle_collapse'
     NEXUS_ORDER_PLAIN_BADGE_RESONANCE_EVENT_ID = 'nexus_order_plain_badge_resonance_hidden'
     GOLDENROD_RADIO_TOWER_CRISIS_UNLOCKED_EVENT_ID = 'goldenrod_radio_tower_crisis_unlocked'
+    GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID = 'goldenrod_radio_tower_shadow'
+    RADIO_TOWER_LOCKDOWN_EVENT_ID = 'radio_tower_lockdown'
+    RED_RADIO_TOWER_ENTRY_EVENT_ID = 'red_radio_tower_entry_guard'
+    BLUE_RADIO_TOWER_CROWD_CONTROL_EVENT_ID = 'blue_radio_tower_crowd_control'
+    BILL_BROADCAST_JAM_EVENT_ID = 'bill_broadcast_jam_decode'
+    SILVER_RADIO_TOWER_SIDE_DOOR_EVENT_ID = 'silver_radio_tower_side_door'
+    AVA_GOLDENROD_BROADCAST_CLUE_EVENT_ID = 'ava_goldenrod_broadcast_clue'
+    ROCKET_RADIO_TOWER_LOBBY_TAKEOVER_EVENT_ID = 'rocket_radio_tower_lobby_takeover'
+    GOLD_DUST_RADIO_TOWER_AD_BUY_EVENT_ID = 'gold_dust_radio_tower_ad_buy_laundering'
+    TEAM_GAS_RADIO_TOWER_GENERATOR_EVENT_ID = 'team_gas_radio_tower_generator_vent_pressure'
+    MOONLIGHT_BROADCAST_HYPNOSIS_EVENT_ID = 'moonlight_broadcast_hypnosis_leak'
+    NEXUS_ORDER_RADIO_TRANSMITTER_PATTERN_EVENT_ID = 'nexus_order_radio_tower_transmitter_pattern_hidden'
+    RADIO_TOWER_LOBBY_BATTLE_UNLOCKED_EVENT_ID = 'radio_tower_lobby_battle_unlocked'
+    GOLDENROD_UNDERGROUND_WAREHOUSE_LEAD_EVENT_ID = 'goldenrod_underground_warehouse_lead'
 
     module_function
 
@@ -2432,6 +2446,209 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_plain_badge_resonance_unrevealed',
         'unlocks' => %w[goldenrod_radio_tower_shadow whitney_rematch_board_tier_1 attract_tm_lead],
         'next_hook' => 'goldenrod_radio_tower_shadow'
+      }
+    end
+
+    def complete_goldenrod_radio_tower_shadow(state, location: 'Goldenrod Radio Tower', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_whitney_plain_badge_battle', 'event_id' => GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID } unless whitney_plain_badge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID } if goldenrod_radio_tower_shadow_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_RADIO_TOWER_SHADOW')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_LOCKDOWN')
+      add_story_flag(state, 'FLAG_NEXUS_RED_RADIO_TOWER_ENTRY')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_RADIO_TOWER_CROWD_CONTROL')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_BROADCAST_JAM_DECODE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_RADIO_TOWER_SIDE_DOOR')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_GOLDENROD_BROADCAST_CLUE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_RADIO_TOWER_LOBBY_TAKEOVER')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_RADIO_TOWER_AD_BUY')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_RADIO_TOWER_GENERATOR')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_BROADCAST_HYPNOSIS')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_RADIO_TRANSMITTER_PATTERN')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_LOBBY_BATTLE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_UNDERGROUND_WAREHOUSE_LEAD')
+
+      [
+        GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID,
+        RADIO_TOWER_LOCKDOWN_EVENT_ID,
+        RED_RADIO_TOWER_ENTRY_EVENT_ID,
+        BLUE_RADIO_TOWER_CROWD_CONTROL_EVENT_ID,
+        BILL_BROADCAST_JAM_EVENT_ID,
+        SILVER_RADIO_TOWER_SIDE_DOOR_EVENT_ID,
+        AVA_GOLDENROD_BROADCAST_CLUE_EVENT_ID,
+        ROCKET_RADIO_TOWER_LOBBY_TAKEOVER_EVENT_ID,
+        GOLD_DUST_RADIO_TOWER_AD_BUY_EVENT_ID,
+        TEAM_GAS_RADIO_TOWER_GENERATOR_EVENT_ID,
+        MOONLIGHT_BROADCAST_HYPNOSIS_EVENT_ID,
+        NEXUS_ORDER_RADIO_TRANSMITTER_PATTERN_EVENT_ID,
+        RADIO_TOWER_LOBBY_BATTLE_UNLOCKED_EVENT_ID,
+        GOLDENROD_UNDERGROUND_WAREHOUSE_LEAD_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'radio_tower_entry_guard',
+        location: location,
+        summary: 'Red steps in front of Antman at the Radio Tower doors, not to take over, but to make sure the first Rocket rush does not split the team.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'blue',
+        'radio_tower_crowd_control',
+        location: 'Goldenrod Radio Tower Lobby',
+        summary: 'Blue drops the rivalry act long enough to move civilians out of the lobby while daring Rocket to try him first.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'broadcast_jam_decode',
+        location: location,
+        summary: 'Bill reads the jammed broadcast and confirms the tower signal is being split between Rocket orders, Moonlight hypnosis, and a hidden transmitter pattern.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Goldenrod Radio Tower Side Door',
+        'Silver slipped through a Radio Tower side door after the lockdown, chasing Rocket without waiting for Antman or Red.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Goldenrod Station',
+        'Ava caught a Goldenrod broadcast clue from the station feed and warned WorldLink that the public tower audio is being rewritten live.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Goldenrod Radio Tower Lobby',
+        'radio_tower_lobby_takeover',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Radio Tower Ad Office',
+        'radio_tower_ad_buy_laundering',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Radio Tower Generator Room',
+        'radio_tower_generator_vent_pressure',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower Broadcast Booth',
+        'broadcast_hypnosis_leak',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower Transmitter',
+        'radio_tower_transmitter_pattern_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        'Goldenrod Radio Tower Lobby',
+        'Rocket takeover crews catch Gold Dust laundering ad buys through the same tower accounts.',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_gas',
+        'team_moonlight',
+        'Goldenrod Radio Tower Generator Room',
+        'Team Gas vent pressure destabilizes Moonlight broadcast hypnosis under the tower.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_12_radio_tower_lockdown'
+      event = goldenrod_radio_tower_shadow_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Goldenrod Radio Tower is under Rocket lockdown. Red and Blue hold the lobby, Bill is tracing the broadcast jam, and the underground warehouse lead just became urgent.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def goldenrod_radio_tower_shadow_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID }
+    end
+
+    def goldenrod_radio_tower_shadow_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => GOLDENROD_RADIO_TOWER_SHADOW_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_12_radio_tower_lockdown',
+        'route_chain' => ['Goldenrod Gym', 'Goldenrod Radio Tower Lobby', 'Goldenrod Underground Warehouse Lead'],
+        'companions' => %w[red blue bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          RADIO_TOWER_LOCKDOWN_EVENT_ID,
+          RED_RADIO_TOWER_ENTRY_EVENT_ID,
+          BLUE_RADIO_TOWER_CROWD_CONTROL_EVENT_ID,
+          BILL_BROADCAST_JAM_EVENT_ID,
+          SILVER_RADIO_TOWER_SIDE_DOOR_EVENT_ID,
+          AVA_GOLDENROD_BROADCAST_CLUE_EVENT_ID,
+          ROCKET_RADIO_TOWER_LOBBY_TAKEOVER_EVENT_ID,
+          GOLD_DUST_RADIO_TOWER_AD_BUY_EVENT_ID,
+          TEAM_GAS_RADIO_TOWER_GENERATOR_EVENT_ID,
+          MOONLIGHT_BROADCAST_HYPNOSIS_EVENT_ID,
+          NEXUS_ORDER_RADIO_TRANSMITTER_PATTERN_EVENT_ID,
+          RADIO_TOWER_LOBBY_BATTLE_UNLOCKED_EVENT_ID,
+          GOLDENROD_UNDERGROUND_WAREHOUSE_LEAD_EVENT_ID
+        ],
+        'battle_hook' => {
+          'battle_id' => 'radio_tower_lobby_battle',
+          'level_cap' => 28,
+          'companion_rule' => 'red_and_blue_tag_allowed_outside_gym',
+          'enemy_trainers' => %w[rocket_signal_grunt_pair],
+          'enemy_team_theme' => %w[poison electric normal]
+        },
+        'hidden_meta_signal' => 'nexus_order_radio_transmitter_pattern_unrevealed',
+        'unlocks' => %w[radio_tower_lobby_battle goldenrod_underground_warehouse_lead radio_tower_digest_after_exit],
+        'next_hook' => 'radio_tower_lobby_battle'
       }
     end
   end
