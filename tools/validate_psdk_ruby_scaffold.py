@@ -101,6 +101,38 @@ raise 'expected kanto runtime region' unless state['current_region'] == 'kanto'
 raise 'expected Red active companion' unless state['active_companion'] == 'red'
 raise 'expected standard difficulty' unless state['gameplay_options']['difficulty_mode'] == 'standard'
 
+first_message = NexusRed::WorldLink.queue_message(
+  state,
+  'rival_badge',
+  'Blue defeated Brock and earned the Boulder Badge.',
+  source: 'blue',
+  area_type: 'route'
+)
+raise 'expected immediate WorldLink message delivery' unless first_message['delivery'] == 'immediate'
+raise 'expected one recent WorldLink message' unless state['worldlink_recent_messages'].length == 1
+raise 'expected unread count after immediate message' unless state['worldlink_unread_count'] == 1
+
+paused_message = NexusRed::WorldLink.queue_message(
+  state,
+  'rival_capture',
+  'Ava caught a rare Gastly in Mt. Moon.',
+  source: 'ava',
+  area_type: 'cave'
+)
+raise 'expected paused WorldLink delivery in cave' unless paused_message['delivery'] == 'paused'
+raise 'expected paused queue to hold dungeon update' unless state['worldlink_paused_messages'].length == 1
+raise 'expected recent messages unchanged while paused' unless state['worldlink_recent_messages'].length == 1
+
+digest = NexusRed::WorldLink.release_digest(state)
+raise 'expected digest release title' unless digest['title'] == 'While You Were Away'
+raise 'expected one digest item' unless digest['items'].length == 1
+raise 'expected paused queue cleared after digest' unless state['worldlink_paused_messages'].empty?
+raise 'expected digest message moved into recent feed' unless state['worldlink_recent_messages'].length == 2
+raise 'expected unread count after digest' unless state['worldlink_unread_count'] == 2
+
+NexusRed::WorldLink.mark_all_read(state)
+raise 'expected WorldLink unread count cleared' unless state['worldlink_unread_count'] == 0
+
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
 
