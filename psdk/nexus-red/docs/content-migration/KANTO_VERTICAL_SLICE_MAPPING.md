@@ -56,6 +56,8 @@ Detailed import rows live in `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_
 Machine-readable source/target mappings live in `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`.
 Generated seed data is refreshed with `python3 tools/generate_psdk_seed_data.py`, including starter selection, Routes 1-3 encounters, region progression, custom factions, companion registry, rival WorldLink registry, and gameplay systems registry.
 
+The first custom PSDK Ruby bridge is `psdk/nexus-red/project/scripts/nexus_red/000_seed_loader.rb`.
+
 ## Routes 1-3 Catchability Contract
 
 Current Godot reference distribution:

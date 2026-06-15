@@ -11,9 +11,10 @@ psdk/nexus-red/
   project/
     Data/
       nexus_red_seed/
+    scripts/
+      nexus_red/
     Graphics/
     Audio/
-    scripts/
     maps/
   docs/
     content-migration/
@@ -43,6 +44,7 @@ psdk/nexus-red/
 - Starter and early-route import contract: `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`
 - PSDK import seed manifest: `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`
 - Generated seed data: `psdk/nexus-red/project/Data/nexus_red_seed/generated/`
+- Ruby seed loader scaffold: `psdk/nexus-red/project/scripts/nexus_red/000_seed_loader.rb`
 - Ignore guardrails: `psdk/nexus-red/.gitignore`
 
 ## Seed Data Commands
@@ -51,6 +53,7 @@ psdk/nexus-red/
 python3 tools/generate_psdk_seed_data.py
 python3 tools/generate_psdk_seed_data.py --check
 python3 tools/validate_psdk_seed_manifest.py
+python3 tools/validate_psdk_ruby_scaffold.py
 ```
 
 The seed generator currently covers starters, Routes 1-3 encounters, the region progression spine, custom factions, core companions, rival WorldLink data, and gameplay systems/QoL commitments.
