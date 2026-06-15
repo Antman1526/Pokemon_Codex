@@ -155,6 +155,9 @@ REQUIRED_MARKERS = (
     "misty_battle_cleared?",
     "complete_bill_storage_anomaly",
     "bill_storage_anomaly_cleared?",
+    "complete_ss_anne_manifest",
+    "ss_anne_manifest_cleared?",
+    "rocket_manifest_found?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1025,6 +1028,35 @@ raise 'expected KantoStory current act remains Act 3' unless kanto_story_state['
 second_bill_clear = NexusRed::KantoStory.complete_bill_storage_anomaly(kanto_story_state)
 raise 'expected KantoStory Bill idempotent guard' unless second_bill_clear['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Bill history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'bill_storage_metadata_anomaly' } == 1
+pre_bill_ss_anne = NexusRed::KantoStory.complete_ss_anne_manifest(NexusRed::RuntimeState.build)
+raise 'expected KantoStory S.S. Anne gated before Bill anomaly' unless pre_bill_ss_anne['status'] == 'blocked_missing_bill_anomaly'
+ss_anne_clear = NexusRed::KantoStory.complete_ss_anne_manifest(
+  kanto_story_state,
+  location: 'S.S. Anne',
+  area_type: 'route',
+  rival_id: 'blue'
+)
+raise 'expected KantoStory S.S. Anne clear status' unless ss_anne_clear['status'] == 'cleared'
+raise 'expected KantoStory S.S. Anne foreign trainer event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('ss_anne_foreign_trainers')
+raise 'expected KantoStory Blue S.S. Anne battle event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('blue_ss_anne_battle')
+raise 'expected KantoStory Rocket manifest event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('rocket_smuggling_manifest')
+raise 'expected KantoStory S.S. Anne helper true' unless NexusRed::KantoStory.ss_anne_manifest_cleared?(kanto_story_state)
+raise 'expected KantoStory Rocket manifest helper true' unless NexusRed::KantoStory.rocket_manifest_found?(kanto_story_state)
+raise 'expected KantoStory S.S. Anne foreign trainers flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SS_ANNE_FOREIGN_TRAINERS')
+raise 'expected KantoStory Blue S.S. Anne flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_SS_ANNE_BATTLE')
+raise 'expected KantoStory Rocket manifest flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_SMUGGLING_MANIFEST')
+raise 'expected KantoStory Vermilion Surge setup flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VERMILION_SURGE_SETUP')
+raise 'expected KantoStory Rocket smuggling activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'S.S. Anne' && activity['operation'] == 'smuggling_manifest' }
+raise 'expected KantoStory Blue S.S. Anne rival clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['category'] == 'rival_story_clue'
+raise 'expected KantoStory Blue S.S. Anne summary' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('S.S. Anne')
+raise 'expected KantoStory Misty S.S. Anne scene' unless kanto_story_state['companion_progress']['misty']['scene_flags'].include?('ss_anne_manifest')
+raise 'expected KantoStory Red Mt Moon note scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('red_worldlink_mt_moon_note')
+raise 'expected KantoStory S.S. Anne story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('S.S. Anne') }
+raise 'expected KantoStory S.S. Anne current act remains Act 3' unless kanto_story_state['kanto_story']['current_act'] == 'act_3_cerulean_to_vermilion'
+raise 'expected KantoStory S.S. Anne next hook Surge' unless ss_anne_clear['next_hook'] == 'lt_surge_battle'
+second_ss_anne_clear = NexusRed::KantoStory.complete_ss_anne_manifest(kanto_story_state)
+raise 'expected KantoStory S.S. Anne idempotent guard' unless second_ss_anne_clear['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate S.S. Anne history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'ss_anne_foreign_trainers' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

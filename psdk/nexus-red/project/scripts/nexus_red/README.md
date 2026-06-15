@@ -41,6 +41,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_bill_storage_anomaly(state, location:, area_type:)` resolves Bill's Route 25 storage metadata hook. It requires Misty completion, activates Bill as a non-following technical ally, records storage intro and Route 25 systems scenes, logs Rocket storage metadata probing, stores a reusable storage anomaly record linked to PC, Portable PC, WorldLink, and region progression, and points the Act 3 route toward S.S. Anne.
 
+`NexusRed::KantoStory.complete_ss_anne_manifest(state, location:, area_type:, rival_id:)` resolves the S.S. Anne Act 3 bridge. It requires Bill's storage anomaly, marks the foreign Trainer traffic, Blue ship battle, and Rocket smuggling manifest events, records Rocket manifest activity, updates Blue through WorldLink, gives Misty and Red companion scenes, and points the chapter toward Lt. Surge in Vermilion.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

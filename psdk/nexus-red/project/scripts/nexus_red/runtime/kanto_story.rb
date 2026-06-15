@@ -11,6 +11,9 @@ module NexusRed
     MISTY_EVENT_ID = 'misty_battle'
     BILL_EVENT_ID = 'bill_storage_metadata_anomaly'
     BILL_STORAGE_ANOMALY_ID = 'route_25_storage_metadata_echo'
+    SS_ANNE_EVENT_ID = 'ss_anne_foreign_trainers'
+    BLUE_SS_ANNE_EVENT_ID = 'blue_ss_anne_battle'
+    ROCKET_MANIFEST_EVENT_ID = 'rocket_smuggling_manifest'
 
     module_function
 
@@ -362,6 +365,72 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BILL_EVENT_ID }
     end
 
+    def complete_ss_anne_manifest(state, location: 'S.S. Anne', area_type: 'route', rival_id: 'blue')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_bill_anomaly', 'event_id' => SS_ANNE_EVENT_ID } unless bill_storage_anomaly_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SS_ANNE_EVENT_ID } if ss_anne_manifest_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_SS_ANNE_FOREIGN_TRAINERS')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_SS_ANNE_BATTLE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SMUGGLING_MANIFEST')
+      add_story_flag(state, 'FLAG_NEXUS_VERMILION_SURGE_SETUP')
+      mark_cleared_event(story, SS_ANNE_EVENT_ID)
+      mark_cleared_event(story, BLUE_SS_ANNE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_MANIFEST_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'smuggling_manifest',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        rival_id,
+        location,
+        "#{rival_display_name(rival_id)} challenged Antman aboard the S.S. Anne and found the Rocket smuggling manifest.",
+        area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'misty',
+        'ss_anne_manifest',
+        location: location,
+        summary: 'Misty spots tide-route inconsistencies in the manifest.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'red_worldlink_mt_moon_note',
+        location: location,
+        summary: 'Red matches the S.S. Anne manifest against the old Mt. Moon note.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'S.S. Anne linked foreign Trainer traffic to a Rocket smuggling manifest bound for Vermilion.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = ss_anne_event_result(location, rival_id)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def ss_anne_manifest_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SS_ANNE_EVENT_ID }
+    end
+
+    def rocket_manifest_found?(state)
+      ensure_kanto_story(state)['cleared_events'].include?(ROCKET_MANIFEST_EVENT_ID)
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -456,6 +525,18 @@ module NexusRed
         'companion_id' => 'bill',
         'anomaly_id' => anomaly['anomaly_id'],
         'next_hook' => 'ss_anne_foreign_trainers'
+      }
+    end
+
+    def ss_anne_event_result(location, rival_id)
+      {
+        'status' => 'cleared',
+        'event_id' => SS_ANNE_EVENT_ID,
+        'location' => location.to_s,
+        'rival_id' => rival_id.to_s,
+        'linked_events' => [BLUE_SS_ANNE_EVENT_ID, ROCKET_MANIFEST_EVENT_ID, 'red_worldlink_mt_moon_note'],
+        'factions' => %w[team_rocket],
+        'next_hook' => 'lt_surge_battle'
       }
     end
 
