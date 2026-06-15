@@ -33,3 +33,10 @@ psdk/nexus-red/
 - Main design framework: `docs/POKEMON_NEXUS_RED_FRAMEWORK.md`
 - PSDK primary strategy: `docs/PSDK_NATIVE_BUILD_STRATEGY.md`
 - PC/Mac strategy: `docs/PC_MAC_NATIVE_BUILD_STRATEGY.md`
+
+## Local Setup Evidence
+
+- Setup audit: `docs/psdk/PSDK_SETUP_AUDIT_2026-06-15.md`
+- Kanto migration map: `psdk/nexus-red/docs/content-migration/KANTO_VERTICAL_SLICE_MAPPING.md`
+- Starter and early-route import contract: `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`
+- Ignore guardrails: `psdk/nexus-red/.gitignore`

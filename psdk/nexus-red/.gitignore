@@ -1,0 +1,57 @@
+# Pokemon Nexus Red PSDK project guardrails.
+# Keep source/data/scripts under version control, but do not commit local binaries,
+# generated exports, caches, saves, or commercial/ripped assets.
+
+# Local Pokemon Studio / PSDK binaries and vendored engine drops
+psdk-binaries/
+pokemonsdk/
+Pokemon Studio.app/
+*.app/
+*.dmg
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Generated releases / exports
+build/
+builds/
+dist/
+release/
+releases/
+exports/
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Runtime state / saves / logs / caches
+save/
+saves/
+Saved Games/
+Logs/
+logs/
+Temp/
+tmp/
+cache/
+.cache/
+*.log
+
+# macOS / editor noise
+.DS_Store
+._*
+.vscode/
+.idea/
+
+# Secrets or local config
+.env
+.env.*
+*.key
+*.pem
+*.p12
+
+# Asset safety: use explicit, reviewed imports instead of dumping raw packs.
+raw_assets/
+ripped_assets/
+rom_extracts/
+commercial_assets/
