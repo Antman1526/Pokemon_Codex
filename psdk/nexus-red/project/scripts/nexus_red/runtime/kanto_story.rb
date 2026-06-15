@@ -177,6 +177,16 @@ module NexusRed
     POISON_HAZARD_LESSON_EVENT_ID = 'poison_hazard_lesson_mastered'
     SAFFRON_CITY_PATH_EVENT_ID = 'saffron_city_path_unlocked'
     ROCKET_SILPH_ESCALATION_EVENT_ID = 'rocket_silph_escalation_signal'
+    SAFFRON_CITY_ARRIVAL_EVENT_ID = 'saffron_city_arrival'
+    SAFFRON_GATE_LOCKDOWN_EVENT_ID = 'saffron_gate_lockdown'
+    SILPH_CO_TAKEOVER_LEAD_EVENT_ID = 'silph_co_takeover_lead'
+    ROCKET_SILPH_SECURITY_EVENT_ID = 'rocket_silph_security_grid'
+    SABRINA_MOONLIGHT_INTERFERENCE_EVENT_ID = 'sabrina_moonlight_interference'
+    BILL_SILPH_NETWORK_RELAY_EVENT_ID = 'bill_silph_network_relay'
+    NEXUS_ORDER_SPONSOR_STATIC_EVENT_ID = 'nexus_order_sponsor_static_trace'
+    BLUE_SAFFRON_CHECKIN_EVENT_ID = 'blue_saffron_checkin'
+    PORTABLE_PC_FULL_ACCESS_EVENT_ID = 'portable_pc_full_access'
+    STRONGER_MART_TIERS_EVENT_ID = 'stronger_mart_tiers_unlocked'
 
     module_function
 
@@ -2986,6 +2996,109 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == KOGA_SOUL_BADGE_BATTLE_ID }
     end
 
+    def complete_saffron_city_arrival(state, location: 'Saffron City', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_koga_soul_badge_battle', 'event_id' => SAFFRON_CITY_ARRIVAL_EVENT_ID } unless koga_soul_badge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SAFFRON_CITY_ARRIVAL_EVENT_ID } if saffron_city_arrival_cleared?(state)
+
+      story['current_act'] = 'act_5_saffron_fuchsia'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SAFFRON_CITY_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_SAFFRON_GATE_LOCKDOWN')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_TAKEOVER_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SILPH_SECURITY_GRID')
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_MOONLIGHT_INTERFERENCE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_SILPH_NETWORK_RELAY')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_SPONSOR_STATIC_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_PORTABLE_PC_FULL_ACCESS')
+      add_story_flag(state, 'FLAG_NEXUS_STRONGER_MART_TIERS_UNLOCKED')
+      mark_cleared_event(story, SAFFRON_CITY_ARRIVAL_EVENT_ID)
+      mark_cleared_event(story, SAFFRON_GATE_LOCKDOWN_EVENT_ID)
+      mark_cleared_event(story, SILPH_CO_TAKEOVER_LEAD_EVENT_ID)
+      mark_cleared_event(story, ROCKET_SILPH_SECURITY_EVENT_ID)
+      mark_cleared_event(story, SABRINA_MOONLIGHT_INTERFERENCE_EVENT_ID)
+      mark_cleared_event(story, BILL_SILPH_NETWORK_RELAY_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_SPONSOR_STATIC_EVENT_ID)
+      mark_cleared_event(story, PORTABLE_PC_FULL_ACCESS_EVENT_ID)
+      mark_cleared_event(story, STRONGER_MART_TIERS_EVENT_ID)
+      PortablePC.unlock(state, source: 'Bill Silph Co network relay', access_level: 'full', area_type: area_type)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'silph_city_lockdown',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'sabrina_dream_static',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'sponsor_static_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket locks down Silph infrastructure while Moonlight static leaks through Sabrina before anyone can name the hidden sponsor',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'saffron_street_guard',
+        location: location,
+        summary: 'Red stays with Antman at the Saffron gates and keeps the city route grounded while Rocket controls the streets.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_network_relay',
+        location: location,
+        summary: 'Bill uses the Silph network relay to upgrade Portable PC access and trace the hidden sponsor static.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue reached Saffron from another gate and saw Rocket using Silph security like a city-wide badge check.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Saffron City is locked down around Silph Co.; Rocket controls the streets, Sabrina senses Moonlight static, and Bill upgraded Portable PC access through the Silph relay.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = saffron_city_arrival_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def saffron_city_arrival_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SAFFRON_CITY_ARRIVAL_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -3662,6 +3775,31 @@ module NexusRed
         'factions' => %w[team_rocket team_clover],
         'unlocks' => %w[soul_badge tide_rider saffron_city_path poison_hazard_mastery],
         'next_hook' => 'saffron_city_arrival'
+      }
+    end
+
+    def saffron_city_arrival_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SAFFRON_CITY_ARRIVAL_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          SAFFRON_GATE_LOCKDOWN_EVENT_ID,
+          SILPH_CO_TAKEOVER_LEAD_EVENT_ID,
+          ROCKET_SILPH_SECURITY_EVENT_ID,
+          SABRINA_MOONLIGHT_INTERFERENCE_EVENT_ID,
+          BILL_SILPH_NETWORK_RELAY_EVENT_ID,
+          NEXUS_ORDER_SPONSOR_STATIC_EVENT_ID,
+          BLUE_SAFFRON_CHECKIN_EVENT_ID,
+          PORTABLE_PC_FULL_ACCESS_EVENT_ID,
+          STRONGER_MART_TIERS_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight nexus_order],
+        'city_state' => 'rocket_silph_lockdown',
+        'gym_tease' => 'sabrina_moonlight_interference',
+        'hidden_meta_signal' => 'sponsor_static_trace',
+        'unlocks' => %w[portable_pc_full stronger_mart_tiers silph_co_lobby sabrina_pressure],
+        'next_hook' => 'silph_co_lobby_lockdown'
       }
     end
 

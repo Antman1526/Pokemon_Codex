@@ -218,6 +218,8 @@ REQUIRED_MARKERS = (
     "koga_gym_prep_cleared?",
     "complete_koga_soul_badge_battle",
     "koga_soul_badge_battle_cleared?",
+    "complete_saffron_city_arrival",
+    "saffron_city_arrival_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1958,6 +1960,41 @@ raise 'expected KantoStory Koga battle unlocks Tide Rider' unless koga_battle['u
 second_koga_battle = NexusRed::KantoStory.complete_koga_soul_badge_battle(kanto_story_state)
 raise 'expected KantoStory Koga battle idempotent guard' unless second_koga_battle['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Koga battle history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'koga_soul_badge_battle' } == 1
+pre_saffron_arrival = NexusRed::KantoStory.complete_saffron_city_arrival(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Saffron arrival gated before Koga battle' unless pre_saffron_arrival['status'] == 'blocked_missing_koga_soul_badge_battle'
+saffron_arrival = NexusRed::KantoStory.complete_saffron_city_arrival(
+  kanto_story_state,
+  location: 'Saffron City',
+  area_type: 'city'
+)
+raise 'expected KantoStory Saffron arrival clear status' unless saffron_arrival['status'] == 'cleared'
+raise 'expected KantoStory Saffron arrival event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('saffron_city_arrival')
+raise 'expected KantoStory Saffron arrival helper true' unless NexusRed::KantoStory.saffron_city_arrival_cleared?(kanto_story_state)
+raise 'expected KantoStory current act Saffron Fuchsia' unless kanto_story_state['kanto_story']['current_act'] == 'act_5_saffron_fuchsia'
+raise 'expected KantoStory Saffron reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFFRON_CITY_ARRIVAL')
+raise 'expected KantoStory Saffron gate lockdown flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SAFFRON_GATE_LOCKDOWN')
+raise 'expected KantoStory Silph takeover lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CO_TAKEOVER_LEAD')
+raise 'expected KantoStory Sabrina Moonlight interference flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_MOONLIGHT_INTERFERENCE')
+raise 'expected KantoStory Bill Silph relay flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_SILPH_NETWORK_RELAY')
+raise 'expected KantoStory Nexus sponsor static flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_SPONSOR_STATIC_TRACE')
+raise 'expected KantoStory portable PC full flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PORTABLE_PC_FULL_ACCESS')
+raise 'expected KantoStory portable PC full access level' unless kanto_story_state['portable_pc']['access_level'] == 'full'
+raise 'expected KantoStory portable PC Silph source' unless kanto_story_state['portable_pc']['source'] == 'Bill Silph Co network relay'
+raise 'expected KantoStory Red Saffron street guard' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('saffron_street_guard')
+raise 'expected KantoStory Bill Silph relay scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_network_relay')
+raise 'expected KantoStory Blue Saffron checkin' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('Saffron')
+raise 'expected KantoStory Rocket Silph lockdown activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'silph_city_lockdown' }
+raise 'expected KantoStory Moonlight Sabrina interference activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'sabrina_dream_static' }
+raise 'expected KantoStory Nexus Order sponsor static activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron City' && activity['operation'] == 'sponsor_static_trace' }
+raise 'expected KantoStory Nexus Order still hidden after Saffron arrival' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Moonlight Saffron conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Saffron City' }
+raise 'expected KantoStory Saffron arrival story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Saffron') && message['text'].include?('Silph') }
+raise 'expected KantoStory Saffron next hook Silph lobby' unless saffron_arrival['next_hook'] == 'silph_co_lobby_lockdown'
+raise 'expected KantoStory Saffron linked Sabrina pressure' unless saffron_arrival['linked_events'].include?('sabrina_moonlight_interference')
+raise 'expected KantoStory Saffron unlocks full PortablePC' unless saffron_arrival['unlocks'].include?('portable_pc_full') && saffron_arrival['unlocks'].include?('silph_co_lobby')
+second_saffron_arrival = NexusRed::KantoStory.complete_saffron_city_arrival(kanto_story_state)
+raise 'expected KantoStory Saffron arrival idempotent guard' unless second_saffron_arrival['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Saffron arrival history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'saffron_city_arrival' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
