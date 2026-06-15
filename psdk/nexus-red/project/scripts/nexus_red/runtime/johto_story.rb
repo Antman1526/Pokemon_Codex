@@ -42,6 +42,18 @@ module NexusRed
     GOLD_DUST_FEATHER_CHARM_MARKET_EVENT_ID = 'gold_dust_feather_charm_market'
     NEXUS_ORDER_ZEPHYR_AIR_CURRENT_EVENT_ID = 'nexus_order_zephyr_air_current_static_hidden'
     ZEPHYR_BADGE_BATTLE_UNLOCKED_EVENT_ID = 'zephyr_badge_battle_unlocked'
+    FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID = 'falkner_zephyr_badge_battle'
+    ZEPHYR_BADGE_OBTAINED_EVENT_ID = 'zephyr_badge_obtained'
+    RED_POST_FALKNER_EVENT_ID = 'red_post_falkner'
+    BROCK_POST_FALKNER_EVENT_ID = 'brock_post_falkner'
+    BILL_ZEPHYR_SIGNAL_DECODED_EVENT_ID = 'bill_zephyr_signal_decoded'
+    SILVER_ZEPHYR_BADGE_RACE_EVENT_ID = 'silver_zephyr_badge_race'
+    ROCKET_UNION_CAVE_LEAD_EVENT_ID = 'rocket_union_cave_lead'
+    MOONLIGHT_ZEPHYR_RETREAT_EVENT_ID = 'moonlight_zephyr_retreat'
+    GOLD_DUST_ZEPHYR_BETTING_EVENT_ID = 'gold_dust_zephyr_badge_betting'
+    NEXUS_ORDER_ZEPHYR_BADGE_RESONANCE_EVENT_ID = 'nexus_order_zephyr_badge_resonance_hidden'
+    UNION_CAVE_ROAD_EVENT_ID = 'union_cave_road_unlocked'
+    AZALEA_SLOWPOKE_WELL_LEAD_EVENT_ID = 'azalea_slowpoke_well_lead'
 
     module_function
 
@@ -718,6 +730,164 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_zephyr_air_current_static_unrevealed',
         'unlocks' => %w[zephyr_badge_battle violet_gym_air_current_trial falkner_rematch_seed],
         'next_hook' => 'falkner_zephyr_badge_battle'
+      }
+    end
+
+    def complete_falkner_zephyr_badge_battle(state, location: 'Violet Gym', result: 'won', area_type: 'gym')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_falkner_zephyr_badge_prep', 'event_id' => FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID } unless falkner_zephyr_badge_prep_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID } if falkner_zephyr_badge_battle_cleared?(state)
+
+      add_story_flag(state, 'zephyr_badge_obtained')
+      add_story_flag(state, 'FLAG_NEXUS_ZEPHYR_BADGE')
+      add_story_flag(state, 'FLAG_NEXUS_FALKNER_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_FALKNER_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_POST_FALKNER')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_POST_FALKNER')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ZEPHYR_SIGNAL_DECODED')
+      add_story_flag(state, 'FLAG_NEXUS_UNION_CAVE_ROAD_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_AZALEA_SLOWPOKE_WELL_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_UNION_CAVE_LEAD')
+
+      [
+        FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID,
+        ZEPHYR_BADGE_OBTAINED_EVENT_ID,
+        RED_POST_FALKNER_EVENT_ID,
+        BROCK_POST_FALKNER_EVENT_ID,
+        BILL_ZEPHYR_SIGNAL_DECODED_EVENT_ID,
+        SILVER_ZEPHYR_BADGE_RACE_EVENT_ID,
+        ROCKET_UNION_CAVE_LEAD_EVENT_ID,
+        MOONLIGHT_ZEPHYR_RETREAT_EVENT_ID,
+        GOLD_DUST_ZEPHYR_BETTING_EVENT_ID,
+        NEXUS_ORDER_ZEPHYR_BADGE_RESONANCE_EVENT_ID,
+        UNION_CAVE_ROAD_EVENT_ID,
+        AZALEA_SLOWPOKE_WELL_LEAD_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'post_falkner_respect',
+        location: location,
+        summary: 'Red congratulates Antman after the Zephyr Badge, quietly proud that the first Johto badge was earned without help in the gym.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'post_falkner_counter_review',
+        location: location,
+        summary: 'Brock reviews the Falkner battle and points Antman toward the longer road through Union Cave.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'zephyr_signal_decode',
+        location: location,
+        summary: 'Bill decodes the Zephyr Badge resonance and finds Rocket radio parts moving toward Union Cave and Azalea.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver saw Antman earn the Zephyr Badge and left Violet furious, racing toward Union Cave instead of congratulating anyone.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Union Cave Road',
+        'union_cave_radio_parts_route',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'zephyr_dream_static_retreat',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        location,
+        'zephyr_badge_betting_market',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        location,
+        'zephyr_badge_resonance_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_4_azalea_and_slowpoke_well'
+      event = falkner_zephyr_badge_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman earned the Zephyr Badge. Union Cave opens toward Azalea, and Bill sees Rocket radio parts moving near the Slowpoke Well lead.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def falkner_zephyr_badge_battle_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID }
+    end
+
+    def falkner_zephyr_badge_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID,
+        'battle_id' => FALKNER_ZEPHYR_BADGE_BATTLE_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_4_azalea_and_slowpoke_well',
+        'result' => result.to_s,
+        'gym_leader' => 'Falkner',
+        'badge' => 'Zephyr Badge',
+        'level_cap' => 16,
+        'companion_rule' => 'no_companion_assist_in_gym_battle',
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          ZEPHYR_BADGE_OBTAINED_EVENT_ID,
+          RED_POST_FALKNER_EVENT_ID,
+          BROCK_POST_FALKNER_EVENT_ID,
+          BILL_ZEPHYR_SIGNAL_DECODED_EVENT_ID,
+          SILVER_ZEPHYR_BADGE_RACE_EVENT_ID,
+          ROCKET_UNION_CAVE_LEAD_EVENT_ID,
+          MOONLIGHT_ZEPHYR_RETREAT_EVENT_ID,
+          GOLD_DUST_ZEPHYR_BETTING_EVENT_ID,
+          NEXUS_ORDER_ZEPHYR_BADGE_RESONANCE_EVENT_ID,
+          UNION_CAVE_ROAD_EVENT_ID,
+          AZALEA_SLOWPOKE_WELL_LEAD_EVENT_ID
+        ],
+        'hidden_meta_signal' => 'nexus_order_zephyr_badge_resonance_unrevealed',
+        'unlocks' => %w[union_cave_road azalea_slowpoke_well_lead johto_rematch_board_tier_1],
+        'next_hook' => 'union_cave_road'
       }
     end
   end

@@ -159,6 +159,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(state, location:, area_type:)` resolves the pre-Zephyr Badge gym setup without awarding the badge. Red and Brock train Antman on wind reads and flying-type counterplay, Bill scans the Violet Gym roof signal, Silver pressures the rafters, Moonlight and Rocket fight over zephyr-current interference, Gold Dust sells feather charms, Nexus Order remains hidden in the air-current static, and the method returns a `battle_hook` for `falkner_zephyr_badge_battle`.
 
+`NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(state, location:, result:, area_type:)` records the Falkner gym battle after PSDK returns the battle result. It awards the Zephyr Badge, confirms Red did not assist inside the gym, records Red/Brock/Bill post-battle scenes, pushes Silver toward the badge race, moves Rocket radio parts toward Union Cave, lets Moonlight retreat from the Zephyr draft, keeps Nexus Order hidden in badge resonance, and opens `union_cave_road` toward Azalea and Slowpoke Well.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

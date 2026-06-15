@@ -276,6 +276,8 @@ REQUIRED_MARKERS = (
     "sprout_tower_entry_cleared?",
     "complete_falkner_zephyr_badge_prep",
     "falkner_zephyr_badge_prep_cleared?",
+    "complete_falkner_zephyr_badge_battle",
+    "falkner_zephyr_badge_battle_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3019,6 +3021,56 @@ raise 'expected JohtoStory Falkner prep unlocks' unless falkner_prep['unlocks'].
 second_falkner_prep = NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(kanto_story_state)
 raise 'expected JohtoStory Falkner prep idempotent guard' unless second_falkner_prep['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Falkner prep history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'falkner_zephyr_badge_prep' } == 1
+pre_falkner_battle = NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Falkner battle gated before Johto unlock' unless pre_falkner_battle['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_falkner_prep = NexusRed::RuntimeState.build
+johto_before_falkner_prep['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_falkner_prep)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_falkner_prep)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_falkner_prep)
+raise 'expected JohtoStory Falkner battle gated before prep' unless NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_falkner_prep)['status'] == 'blocked_missing_falkner_zephyr_badge_prep'
+falkner_battle = NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(
+  kanto_story_state,
+  location: 'Violet Gym',
+  result: 'won',
+  area_type: 'gym'
+)
+raise 'expected JohtoStory Falkner battle clear status' unless falkner_battle['status'] == 'cleared'
+raise 'expected JohtoStory Falkner battle event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('falkner_zephyr_badge_battle')
+raise 'expected JohtoStory Falkner battle helper true' unless NexusRed::JohtoStory.falkner_zephyr_badge_battle_cleared?(kanto_story_state)
+raise 'expected JohtoStory Zephyr Badge event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('zephyr_badge_obtained')
+raise 'expected JohtoStory Union Cave road event' unless kanto_story_state['johto_story']['cleared_events'].include?('union_cave_road_unlocked')
+raise 'expected JohtoStory Zephyr Badge flag' unless kanto_story_state['story_flags'].include?('zephyr_badge_obtained')
+raise 'expected JohtoStory Nexus Zephyr flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ZEPHYR_BADGE')
+raise 'expected JohtoStory Falkner battle started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FALKNER_BATTLE_STARTED')
+raise 'expected JohtoStory Falkner battle finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FALKNER_BATTLE_FINISHED')
+raise 'expected JohtoStory Red post Falkner flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_POST_FALKNER')
+raise 'expected JohtoStory Brock post Falkner flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_POST_FALKNER')
+raise 'expected JohtoStory Bill zephyr signal decoded flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ZEPHYR_SIGNAL_DECODED')
+raise 'expected JohtoStory Union Cave road flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_UNION_CAVE_ROAD_UNLOCKED')
+raise 'expected JohtoStory Azalea lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_AZALEA_SLOWPOKE_WELL_LEAD')
+raise 'expected JohtoStory Rocket Union Cave lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_UNION_CAVE_LEAD')
+raise 'expected JohtoStory current act Azalea road' unless kanto_story_state['johto_story']['current_act'] == 'act_4_azalea_and_slowpoke_well'
+raise 'expected JohtoStory Red post Falkner scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('post_falkner_respect')
+raise 'expected JohtoStory Brock post Falkner scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('post_falkner_counter_review')
+raise 'expected JohtoStory Bill zephyr decode scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('zephyr_signal_decode')
+raise 'expected JohtoStory Silver badge race activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Zephyr Badge')
+raise 'expected JohtoStory Falkner badge recorded' unless kanto_story_state['rival_progress']['silver']['badge_count'] == 0
+raise 'expected JohtoStory Rocket Union Cave activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'union_cave_radio_parts_route' }
+raise 'expected JohtoStory Moonlight zephyr retreat activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'zephyr_dream_static_retreat' }
+raise 'expected JohtoStory Gold Dust badge market activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'zephyr_badge_betting_market' }
+raise 'expected JohtoStory Nexus Order Zephyr badge activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'zephyr_badge_resonance_hidden' }
+raise 'expected JohtoStory Nexus Order still hidden after Falkner battle' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Falkner battle story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Zephyr Badge') && message['text'].include?('Union Cave') && message['text'].include?('Azalea') }
+raise 'expected JohtoStory Falkner battle result won' unless falkner_battle['result'] == 'won'
+raise 'expected JohtoStory Falkner battle badge' unless falkner_battle['badge'] == 'Zephyr Badge'
+raise 'expected JohtoStory Falkner battle next hook Union Cave' unless falkner_battle['next_hook'] == 'union_cave_road'
+raise 'expected JohtoStory Falkner battle current act' unless falkner_battle['current_act'] == 'act_4_azalea_and_slowpoke_well'
+raise 'expected JohtoStory Falkner battle no companion assist' unless falkner_battle['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected JohtoStory Falkner battle unlocks Union Cave and Azalea' unless falkner_battle['unlocks'].include?('union_cave_road') && falkner_battle['unlocks'].include?('azalea_slowpoke_well_lead')
+second_falkner_battle = NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(kanto_story_state)
+raise 'expected JohtoStory Falkner battle idempotent guard' unless second_falkner_battle['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Falkner battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'falkner_zephyr_badge_battle' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
