@@ -24,6 +24,11 @@ REQUIRED_MARKERS = (
     "gameplay_systems",
     "RuntimeState",
     "PFM::GameState",
+    "module RivalProgress",
+    "ensure_rival",
+    "record_badge",
+    "record_capture",
+    "record_region_entry",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -132,6 +137,56 @@ raise 'expected unread count after digest' unless state['worldlink_unread_count'
 
 NexusRed::WorldLink.mark_all_read(state)
 raise 'expected WorldLink unread count cleared' unless state['worldlink_unread_count'] == 0
+
+rival = NexusRed::RivalProgress.ensure_rival(state, 'blue')
+raise 'expected Blue rival progress initialized' unless rival['display_name'] == 'Blue Oak'
+raise 'expected Blue current region default' unless rival['current_region'] == 'kanto'
+raise 'expected Blue relationship defaults copied' unless rival['relationship']['rivalry'] == 90
+raise 'expected Blue empty badge list' unless rival['badges'].empty?
+raise 'expected Blue empty capture list' unless rival['captures'].empty?
+
+badge_message = NexusRed::RivalProgress.record_badge(
+  state,
+  'blue',
+  'Brock',
+  'Boulder Badge',
+  location: 'Pewter Gym',
+  area_type: 'route'
+)
+raise 'expected rival badge immediate WorldLink delivery' unless badge_message['delivery'] == 'immediate'
+raise 'expected Blue badge count updated' unless state['rival_progress']['blue']['badge_count'] == 1
+raise 'expected Blue badge recorded' unless state['rival_progress']['blue']['badges'].first['badge'] == 'Boulder Badge'
+raise 'expected Blue latest badge activity' unless state['rival_progress']['blue']['latest_activity']['category'] == 'rival_badge'
+raise 'expected WorldLink badge source Blue' unless state['worldlink_recent_messages'].last['source'] == 'blue'
+
+capture_message = NexusRed::RivalProgress.record_capture(
+  state,
+  'ava',
+  'Gastly',
+  'Mt. Moon',
+  rare: true,
+  area_type: 'cave'
+)
+raise 'expected rare rival capture paused in cave' unless capture_message['delivery'] == 'paused'
+raise 'expected Ava capture recorded' unless state['rival_progress']['ava']['captures'].first['species'] == 'Gastly'
+raise 'expected Ava rare capture category' unless state['rival_progress']['ava']['latest_activity']['category'] == 'rival_rare_capture'
+raise 'expected paused rival capture held for digest' unless state['worldlink_paused_messages'].length == 1
+
+region_message = NexusRed::RivalProgress.record_region_entry(
+  state,
+  'dax',
+  'johto',
+  hub: 'New Bark Town',
+  objective: 'tracking Rocket radio chatter',
+  area_type: 'route'
+)
+raise 'expected rival region entry immediate delivery' unless region_message['delivery'] == 'immediate'
+raise 'expected Dax current region updated' unless state['rival_progress']['dax']['current_region'] == 'johto'
+raise 'expected Dax latest region objective' unless state['rival_progress']['dax']['latest_activity']['objective'] == 'tracking Rocket radio chatter'
+
+rival_digest = NexusRed::WorldLink.release_digest(state)
+raise 'expected rival digest item released' unless rival_digest['items'].length == 1
+raise 'expected rival progress tracks three rivals' unless state['rival_progress'].keys.sort == %w[ava blue dax]
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
