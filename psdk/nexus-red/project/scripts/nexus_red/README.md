@@ -11,7 +11,7 @@ Runtime services:
 - `runtime/seed_data.rb` reads generated registries.
 - `runtime/runtime_state.rb` builds the Nexus Red save-state scaffold.
 - `runtime/world_link.rb` handles live, paused, and digest notifications.
-- `runtime/*_progress.rb` and other service files track starter selection, party/PC storage, early migration encounters, rivals, companions, factions, regions, gameplay options, field tools, Pokédex readiness, Center/Mart services, encounter-world state, and battle mechanics gating.
+- `runtime/*_progress.rb` and other service files track starter selection, party/PC storage, portable PC access, early migration encounters, rivals, companions, factions, regions, gameplay options, field tools, Pokédex readiness, Center/Mart services, encounter-world state, and battle mechanics gating.
 
 Route 1-3 migration map events should call `NexusRed::EarlyMigrationEncounters.prepare_map_event_encounter(state, route_id, time:, max_level:)`. The method returns a PSDK-friendly encounter payload, records the species as seen in the Pokédex, and skips species already caught by the player.
 
@@ -24,6 +24,8 @@ When running inside a loaded PSDK runtime, `NexusRed::WildBattleLauncher.execute
 After a wild battle returns, map scripts should call `NexusRed::WildBattleResults.record_result(state, outcome: 'caught')` or another outcome such as `fled`. Caught outcomes record the species through `PokedexAvailability.record_caught`, add it to `party_species` when there is room, otherwise add it to `pc_box_species`, and let the Route 1-3 migration adapters advance to the next uncaught species.
 
 `NexusRed::PartyStorage` owns the current six-slot party cap and PC overflow list. Starter selection and caught wild battles both route through this service. It also exposes `deposit_species`, `withdraw_species`, and `swap_species` for the future portable PC and Pokemon Center PC interfaces.
+
+`NexusRed::PortablePC` wraps `PartyStorage` for field/menu use. It starts locked, unlocks from a story source with `unlock(state, source:, access_level:)`, exposes `open` and `summary`, and forwards `deposit`, `withdraw`, and `swap` while recording the last action for later UI feedback. Kanto can use `access_level: 'lite'` after Brock/Red training, then upgrade to full access later in the journey.
 
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 

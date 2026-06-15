@@ -124,6 +124,15 @@ REQUIRED_MARKERS = (
     "party_full?",
     "party_species",
     "pc_box_species",
+    "module PortablePC",
+    "ensure_portable_pc",
+    "unlock",
+    "unlocked?",
+    "open",
+    "summary",
+    "deposit",
+    "withdraw",
+    "swap",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -163,6 +172,7 @@ REQUIRED_RUNTIME_FILES = (
     "wild_battle_launcher.rb",
     "wild_battle_results.rb",
     "party_storage.rb",
+    "portable_pc.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -764,6 +774,43 @@ blocked_withdraw_state['party_species'] = %w[Bulbasaur Charmander Squirtle Pikac
 blocked_withdraw_state['pc_box_species'] = ['Rockruff']
 blocked_withdraw = NexusRed::PartyStorage.withdraw_species(blocked_withdraw_state, 'Rockruff')
 raise 'expected full party withdraw guarded' unless blocked_withdraw['status'] == 'party_full'
+
+portable_state = NexusRed::RuntimeState.build
+portable_pc = NexusRed::PortablePC.ensure_portable_pc(portable_state)
+raise 'expected PortablePC locked by default' if portable_pc['unlocked']
+raise 'expected PortablePC unlocked? false by default' if NexusRed::PortablePC.unlocked?(portable_state)
+locked_open = NexusRed::PortablePC.open(portable_state)
+raise 'expected locked PortablePC open guarded' unless locked_open['status'] == 'locked'
+unlock_pc = NexusRed::PortablePC.unlock(
+  portable_state,
+  source: 'Brock and Red field kit',
+  access_level: 'lite',
+  area_type: 'route'
+)
+raise 'expected PortablePC unlock immediate delivery' unless unlock_pc['delivery'] == 'immediate'
+raise 'expected PortablePC unlocked after story source' unless NexusRed::PortablePC.unlocked?(portable_state)
+raise 'expected PortablePC source recorded' unless portable_state['portable_pc']['source'] == 'Brock and Red field kit'
+raise 'expected PortablePC access level recorded' unless portable_state['portable_pc']['access_level'] == 'lite'
+NexusRed::PartyStorage.add_species(portable_state, 'Bulbasaur')
+NexusRed::PartyStorage.pc_box_species(portable_state) << 'Pikachu'
+pc_summary = NexusRed::PortablePC.summary(portable_state)
+raise 'expected PortablePC summary party count' unless pc_summary['party_count'] == 1
+raise 'expected PortablePC summary PC count' unless pc_summary['pc_count'] == 1
+raise 'expected PortablePC summary party limit' unless pc_summary['party_limit'] == 6
+raise 'expected PortablePC summary party not full' if pc_summary['party_full']
+opened_pc = NexusRed::PortablePC.open(portable_state)
+raise 'expected unlocked PortablePC open status' unless opened_pc['status'] == 'open'
+raise 'expected PortablePC opened count recorded' unless portable_state['portable_pc']['opened_count'] == 1
+deposit_pc = NexusRed::PortablePC.deposit(portable_state, 'Bulbasaur')
+raise 'expected PortablePC deposit forwarded' unless deposit_pc['status'] == 'deposited'
+raise 'expected PortablePC last action deposit' unless portable_state['portable_pc']['last_action']['status'] == 'deposited'
+withdraw_pc = NexusRed::PortablePC.withdraw(portable_state, 'Bulbasaur')
+raise 'expected PortablePC withdraw forwarded' unless withdraw_pc['status'] == 'withdrawn'
+swap_pc = NexusRed::PortablePC.swap(portable_state, party_species: 'Bulbasaur', pc_species: 'Pikachu')
+raise 'expected PortablePC swap forwarded' unless swap_pc['status'] == 'swapped'
+raise 'expected PortablePC swap moved Pikachu to party' unless NexusRed::PartyStorage.party_species(portable_state).include?('Pikachu')
+locked_deposit = NexusRed::PortablePC.deposit(NexusRed::RuntimeState.build, 'Bulbasaur')
+raise 'expected locked PortablePC deposit guarded' unless locked_deposit['status'] == 'locked'
 
 migration_state = NexusRed::RuntimeState.build
 migration = NexusRed::EarlyMigrationEncounters.ensure_migration(migration_state)
