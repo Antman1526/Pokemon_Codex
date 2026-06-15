@@ -251,6 +251,14 @@ func start_new_game(name: String) -> void:
 		"underground_path_to_celadon_unlocked": false,
 		"celadon_city_teased": false,
 		"worldlink_route_8_celadon_road_batch_queued": false,
+		"celadon_underground_path_reached": false,
+		"red_celadon_underpass_guard_seen": false,
+		"bill_game_corner_signal_trace_seen": false,
+		"rocket_underpass_smuggler_seen": false,
+		"team_moonlight_dream_poster_seen": false,
+		"silph_scope_game_corner_confirmed": false,
+		"celadon_city_arrival_unlocked": false,
+		"worldlink_celadon_underground_path_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -997,6 +1005,37 @@ func queue_route_8_celadon_road_batch() -> void:
 		"wl_team_moonlight_route_8_shadow",
 		"wl_underground_path_to_celadon_unlocked",
 		"wl_celadon_city_teased",
+	])
+
+
+func enter_celadon_underground_path() -> void:
+	current_scene = "celadon_underground_path"
+	active_companion = "red"
+	set_flag("celadon_underground_path_reached", true)
+	queue_worldlink_id("wl_celadon_underground_path_reached")
+
+
+func record_celadon_underground_path_scene() -> void:
+	active_companion = "red"
+	set_flag("red_celadon_underpass_guard_seen", true)
+	set_flag("bill_game_corner_signal_trace_seen", true)
+	set_flag("rocket_underpass_smuggler_seen", true)
+	set_flag("team_moonlight_dream_poster_seen", true)
+	set_flag("silph_scope_game_corner_confirmed", true)
+	set_flag("celadon_city_arrival_unlocked", true)
+	queue_celadon_underground_path_batch()
+
+
+func queue_celadon_underground_path_batch() -> void:
+	set_flag("worldlink_celadon_underground_path_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_celadon_underground_path_reached",
+		"wl_red_celadon_underpass_guard",
+		"wl_bill_game_corner_signal_trace",
+		"wl_rocket_underpass_smuggler",
+		"wl_team_moonlight_dream_poster",
+		"wl_silph_scope_game_corner_confirmed",
+		"wl_celadon_city_arrival_unlocked",
 	])
 
 

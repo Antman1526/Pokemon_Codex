@@ -977,6 +977,28 @@ python3 tools/validate_native_route8_celadon_road.py
 godot --headless --path native/nexus-red --script tests/route8_celadon_road_test.gd
 ```
 
+### Task 7.51: Add Celadon Underground Path and arrival setup
+
+Acceptance:
+
+- Route 8 keeps the Celadon Underground Path locked until the Route 8 scene unlocks the Underground Path to Celadon.
+- After Route 8 scouting, Antman can enter a playable Celadon Underground Path scene.
+- The scene keeps travel physical from Lavender to Celadon rather than using WorldLink as a shortcut.
+- Red remains the active full-game companion and guards the underpass because Rocket expects the Silph Scope trail to be followed.
+- Bill traces the strongest Silph Scope/Game Corner signal from the underpass into Celadon.
+- Rocket smugglers use the underpass to connect Lavender pressure points with Celadon's city front.
+- Team Moonlight plants a dream poster in the underpass, blending Lavender's haunting pressure into Celadon's Rocket arc.
+- Celadon City arrival is unlocked as the next major Kanto hub without implementing Celadon City yet.
+- Save state and WorldLink record Celadon Underground Path reached, Red's underpass guard beat, Bill's Game Corner signal trace, Rocket underpass smuggler, Team Moonlight dream poster, Silph Scope/Game Corner confirmation, and Celadon City arrival unlock.
+- WorldLink checklist adds Enter Celadon Underground Path, Trace Game Corner signal, Spot Moonlight dream poster, and Unlock Celadon City arrival milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_celadon_underground_path.py
+godot --headless --path native/nexus-red --script tests/celadon_underground_path_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

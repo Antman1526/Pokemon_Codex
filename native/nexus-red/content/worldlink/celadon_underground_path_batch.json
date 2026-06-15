@@ -1,0 +1,40 @@
+{
+  "id": "celadon_underground_path_batch",
+  "feed": [
+    {
+      "id": "wl_celadon_underground_path_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red entered the Celadon Underground Path, keeping the route from Lavender to Celadon physical."
+    },
+    {
+      "id": "wl_red_celadon_underpass_guard",
+      "speaker": "Red",
+      "text": "Red guarded the underpass stairs and warned that Rocket wants the Silph Scope trail followed."
+    },
+    {
+      "id": "wl_bill_game_corner_signal_trace",
+      "speaker": "Bill",
+      "text": "Bill traced the strongest Silph Scope signal to Celadon's Game Corner district."
+    },
+    {
+      "id": "wl_rocket_underpass_smuggler",
+      "speaker": "WorldLink",
+      "text": "Rocket smugglers are using the Underground Path to move equipment between Lavender pressure points and Celadon."
+    },
+    {
+      "id": "wl_team_moonlight_dream_poster",
+      "speaker": "WorldLink",
+      "text": "A Team Moonlight dream poster in the underpass links Lavender's haunting pressure to Celadon's city lights."
+    },
+    {
+      "id": "wl_silph_scope_game_corner_confirmed",
+      "speaker": "Bill",
+      "text": "The Silph Scope and Game Corner are now confirmed as the same story thread."
+    },
+    {
+      "id": "wl_celadon_city_arrival_unlocked",
+      "speaker": "WorldLink",
+      "text": "Celadon City arrival is unlocked as the next major Kanto hub."
+    }
+  ]
+}

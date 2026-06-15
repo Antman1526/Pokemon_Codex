@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_pokemon_tower_first_floor
+signal go_to_celadon_underground_path
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_route_8_celadon_road_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_celadon_underground_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_pokemon_tower_first_floor()
 
@@ -135,5 +138,13 @@ func return_to_pokemon_tower_first_floor() -> void:
 	emit_signal("go_to_pokemon_tower_first_floor")
 
 
+func trigger_celadon_underground_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("underground_path_to_celadon_unlocked", false)):
+		dialogue_label.text = "Red: The Underground Path stays closed until we trace the Silph Scope lead and confirm why Rocket's Game Corner front matters."
+		return
+	dialogue_label.text = "Red: The Underground Path to Celadon is open. Keep Bill's Silph Scope trace in mind and watch for Rocket runners."
+	emit_signal("go_to_celadon_underground_path")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Route 8 is the physical road from Lavender toward Celadon. Press Z/Enter to trace Bill's Silph Scope lead, Rocket's Game Corner front, Team Moonlight's shadow, and the Underground Path, or X/Esc to return to Pokemon Tower."
+	dialogue_label.text = "Red: Route 8 is the physical road from Lavender toward Celadon. Press Z/Enter to trace Bill's Silph Scope lead, Rocket's Game Corner front, Team Moonlight's shadow, and the Underground Path, Right to enter the Underground Path, or X/Esc to return to Pokemon Tower."

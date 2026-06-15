@@ -93,6 +93,7 @@ python3 tools/validate_native_rock_tunnel_interior.py
 python3 tools/validate_native_lavender_outskirts.py
 python3 tools/validate_native_pokemon_tower_first_floor.py
 python3 tools/validate_native_route8_celadon_road.py
+python3 tools/validate_native_celadon_underground_path.py
 godot --headless --path native/nexus-red --check-only --quit
 godot --headless --path native/nexus-red --script tests/smoke_test.gd
 godot --headless --path native/nexus-red --script tests/starter_slice_test.gd
@@ -143,6 +144,7 @@ godot --headless --path native/nexus-red --script tests/rock_tunnel_interior_tes
 godot --headless --path native/nexus-red --script tests/lavender_outskirts_test.gd
 godot --headless --path native/nexus-red --script tests/pokemon_tower_first_floor_test.gd
 godot --headless --path native/nexus-red --script tests/route8_celadon_road_test.gd
+godot --headless --path native/nexus-red --script tests/celadon_underground_path_test.gd
 ```
 
 ## Legal Rule
