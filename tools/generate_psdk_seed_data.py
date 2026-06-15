@@ -101,6 +101,78 @@ def build_encounter_seed(entry: dict) -> dict:
     }
 
 
+def build_region_seed(entry: dict) -> dict:
+    source = read_json(ROOT / entry["source_path"])
+    regions = sorted(source["regions"], key=lambda item: item["order"])
+    return {
+        "schema_version": 1,
+        "seed_type": "psdk_world_region_progression_spine",
+        "source_import_id": entry["id"],
+        "source_path": entry["source_path"],
+        "current_region": source["current_region"],
+        "final_region": source["final_region"],
+        "preserve_rules": entry["preserve_rules"],
+        "region_unlocks": [
+            {
+                "order": region["order"],
+                "region_id": region["id"],
+                "display_name": region["display_name"],
+                "theme": region["theme"],
+                "unlock_mode": "main_story_progression",
+                "worldlink_travel_mode": "story_gated_single_region",
+            }
+            for region in regions
+        ],
+    }
+
+
+def build_faction_seed(entry: dict) -> dict:
+    source = read_json(ROOT / entry["source_path"])
+    return {
+        "schema_version": 1,
+        "seed_type": "psdk_custom_faction_war_registry",
+        "source_import_id": entry["id"],
+        "source_path": entry["source_path"],
+        "primary_antagonist": source["primary_antagonist"],
+        "hidden_meta_villain": source["hidden_meta_villain"],
+        "dropped_active_canonical_factions": entry["dropped_active_canonical_factions"],
+        "preserve_rules": entry["preserve_rules"],
+        "factions": [
+            {
+                "faction_id": faction["id"],
+                "display_name": faction["display_name"],
+                "leader": faction["leader"],
+                "role": faction["role"],
+                "active_enemy_faction": True,
+            }
+            for faction in source["factions"]
+        ],
+    }
+
+
+def build_companion_seed(entry: dict) -> dict:
+    source = read_json(ROOT / entry["source_path"])
+    return {
+        "schema_version": 1,
+        "seed_type": "psdk_core_companion_registry",
+        "source_import_id": entry["id"],
+        "source_path": entry["source_path"],
+        "primary_companion": source["primary_companion"],
+        "preserve_rules": entry["preserve_rules"],
+        "companions": [
+            {
+                "companion_id": companion["id"],
+                "display_name": companion["display_name"],
+                "role": companion["role"],
+                "active_from": companion["active_from"],
+                "tag_battle_eligible": companion["id"] != "bill",
+                "gym_battle_partner": False,
+            }
+            for companion in source["companions"]
+        ],
+    }
+
+
 def build_seed_data(manifest: dict) -> dict[str, dict]:
     imports = manifest_imports(manifest)
     return {
@@ -109,6 +181,15 @@ def build_seed_data(manifest: dict) -> dict[str, dict]:
         ),
         imports["routes_1_to_3_migration_encounters"]["psdk_target"]: build_encounter_seed(
             imports["routes_1_to_3_migration_encounters"]
+        ),
+        imports["world_region_progression_spine"]["psdk_target"]: build_region_seed(
+            imports["world_region_progression_spine"]
+        ),
+        imports["custom_faction_war_registry"]["psdk_target"]: build_faction_seed(
+            imports["custom_faction_war_registry"]
+        ),
+        imports["core_companion_registry"]["psdk_target"]: build_companion_seed(
+            imports["core_companion_registry"]
         ),
     }
 

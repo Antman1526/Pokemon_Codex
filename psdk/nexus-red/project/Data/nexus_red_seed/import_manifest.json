@@ -69,6 +69,80 @@
           "story_unlock": "boulder_badge_obtained"
         }
       }
+    },
+    {
+      "id": "world_region_progression_spine",
+      "source_path": "native/nexus-red/content/regions/regions.json",
+      "psdk_target": "project/Data/nexus_red_seed/generated/world_region_progression_spine.json",
+      "psdk_system": "psdk_world_state_plus_map_unlocks",
+      "required_region_count": 10,
+      "required_order": [
+        "kanto",
+        "johto",
+        "hoenn",
+        "sinnoh_hisui",
+        "unova",
+        "kalos",
+        "alola",
+        "galar",
+        "paldea",
+        "nexus_island"
+      ],
+      "preserve_rules": [
+        "one_region_unlocked_at_a_time",
+        "worldlink_does_not_quick_jump_regions",
+        "nexus_island_is_full_final_region",
+        "all_regions_feed_giovanni_and_nexus_order_plot"
+      ]
+    },
+    {
+      "id": "custom_faction_war_registry",
+      "source_path": "native/nexus-red/content/factions/factions.json",
+      "psdk_target": "project/Data/nexus_red_seed/generated/custom_faction_war_registry.json",
+      "psdk_system": "psdk_story_state_plus_trainer_faction_tags",
+      "primary_antagonist": "team_rocket",
+      "hidden_meta_villain": "nexus_order",
+      "required_factions": [
+        "team_rocket",
+        "team_magma",
+        "team_aqua",
+        "team_phoenix",
+        "team_moonlight",
+        "team_gold_dust",
+        "team_gas",
+        "team_clover",
+        "nexus_order"
+      ],
+      "dropped_active_canonical_factions": [
+        "team_galactic",
+        "team_plasma",
+        "team_flare",
+        "team_skull",
+        "macro_cosmos",
+        "team_star"
+      ],
+      "preserve_rules": [
+        "giovanni_is_final_human_antagonist",
+        "rocket_appears_in_every_region",
+        "custom_faction_wars_replace_later_canonical_villain_teams",
+        "nexus_order_hidden_until_late_game"
+      ]
+    },
+    {
+      "id": "core_companion_registry",
+      "source_path": "native/nexus-red/content/companions/companions.json",
+      "psdk_target": "project/Data/nexus_red_seed/generated/core_companion_registry.json",
+      "psdk_system": "psdk_companion_state_plus_tag_battle_hooks",
+      "primary_companion": "red",
+      "required_companions": ["red", "ash", "misty", "brock", "blue", "may", "bill"],
+      "preserve_rules": [
+        "red_is_primary_full_game_companion",
+        "ash_misty_brock_are_long_term_recurring_companions",
+        "blue_is_rival_to_anti_hero_ally",
+        "may_joins_in_hoenn",
+        "bill_supports_worldlink_and_network_mystery",
+        "companions_help_in_story_and_tag_battles_but_not_gym_battles"
+      ]
     }
   ],
   "first_psdk_slice_flags": [

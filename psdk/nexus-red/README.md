@@ -42,6 +42,7 @@ psdk/nexus-red/
 - Kanto migration map: `psdk/nexus-red/docs/content-migration/KANTO_VERTICAL_SLICE_MAPPING.md`
 - Starter and early-route import contract: `psdk/nexus-red/docs/studio-data-notes/STARTER_AND_EARLY_ROUTE_IMPORT_CONTRACT.md`
 - PSDK import seed manifest: `psdk/nexus-red/project/Data/nexus_red_seed/import_manifest.json`
+- Generated seed data: `psdk/nexus-red/project/Data/nexus_red_seed/generated/`
 - Ignore guardrails: `psdk/nexus-red/.gitignore`
 
 ## Seed Data Commands

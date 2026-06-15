@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "seed_type": "psdk_world_region_progression_spine",
+  "source_import_id": "world_region_progression_spine",
+  "source_path": "native/nexus-red/content/regions/regions.json",
+  "current_region": "kanto",
+  "final_region": "nexus_island",
+  "preserve_rules": [
+    "one_region_unlocked_at_a_time",
+    "worldlink_does_not_quick_jump_regions",
+    "nexus_island_is_full_final_region",
+    "all_regions_feed_giovanni_and_nexus_order_plot"
+  ],
+  "region_unlocks": [
+    {
+      "order": 1,
+      "region_id": "kanto",
+      "display_name": "Kanto",
+      "theme": "Red-style origin arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 2,
+      "region_id": "johto",
+      "display_name": "Johto",
+      "theme": "Tradition and ruins arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 3,
+      "region_id": "hoenn",
+      "display_name": "Hoenn",
+      "theme": "Land and sea war arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 4,
+      "region_id": "sinnoh_hisui",
+      "display_name": "Sinnoh/Hisui",
+      "theme": "Myth and time arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 5,
+      "region_id": "unova",
+      "display_name": "Unova",
+      "theme": "Ideology and modern cities arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 6,
+      "region_id": "kalos",
+      "display_name": "Kalos",
+      "theme": "Beauty, war, and ancient weapon arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 7,
+      "region_id": "alola",
+      "display_name": "Alola",
+      "theme": "Islands and cosmic arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 8,
+      "region_id": "galar",
+      "display_name": "Galar",
+      "theme": "Stadium and fame arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 9,
+      "region_id": "paldea",
+      "display_name": "Paldea",
+      "theme": "Academy and open exploration arc",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    },
+    {
+      "order": 10,
+      "region_id": "nexus_island",
+      "display_name": "Nexus Island",
+      "theme": "Final full-region faction war",
+      "unlock_mode": "main_story_progression",
+      "worldlink_travel_mode": "story_gated_single_region"
+    }
+  ]
+}

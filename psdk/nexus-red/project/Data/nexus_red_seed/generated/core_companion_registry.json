@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "seed_type": "psdk_core_companion_registry",
+  "source_import_id": "core_companion_registry",
+  "source_path": "native/nexus-red/content/companions/companions.json",
+  "primary_companion": "red",
+  "preserve_rules": [
+    "red_is_primary_full_game_companion",
+    "ash_misty_brock_are_long_term_recurring_companions",
+    "blue_is_rival_to_anti_hero_ally",
+    "may_joins_in_hoenn",
+    "bill_supports_worldlink_and_network_mystery",
+    "companions_help_in_story_and_tag_battles_but_not_gym_battles"
+  ],
+  "companions": [
+    {
+      "companion_id": "red",
+      "display_name": "Red",
+      "role": "primary full-game companion",
+      "active_from": "kanto",
+      "tag_battle_eligible": true,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "ash",
+      "display_name": "Ash",
+      "role": "long-term heroic battle companion",
+      "active_from": "kanto",
+      "tag_battle_eligible": true,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "misty",
+      "display_name": "Misty",
+      "role": "long-term water tactical companion",
+      "active_from": "kanto",
+      "tag_battle_eligible": true,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "brock",
+      "display_name": "Brock",
+      "role": "long-term survival mentor companion",
+      "active_from": "kanto",
+      "tag_battle_eligible": true,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "blue",
+      "display_name": "Blue",
+      "role": "rival to anti-hero ally",
+      "active_from": "kanto",
+      "tag_battle_eligible": true,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "may",
+      "display_name": "May",
+      "role": "Hoenn ecology and field research companion",
+      "active_from": "hoenn",
+      "tag_battle_eligible": true,
+      "gym_battle_partner": false
+    },
+    {
+      "companion_id": "bill",
+      "display_name": "Bill",
+      "role": "technical network ally",
+      "active_from": "kanto",
+      "tag_battle_eligible": false,
+      "gym_battle_partner": false
+    }
+  ]
+}

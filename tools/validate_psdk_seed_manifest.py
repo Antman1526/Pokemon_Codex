@@ -30,8 +30,43 @@ REQUIRED_SPECIES = OFFICIAL_STARTERS + SPECIAL_STARTERS
 REQUIRED_IMPORT_IDS = {
     "oak_lab_39_first_partner_selector",
     "routes_1_to_3_migration_encounters",
+    "world_region_progression_spine",
+    "custom_faction_war_registry",
+    "core_companion_registry",
 }
 REQUIRED_ROUTES = {"route_1", "route_2", "route_3"}
+REQUIRED_REGIONS = [
+    "kanto",
+    "johto",
+    "hoenn",
+    "sinnoh_hisui",
+    "unova",
+    "kalos",
+    "alola",
+    "galar",
+    "paldea",
+    "nexus_island",
+]
+REQUIRED_FACTIONS = [
+    "team_rocket",
+    "team_magma",
+    "team_aqua",
+    "team_phoenix",
+    "team_moonlight",
+    "team_gold_dust",
+    "team_gas",
+    "team_clover",
+    "nexus_order",
+]
+DROPPED_ACTIVE_CANONICAL_FACTIONS = {
+    "team_galactic",
+    "team_plasma",
+    "team_flare",
+    "team_skull",
+    "macro_cosmos",
+    "team_star",
+}
+REQUIRED_COMPANIONS = ["red", "ash", "misty", "brock", "blue", "may", "bill"]
 
 
 def read_json(path: Path):
@@ -198,6 +233,118 @@ def validate_encounter_import(entry: dict) -> list[str]:
     return errors
 
 
+def validate_region_import(entry: dict) -> list[str]:
+    errors: list[str] = []
+    data = read_json(source_path(entry))
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
+    regions = sorted(data.get("regions", []), key=lambda item: item.get("order", 0))
+    region_ids = [region.get("id") for region in regions]
+
+    if entry.get("required_region_count") != 10:
+        errors.append("region import required_region_count must be 10")
+    if entry.get("required_order") != REQUIRED_REGIONS:
+        errors.append("region import required_order must preserve the 9 regions plus Nexus Island")
+    if region_ids != REQUIRED_REGIONS:
+        errors.append("region source order must be Kanto through Nexus Island")
+    if data.get("current_region") != "kanto":
+        errors.append("region source current_region must start at kanto")
+    if data.get("final_region") != "nexus_island":
+        errors.append("region source final_region must be nexus_island")
+
+    rules = set(entry.get("preserve_rules", []))
+    for rule in ("one_region_unlocked_at_a_time", "nexus_island_is_full_final_region"):
+        if rule not in rules:
+            errors.append(f"region import preserve_rules missing {rule}")
+
+    generated_ids = [region.get("region_id") for region in generated.get("region_unlocks", [])]
+    if generated.get("seed_type") != "psdk_world_region_progression_spine":
+        errors.append("generated region seed must use seed_type psdk_world_region_progression_spine")
+    if generated_ids != REQUIRED_REGIONS:
+        errors.append("generated region seed must preserve Kanto through Nexus Island order")
+    for region in generated.get("region_unlocks", []):
+        if region.get("worldlink_travel_mode") != "story_gated_single_region":
+            errors.append(f"{region.get('region_id')} must use story_gated_single_region travel mode")
+
+    return errors
+
+
+def validate_faction_import(entry: dict) -> list[str]:
+    errors: list[str] = []
+    data = read_json(source_path(entry))
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
+    faction_ids = [faction.get("id") for faction in data.get("factions", [])]
+
+    if entry.get("primary_antagonist") != "team_rocket":
+        errors.append("faction import primary_antagonist must be team_rocket")
+    if entry.get("hidden_meta_villain") != "nexus_order":
+        errors.append("faction import hidden_meta_villain must be nexus_order")
+    if entry.get("required_factions") != REQUIRED_FACTIONS:
+        errors.append("faction import required_factions must match the custom faction war")
+    if set(entry.get("dropped_active_canonical_factions", [])) != DROPPED_ACTIVE_CANONICAL_FACTIONS:
+        errors.append("faction import must list all dropped active canonical factions")
+    if faction_ids != REQUIRED_FACTIONS:
+        errors.append("faction source must contain only the custom faction war registry in order")
+    if data.get("primary_antagonist") != "team_rocket":
+        errors.append("faction source primary_antagonist must be team_rocket")
+    if data.get("hidden_meta_villain") != "nexus_order":
+        errors.append("faction source hidden_meta_villain must be nexus_order")
+    if DROPPED_ACTIVE_CANONICAL_FACTIONS.intersection(faction_ids):
+        errors.append("canonical later villain teams must not be active factions")
+
+    rules = set(entry.get("preserve_rules", []))
+    for rule in ("giovanni_is_final_human_antagonist", "custom_faction_wars_replace_later_canonical_villain_teams"):
+        if rule not in rules:
+            errors.append(f"faction import preserve_rules missing {rule}")
+
+    generated_ids = [faction.get("faction_id") for faction in generated.get("factions", [])]
+    if generated.get("seed_type") != "psdk_custom_faction_war_registry":
+        errors.append("generated faction seed must use seed_type psdk_custom_faction_war_registry")
+    if generated_ids != REQUIRED_FACTIONS:
+        errors.append("generated faction seed must preserve the custom faction list")
+    if generated.get("primary_antagonist") != "team_rocket":
+        errors.append("generated faction seed primary_antagonist must be team_rocket")
+    if generated.get("hidden_meta_villain") != "nexus_order":
+        errors.append("generated faction seed hidden_meta_villain must be nexus_order")
+    if set(generated.get("dropped_active_canonical_factions", [])) != DROPPED_ACTIVE_CANONICAL_FACTIONS:
+        errors.append("generated faction seed must preserve dropped active canonical factions")
+
+    return errors
+
+
+def validate_companion_import(entry: dict) -> list[str]:
+    errors: list[str] = []
+    data = read_json(source_path(entry))
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
+    companion_ids = [companion.get("id") for companion in data.get("companions", [])]
+
+    if entry.get("primary_companion") != "red":
+        errors.append("companion import primary_companion must be red")
+    if entry.get("required_companions") != REQUIRED_COMPANIONS:
+        errors.append("companion import required_companions must preserve the core companion cast")
+    if data.get("primary_companion") != "red":
+        errors.append("companion source primary_companion must be red")
+    if companion_ids != REQUIRED_COMPANIONS:
+        errors.append("companion source must preserve Red, Ash, Misty, Brock, Blue, May, Bill")
+
+    rules = set(entry.get("preserve_rules", []))
+    for rule in ("red_is_primary_full_game_companion", "companions_help_in_story_and_tag_battles_but_not_gym_battles"):
+        if rule not in rules:
+            errors.append(f"companion import preserve_rules missing {rule}")
+
+    generated_ids = [companion.get("companion_id") for companion in generated.get("companions", [])]
+    if generated.get("seed_type") != "psdk_core_companion_registry":
+        errors.append("generated companion seed must use seed_type psdk_core_companion_registry")
+    if generated.get("primary_companion") != "red":
+        errors.append("generated companion seed primary_companion must be red")
+    if generated_ids != REQUIRED_COMPANIONS:
+        errors.append("generated companion seed must preserve the core companion cast")
+    for companion in generated.get("companions", []):
+        if companion.get("gym_battle_partner") is not False:
+            errors.append(f"{companion.get('companion_id')} must not be a gym battle partner")
+
+    return errors
+
+
 def validate() -> list[str]:
     if not MANIFEST.exists():
         return [f"missing PSDK seed manifest: {rel(MANIFEST)}"]
@@ -213,6 +360,15 @@ def validate() -> list[str]:
     encounter_entry = imports.get("routes_1_to_3_migration_encounters")
     if encounter_entry:
         errors.extend(validate_encounter_import(encounter_entry))
+    region_entry = imports.get("world_region_progression_spine")
+    if region_entry:
+        errors.extend(validate_region_import(region_entry))
+    faction_entry = imports.get("custom_faction_war_registry")
+    if faction_entry:
+        errors.extend(validate_faction_import(faction_entry))
+    companion_entry = imports.get("core_companion_registry")
+    if companion_entry:
+        errors.extend(validate_companion_import(companion_entry))
 
     return errors
 
