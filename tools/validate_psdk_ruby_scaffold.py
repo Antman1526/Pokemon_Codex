@@ -286,6 +286,8 @@ REQUIRED_MARKERS = (
     "bugsy_hive_badge_prep_cleared?",
     "complete_bugsy_hive_badge_battle",
     "bugsy_hive_badge_battle_cleared?",
+    "complete_ilex_forest_path",
+    "ilex_forest_path_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3279,6 +3281,61 @@ raise 'expected JohtoStory Bugsy battle unlocks Ilex and rematch' unless bugsy_b
 second_bugsy_battle = NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(kanto_story_state)
 raise 'expected JohtoStory Bugsy battle idempotent guard' unless second_bugsy_battle['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Bugsy battle history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'bugsy_hive_badge_battle' } == 1
+pre_ilex_path = NexusRed::JohtoStory.complete_ilex_forest_path(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Ilex path gated before Johto unlock' unless pre_ilex_path['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_bugsy_battle = NexusRed::RuntimeState.build
+johto_before_bugsy_battle['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_union_cave_road(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_bugsy_battle)
+NexusRed::JohtoStory.complete_bugsy_hive_badge_prep(johto_before_bugsy_battle)
+raise 'expected JohtoStory Ilex path gated before Bugsy battle' unless NexusRed::JohtoStory.complete_ilex_forest_path(johto_before_bugsy_battle)['status'] == 'blocked_missing_bugsy_hive_badge_battle'
+ilex_path = NexusRed::JohtoStory.complete_ilex_forest_path(
+  kanto_story_state,
+  location: 'Ilex Forest',
+  area_type: 'forest'
+)
+raise 'expected JohtoStory Ilex path clear status' unless ilex_path['status'] == 'cleared'
+raise 'expected JohtoStory Ilex path event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('ilex_forest_path')
+raise 'expected JohtoStory Ilex helper true' unless NexusRed::JohtoStory.ilex_forest_path_cleared?(kanto_story_state)
+raise 'expected JohtoStory Farfetchd field tool lead event' unless kanto_story_state['johto_story']['cleared_events'].include?('farfetchd_field_tool_lead')
+raise 'expected JohtoStory Goldenrod road unlocked event' unless kanto_story_state['johto_story']['cleared_events'].include?('goldenrod_road_unlocked')
+raise 'expected JohtoStory Ilex path flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ILEX_FOREST_PATH')
+raise 'expected JohtoStory Red Ilex guide flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_ILEX_FOREST_GUIDE')
+raise 'expected JohtoStory Brock Ilex field care flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_ILEX_FOREST_FIELD_CARE')
+raise 'expected JohtoStory Bill Ilex relay trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ILEX_RELAY_TRACE')
+raise 'expected JohtoStory Farfetchd lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_FARFETCHD_FIELD_TOOL_LEAD')
+raise 'expected JohtoStory Trail Cutter Ilex lead flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TRAIL_CUTTER_ILEX_LEAD')
+raise 'expected JohtoStory Silver Ilex pressure flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILVER_ILEX_SHORTCUT_PRESSURE')
+raise 'expected JohtoStory Goldenrod road flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLDENROD_ROAD_UNLOCKED')
+raise 'expected JohtoStory current act Goldenrod road' unless kanto_story_state['johto_story']['current_act'] == 'act_8_goldenrod_road_and_radio_shadow'
+raise 'expected JohtoStory Red Ilex scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('ilex_forest_guide')
+raise 'expected JohtoStory Brock Ilex scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('ilex_field_care')
+raise 'expected JohtoStory Bill Ilex scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('ilex_relay_trace')
+raise 'expected JohtoStory Silver Ilex Goldenrod activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Ilex') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Goldenrod')
+raise 'expected JohtoStory Silver region Johto' unless kanto_story_state['rival_progress']['silver']['current_region'] == 'johto'
+raise 'expected JohtoStory Rocket Ilex retreat cache activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ilex_retreat_cache' && activity['location'] == 'Ilex Forest Cut-Through' }
+raise 'expected JohtoStory Gold Dust charcoal relic activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'charcoal_relic_bid' && activity['location'] == 'Ilex Charcoal Kiln' }
+raise 'expected JohtoStory Moonlight Ilex residue activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ilex_dream_spore_residue' }
+raise 'expected JohtoStory Nexus Order Ilex shrine pattern activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'ilex_shrine_pattern_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust Ilex conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Ilex Forest' }
+raise 'expected JohtoStory Nexus Order still hidden after Ilex' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Ilex story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Ilex Forest') && message['text'].include?('Farfetchd') && message['text'].include?('Goldenrod') }
+raise 'expected JohtoStory Ilex route chain' unless ilex_path['route_chain'] == ['Azalea Town', 'Ilex Forest', 'Route 34', 'Goldenrod City']
+raise 'expected JohtoStory Ilex next hook Goldenrod' unless ilex_path['next_hook'] == 'goldenrod_road'
+raise 'expected JohtoStory Ilex field tool lead' unless ilex_path['field_tool_lead'] == 'trail_cutter_farfetchd_route'
+raise 'expected JohtoStory Ilex local event' unless ilex_path['local_event'] == 'farfetchd_chase'
+raise 'expected JohtoStory Ilex hidden meta signal' unless ilex_path['hidden_meta_signal'] == 'nexus_order_ilex_shrine_pattern_unrevealed'
+raise 'expected JohtoStory Ilex unlocks Goldenrod and Route 34' unless ilex_path['unlocks'].include?('goldenrod_road') && ilex_path['unlocks'].include?('route_34_daycare_lead') && ilex_path['unlocks'].include?('trail_cutter_farfetchd_lead')
+raise 'expected JohtoStory Ilex companions' unless %w[red brock bill].all? { |companion| ilex_path['companions'].include?(companion) }
+raise 'expected JohtoStory Ilex factions' unless %w[team_rocket team_gold_dust team_moonlight nexus_order].all? { |faction| ilex_path['factions'].include?(faction) }
+second_ilex_path = NexusRed::JohtoStory.complete_ilex_forest_path(kanto_story_state)
+raise 'expected JohtoStory Ilex path idempotent guard' unless second_ilex_path['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Ilex path history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'ilex_forest_path' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

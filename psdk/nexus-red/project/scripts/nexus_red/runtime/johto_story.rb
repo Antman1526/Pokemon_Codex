@@ -98,6 +98,18 @@ module NexusRed
     GOLD_DUST_ILEX_RELIC_BID_EVENT_ID = 'gold_dust_ilex_charcoal_relic_bid'
     NEXUS_ORDER_HIVE_BADGE_PATTERN_EVENT_ID = 'nexus_order_hive_badge_pattern_hidden'
     ILEX_FOREST_PATH_UNLOCKED_EVENT_ID = 'ilex_forest_path_unlocked'
+    ILEX_FOREST_PATH_EVENT_ID = 'ilex_forest_path'
+    RED_ILEX_FOREST_GUIDE_EVENT_ID = 'red_ilex_forest_guide'
+    BROCK_ILEX_FOREST_FIELD_CARE_EVENT_ID = 'brock_ilex_forest_field_care'
+    BILL_ILEX_RELAY_TRACE_EVENT_ID = 'bill_ilex_relay_trace'
+    FARFETCHD_FIELD_TOOL_LEAD_EVENT_ID = 'farfetchd_field_tool_lead'
+    TRAIL_CUTTER_ILEX_LEAD_EVENT_ID = 'trail_cutter_ilex_lead'
+    SILVER_ILEX_SHORTCUT_PRESSURE_EVENT_ID = 'silver_ilex_shortcut_pressure'
+    ROCKET_ILEX_RETREAT_CACHE_EVENT_ID = 'rocket_ilex_retreat_cache'
+    GOLD_DUST_CHARCOAL_RELIC_EVENT_ID = 'gold_dust_charcoal_relic_bid'
+    MOONLIGHT_ILEX_RESIDUE_EVENT_ID = 'moonlight_ilex_residue'
+    NEXUS_ORDER_ILEX_SHRINE_PATTERN_EVENT_ID = 'nexus_order_ilex_shrine_pattern_hidden'
+    GOLDENROD_ROAD_UNLOCKED_EVENT_ID = 'goldenrod_road_unlocked'
 
     module_function
 
@@ -1603,6 +1615,172 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_hive_badge_pattern_unrevealed',
         'unlocks' => %w[ilex_forest_path bugsy_rematch_board_tier_1 cut_field_tool_lead],
         'next_hook' => 'ilex_forest_path'
+      }
+    end
+
+    def complete_ilex_forest_path(state, location: 'Ilex Forest', area_type: 'forest')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => ILEX_FOREST_PATH_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_bugsy_hive_badge_battle', 'event_id' => ILEX_FOREST_PATH_EVENT_ID } unless bugsy_hive_badge_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ILEX_FOREST_PATH_EVENT_ID } if ilex_forest_path_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ILEX_FOREST_PATH')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ILEX_FOREST_GUIDE')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_ILEX_FOREST_FIELD_CARE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ILEX_RELAY_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_FARFETCHD_FIELD_TOOL_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_TRAIL_CUTTER_ILEX_LEAD')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_ILEX_SHORTCUT_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ILEX_RETREAT_CACHE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_CHARCOAL_RELIC_BID')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_ILEX_RESIDUE')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_ILEX_SHRINE_PATTERN')
+      add_story_flag(state, 'FLAG_NEXUS_GOLDENROD_ROAD_UNLOCKED')
+
+      [
+        ILEX_FOREST_PATH_EVENT_ID,
+        RED_ILEX_FOREST_GUIDE_EVENT_ID,
+        BROCK_ILEX_FOREST_FIELD_CARE_EVENT_ID,
+        BILL_ILEX_RELAY_TRACE_EVENT_ID,
+        FARFETCHD_FIELD_TOOL_LEAD_EVENT_ID,
+        TRAIL_CUTTER_ILEX_LEAD_EVENT_ID,
+        SILVER_ILEX_SHORTCUT_PRESSURE_EVENT_ID,
+        ROCKET_ILEX_RETREAT_CACHE_EVENT_ID,
+        GOLD_DUST_CHARCOAL_RELIC_EVENT_ID,
+        MOONLIGHT_ILEX_RESIDUE_EVENT_ID,
+        NEXUS_ORDER_ILEX_SHRINE_PATTERN_EVENT_ID,
+        GOLDENROD_ROAD_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'ilex_forest_guide',
+        location: location,
+        summary: 'Red walks the Ilex Forest trail with Antman, teaching him to slow down, listen for Farfetchd wingbeats, and read the old shrine path before chasing Silver.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'ilex_field_care',
+        location: location,
+        summary: 'Brock checks the party after the forest maze, explains why charcoal kilns matter to Johto families, and points out where Rocket crates scraped the moss.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'ilex_relay_trace',
+        location: location,
+        summary: 'Bill traces the Hive Badge signal through the Ilex shrine roots and warns that the clean relay line continues toward Route 34 and Goldenrod.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        location,
+        'Silver forced a shortcut through Ilex Forest and was last seen sprinting toward Goldenrod, angry that Antman is still solving the forest instead of rushing it.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Ilex Forest Cut-Through',
+        'ilex_retreat_cache',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Ilex Charcoal Kiln',
+        'charcoal_relic_bid',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'ilex_dream_spore_residue',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Ilex Forest Shrine',
+        'ilex_shrine_pattern_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        'Ilex Forest',
+        'Rocket retreat crates and Gold Dust charcoal relic bids collide under the forest canopy.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_8_goldenrod_road_and_radio_shadow'
+      event = ilex_forest_path_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Ilex Forest opens the long road from Azalea to Goldenrod: Red guides Antman through the shrine path, a Farfetchd chase points to the Trail Cutter lead, and Silver is already pressing Route 34.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def ilex_forest_path_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == ILEX_FOREST_PATH_EVENT_ID }
+    end
+
+    def ilex_forest_path_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ILEX_FOREST_PATH_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_8_goldenrod_road_and_radio_shadow',
+        'route_chain' => ['Azalea Town', 'Ilex Forest', 'Route 34', 'Goldenrod City'],
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          RED_ILEX_FOREST_GUIDE_EVENT_ID,
+          BROCK_ILEX_FOREST_FIELD_CARE_EVENT_ID,
+          BILL_ILEX_RELAY_TRACE_EVENT_ID,
+          FARFETCHD_FIELD_TOOL_LEAD_EVENT_ID,
+          TRAIL_CUTTER_ILEX_LEAD_EVENT_ID,
+          SILVER_ILEX_SHORTCUT_PRESSURE_EVENT_ID,
+          ROCKET_ILEX_RETREAT_CACHE_EVENT_ID,
+          GOLD_DUST_CHARCOAL_RELIC_EVENT_ID,
+          MOONLIGHT_ILEX_RESIDUE_EVENT_ID,
+          NEXUS_ORDER_ILEX_SHRINE_PATTERN_EVENT_ID,
+          GOLDENROD_ROAD_UNLOCKED_EVENT_ID
+        ],
+        'field_tool_lead' => 'trail_cutter_farfetchd_route',
+        'local_event' => 'farfetchd_chase',
+        'hidden_meta_signal' => 'nexus_order_ilex_shrine_pattern_unrevealed',
+        'unlocks' => %w[goldenrod_road route_34_daycare_lead trail_cutter_farfetchd_lead ilex_shrine_rumor],
+        'next_hook' => 'goldenrod_road'
       }
     end
   end

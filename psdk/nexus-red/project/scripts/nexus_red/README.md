@@ -169,6 +169,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_bugsy_hive_badge_battle(state, location:, result:, area_type:)` records the Bugsy gym battle after PSDK returns the battle result. It awards the Hive Badge, confirms companions did not assist inside the gym, records Red/Brock/Bill post-battle scenes, collapses the Moonlight dream-spore residue, sends Rocket retreat traffic toward Ilex, lets Gold Dust pivot to charcoal relic bids, keeps Nexus Order hidden in badge-pattern data, pushes Silver into the next route race, and opens `ilex_forest_path`.
 
+`NexusRed::JohtoStory.complete_ilex_forest_path(state, location:, area_type:)` resolves the classic Ilex Forest travel beat after the Hive Badge instead of jumping to Goldenrod. Red guides Antman through the forest, Brock handles field care and charcoal-kiln context, Bill traces the shrine relay, the Farfetchd chase becomes the Trail Cutter field-tool lead, Rocket and Gold Dust clash over retreat crates and charcoal relic bids, Moonlight residue lingers in the woods, Nexus Order remains hidden in the shrine pattern, and `goldenrod_road` opens through Route 34 and the daycare lead.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
