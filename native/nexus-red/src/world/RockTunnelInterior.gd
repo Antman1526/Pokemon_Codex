@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_9_rock_tunnel_approach
+signal go_to_lavender_outskirts
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_rock_tunnel_interior_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_lavender_exit()
 	if event.is_action_pressed("cancel"):
 		return_to_route_9_rock_tunnel_approach()
 
@@ -137,5 +140,13 @@ func return_to_route_9_rock_tunnel_approach() -> void:
 	emit_signal("go_to_route_9_rock_tunnel_approach")
 
 
+func trigger_lavender_exit() -> void:
+	if save_state and not bool(save_state.story_flags.get("lavender_exit_path_unlocked", false)):
+		dialogue_label.text = "Red: Lavender is through this exit, but we need to inspect Rock Tunnel's Echo Flute trace, Team Moonlight pressure, and Rocket cache before we step out."
+		return
+	dialogue_label.text = "Red: Lavender is ahead. Bill's Echo Flute trace is pulling straight toward Pokemon Tower."
+	emit_signal("go_to_lavender_outskirts")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This is Rock Tunnel. Press Z/Enter to inspect Bill's Lavender Echo Flute trace, Team Moonlight's pressure, Rocket's cache, and the Flash Lantern problem, or X/Esc to return to Route 9."
+	dialogue_label.text = "Red: This is Rock Tunnel. Press Z/Enter to inspect Bill's Lavender Echo Flute trace, Team Moonlight's pressure, Rocket's cache, and the Flash Lantern problem, Right for Lavender, or X/Esc to return to Route 9."

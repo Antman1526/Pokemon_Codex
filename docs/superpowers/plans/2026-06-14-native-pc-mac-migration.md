@@ -914,6 +914,27 @@ python3 tools/validate_native_rock_tunnel_interior.py
 godot --headless --path native/nexus-red --script tests/rock_tunnel_interior_test.gd
 ```
 
+### Task 7.48: Add Lavender outskirts and Pokemon Tower signal setup
+
+Acceptance:
+
+- Rock Tunnel keeps the Lavender exit locked until the interior scene unlocks the Lavender exit path.
+- After the Rock Tunnel interior beat, Antman can transition into a playable Lavender outskirts scene.
+- Lavender outskirts records Red as the active full-game companion and marks the tonal shift from route adventure into Kanto's haunted story arc.
+- Bill decodes the Echo Flute pulse as a Pokemon Tower signal rather than a normal route beacon.
+- Team Moonlight presence in Lavender is introduced as grief/dream pressure around Pokemon Tower.
+- Rocket surveillance is visible on the road, making Giovanni feel ahead of Antman instead of merely reacting.
+- Pokemon Tower is confirmed and unlocked as the next story route without implementing the tower interior yet.
+- Save state and WorldLink record Lavender outskirts reached, Red's Lavender arrival warning, Bill's Pokemon Tower signal decode, Team Moonlight's Lavender presence, Rocket surveillance, Pokemon Tower signal confirmation, and Pokemon Tower entry unlock.
+- WorldLink checklist adds Reach Lavender outskirts, Decode Pokemon Tower signal, Spot Moonlight in Lavender, and Unlock Pokemon Tower entry milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_lavender_outskirts.py
+godot --headless --path native/nexus-red --script tests/lavender_outskirts_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

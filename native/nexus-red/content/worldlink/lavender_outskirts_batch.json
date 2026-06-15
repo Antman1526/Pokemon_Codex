@@ -1,0 +1,40 @@
+{
+  "id": "lavender_outskirts_batch",
+  "feed": [
+    {
+      "id": "wl_lavender_outskirts_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Lavender outskirts after walking through Rock Tunnel."
+    },
+    {
+      "id": "wl_red_lavender_arrival",
+      "speaker": "Red",
+      "text": "Red warned that Lavender is quiet in a way Kanto has not been so far."
+    },
+    {
+      "id": "wl_bill_pokemon_tower_signal_decode",
+      "speaker": "Bill",
+      "text": "Bill decoded the Echo Flute pulse as a Pokemon Tower signal rather than a normal route beacon."
+    },
+    {
+      "id": "wl_team_moonlight_lavender_presence",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight has scouts around Lavender, using grief and sleep pressure to mask their operation."
+    },
+    {
+      "id": "wl_rocket_lavender_surveillance",
+      "speaker": "WorldLink",
+      "text": "Rocket lookouts are watching Lavender's road, proving Giovanni expected Antman to follow the signal."
+    },
+    {
+      "id": "wl_pokemon_tower_signal_confirmed",
+      "speaker": "Bill",
+      "text": "Pokemon Tower is confirmed as the next source of the Echo Flute anomaly."
+    },
+    {
+      "id": "wl_pokemon_tower_entry_unlocked",
+      "speaker": "WorldLink",
+      "text": "Pokemon Tower entry is now unlocked for the next story slice."
+    }
+  ]
+}

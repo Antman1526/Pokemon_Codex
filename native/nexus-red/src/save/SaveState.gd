@@ -226,6 +226,14 @@ func start_new_game(name: String) -> void:
 		"flash_lantern_needed_seen": false,
 		"lavender_exit_path_unlocked": false,
 		"worldlink_rock_tunnel_interior_batch_queued": false,
+		"lavender_outskirts_reached": false,
+		"red_lavender_arrival_seen": false,
+		"bill_pokemon_tower_signal_decode_seen": false,
+		"team_moonlight_lavender_presence_seen": false,
+		"rocket_lavender_surveillance_seen": false,
+		"pokemon_tower_signal_confirmed": false,
+		"pokemon_tower_entry_unlocked": false,
+		"worldlink_lavender_outskirts_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -877,6 +885,37 @@ func queue_rock_tunnel_interior_batch() -> void:
 		"wl_rocket_dark_cache",
 		"wl_flash_lantern_needed",
 		"wl_lavender_exit_path_unlocked",
+	])
+
+
+func enter_lavender_outskirts() -> void:
+	current_scene = "lavender_outskirts"
+	active_companion = "red"
+	set_flag("lavender_outskirts_reached", true)
+	queue_worldlink_id("wl_lavender_outskirts_reached")
+
+
+func record_lavender_outskirts_scene() -> void:
+	active_companion = "red"
+	set_flag("red_lavender_arrival_seen", true)
+	set_flag("bill_pokemon_tower_signal_decode_seen", true)
+	set_flag("team_moonlight_lavender_presence_seen", true)
+	set_flag("rocket_lavender_surveillance_seen", true)
+	set_flag("pokemon_tower_signal_confirmed", true)
+	set_flag("pokemon_tower_entry_unlocked", true)
+	queue_lavender_outskirts_batch()
+
+
+func queue_lavender_outskirts_batch() -> void:
+	set_flag("worldlink_lavender_outskirts_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_lavender_outskirts_reached",
+		"wl_red_lavender_arrival",
+		"wl_bill_pokemon_tower_signal_decode",
+		"wl_team_moonlight_lavender_presence",
+		"wl_rocket_lavender_surveillance",
+		"wl_pokemon_tower_signal_confirmed",
+		"wl_pokemon_tower_entry_unlocked",
 	])
 
 
