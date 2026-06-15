@@ -134,6 +134,11 @@ func start_new_game(name: String) -> void:
 		"stolen_tm_recovered": false,
 		"route_5_vermilion_path_unlocked": false,
 		"worldlink_cerulean_rocket_house_batch_queued": false,
+		"route_5_underground_path_reached": false,
+		"underground_path_scouted": false,
+		"vermilion_shipping_lead_seen": false,
+		"vermilion_city_teased": false,
+		"worldlink_route_5_underground_path_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -422,6 +427,31 @@ func queue_cerulean_rocket_house_batch() -> void:
 	queue_worldlink_ids([
 		"wl_cerulean_house_theft_seen",
 		"wl_rocket_stolen_tm_clue",
+	])
+
+
+func enter_route_5_underground_path() -> void:
+	current_scene = "route_5_underground_path"
+	active_companion = "red"
+	set_flag("route_5_underground_path_reached", true)
+	queue_worldlink_id("wl_route_5_underground_path_reached")
+
+
+func record_underground_path_scouting() -> void:
+	active_companion = "red"
+	set_flag("underground_path_scouted", true)
+	set_flag("vermilion_shipping_lead_seen", true)
+	set_flag("vermilion_city_teased", true)
+	queue_route_5_underground_path_batch()
+
+
+func queue_route_5_underground_path_batch() -> void:
+	set_flag("worldlink_route_5_underground_path_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_route_5_underground_path_reached",
+		"wl_underground_path_scouted",
+		"wl_vermilion_shipping_lead",
+		"wl_vermilion_city_teased",
 	])
 
 

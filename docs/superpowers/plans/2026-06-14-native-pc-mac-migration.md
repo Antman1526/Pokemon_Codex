@@ -652,6 +652,24 @@ python3 tools/validate_native_cerulean_rocket_house.py
 godot --headless --path native/nexus-red --script tests/cerulean_rocket_house_test.gd
 ```
 
+### Task 7.34: Add Route 5 Underground Path setup toward Vermilion
+
+Acceptance:
+
+- Cerulean City keeps Route 5 locked until the stolen TM is recovered and the Vermilion path flag is set.
+- After stolen TM recovery, Cerulean can transition to Route 5 and the Underground Path entrance.
+- Route 5 records Red as the active companion while Misty and Bill contribute scouting context.
+- The Underground Path setup reinforces that WorldLink is not a quick-travel shortcut; the player moves through an in-world route.
+- Save state and WorldLink record Route 5 reached, Underground Path scouted, Vermilion shipping lead, and Vermilion City teased.
+- WorldLink checklist adds Route 5, Underground Path scouting, and Vermilion shipping lead milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_route5_underground_path.py
+godot --headless --path native/nexus-red --script tests/route5_underground_path_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

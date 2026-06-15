@@ -1,0 +1,30 @@
+{
+  "id": "route_5_underground_path_batch",
+  "name": "Route 5 Underground Path Batch",
+  "feed": [
+    {
+      "id": "wl_route_5_underground_path_reached",
+      "speaker": "Red",
+      "category": "travel",
+      "text": "Red and Antman reached Route 5 after recovering Cerulean's stolen TM."
+    },
+    {
+      "id": "wl_underground_path_scouted",
+      "speaker": "Misty",
+      "category": "companion",
+      "text": "Misty scouted the Underground Path entrance and confirmed the southbound route is open but watched."
+    },
+    {
+      "id": "wl_vermilion_shipping_lead",
+      "speaker": "Bill",
+      "category": "research",
+      "text": "Bill traced the Rocket TM resale route toward Vermilion's docks and S.S. Anne cargo traffic."
+    },
+    {
+      "id": "wl_vermilion_city_teased",
+      "speaker": "WorldLink",
+      "category": "travel",
+      "text": "Vermilion City lead registered. The next Kanto chapter centers on the port, Surge's gym, and Rocket shipping pressure."
+    }
+  ]
+}

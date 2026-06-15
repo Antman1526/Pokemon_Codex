@@ -5,6 +5,7 @@ signal go_to_nugget_bridge
 signal start_battle_placeholder(battle_id)
 signal go_to_route_25_bill
 signal go_to_cerulean_rocket_house
+signal go_to_route_5_underground_path
 
 var save_state
 var dialogue_label: Label
@@ -28,6 +29,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_route_25_bill_entry()
 	if event.is_action_pressed("ui_left"):
 		trigger_cerulean_rocket_house_entry()
+	if event.is_action_pressed("menu"):
+		trigger_route_5_underground_path_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_4_cerulean_approach()
 
@@ -155,5 +158,13 @@ func trigger_cerulean_rocket_house_entry() -> void:
 	emit_signal("go_to_cerulean_rocket_house")
 
 
+func trigger_route_5_underground_path_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("route_5_vermilion_path_unlocked", false)):
+		dialogue_label.text = "Red: Route 5 is still blocked by the stolen TM mess. Recover the stolen TM before we head south."
+		return
+	dialogue_label.text = "Red: Route 5 is open. Underground Path should carry us toward Vermilion without turning WorldLink into a shortcut."
+	emit_signal("go_to_route_5_underground_path")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Cerulean City. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, Down for Route 25, Left for the Rocket house, or X/Esc to step back to Route 4."
+	dialogue_label.text = "Red: Cerulean City. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, Down for Route 25, Left for the Rocket house, W for Route 5, or X/Esc to step back to Route 4."
