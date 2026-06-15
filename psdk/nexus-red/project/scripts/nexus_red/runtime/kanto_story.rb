@@ -105,6 +105,17 @@ module NexusRed
     ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID = 'rocket_hideout_b2f_patrol_battle'
     ROCKET_HIDEOUT_B3F_PATH_EVENT_ID = 'rocket_hideout_b3f_path_unlocked'
     ROCKET_HIDEOUT_B2F_PATROL_BATTLE_ID = 'rocket_hideout_b2f_patrol'
+    CELADON_ROCKET_HIDEOUT_B3F_EVENT_ID = 'celadon_rocket_hideout_b3f'
+    RED_HIDEOUT_B3F_LIFT_KEY_WARNING_EVENT_ID = 'red_hideout_b3f_lift_key_warning'
+    BILL_NEXUS_ORDER_ELEVATOR_TRACE_EVENT_ID = 'bill_nexus_order_elevator_trace'
+    ROCKET_ADMIN_LIFT_KEY_BATTLE_UNLOCK_EVENT_ID = 'rocket_admin_lift_key_battle_unlocked'
+    GOLD_DUST_LEDGER_RECOVERED_EVENT_ID = 'gold_dust_ledger_recovered'
+    TEAM_MOONLIGHT_SLEEP_PANEL_EVENT_ID = 'team_moonlight_sleep_panel'
+    GIOVANNI_ELEVATOR_ROUTE_EVENT_ID = 'giovanni_elevator_route_seen'
+    ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID = 'rocket_hideout_b3f_admin_battle'
+    ROCKET_LIFT_KEY_OBTAINED_EVENT_ID = 'rocket_lift_key_obtained'
+    ROCKET_HIDEOUT_ELEVATOR_PATH_EVENT_ID = 'rocket_hideout_elevator_path_unlocked'
+    ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_ID = 'rocket_hideout_b3f_admin'
 
     module_function
 
@@ -1929,6 +1940,171 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCKET_HIDEOUT_B2F_PATROL_BATTLE_EVENT_ID }
     end
 
+    def complete_celadon_rocket_hideout_b3f(state, location: 'Celadon Rocket Hideout B3F', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_b2f_patrol', 'event_id' => CELADON_ROCKET_HIDEOUT_B3F_EVENT_ID } unless rocket_hideout_b2f_patrol_battle_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_ROCKET_HIDEOUT_B3F_EVENT_ID } if celadon_rocket_hideout_b3f_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_ROCKET_HIDEOUT_B3F_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_HIDEOUT_B3F_LIFT_KEY_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_NEXUS_ORDER_ELEVATOR_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ADMIN_LIFT_KEY_BATTLE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_LEDGER_RECOVERED')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_SLEEP_PANEL')
+      add_story_flag(state, 'FLAG_NEXUS_GIOVANNI_ELEVATOR_ROUTE')
+      mark_cleared_event(story, CELADON_ROCKET_HIDEOUT_B3F_EVENT_ID)
+      mark_cleared_event(story, RED_HIDEOUT_B3F_LIFT_KEY_WARNING_EVENT_ID)
+      mark_cleared_event(story, BILL_NEXUS_ORDER_ELEVATOR_TRACE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_ADMIN_LIFT_KEY_BATTLE_UNLOCK_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_LEDGER_RECOVERED_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_SLEEP_PANEL_EVENT_ID)
+      mark_cleared_event(story, GIOVANNI_ELEVATOR_ROUTE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'b3f_lift_key_chamber',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'giovanni_elevator_route',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'b3f_ledger_recovered',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'b3f_sleep_panel',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'hidden_elevator_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        "Gold Dust's recovered B3F ledger prices Rocket stolen research and the Lift Key route",
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        "Moonlight's sleep panel is wired into Rocket alarms around the B3F admin block",
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_b3f_lift_key_warning',
+        location: location,
+        summary: 'Red identifies B3F as the Lift Key chamber and warns that the Rocket Admin controls the elevator route.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'nexus_order_elevator_trace',
+        location: location,
+        summary: "Bill finds a Nexus Order elevator trace hidden under Rocket's B3F wiring.",
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Rocket Hideout B3F exposed the Nexus Order elevator trace, the Rocket Admin Lift Key chamber, Gold Dust ledger, Moonlight sleep panel, and Giovanni elevator route.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_rocket_hideout_b3f_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_rocket_hideout_b3f_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_ROCKET_HIDEOUT_B3F_EVENT_ID }
+    end
+
+    def complete_rocket_hideout_b3f_admin_battle(state, location: 'Celadon Rocket Hideout B3F', result: 'placeholder_win', area_type: 'villain_hideout')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_rocket_hideout_b3f', 'event_id' => ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID } unless celadon_rocket_hideout_b3f_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID } if rocket_hideout_b3f_admin_battle_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ADMIN_LIFT_KEY_BATTLE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ADMIN_LIFT_KEY_BATTLE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_LIFT_KEY_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_HIDEOUT_ELEVATOR_PATH_UNLOCKED')
+      mark_cleared_event(story, ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_LIFT_KEY_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, ROCKET_HIDEOUT_ELEVATOR_PATH_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'b3f_admin_defeated',
+        threat_delta: -2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'hideout_elevator_route_opened',
+        location: location,
+        summary: 'Red keeps the Rocket Admin pinned down while Antman claims the Lift Key and opens the elevator route.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The Rocket B3F Admin is beaten, Antman obtained the Rocket Lift Key, and the Rocket Hideout elevator path is open.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = rocket_hideout_b3f_admin_battle_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def rocket_hideout_b3f_admin_battle_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -2344,6 +2520,50 @@ module NexusRed
         ],
         'factions' => %w[team_rocket],
         'next_hook' => 'celadon_rocket_hideout_b3f'
+      }
+    end
+
+    def celadon_rocket_hideout_b3f_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_ROCKET_HIDEOUT_B3F_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_HIDEOUT_B3F_LIFT_KEY_WARNING_EVENT_ID,
+          BILL_NEXUS_ORDER_ELEVATOR_TRACE_EVENT_ID,
+          ROCKET_ADMIN_LIFT_KEY_BATTLE_UNLOCK_EVENT_ID,
+          GOLD_DUST_LEDGER_RECOVERED_EVENT_ID,
+          TEAM_MOONLIGHT_SLEEP_PANEL_EVENT_ID,
+          GIOVANNI_ELEVATOR_ROUTE_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'battle_hook' => {
+          'battle_id' => ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_ID,
+          'battle_type' => 'villain_admin',
+          'location' => 'celadon_rocket_hideout_b3f',
+          'level_cap' => 33,
+          'opponent_species' => %w[Arbok Hypno Persian],
+          'companion_support' => 'red_holds_b3f_corridor'
+        },
+        'key_item_trail' => 'rocket_lift_key',
+        'next_hook' => 'rocket_hideout_b3f_admin_battle'
+      }
+    end
+
+    def rocket_hideout_b3f_admin_battle_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_EVENT_ID,
+        'battle_id' => ROCKET_HIDEOUT_B3F_ADMIN_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'linked_events' => [
+          ROCKET_LIFT_KEY_OBTAINED_EVENT_ID,
+          ROCKET_HIDEOUT_ELEVATOR_PATH_EVENT_ID
+        ],
+        'factions' => %w[team_rocket],
+        'key_item_reward' => 'rocket_lift_key',
+        'next_hook' => 'celadon_rocket_hideout_elevator'
       }
     end
 
