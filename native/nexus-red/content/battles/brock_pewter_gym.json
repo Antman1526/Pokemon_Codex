@@ -1,0 +1,34 @@
+{
+  "id": "brock_pewter_gym",
+  "display_title": "Pewter Gym - Brock",
+  "status": "placeholder",
+  "battle_type": "gym_leader",
+  "location": "pewter_city",
+  "level_cap": 14,
+  "difficulty_note": "Mainline-hard baseline with room for harder modes later. Brock pressures careless teams but does not hard-counter the 39 early starter and bonus choices.",
+  "player_side": {
+    "trainer_id": "antman",
+    "slots": ["party"]
+  },
+  "opponent": {
+    "id": "brock",
+    "display_name": "Brock",
+    "slots": [
+      {
+        "species": "Geodude",
+        "level": 12,
+        "role": "physical opener"
+      },
+      {
+        "species": "Onix",
+        "level": 14,
+        "role": "signature wall"
+      }
+    ],
+    "intent": "friendly first-gym test that rewards preparation after Red's Pewter training scene"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": ["brock_pewter_gym_started", "brock_pewter_gym_finished", "brock_pewter_badge_earned"]
+  }
+}

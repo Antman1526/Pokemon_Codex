@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_3
+signal start_battle_placeholder(battle_id)
 
 var save_state
 var dialogue_label: Label
@@ -18,6 +19,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_brock_intro()
 	if event.is_action_pressed("ui_down"):
 		trigger_red_training()
+	if event.is_action_pressed("ui_up"):
+		trigger_brock_gym_challenge()
 	if event.is_action_pressed("cancel"):
 		return_to_route_3()
 
@@ -105,9 +108,16 @@ func trigger_red_training() -> void:
 	dialogue_label.text = "Red: Brock is friendly, not soft. Check your levels, bring answers for Rock-types, and do not let the expanded starter pool make you careless."
 
 
+func trigger_brock_gym_challenge() -> void:
+	if save_state:
+		save_state.start_battle_placeholder("brock_pewter_gym")
+	dialogue_label.text = "Brock: Step inside when you are ready. I will test your fundamentals, not punish your starter choice."
+	emit_signal("start_battle_placeholder", "brock_pewter_gym")
+
+
 func return_to_route_3() -> void:
 	emit_signal("go_to_route_3")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Pewter City opens around the gym and museum. Press Z/Enter for Brock, Down for Red's training advice, or X/Esc to return to Route 3."
+	dialogue_label.text = "Pewter City opens around the gym and museum. Press Z/Enter for Brock, Down for Red's training advice, Up for the gym challenge, or X/Esc to return to Route 3."

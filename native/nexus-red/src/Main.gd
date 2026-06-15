@@ -123,6 +123,7 @@ func _show_pewter_city() -> void:
 	var pewter := PewterCityScene.instantiate()
 	pewter.save_state = save_state
 	pewter.go_to_route_3.connect(_on_go_to_route_3)
+	pewter.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(pewter)
 
 
@@ -136,8 +137,12 @@ func _on_start_battle_placeholder(battle_id: String) -> void:
 
 
 func _on_battle_placeholder_finished(result: String) -> void:
+	var battle_return_scene := save_state.current_scene
 	save_state.finish_battle_placeholder(result)
-	_on_go_to_route_1()
+	if battle_return_scene == "pewter_city":
+		_show_pewter_city()
+	else:
+		_on_go_to_route_1()
 
 
 func _on_start_wild_encounter(encounter_data: Dictionary) -> void:

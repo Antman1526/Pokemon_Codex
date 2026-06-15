@@ -73,6 +73,9 @@ func start_new_game(name: String) -> void:
 		"pewter_city_reached": false,
 		"brock_pewter_intro_seen": false,
 		"red_pewter_training_seen": false,
+		"brock_pewter_gym_started": false,
+		"brock_pewter_gym_finished": false,
+		"brock_pewter_badge_earned": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -236,6 +239,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 	last_battle_result = ""
 	if battle_id == "blue_route_1":
 		set_flag("blue_route_1_battle_started", true)
+	if battle_id == "brock_pewter_gym":
+		set_flag("brock_pewter_gym_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -245,6 +250,10 @@ func finish_battle_placeholder(result: String) -> void:
 		queue_worldlink_id("blue_route_1_battle_finished")
 		unlock_route_1_rumors()
 		queue_route_1_rival_batch()
+	if active_battle_id == "brock_pewter_gym":
+		set_flag("brock_pewter_gym_finished", true)
+		set_flag("brock_pewter_badge_earned", true)
+		queue_worldlink_id("brock_pewter_gym_finished")
 	active_battle_id = ""
 
 

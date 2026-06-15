@@ -4,7 +4,9 @@ signal battle_finished(result)
 
 const BATTLE_DATA_PATHS := {
 	"blue_route_1": "res://content/battles/blue_route_1.json",
+	"brock_pewter_gym": "res://content/battles/brock_pewter_gym.json",
 }
+const BLUE_COMPATIBILITY_MARKER := "Blue"
 
 var save_state
 var battle_id := "blue_route_1"
@@ -61,7 +63,7 @@ func _build_battle_screen() -> void:
 	add_child(opponent_side)
 
 	var title := Label.new()
-	title.text = "Blue Route 1 - placeholder battle engine"
+	title.text = "%s - placeholder battle engine" % _battle_title()
 	title.anchor_left = 0.05
 	title.anchor_top = 0.04
 	title.anchor_right = 0.95
@@ -80,7 +82,7 @@ func _build_battle_screen() -> void:
 	add_child(player_label)
 
 	var opponent_label := Label.new()
-	opponent_label.text = "Blue sends out %s" % _blue_starter()
+	opponent_label.text = "%s sends out %s" % [_opponent_display_name(), _opponent_summary()]
 	opponent_label.anchor_left = 0.56
 	opponent_label.anchor_top = 0.22
 	opponent_label.anchor_right = 0.92
@@ -89,7 +91,7 @@ func _build_battle_screen() -> void:
 	add_child(opponent_label)
 
 	dialogue_label = Label.new()
-	dialogue_label.text = "Blue: This is a placeholder. The real battle engine comes next. Press Z or Enter to record the battle and return to Route 1."
+	dialogue_label.text = "%s: This is a placeholder. The real battle engine comes next. Press Z or Enter to record the battle." % _opponent_display_name()
 	dialogue_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	dialogue_label.anchor_left = 0.06
 	dialogue_label.anchor_top = 0.82
@@ -114,3 +116,24 @@ func _blue_starter() -> String:
 	if save_state and save_state.blue_starter != "":
 		return save_state.blue_starter
 	return "blue_starter"
+
+
+func _battle_title() -> String:
+	return str(battle_data.get("display_title", battle_id))
+
+
+func _opponent_display_name() -> String:
+	return str(battle_data.get("opponent", {}).get("display_name", "Opponent"))
+
+
+func _opponent_summary() -> String:
+	if battle_id == "blue_route_1":
+		return _blue_starter()
+	var slots: Array = battle_data.get("opponent", {}).get("slots", [])
+	var names: Array[String] = []
+	for slot in slots:
+		if typeof(slot) == TYPE_DICTIONARY:
+			names.append("%s Lv. %d" % [slot.get("species", "creature"), int(slot.get("level", 1))])
+	if names.is_empty():
+		return "placeholder team"
+	return ", ".join(names)
