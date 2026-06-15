@@ -34,6 +34,11 @@ REQUIRED_MARKERS = (
     "activate_companion",
     "record_scene",
     "tag_battle_ready?",
+    "module FactionWar",
+    "ensure_faction",
+    "record_activity",
+    "record_conflict",
+    "reveal_hidden_faction",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -229,6 +234,57 @@ bill = NexusRed::CompanionProgress.ensure_companion(state, 'bill')
 raise 'expected Bill initialized as support companion' unless bill['display_name'] == 'Bill'
 raise 'expected Bill not tag battle ready' if NexusRed::CompanionProgress.tag_battle_ready?(state, 'bill')
 raise 'expected active companion remains Red' unless state['active_companion'] == 'red'
+
+rocket = NexusRed::FactionWar.ensure_faction(state, 'team_rocket')
+raise 'expected Team Rocket faction progress initialized' unless rocket['display_name'] == 'Team Rocket'
+raise 'expected Giovanni as Rocket leader' unless rocket['leader'] == 'Giovanni'
+raise 'expected Team Rocket visible as primary faction' unless rocket['revealed'] == true
+raise 'expected Rocket starts with zero threat' unless rocket['threat_level'] == 0
+
+activity_message = NexusRed::FactionWar.record_activity(
+  state,
+  'team_rocket',
+  'kanto',
+  'Viridian City',
+  'stolen parcel route surveillance',
+  threat_delta: 2,
+  area_type: 'route'
+)
+raise 'expected faction activity immediate delivery' unless activity_message['delivery'] == 'immediate'
+raise 'expected Rocket threat increased' unless state['faction_progress']['team_rocket']['threat_level'] == 2
+raise 'expected Rocket region activity recorded' unless state['faction_progress']['team_rocket']['region_activity']['kanto'].first['location'] == 'Viridian City'
+raise 'expected Rocket latest villain alert' unless state['faction_progress']['team_rocket']['latest_activity']['category'] == 'villain_alert'
+
+conflict_message = NexusRed::FactionWar.record_conflict(
+  state,
+  'team_rocket',
+  'team_gold_dust',
+  'mt_moon',
+  'fossil scan data theft',
+  intensity: 3,
+  area_type: 'cave'
+)
+raise 'expected faction conflict paused in cave' unless conflict_message['delivery'] == 'paused'
+raise 'expected Rocket conflict recorded' unless state['faction_progress']['team_rocket']['conflicts'].first['opponent'] == 'team_gold_dust'
+raise 'expected Gold Dust conflict mirror recorded' unless state['faction_progress']['team_gold_dust']['conflicts'].first['opponent'] == 'team_rocket'
+raise 'expected faction conflict held for digest' unless state['worldlink_paused_messages'].length == 1
+
+order = NexusRed::FactionWar.ensure_faction(state, 'nexus_order')
+raise 'expected Nexus Order hidden by default' unless order['revealed'] == false
+reveal_message = NexusRed::FactionWar.reveal_hidden_faction(
+  state,
+  'nexus_order',
+  'sinnoh_hisui',
+  'Spear Pillar distortion',
+  area_type: 'ruins'
+)
+raise 'expected Nexus Order reveal paused in ruins' unless reveal_message['delivery'] == 'paused'
+raise 'expected Nexus Order revealed after reveal call' unless state['faction_progress']['nexus_order']['revealed'] == true
+raise 'expected Nexus Order reveal region recorded' unless state['faction_progress']['nexus_order']['latest_activity']['region'] == 'sinnoh_hisui'
+
+faction_digest = NexusRed::WorldLink.release_digest(state)
+raise 'expected faction digest releases conflict and reveal' unless faction_digest['items'].length == 2
+raise 'expected faction progress tracks Rocket, Gold Dust, and Nexus Order' unless state['faction_progress'].keys.sort == %w[nexus_order team_gold_dust team_rocket]
 
 puts 'Nexus Red Ruby seed loader runtime smoke passed.'
 """
