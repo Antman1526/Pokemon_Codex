@@ -1,0 +1,518 @@
+{
+  "schema_version": 1,
+  "seed_type": "psdk_rival_worldlink_registry",
+  "source_import_id": "rival_worldlink_registry",
+  "source_path": "data_design/rivals.yaml",
+  "extra_source_paths": [
+    "data_design/worldlink_notifications.yaml",
+    "data_design/worldlink_schema.yaml",
+    "data_design/rival_progression_kanto.yaml",
+    "native/nexus-red/content/worldlink/opening_feed.json"
+  ],
+  "required_rival_count": 10,
+  "starting_rivals": [
+    "blue",
+    "ava",
+    "dax"
+  ],
+  "signature_rival": "blue",
+  "preserve_rules": [
+    "ten_rivals_travel_the_same_world_path",
+    "blue_ava_dax_begin_with_antman_in_kanto",
+    "worldlink_shows_rival_badges_captures_battles_losses_and_region_entries",
+    "worldlink_pauses_during_caves_dungeons_hideouts_and_boss_events",
+    "worldlink_digest_displays_after_leaving_paused_areas",
+    "rival_notifications_respect_major_only_default"
+  ],
+  "worldlink_settings": {
+    "unlock_timing": "after_blue_lab_battle",
+    "default_notification_mode": "major_only",
+    "recent_message_capacity": 32,
+    "notification_modes": {
+      "all": {
+        "description": "Show major and minor updates."
+      },
+      "major_only": {
+        "description": "Default. Show major rival/world events and store minor updates."
+      },
+      "rivals_only": {
+        "description": "Show rival progress without broader world alerts."
+      },
+      "silent": {
+        "description": "Store updates silently."
+      }
+    },
+    "delivery_rules": {
+      "immediate_safe_pop": [
+        "rival_badge",
+        "rival_region_entry",
+        "villain_alert",
+        "legendary_anomaly",
+        "companion_request",
+        "story_unlock"
+      ],
+      "batch_until_safe": [
+        "rival_capture_common",
+        "rival_minor_movement",
+        "flavor_note",
+        "swarm_hint",
+        "daycare_update"
+      ],
+      "never_interrupt": [
+        "battle",
+        "gym_battle",
+        "cutscene",
+        "boss_event",
+        "evolution",
+        "starter_selection"
+      ],
+      "pause_and_digest": [
+        "cave",
+        "villain_hideout",
+        "deep_forest",
+        "ruins",
+        "tower",
+        "story_dungeon"
+      ]
+    },
+    "digest": {
+      "title": "While You Were Away",
+      "trigger": "leaving_paused_area_for_safe_area",
+      "max_items_mvp": 3,
+      "max_items_target": 5,
+      "priority_order": [
+        "villain_alert",
+        "rival_badge",
+        "companion_request",
+        "legendary_anomaly",
+        "rival_region_entry",
+        "rival_capture_common",
+        "flavor_note"
+      ]
+    }
+  },
+  "required_notification_categories": {
+    "rival_badge": {
+      "priority": "major",
+      "delivery": "immediate",
+      "templates": [
+        "{rival} defeated {leader} and earned the {badge} Badge.",
+        "{rival} cleared {challenge}. Your World Circuit ranking changed."
+      ]
+    },
+    "rival_capture": {
+      "priority": "minor",
+      "delivery": "batch_on_town_entry",
+      "templates": [
+        "{rival} caught {species} near {location}.",
+        "{rival} added {species} to their team after training around {location}."
+      ]
+    },
+    "rival_rare_capture": {
+      "priority": "major",
+      "delivery": "town_entry_or_immediate",
+      "templates": [
+        "{rival} reported a rare {species} sighting near {location}.",
+        "{rival} caught a rare {species}. Check the Pokedex habitat notes."
+      ]
+    },
+    "rival_loss": {
+      "priority": "flavor",
+      "delivery": "batch_on_town_entry",
+      "templates": [
+        "{rival} lost to {opponent} and is training near {location}.",
+        "{rival} retreated from {dungeon}. They marked a safer route for you."
+      ]
+    },
+    "rival_request": {
+      "priority": "major",
+      "delivery": "immediate",
+      "templates": [
+        "{rival} wants a rematch in {location}.",
+        "{rival} requested backup for a tag battle near {location}."
+      ]
+    },
+    "rival_region_entry": {
+      "priority": "major",
+      "delivery": "immediate",
+      "templates": [
+        "{rival} has entered {region}.",
+        "{rival} checked in from {hub}. Their next target is {objective}."
+      ]
+    },
+    "villain_alert": {
+      "priority": "major",
+      "delivery": "immediate",
+      "templates": [
+        "WorldLink Alert: {team} activity reported near {location}.",
+        "{authority} issued a warning about {team} movement around {location}."
+      ]
+    },
+    "legendary_anomaly": {
+      "priority": "major",
+      "delivery": "immediate",
+      "templates": [
+        "Anomaly detected: {legendary_signal} energy spiked near {location}.",
+        "Professor Oak flagged unusual readings from {location}."
+      ]
+    }
+  },
+  "rivals": [
+    {
+      "rival_id": "blue",
+      "display_name": "Blue Oak",
+      "origin_region": "Kanto",
+      "role": "classic_badge_rival",
+      "starting_status": "starts_with_player",
+      "starter_policy": "counter_pick",
+      "personality": "arrogant_gifted_insecure",
+      "team_archetype": "balanced_competitive_coverage",
+      "relationship_defaults": {
+        "respect": 10,
+        "trust": 0,
+        "rivalry": 90,
+        "jealousy": 75,
+        "team_up_readiness": 0
+      },
+      "chapter_appearances": [
+        "kanto",
+        "johto",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "major_only",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "ava",
+      "display_name": "Ava Pine",
+      "origin_region": "Kanto",
+      "role": "research_friend_rival",
+      "starting_status": "starts_with_player",
+      "starter_policy": "prefers_grass_or_support_starter",
+      "personality": "friendly_brave_research_focused",
+      "team_archetype": "bulky_support_status_rare_captures",
+      "relationship_defaults": {
+        "respect": 35,
+        "trust": 50,
+        "rivalry": 35,
+        "jealousy": 5,
+        "team_up_readiness": 60
+      },
+      "chapter_appearances": [
+        "kanto",
+        "johto",
+        "hoenn",
+        "sinnoh_hisui",
+        "paldea",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "captures_and_research",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "dax",
+      "display_name": "Dax Vale",
+      "origin_region": "Kanto",
+      "role": "battle_pressure_rival",
+      "starting_status": "starts_with_player",
+      "starter_policy": "prefers_fire_or_offense_starter",
+      "personality": "aggressive_proud_speedrunner",
+      "team_archetype": "offense_hazards_priority_weather",
+      "relationship_defaults": {
+        "respect": 20,
+        "trust": 10,
+        "rivalry": 85,
+        "jealousy": 45,
+        "team_up_readiness": 20
+      },
+      "chapter_appearances": [
+        "kanto",
+        "hoenn",
+        "galar",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "battles_badges_losses",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "silver",
+      "display_name": "Silver",
+      "origin_region": "Johto",
+      "role": "anti_rocket_redemption",
+      "starting_status": "joins_in_johto",
+      "starter_policy": "johto_edge_pick",
+      "personality": "harsh_wounded_driven",
+      "team_archetype": "fast_physical_dark_poison_balance",
+      "relationship_defaults": {
+        "respect": 5,
+        "trust": 0,
+        "rivalry": 70,
+        "jealousy": 30,
+        "team_up_readiness": 5
+      },
+      "chapter_appearances": [
+        "johto",
+        "kanto",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "rocket_activity",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "hoenn_researcher",
+      "display_name": "May or Brendan",
+      "origin_region": "Hoenn",
+      "role": "ecology_weather_rival",
+      "starting_status": "joins_in_hoenn",
+      "starter_policy": "hoenn_remaining_pick",
+      "personality": "upbeat_practical_field_researcher",
+      "team_archetype": "weather_terrain_regional_balance",
+      "relationship_defaults": {
+        "respect": 30,
+        "trust": 45,
+        "rivalry": 35,
+        "jealousy": 5,
+        "team_up_readiness": 55
+      },
+      "chapter_appearances": [
+        "hoenn",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "weather_and_ecology",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "sinnoh_researcher",
+      "display_name": "Dawn or Lucas",
+      "origin_region": "Sinnoh",
+      "role": "myth_research_rival",
+      "starting_status": "joins_in_sinnoh",
+      "starter_policy": "sinnoh_or_hisui_theme",
+      "personality": "patient_scholarly_curious",
+      "team_archetype": "psychic_steel_dragon_setup_balance",
+      "relationship_defaults": {
+        "respect": 30,
+        "trust": 40,
+        "rivalry": 30,
+        "jealousy": 0,
+        "team_up_readiness": 50
+      },
+      "chapter_appearances": [
+        "sinnoh_hisui",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "ruins_and_anomalies",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "n",
+      "display_name": "N",
+      "origin_region": "Unova",
+      "role": "ethical_mirror",
+      "starting_status": "joins_in_unova",
+      "starter_policy": "no_fixed_starter_local_friendship_team",
+      "personality": "compassionate_intense_philosophical",
+      "team_archetype": "local_pokemon_rotating_natural_teams",
+      "relationship_defaults": {
+        "respect": 20,
+        "trust": 15,
+        "rivalry": 60,
+        "jealousy": 0,
+        "team_up_readiness": 20
+      },
+      "chapter_appearances": [
+        "unova",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "story_major_only",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "kalos_rival",
+      "display_name": "Serena or Calem",
+      "origin_region": "Kalos",
+      "role": "mega_style_rival",
+      "starting_status": "joins_in_kalos",
+      "starter_policy": "kalos_remaining_pick",
+      "personality": "composed_stylish_ambitious",
+      "team_archetype": "mega_ace_elegant_coverage",
+      "relationship_defaults": {
+        "respect": 30,
+        "trust": 20,
+        "rivalry": 55,
+        "jealousy": 15,
+        "team_up_readiness": 30
+      },
+      "chapter_appearances": [
+        "kalos",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "mega_progress",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "marnie",
+      "display_name": "Marnie",
+      "origin_region": "Galar",
+      "role": "spectacle_corruption_ally_rival",
+      "starting_status": "joins_in_galar",
+      "starter_policy": "morpeko_anchor_plus_galar_support",
+      "personality": "grounded_dry_loyal",
+      "team_archetype": "dark_fairy_pressure_anti_meta",
+      "relationship_defaults": {
+        "respect": 35,
+        "trust": 30,
+        "rivalry": 50,
+        "jealousy": 0,
+        "team_up_readiness": 50
+      },
+      "chapter_appearances": [
+        "galar",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "tournament_and_corruption",
+      "worldlink_visible": true
+    },
+    {
+      "rival_id": "nemona",
+      "display_name": "Nemona",
+      "origin_region": "Paldea",
+      "role": "final_battle_joy_rival",
+      "starting_status": "joins_in_paldea",
+      "starter_policy": "paldea_remaining_pick",
+      "personality": "joyful_relentless_battle_genius",
+      "team_archetype": "high_skill_offensive_balance_tera",
+      "relationship_defaults": {
+        "respect": 50,
+        "trust": 35,
+        "rivalry": 95,
+        "jealousy": 0,
+        "team_up_readiness": 40
+      },
+      "chapter_appearances": [
+        "paldea",
+        "world_nexus_championship"
+      ],
+      "notification_behavior": "battles_and_challenges",
+      "worldlink_visible": true
+    }
+  ],
+  "kanto_progression_bands": {
+    "kanto_start": {
+      "player_range": "Pallet through Route 1",
+      "companions": {
+        "red": {
+          "location": "Pallet Town / Route 1",
+          "event": "notices_unfamiliar_tracks",
+          "notification": null
+        }
+      },
+      "rivals": {
+        "blue": {
+          "location": "Oak Lab",
+          "event": "mandatory_first_battle",
+          "notification": null
+        },
+        "ava": {
+          "location": "Oak Lab / Route 1",
+          "event": "registers_research_notes",
+          "notification": "Ava spotted a Johto starter near Route 1."
+        },
+        "dax": {
+          "location": "Oak Lab / Route 1",
+          "event": "rushes_ahead",
+          "notification": "Dax is heading for Viridian and talking about Brock already."
+        }
+      }
+    },
+    "viridian_arrival": {
+      "player_range": "First Viridian visit",
+      "rivals": {
+        "blue": {
+          "location": "Route 22",
+          "event": "optional_battle_tease",
+          "notification": "Blue was seen testing his starter near Route 22."
+        },
+        "ava": {
+          "location": "Viridian Pokecenter",
+          "event": "worldlink_tutorial",
+          "notification": "Ava uploaded early habitat notes to WorldLink."
+        },
+        "dax": {
+          "location": "Viridian Forest entrance",
+          "event": "bug_catcher_battle_report",
+          "notification": "Dax beat a Bug Catcher and entered Viridian Forest."
+        }
+      }
+    },
+    "pre_brock": {
+      "player_range": "Viridian Forest through Pewter",
+      "rivals": {
+        "blue": {
+          "location": "Pewter City",
+          "event": "badge_race_dialogue",
+          "notification": "Blue reached Pewter and is studying Brock's team."
+        },
+        "ava": {
+          "location": "Pewter Museum",
+          "event": "fossil_curiosity",
+          "notification": "Ava found unusual fossil scan requests at the museum."
+        },
+        "dax": {
+          "location": "Pewter Gym lobby",
+          "event": "loses_or_wins_to_brock_based_on_flag",
+          "notification": "Dax challenged Brock before you. He will not say how it went."
+        }
+      }
+    },
+    "post_brock": {
+      "player_range": "After Boulder Badge",
+      "companions": {
+        "red": {
+          "location": "Route 22 or Mt. Moon lead",
+          "event": "leaves_to_investigate_parallel_route",
+          "notification": "Red is checking a second trail near Mt. Moon."
+        }
+      },
+      "rivals": {
+        "blue": {
+          "location": "Route 3 gate",
+          "event": "rival_battle_or_warning",
+          "notification": "Blue earned the Boulder Badge and moved toward Mt. Moon."
+        },
+        "ava": {
+          "location": "Museum service tunnel",
+          "event": "rocket_tag_support",
+          "notification": "Ava requested backup near the Pewter Museum service tunnel."
+        },
+        "dax": {
+          "location": "Museum service tunnel",
+          "event": "rocket_double_battle_partner",
+          "notification": "Dax found Rocket grunts carrying fossil scan data."
+        }
+      }
+    }
+  },
+  "opening_feed": [
+    {
+      "id": "red_route_1_tracks",
+      "category": "companion",
+      "text": "Red marked strange Route 1 tracks outside town."
+    },
+    {
+      "id": "blue_first_battle_pressure",
+      "category": "rival",
+      "text": "Blue is already asking when the first battle starts."
+    },
+    {
+      "id": "oak_world_migration_alert",
+      "category": "story",
+      "text": "Oak flagged a migration anomaly near the hometown grass line."
+    },
+    {
+      "id": "nexus_island_locked",
+      "category": "region",
+      "text": "Nexus Island remains locked until all regions converge."
+    }
+  ]
+}

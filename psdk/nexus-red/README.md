@@ -52,3 +52,5 @@ python3 tools/generate_psdk_seed_data.py
 python3 tools/generate_psdk_seed_data.py --check
 python3 tools/validate_psdk_seed_manifest.py
 ```
+
+The seed generator currently covers starters, Routes 1-3 encounters, the region progression spine, custom factions, core companions, and rival WorldLink data.

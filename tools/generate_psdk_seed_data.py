@@ -8,6 +8,8 @@ import json
 import sys
 from pathlib import Path
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "psdk" / "nexus-red" / "project" / "Data" / "nexus_red_seed" / "import_manifest.json"
@@ -15,6 +17,11 @@ MANIFEST = ROOT / "psdk" / "nexus-red" / "project" / "Data" / "nexus_red_seed" /
 
 def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def read_yaml(path: Path):
+    with path.open("r", encoding="utf-8") as handle:
+        return yaml.safe_load(handle)
 
 
 def write_json(path: Path, data: dict) -> None:
@@ -173,6 +180,57 @@ def build_companion_seed(entry: dict) -> dict:
     }
 
 
+def build_rival_worldlink_seed(entry: dict) -> dict:
+    rivals = read_yaml(ROOT / entry["source_path"])
+    notifications = read_yaml(ROOT / "data_design" / "worldlink_notifications.yaml")
+    schema = read_yaml(ROOT / "data_design" / "worldlink_schema.yaml")
+    kanto_progression = read_yaml(ROOT / "data_design" / "rival_progression_kanto.yaml")
+    opening_feed = read_json(ROOT / "native" / "nexus-red" / "content" / "worldlink" / "opening_feed.json")
+
+    return {
+        "schema_version": 1,
+        "seed_type": "psdk_rival_worldlink_registry",
+        "source_import_id": entry["id"],
+        "source_path": entry["source_path"],
+        "extra_source_paths": entry.get("extra_source_paths", []),
+        "required_rival_count": entry["required_rival_count"],
+        "starting_rivals": entry["starting_rivals"],
+        "signature_rival": entry["signature_rival"],
+        "preserve_rules": entry["preserve_rules"],
+        "worldlink_settings": {
+            "unlock_timing": schema["worldlink"]["unlock_timing"],
+            "default_notification_mode": schema["worldlink"]["default_notification_mode"],
+            "recent_message_capacity": schema["worldlink"]["target_recent_message_capacity"],
+            "notification_modes": schema["notification_modes"],
+            "delivery_rules": schema["delivery_rules"],
+            "digest": schema["digest"],
+        },
+        "required_notification_categories": {
+            category_id: notifications["categories"][category_id]
+            for category_id in entry["required_notification_categories"]
+        },
+        "rivals": [
+            {
+                "rival_id": rival["rival_id"],
+                "display_name": rival["display_name"],
+                "origin_region": rival["origin_region"],
+                "role": rival["role"],
+                "starting_status": rival["starting_status"],
+                "starter_policy": rival["starter_policy"],
+                "personality": rival["personality"],
+                "team_archetype": rival["team_archetype"],
+                "relationship_defaults": rival["relationship_defaults"],
+                "chapter_appearances": rival["chapter_appearances"],
+                "notification_behavior": rival["notification_behavior"],
+                "worldlink_visible": True,
+            }
+            for rival in rivals["rivals"]
+        ],
+        "kanto_progression_bands": kanto_progression["progression_bands"],
+        "opening_feed": opening_feed["feed"],
+    }
+
+
 def build_seed_data(manifest: dict) -> dict[str, dict]:
     imports = manifest_imports(manifest)
     return {
@@ -190,6 +248,9 @@ def build_seed_data(manifest: dict) -> dict[str, dict]:
         ),
         imports["core_companion_registry"]["psdk_target"]: build_companion_seed(
             imports["core_companion_registry"]
+        ),
+        imports["rival_worldlink_registry"]["psdk_target"]: build_rival_worldlink_seed(
+            imports["rival_worldlink_registry"]
         ),
     }
 

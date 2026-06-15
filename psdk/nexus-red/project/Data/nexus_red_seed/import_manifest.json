@@ -143,6 +143,39 @@
         "bill_supports_worldlink_and_network_mystery",
         "companions_help_in_story_and_tag_battles_but_not_gym_battles"
       ]
+    },
+    {
+      "id": "rival_worldlink_registry",
+      "source_path": "data_design/rivals.yaml",
+      "extra_source_paths": [
+        "data_design/worldlink_notifications.yaml",
+        "data_design/worldlink_schema.yaml",
+        "data_design/rival_progression_kanto.yaml",
+        "native/nexus-red/content/worldlink/opening_feed.json"
+      ],
+      "psdk_target": "project/Data/nexus_red_seed/generated/rival_worldlink_registry.json",
+      "psdk_system": "psdk_worldlink_state_plus_rival_progression_events",
+      "required_rival_count": 10,
+      "starting_rivals": ["blue", "ava", "dax"],
+      "signature_rival": "blue",
+      "required_notification_categories": [
+        "rival_badge",
+        "rival_capture",
+        "rival_rare_capture",
+        "rival_loss",
+        "rival_request",
+        "rival_region_entry",
+        "villain_alert",
+        "legendary_anomaly"
+      ],
+      "preserve_rules": [
+        "ten_rivals_travel_the_same_world_path",
+        "blue_ava_dax_begin_with_antman_in_kanto",
+        "worldlink_shows_rival_badges_captures_battles_losses_and_region_entries",
+        "worldlink_pauses_during_caves_dungeons_hideouts_and_boss_events",
+        "worldlink_digest_displays_after_leaving_paused_areas",
+        "rival_notifications_respect_major_only_default"
+      ]
     }
   ],
   "first_psdk_slice_flags": [

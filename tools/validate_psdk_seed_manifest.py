@@ -7,6 +7,8 @@ import json
 import sys
 from pathlib import Path
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "psdk" / "nexus-red" / "project" / "Data" / "nexus_red_seed" / "import_manifest.json"
@@ -33,6 +35,7 @@ REQUIRED_IMPORT_IDS = {
     "world_region_progression_spine",
     "custom_faction_war_registry",
     "core_companion_registry",
+    "rival_worldlink_registry",
 }
 REQUIRED_ROUTES = {"route_1", "route_2", "route_3"}
 REQUIRED_REGIONS = [
@@ -67,10 +70,37 @@ DROPPED_ACTIVE_CANONICAL_FACTIONS = {
     "team_star",
 }
 REQUIRED_COMPANIONS = ["red", "ash", "misty", "brock", "blue", "may", "bill"]
+REQUIRED_RIVALS = [
+    "blue",
+    "ava",
+    "dax",
+    "silver",
+    "hoenn_researcher",
+    "sinnoh_researcher",
+    "n",
+    "kalos_rival",
+    "marnie",
+    "nemona",
+]
+REQUIRED_WORLDLINK_CATEGORIES = {
+    "rival_badge",
+    "rival_capture",
+    "rival_rare_capture",
+    "rival_loss",
+    "rival_request",
+    "rival_region_entry",
+    "villain_alert",
+    "legendary_anomaly",
+}
 
 
 def read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def read_yaml(path: Path):
+    with path.open("r", encoding="utf-8") as handle:
+        return yaml.safe_load(handle)
 
 
 def rel(path: Path) -> str:
@@ -104,6 +134,9 @@ def validate_manifest_shape(manifest: dict) -> list[str]:
         path = source_path(entry)
         if not path.exists():
             errors.append(f"manifest source_path does not exist: {entry.get('source_path')}")
+        for extra_path in entry.get("extra_source_paths", []):
+            if not (ROOT / extra_path).exists():
+                errors.append(f"manifest extra_source_path does not exist: {extra_path}")
         if not entry.get("psdk_target", "").startswith("project/Data/nexus_red_seed/generated/"):
             errors.append(f"{entry.get('id')} must target generated seed data under project/Data/nexus_red_seed/generated/")
         if not target_path(entry).exists():
@@ -345,6 +378,74 @@ def validate_companion_import(entry: dict) -> list[str]:
     return errors
 
 
+def validate_rival_worldlink_import(entry: dict) -> list[str]:
+    errors: list[str] = []
+    data = read_yaml(source_path(entry))
+    notifications = read_yaml(ROOT / "data_design" / "worldlink_notifications.yaml")
+    schema = read_yaml(ROOT / "data_design" / "worldlink_schema.yaml")
+    generated = read_json(target_path(entry)) if target_path(entry).exists() else {}
+    rivals = data.get("rivals", [])
+    rival_ids = [rival.get("rival_id") for rival in rivals]
+
+    if entry.get("required_rival_count") != 10:
+        errors.append("rival import required_rival_count must be 10")
+    if entry.get("starting_rivals") != ["blue", "ava", "dax"]:
+        errors.append("rival import starting_rivals must be blue, ava, dax")
+    if entry.get("signature_rival") != "blue":
+        errors.append("rival import signature_rival must be blue")
+    if rival_ids != REQUIRED_RIVALS:
+        errors.append("rival source must preserve all 10 rivals in expected order")
+    for rival_id in ("blue", "ava", "dax"):
+        rival = next((item for item in rivals if item.get("rival_id") == rival_id), {})
+        if rival.get("starting_status") != "starts_with_player":
+            errors.append(f"{rival_id} must start with the player")
+    if set(entry.get("required_notification_categories", [])) != REQUIRED_WORLDLINK_CATEGORIES:
+        errors.append("rival import required_notification_categories must cover core WorldLink rival alerts")
+    for category_id in REQUIRED_WORLDLINK_CATEGORIES:
+        if category_id not in notifications.get("categories", {}):
+            errors.append(f"worldlink notifications missing category {category_id}")
+
+    worldlink = schema.get("worldlink", {})
+    if worldlink.get("default_notification_mode") != "major_only":
+        errors.append("WorldLink default notification mode must be major_only")
+    pause_and_digest = set(schema.get("delivery_rules", {}).get("pause_and_digest", []))
+    for paused_area in ("cave", "villain_hideout", "ruins", "tower", "story_dungeon"):
+        if paused_area not in pause_and_digest:
+            errors.append(f"WorldLink pause_and_digest missing {paused_area}")
+
+    rules = set(entry.get("preserve_rules", []))
+    for rule in (
+        "ten_rivals_travel_the_same_world_path",
+        "worldlink_pauses_during_caves_dungeons_hideouts_and_boss_events",
+        "rival_notifications_respect_major_only_default",
+    ):
+        if rule not in rules:
+            errors.append(f"rival import preserve_rules missing {rule}")
+
+    generated_ids = [rival.get("rival_id") for rival in generated.get("rivals", [])]
+    if generated.get("seed_type") != "psdk_rival_worldlink_registry":
+        errors.append("generated rival seed must use seed_type psdk_rival_worldlink_registry")
+    if generated_ids != REQUIRED_RIVALS:
+        errors.append("generated rival seed must preserve all 10 rivals")
+    if generated.get("starting_rivals") != ["blue", "ava", "dax"]:
+        errors.append("generated rival seed must preserve the three Kanto starting rivals")
+    if generated.get("signature_rival") != "blue":
+        errors.append("generated rival seed must keep Blue as signature rival")
+    generated_categories = set(generated.get("required_notification_categories", {}))
+    if generated_categories != REQUIRED_WORLDLINK_CATEGORIES:
+        errors.append("generated rival seed must preserve required WorldLink categories")
+    generated_settings = generated.get("worldlink_settings", {})
+    if generated_settings.get("default_notification_mode") != "major_only":
+        errors.append("generated WorldLink settings must default to major_only")
+    generated_pause = set(generated_settings.get("delivery_rules", {}).get("pause_and_digest", []))
+    if "cave" not in generated_pause or "villain_hideout" not in generated_pause:
+        errors.append("generated WorldLink settings must pause in caves and villain hideouts")
+    if len(generated.get("opening_feed", [])) < 4:
+        errors.append("generated rival seed must include opening WorldLink feed entries")
+
+    return errors
+
+
 def validate() -> list[str]:
     if not MANIFEST.exists():
         return [f"missing PSDK seed manifest: {rel(MANIFEST)}"]
@@ -369,6 +470,9 @@ def validate() -> list[str]:
     companion_entry = imports.get("core_companion_registry")
     if companion_entry:
         errors.extend(validate_companion_import(companion_entry))
+    rival_entry = imports.get("rival_worldlink_registry")
+    if rival_entry:
+        errors.extend(validate_rival_worldlink_import(rival_entry))
 
     return errors
 
