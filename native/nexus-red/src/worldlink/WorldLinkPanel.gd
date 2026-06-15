@@ -14,6 +14,7 @@ const ROUTE_25_BILL_BATCH_PATH := "res://content/worldlink/route_25_bill_batch.j
 const CERULEAN_ROCKET_HOUSE_BATCH_PATH := "res://content/worldlink/cerulean_rocket_house_batch.json"
 const ROUTE_5_UNDERGROUND_PATH_BATCH_PATH := "res://content/worldlink/route_5_underground_path_batch.json"
 const VERMILION_CITY_ARRIVAL_BATCH_PATH := "res://content/worldlink/vermilion_city_arrival_batch.json"
+const VERMILION_POWER_SABOTAGE_BATCH_PATH := "res://content/worldlink/vermilion_power_sabotage_batch.json"
 const SS_ANNE_TICKET_OFFICE_BATCH_PATH := "res://content/worldlink/ss_anne_ticket_office_batch.json"
 const SS_ANNE_BOARDING_BATCH_PATH := "res://content/worldlink/ss_anne_boarding_batch.json"
 const SS_ANNE_BLUE_BATTLE_BATCH_PATH := "res://content/worldlink/ss_anne_blue_battle_batch.json"
@@ -80,7 +81,7 @@ func _build_feed_text() -> String:
 
 
 func _build_checklist_text() -> String:
-	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat\n%s Reach Nugget Bridge\n%s Scout bridge recruiters\n%s Defeat first bridge recruiter\n%s Defeat bridge captain\n%s Clear Nugget Bridge crisis\n%s Challenge Misty's gym\n%s Earn Cascade Badge\n%s Unlock Misty as recurring friend\n%s Reach Route 25\n%s Meet Bill\n%s Decode first Nexus network clue\n%s Investigate Cerulean theft\n%s Recover stolen TM\n%s Unlock Route 5 toward Vermilion\n%s Reach Route 5\n%s Scout Underground Path\n%s Track Vermilion shipping lead\n%s Reach Vermilion City\n%s Scout Vermilion harbor\n%s Find S.S. Anne ticket lead\n%s Tease Surge power sabotage\n%s Reach S.S. Anne ticket office\n%s Check S.S. Anne manifest\n%s Decode Bill's manifest anomaly\n%s Earn S.S. Anne boarding pass\n%s Board S.S. Anne\n%s Spot Blue aboard S.S. Anne\n%s Find Rocket cargo-hold clue\n%s Track Captain's Trail Cutter lead\n%s Battle Blue on S.S. Anne\n%s Earn Blue's ship respect\n%s Enter S.S. Anne cargo hold\n%s Recover Rocket cargo manifest\n%s Spot Nexus Order crate symbol\n%s Unlock Captain path\n%s Reach Captain cabin\n%s Help S.S. Anne Captain\n%s Obtain Trail Cutter\n%s Unlock Lt. Surge gym access" % [
+	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat\n%s Reach Nugget Bridge\n%s Scout bridge recruiters\n%s Defeat first bridge recruiter\n%s Defeat bridge captain\n%s Clear Nugget Bridge crisis\n%s Challenge Misty's gym\n%s Earn Cascade Badge\n%s Unlock Misty as recurring friend\n%s Reach Route 25\n%s Meet Bill\n%s Decode first Nexus network clue\n%s Investigate Cerulean theft\n%s Recover stolen TM\n%s Unlock Route 5 toward Vermilion\n%s Reach Route 5\n%s Scout Underground Path\n%s Track Vermilion shipping lead\n%s Reach Vermilion City\n%s Scout Vermilion harbor\n%s Find S.S. Anne ticket lead\n%s Tease Surge power sabotage\n%s Reach S.S. Anne ticket office\n%s Check S.S. Anne manifest\n%s Decode Bill's manifest anomaly\n%s Earn S.S. Anne boarding pass\n%s Board S.S. Anne\n%s Spot Blue aboard S.S. Anne\n%s Find Rocket cargo-hold clue\n%s Track Captain's Trail Cutter lead\n%s Battle Blue on S.S. Anne\n%s Earn Blue's ship respect\n%s Enter S.S. Anne cargo hold\n%s Recover Rocket cargo manifest\n%s Spot Nexus Order crate symbol\n%s Unlock Captain path\n%s Reach Captain cabin\n%s Help S.S. Anne Captain\n%s Obtain Trail Cutter\n%s Unlock Lt. Surge gym access\n%s Reach Vermilion power sabotage\n%s Expose Rocket and Team Gas\n%s Prepare with Red and Misty\n%s Unlock Lt. Surge gym battle" % [
 		_checkmark(_flag("mom_opening_scene_seen")),
 		_checkmark(_flag("starter_chosen")),
 		_checkmark(_flag("route_1_reached")),
@@ -142,6 +143,10 @@ func _build_checklist_text() -> String:
 		_checkmark(_flag("captain_seasick_scene_seen")),
 		_checkmark(_flag("trail_cutter_obtained")),
 		_checkmark(_flag("surge_gym_access_unlocked")),
+		_checkmark(_flag("vermilion_power_sabotage_reached")),
+		_checkmark(_flag("rocket_gas_power_sabotage_seen")),
+		_checkmark(_flag("red_misty_surge_prep_seen")),
+		_checkmark(_flag("surge_gym_battle_unlocked")),
 	]
 
 
@@ -184,6 +189,7 @@ func _build_item_index() -> Dictionary:
 	_add_feed_items(index, CERULEAN_ROCKET_HOUSE_BATCH_PATH, "feed")
 	_add_feed_items(index, ROUTE_5_UNDERGROUND_PATH_BATCH_PATH, "feed")
 	_add_feed_items(index, VERMILION_CITY_ARRIVAL_BATCH_PATH, "feed")
+	_add_feed_items(index, VERMILION_POWER_SABOTAGE_BATCH_PATH, "feed")
 	_add_feed_items(index, SS_ANNE_TICKET_OFFICE_BATCH_PATH, "feed")
 	_add_feed_items(index, SS_ANNE_BOARDING_BATCH_PATH, "feed")
 	_add_feed_items(index, SS_ANNE_BLUE_BATTLE_BATCH_PATH, "feed")

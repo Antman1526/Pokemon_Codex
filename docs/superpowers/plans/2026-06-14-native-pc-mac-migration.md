@@ -778,6 +778,25 @@ python3 tools/validate_native_ss_anne_captain_cabin.py
 godot --headless --path native/nexus-red --script tests/ss_anne_captain_cabin_test.gd
 ```
 
+### Task 7.41: Add Vermilion power sabotage setup
+
+Acceptance:
+
+- Vermilion keeps the Surge power sabotage branch locked until Trail Cutter is unlocked from the S.S. Anne Captain cabin payoff.
+- After Trail Cutter, Vermilion can transition to a playable power sabotage service-yard scene behind Lt. Surge's gym.
+- The scene introduces Team Gas as a Kanto threat while keeping Rocket involved as the faction that first breached the grid.
+- Red and Misty help Antman prepare for Surge's battle tempo, while Bill decodes a power-grid relay loop tied back to the S.S. Anne Nexus mark.
+- Save state and WorldLink record power sabotage reached, Rocket/Team Gas sabotage exposed, Team Gas Kanto debut, Red/Misty Surge prep, Bill power decode, and Lt. Surge gym battle unlocked.
+- WorldLink checklist adds the power sabotage, Rocket/Team Gas exposure, Red/Misty prep, and Surge gym battle unlock milestones.
+- The slice sets up the next Lt. Surge gym battle placeholder without implementing the gym battle yet.
+
+Verification:
+
+```sh
+python3 tools/validate_native_vermilion_power_sabotage.py
+godot --headless --path native/nexus-red --script tests/vermilion_power_sabotage_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

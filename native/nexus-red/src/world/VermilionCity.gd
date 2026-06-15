@@ -2,6 +2,7 @@ extends Control
 
 signal go_to_route_5_underground_path
 signal go_to_ss_anne_ticket_office
+signal go_to_vermilion_power_sabotage
 
 var save_state
 var dialogue_label: Label
@@ -19,6 +20,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_vermilion_arrival_scene()
 	if event.is_action_pressed("ui_right"):
 		trigger_ss_anne_ticket_office_entry()
+	if event.is_action_pressed("ui_up"):
+		trigger_surge_power_sabotage_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_5_underground_path()
 
@@ -125,9 +128,18 @@ func trigger_ss_anne_ticket_office_entry() -> void:
 	emit_signal("go_to_ss_anne_ticket_office")
 
 
+func trigger_surge_power_sabotage_entry() -> void:
+	if save_state == null:
+		return
+	if not bool(save_state.story_flags.get("trail_cutter_field_tool_unlocked", false)):
+		dialogue_label.text = "Red: Surge's gym path is blocked by old Cut trees and a locked service fence. We need the Trail Cutter from the S.S. Anne Captain before we can inspect the Power Sabotage."
+		return
+	emit_signal("go_to_vermilion_power_sabotage")
+
+
 func return_to_route_5_underground_path() -> void:
 	emit_signal("go_to_route_5_underground_path")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Vermilion City. The harbor, S.S. Anne, and Lt. Surge all matter here. Press Z/Enter to scout with Red, Misty, and Bill, Right for the ticket lead, or X/Esc to return to Route 5."
+	dialogue_label.text = "Red: Vermilion City. The harbor, S.S. Anne, and Lt. Surge all matter here. Press Z/Enter to scout with Red, Misty, and Bill, Right for the ticket lead, Up for the Power Sabotage, or X/Esc to return to Route 5."

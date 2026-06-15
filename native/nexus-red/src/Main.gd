@@ -19,6 +19,7 @@ const Route25BillScene := preload("res://scenes/world/Route25Bill.tscn")
 const CeruleanRocketHouseScene := preload("res://scenes/world/CeruleanRocketHouse.tscn")
 const Route5UndergroundPathScene := preload("res://scenes/world/Route5UndergroundPath.tscn")
 const VermilionCityScene := preload("res://scenes/world/VermilionCity.tscn")
+const VermilionPowerSabotageScene := preload("res://scenes/world/VermilionPowerSabotage.tscn")
 const SSAnneTicketOfficeScene := preload("res://scenes/world/SSAnneTicketOffice.tscn")
 const SSAnneMainDeckScene := preload("res://scenes/world/SSAnneMainDeck.tscn")
 const SSAnneCargoHoldScene := preload("res://scenes/world/SSAnneCargoHold.tscn")
@@ -263,7 +264,19 @@ func _show_vermilion_city() -> void:
 	vermilion.save_state = save_state
 	vermilion.go_to_route_5_underground_path.connect(_on_go_to_route_5_underground_path)
 	vermilion.go_to_ss_anne_ticket_office.connect(_on_go_to_ss_anne_ticket_office)
+	vermilion.go_to_vermilion_power_sabotage.connect(_on_go_to_vermilion_power_sabotage)
 	_replace_screen(vermilion)
+
+
+func _on_go_to_vermilion_power_sabotage() -> void:
+	_show_vermilion_power_sabotage()
+
+
+func _show_vermilion_power_sabotage() -> void:
+	var sabotage := VermilionPowerSabotageScene.instantiate()
+	sabotage.save_state = save_state
+	sabotage.go_to_vermilion_city.connect(_on_go_to_vermilion_city)
+	_replace_screen(sabotage)
 
 
 func _on_go_to_ss_anne_ticket_office() -> void:

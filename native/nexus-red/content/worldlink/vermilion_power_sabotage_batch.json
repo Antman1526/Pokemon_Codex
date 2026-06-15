@@ -1,0 +1,36 @@
+{
+  "id": "vermilion_power_sabotage_batch",
+  "title": "Vermilion Power Sabotage",
+  "feed": [
+    {
+      "id": "wl_vermilion_power_sabotage_reached",
+      "speaker": "Red",
+      "text": "Antman reached the service yard behind Lt. Surge's gym with Trail Cutter active."
+    },
+    {
+      "id": "wl_rocket_gas_power_sabotage",
+      "speaker": "WorldLink",
+      "text": "Rocket breached Vermilion's power grid, but Team Gas hijacked the sabotage with poison exhaust."
+    },
+    {
+      "id": "wl_team_gas_kanto_debut",
+      "speaker": "Misty",
+      "text": "Team Gas has made its first confirmed Kanto move near the harbor vents."
+    },
+    {
+      "id": "wl_red_misty_surge_prep",
+      "speaker": "Red",
+      "text": "Red and Misty prepared Antman for Surge's pressure: speed control, ground coverage, and clean switching."
+    },
+    {
+      "id": "wl_bill_power_grid_decode",
+      "speaker": "Bill",
+      "text": "Bill decoded the relay loop and confirmed the same Nexus interference pattern from the S.S. Anne cargo mark."
+    },
+    {
+      "id": "wl_surge_gym_battle_unlocked",
+      "speaker": "Lt. Surge",
+      "text": "Lt. Surge reopened the gym challenge after the sabotage trail was exposed."
+    }
+  ]
+}

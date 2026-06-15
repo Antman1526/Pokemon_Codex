@@ -175,6 +175,13 @@ func start_new_game(name: String) -> void:
 		"trail_cutter_field_tool_unlocked": false,
 		"surge_gym_access_unlocked": false,
 		"worldlink_ss_anne_captain_cabin_batch_queued": false,
+		"vermilion_power_sabotage_reached": false,
+		"rocket_gas_power_sabotage_seen": false,
+		"team_gas_kanto_debut_seen": false,
+		"red_misty_surge_prep_seen": false,
+		"bill_power_grid_decode_seen": false,
+		"surge_gym_battle_unlocked": false,
+		"worldlink_vermilion_power_sabotage_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -635,6 +642,35 @@ func queue_ss_anne_captain_cabin_batch() -> void:
 		"wl_trail_cutter_obtained",
 		"wl_trail_cutter_field_tool_unlocked",
 		"wl_surge_gym_access_unlocked",
+	])
+
+
+func enter_vermilion_power_sabotage() -> void:
+	current_scene = "vermilion_power_sabotage"
+	active_companion = "red"
+	set_flag("vermilion_power_sabotage_reached", true)
+	queue_worldlink_id("wl_vermilion_power_sabotage_reached")
+
+
+func record_vermilion_power_sabotage_scene() -> void:
+	active_companion = "red"
+	set_flag("rocket_gas_power_sabotage_seen", true)
+	set_flag("team_gas_kanto_debut_seen", true)
+	set_flag("red_misty_surge_prep_seen", true)
+	set_flag("bill_power_grid_decode_seen", true)
+	set_flag("surge_gym_battle_unlocked", true)
+	queue_vermilion_power_sabotage_batch()
+
+
+func queue_vermilion_power_sabotage_batch() -> void:
+	set_flag("worldlink_vermilion_power_sabotage_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_vermilion_power_sabotage_reached",
+		"wl_rocket_gas_power_sabotage",
+		"wl_team_gas_kanto_debut",
+		"wl_red_misty_surge_prep",
+		"wl_bill_power_grid_decode",
+		"wl_surge_gym_battle_unlocked",
 	])
 
 
