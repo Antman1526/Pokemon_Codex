@@ -28,6 +28,7 @@ const RockTunnelInteriorScene := preload("res://scenes/world/RockTunnelInterior.
 const LavenderOutskirtsScene := preload("res://scenes/world/LavenderOutskirts.tscn")
 const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFirstFloor.tscn")
 const PokemonTowerSilphScopeFloorScene := preload("res://scenes/world/PokemonTowerSilphScopeFloor.tscn")
+const PokemonTowerFujiRescueScene := preload("res://scenes/world/PokemonTowerFujiRescue.tscn")
 const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.tscn")
 const CeladonUndergroundPathScene := preload("res://scenes/world/CeladonUndergroundPath.tscn")
 const CeladonCityScene := preload("res://scenes/world/CeladonCity.tscn")
@@ -392,6 +393,19 @@ func _show_pokemon_tower_silph_scope_floor() -> void:
 	var tower := PokemonTowerSilphScopeFloorScene.instantiate()
 	tower.save_state = save_state
 	tower.go_to_pokemon_tower_first_floor.connect(_on_go_to_pokemon_tower_first_floor)
+	tower.go_to_pokemon_tower_fuji_rescue.connect(_on_go_to_pokemon_tower_fuji_rescue)
+	_replace_screen(tower)
+
+
+func _on_go_to_pokemon_tower_fuji_rescue() -> void:
+	_show_pokemon_tower_fuji_rescue()
+
+
+func _show_pokemon_tower_fuji_rescue() -> void:
+	var tower := PokemonTowerFujiRescueScene.instantiate()
+	tower.save_state = save_state
+	tower.go_to_pokemon_tower_silph_scope_floor.connect(_on_go_to_pokemon_tower_silph_scope_floor)
+	tower.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	_replace_screen(tower)
 
 
@@ -600,6 +614,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_celadon_rocket_hideout_b3f()
 	elif battle_return_scene == "celadon_rocket_command_floor":
 		_show_celadon_rocket_command_floor()
+	elif battle_return_scene == "pokemon_tower_fuji_rescue":
+		_show_pokemon_tower_fuji_rescue()
 	else:
 		_on_go_to_route_1()
 

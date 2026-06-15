@@ -253,6 +253,18 @@ func start_new_game(name: String) -> void:
 		"mr_fuji_rescue_path_unlocked": false,
 		"poke_flute_lead_unlocked": false,
 		"worldlink_pokemon_tower_silph_scope_floor_batch_queued": false,
+		"pokemon_tower_fuji_rescue_reached": false,
+		"red_fuji_rescue_guard_seen": false,
+		"bill_fuji_signal_clean_seen": false,
+		"rocket_tower_fuji_guard_seen": false,
+		"team_moonlight_retreat_signal_seen": false,
+		"fuji_rescue_battle_unlocked": false,
+		"rocket_tower_fuji_guard_battle_started": false,
+		"rocket_tower_fuji_guard_battle_finished": false,
+		"mr_fuji_rescued": false,
+		"poke_flute_obtained": false,
+		"snorlax_wake_path_unlocked": false,
+		"worldlink_pokemon_tower_fuji_rescue_batch_queued": false,
 		"route_8_celadon_road_reached": false,
 		"red_route_8_westbound_seen": false,
 		"bill_silph_scope_celadon_trace_seen": false,
@@ -1104,6 +1116,35 @@ func queue_pokemon_tower_silph_scope_floor_batch() -> void:
 	])
 
 
+func enter_pokemon_tower_fuji_rescue() -> void:
+	current_scene = "pokemon_tower_fuji_rescue"
+	active_companion = "red"
+	set_flag("pokemon_tower_fuji_rescue_reached", true)
+	queue_worldlink_id("wl_pokemon_tower_fuji_rescue_reached")
+
+
+func record_pokemon_tower_fuji_rescue_scene() -> void:
+	active_companion = "red"
+	set_flag("red_fuji_rescue_guard_seen", true)
+	set_flag("bill_fuji_signal_clean_seen", true)
+	set_flag("rocket_tower_fuji_guard_seen", true)
+	set_flag("team_moonlight_retreat_signal_seen", true)
+	set_flag("fuji_rescue_battle_unlocked", true)
+	queue_pokemon_tower_fuji_rescue_batch()
+
+
+func queue_pokemon_tower_fuji_rescue_batch() -> void:
+	set_flag("worldlink_pokemon_tower_fuji_rescue_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_pokemon_tower_fuji_rescue_reached",
+		"wl_red_fuji_rescue_guard",
+		"wl_bill_fuji_signal_clean",
+		"wl_rocket_tower_fuji_guard_seen",
+		"wl_team_moonlight_retreat_signal",
+		"wl_fuji_rescue_battle_unlocked",
+	])
+
+
 func enter_route_8_celadon_road() -> void:
 	current_scene = "route_8_celadon_road"
 	active_companion = "red"
@@ -1529,6 +1570,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("rocket_admin_lift_key_battle_started", true)
 	if battle_id == "giovanni_celadon_command_floor":
 		set_flag("giovanni_command_floor_battle_started", true)
+	if battle_id == "rocket_tower_fuji_guard":
+		set_flag("rocket_tower_fuji_guard_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -1609,6 +1652,15 @@ func finish_battle_placeholder(result: String) -> void:
 		queue_worldlink_id("wl_silph_scope_obtained")
 		queue_worldlink_id("wl_pokemon_tower_deeper_path_unlocked")
 		queue_worldlink_id("wl_erika_gym_path_unlocked")
+	if active_battle_id == "rocket_tower_fuji_guard":
+		set_flag("rocket_tower_fuji_guard_battle_finished", true)
+		set_flag("mr_fuji_rescued", true)
+		set_flag("poke_flute_obtained", true)
+		set_flag("snorlax_wake_path_unlocked", true)
+		queue_worldlink_id("wl_rocket_tower_fuji_guard_battle_finished")
+		queue_worldlink_id("wl_mr_fuji_rescued")
+		queue_worldlink_id("wl_poke_flute_obtained")
+		queue_worldlink_id("wl_snorlax_wake_path_unlocked")
 	active_battle_id = ""
 
 

@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_pokemon_tower_first_floor
+signal go_to_pokemon_tower_fuji_rescue
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_pokemon_tower_silph_scope_floor_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_fuji_rescue_path()
 	if event.is_action_pressed("cancel"):
 		return_to_pokemon_tower_first_floor()
 
@@ -151,9 +154,17 @@ func trigger_pokemon_tower_silph_scope_floor_scene() -> void:
 	dialogue_label.text = "Red: The Silph Scope is showing Marowak's spirit clearly. Bill says Team Moonlight twisted the grief signal, Rocket is holding Mr. Fuji above us, Cubone is reacting to the truth, and the Poke Flute lead opens once we break this floor's pressure."
 
 
+func trigger_fuji_rescue_path() -> void:
+	if save_state == null or not bool(save_state.story_flags.get("mr_fuji_rescue_path_unlocked", false)) or not bool(save_state.story_flags.get("poke_flute_lead_unlocked", false)):
+		dialogue_label.text = "Red: Mr. Fuji is still hidden behind the Silph Scope pressure. Reveal Marowak, Cubone, Rocket, Moonlight, and the Poke Flute lead first."
+		return
+	dialogue_label.text = "Red: Mr. Fuji is above us, and Rocket knows the Poke Flute can wake Snorlax. I am with you."
+	emit_signal("go_to_pokemon_tower_fuji_rescue")
+
+
 func return_to_pokemon_tower_first_floor() -> void:
 	emit_signal("go_to_pokemon_tower_first_floor")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: This Silph Scope floor is the real Pokemon Tower turn. Press Z/Enter to reveal Marowak, Cubone, Mr. Fuji, Rocket, Moonlight, Bill's reading, and the Poke Flute lead. Press X/Esc to return."
+	dialogue_label.text = "Red: This Silph Scope floor is the real Pokemon Tower turn. Press Z/Enter to reveal Marowak, Cubone, Mr. Fuji, Rocket, Moonlight, Bill's reading, and the Poke Flute lead. Press Right for Mr. Fuji's rescue or X/Esc to return."

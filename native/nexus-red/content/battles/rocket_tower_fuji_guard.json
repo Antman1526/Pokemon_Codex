@@ -1,0 +1,43 @@
+{
+  "id": "rocket_tower_fuji_guard",
+  "display_title": "Pokemon Tower - Rocket Fuji Guard",
+  "status": "placeholder",
+  "battle_type": "villain_guard",
+  "location": "pokemon_tower_fuji_rescue",
+  "level_cap": 36,
+  "difficulty_note": "Short Rocket tower battle after the Giovanni command-floor payoff. It should be tense but easier than Giovanni.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red blocks the stairwell while Antman clears the Rocket guard holding Mr. Fuji."
+  },
+  "opponent": {
+    "id": "rocket_tower_guard",
+    "display_name": "Rocket Tower Guard",
+    "faction": "rocket",
+    "slots": [
+      {
+        "species": "Golbat",
+        "level": 35,
+        "role": "fast tower pressure and classic Rocket identity"
+      },
+      {
+        "species": "Hypno",
+        "level": 36,
+        "role": "Moonlight-adjacent dream pressure without making Moonlight the battle owner"
+      }
+    ],
+    "intent": "keep Mr. Fuji away from the Poke Flute and preserve Rocket's control over the Snorlax roadblock"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "rocket_tower_fuji_guard_battle_started",
+      "rocket_tower_fuji_guard_battle_finished",
+      "mr_fuji_rescued",
+      "poke_flute_obtained",
+      "snorlax_wake_path_unlocked"
+    ]
+  }
+}

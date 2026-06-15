@@ -1,0 +1,55 @@
+{
+  "id": "pokemon_tower_fuji_rescue_batch",
+  "feed": [
+    {
+      "id": "wl_pokemon_tower_fuji_rescue_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red reached Mr. Fuji's rescue floor in Pokemon Tower."
+    },
+    {
+      "id": "wl_red_fuji_rescue_guard",
+      "speaker": "Red",
+      "text": "Red held the tower stairwell while Antman moved toward Mr. Fuji."
+    },
+    {
+      "id": "wl_bill_fuji_signal_clean",
+      "speaker": "Bill",
+      "text": "Bill confirmed the Silph Scope signal is clean enough to separate Rocket's trap from Team Moonlight's dream residue."
+    },
+    {
+      "id": "wl_rocket_tower_fuji_guard_seen",
+      "speaker": "WorldLink",
+      "text": "A Rocket guard is holding Mr. Fuji near the Poke Flute case."
+    },
+    {
+      "id": "wl_team_moonlight_retreat_signal",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight's tower signal is retreating, but it left enough pressure to empower Rocket's guard."
+    },
+    {
+      "id": "wl_fuji_rescue_battle_unlocked",
+      "speaker": "WorldLink",
+      "text": "The Rocket tower guard battle is unlocked."
+    },
+    {
+      "id": "wl_rocket_tower_fuji_guard_battle_finished",
+      "speaker": "WorldLink",
+      "text": "Rocket's tower guard was defeated."
+    },
+    {
+      "id": "wl_mr_fuji_rescued",
+      "speaker": "Red",
+      "text": "Mr. Fuji was rescued from Pokemon Tower."
+    },
+    {
+      "id": "wl_poke_flute_obtained",
+      "speaker": "WorldLink",
+      "text": "Antman obtained the Poke Flute."
+    },
+    {
+      "id": "wl_snorlax_wake_path_unlocked",
+      "speaker": "Bill",
+      "text": "Bill marked the Snorlax wake path as open now that the Poke Flute is recovered."
+    }
+  ]
+}
