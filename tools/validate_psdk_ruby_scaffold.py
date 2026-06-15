@@ -103,6 +103,10 @@ REQUIRED_MARKERS = (
     "consume_pending_battle_request",
     "module RouteMigrationEventAdapter",
     "trigger_route",
+    "module WildBattleLauncher",
+    "launch_pending_request",
+    "build_launch_payload",
+    "launch_history",
     "module Route1MigrationEvent",
     "module Route2MigrationEvent",
     "module Route3MigrationEvent",
@@ -139,6 +143,7 @@ REQUIRED_RUNTIME_FILES = (
     "early_migration_encounters.rb",
     "map_event_bridge.rb",
     "route_migration_event_adapter.rb",
+    "wild_battle_launcher.rb",
     "route1_migration_event.rb",
     "route2_migration_event.rb",
     "route3_migration_event.rb",
@@ -784,6 +789,19 @@ raise 'expected pending battle request cleared after consume' unless NexusRed::M
 NexusRed::PokedexAvailability.record_caught(route_1_event_state, 'Bulbasaur', location: 'Route 1', channel: 'wild_grass', area_type: 'route')
 second_route_1_request = NexusRed::Route1MigrationEvent.trigger(route_1_event_state, time: 'morning', max_level: 5)
 raise 'expected Route 1 migration adapter skips caught Bulbasaur' unless second_route_1_request['species'] == 'Chikorita'
+no_pending_launch = NexusRed::WildBattleLauncher.launch_pending_request(NexusRed::RuntimeState.build)
+raise 'expected no-op launch status without pending request' unless no_pending_launch['status'] == 'no_pending_battle'
+route_1_launch_state = NexusRed::RuntimeState.build
+NexusRed::StarterSelection.select_partner(route_1_launch_state, 'Bulbasaur')
+NexusRed::Route1MigrationEvent.trigger(route_1_launch_state, time: 'morning', max_level: 5)
+launch_payload = NexusRed::WildBattleLauncher.launch_pending_request(route_1_launch_state)
+raise 'expected wild battle launch status prepared' unless launch_payload['status'] == 'launch_prepared'
+raise 'expected wild battle launch consumes pending request' unless NexusRed::MapEventBridge.pending_battle_request(route_1_launch_state).nil?
+raise 'expected wild battle launch species key' unless launch_payload['species_key'] == 'BULBASAUR'
+raise 'expected wild battle launch level' unless launch_payload['level'] == 4
+raise 'expected wild battle launch source event id' unless launch_payload['source_event_id'] == 'route_1_migration_event'
+raise 'expected wild battle launch command family' unless launch_payload['psdk_command_family'] == 'wild_battle'
+raise 'expected wild battle launch history recorded' unless NexusRed::WildBattleLauncher.launch_history(route_1_launch_state).last == launch_payload
 
 route_2_event_state = NexusRed::RuntimeState.build
 NexusRed::StarterSelection.select_partner(route_2_event_state, 'Bulbasaur')
