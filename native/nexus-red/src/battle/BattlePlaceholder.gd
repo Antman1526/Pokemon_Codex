@@ -12,6 +12,7 @@ const BATTLE_DATA_PATHS := {
 	"misty_cerulean_gym": "res://content/battles/misty_cerulean_gym.json",
 	"cerulean_rocket_house_thief": "res://content/battles/cerulean_rocket_house_thief.json",
 	"blue_ss_anne": "res://content/battles/blue_ss_anne.json",
+	"lt_surge_vermilion_gym": "res://content/battles/lt_surge_vermilion_gym.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

@@ -797,6 +797,24 @@ python3 tools/validate_native_vermilion_power_sabotage.py
 godot --headless --path native/nexus-red --script tests/vermilion_power_sabotage_test.gd
 ```
 
+### Task 7.42: Add Lt. Surge gym placeholder battle
+
+Acceptance:
+
+- The Vermilion power sabotage scene keeps Lt. Surge's gym battle locked until the sabotage scene is resolved.
+- After the sabotage scene, Antman can start the `lt_surge_vermilion_gym` placeholder battle from the Vermilion service-yard scene.
+- The battle data documents a mainline-hard electric team with Voltorb, Pikachu, and Raichu, level cap 26, and Thunder Badge reward.
+- Save state and WorldLink record Surge battle started, Surge battle finished, Thunder Badge earned, Surge respect scene, and Route 11 path unlocked.
+- Battle completion returns the player to the Vermilion power sabotage scene so the next route handoff can be built from there.
+- WorldLink checklist adds Lt. Surge gym challenge, Thunder Badge, and Route 11 unlock milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_lt_surge_gym_placeholder.py
+godot --headless --path native/nexus-red --script tests/lt_surge_gym_placeholder_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

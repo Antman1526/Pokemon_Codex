@@ -1,0 +1,31 @@
+{
+  "id": "vermilion_surge_gym_batch",
+  "title": "Vermilion Gym - Lt. Surge",
+  "feed": [
+    {
+      "id": "wl_surge_vermilion_gym_started",
+      "speaker": "WorldLink",
+      "text": "Antman challenged Lt. Surge after clearing the Rocket and Team Gas power sabotage."
+    },
+    {
+      "id": "wl_surge_vermilion_gym_finished",
+      "speaker": "Lt. Surge",
+      "text": "Lt. Surge marked Antman as a serious challenger after the Vermilion gym battle."
+    },
+    {
+      "id": "wl_thunder_badge_earned",
+      "speaker": "Red",
+      "text": "Antman earned the Thunder Badge. Red says the journey east can finally begin."
+    },
+    {
+      "id": "wl_surge_respect_scene",
+      "speaker": "Misty",
+      "text": "Misty logged Surge's respect beat and warned that Rocket will adapt after losing the harbor grid."
+    },
+    {
+      "id": "wl_route_11_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Route 11 path unlocked. The Kanto journey can move toward the next Rocket signal."
+    }
+  ]
+}

@@ -351,6 +351,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_cerulean_rocket_house()
 	elif battle_return_scene == "ss_anne_main_deck":
 		_show_ss_anne_main_deck()
+	elif battle_return_scene == "vermilion_power_sabotage":
+		_show_vermilion_power_sabotage()
 	else:
 		_on_go_to_route_1()
 

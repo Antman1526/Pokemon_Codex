@@ -182,6 +182,12 @@ func start_new_game(name: String) -> void:
 		"bill_power_grid_decode_seen": false,
 		"surge_gym_battle_unlocked": false,
 		"worldlink_vermilion_power_sabotage_batch_queued": false,
+		"surge_vermilion_gym_started": false,
+		"surge_vermilion_gym_finished": false,
+		"thunder_badge_earned": false,
+		"surge_respect_scene_seen": false,
+		"route_11_path_unlocked": false,
+		"worldlink_vermilion_surge_gym_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -674,6 +680,17 @@ func queue_vermilion_power_sabotage_batch() -> void:
 	])
 
 
+func queue_vermilion_surge_gym_batch() -> void:
+	set_flag("worldlink_vermilion_surge_gym_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_surge_vermilion_gym_started",
+		"wl_surge_vermilion_gym_finished",
+		"wl_thunder_badge_earned",
+		"wl_surge_respect_scene",
+		"wl_route_11_path_unlocked",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -774,6 +791,9 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("misty_cerulean_gym_started", true)
 	if battle_id == "cerulean_rocket_house_thief":
 		set_flag("cerulean_rocket_house_thief_battle_started", true)
+	if battle_id == "lt_surge_vermilion_gym":
+		set_flag("surge_vermilion_gym_started", true)
+		queue_worldlink_id("wl_surge_vermilion_gym_started")
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -820,6 +840,12 @@ func finish_battle_placeholder(result: String) -> void:
 		set_flag("route_5_vermilion_path_unlocked", true)
 		queue_worldlink_id("wl_stolen_tm_recovered")
 		queue_worldlink_id("wl_route_5_vermilion_path_unlocked")
+	if active_battle_id == "lt_surge_vermilion_gym":
+		set_flag("surge_vermilion_gym_finished", true)
+		set_flag("thunder_badge_earned", true)
+		set_flag("surge_respect_scene_seen", true)
+		set_flag("route_11_path_unlocked", true)
+		queue_vermilion_surge_gym_batch()
 	active_battle_id = ""
 
 

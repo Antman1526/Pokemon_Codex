@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_vermilion_city
+signal start_battle_placeholder(battle_id)
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_power_sabotage_scene()
+	if event.is_action_pressed("ui_right"):
+		trigger_surge_gym_battle()
 	if event.is_action_pressed("cancel"):
 		return_to_vermilion_city()
 
@@ -115,9 +118,19 @@ func trigger_power_sabotage_scene() -> void:
 	dialogue_label.text = "Red: Rocket opened the power room, but Team Gas flooded the grid with poison exhaust and stole the credit. Misty is clearing the harbor vents, Bill decoded the relay loop, and Surge says Antman can challenge him once the fumes break."
 
 
+func trigger_surge_gym_battle() -> void:
+	if save_state and not bool(save_state.story_flags.get("surge_gym_battle_unlocked", false)):
+		dialogue_label.text = "Lt. Surge: No battle until you finish exposing that power sabotage. Clear the fumes, then come earn the Thunder Badge."
+		return
+	if save_state:
+		save_state.start_battle_placeholder("lt_surge_vermilion_gym")
+	dialogue_label.text = "Lt. Surge: Red and Misty helped you prep, but this one is yours, Antman. Win and the Thunder Badge opens the road east."
+	emit_signal("start_battle_placeholder", "lt_surge_vermilion_gym")
+
+
 func return_to_vermilion_city() -> void:
 	emit_signal("go_to_vermilion_city")
 
 
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Trail Cutter got us behind Surge's gym. Press Z/Enter to expose the Rocket and Team Gas power sabotage with Misty and Bill, or X/Esc to return to Vermilion."
+	dialogue_label.text = "Red: Trail Cutter got us behind Surge's gym. Press Z/Enter to expose the Rocket and Team Gas power sabotage with Misty and Bill, Right for Lt. Surge's gym, or X/Esc to return to Vermilion."

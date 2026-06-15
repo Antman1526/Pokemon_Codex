@@ -1,0 +1,48 @@
+{
+  "id": "lt_surge_vermilion_gym",
+  "display_title": "Vermilion Gym - Lt. Surge",
+  "status": "placeholder",
+  "battle_type": "gym_leader",
+  "location": "vermilion_city",
+  "level_cap": 26,
+  "badge": "Thunder Badge",
+  "difficulty_note": "Mainline-hard electric tempo check after the Rocket and Team Gas power sabotage. Surge pressures slow teams with speed and paralysis, but remains less punishing than Radical Red by default.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red and Misty help Antman prepare before the match; gym battles remain one-on-one."
+  },
+  "opponent": {
+    "id": "lt_surge_vermilion",
+    "display_name": "Lt. Surge",
+    "type_specialty": "electric",
+    "slots": [
+      {
+        "species": "Voltorb",
+        "level": 22,
+        "role": "speed opener"
+      },
+      {
+        "species": "Pikachu",
+        "level": 23,
+        "role": "paralysis pressure"
+      },
+      {
+        "species": "Raichu",
+        "level": 26,
+        "role": "signature ace"
+      }
+    ],
+    "intent": "third Kanto gym test after Antman exposes the Vermilion power sabotage and unlocks the gym route with Trail Cutter"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "surge_vermilion_gym_started",
+      "surge_vermilion_gym_finished",
+      "thunder_badge_earned",
+      "route_11_path_unlocked"
+    ]
+  }
+}
