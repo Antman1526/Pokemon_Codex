@@ -280,6 +280,8 @@ REQUIRED_MARKERS = (
     "falkner_zephyr_badge_battle_cleared?",
     "complete_union_cave_road",
     "union_cave_road_cleared?",
+    "complete_slowpoke_well_crisis",
+    "slowpoke_well_crisis_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -3124,6 +3126,55 @@ raise 'expected JohtoStory Union Cave factions' unless %w[team_rocket team_gold_
 second_union_cave = NexusRed::JohtoStory.complete_union_cave_road(kanto_story_state)
 raise 'expected JohtoStory Union Cave idempotent guard' unless second_union_cave['status'] == 'already_cleared'
 raise 'expected JohtoStory no duplicate Union Cave history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'union_cave_road' } == 1
+pre_slowpoke_well = NexusRed::JohtoStory.complete_slowpoke_well_crisis(NexusRed::RuntimeState.build)
+raise 'expected JohtoStory Slowpoke Well gated before Johto unlock' unless pre_slowpoke_well['status'] == 'blocked_missing_johto_region_unlock'
+johto_before_union_cave = NexusRed::RuntimeState.build
+johto_before_union_cave['current_region'] = 'johto'
+NexusRed::JohtoStory.complete_new_bark_arrival(johto_before_union_cave)
+NexusRed::JohtoStory.complete_violet_city_path(johto_before_union_cave)
+NexusRed::JohtoStory.complete_sprout_tower_entry(johto_before_union_cave)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_prep(johto_before_union_cave)
+NexusRed::JohtoStory.complete_falkner_zephyr_badge_battle(johto_before_union_cave)
+raise 'expected JohtoStory Slowpoke Well gated before Union Cave' unless NexusRed::JohtoStory.complete_slowpoke_well_crisis(johto_before_union_cave)['status'] == 'blocked_missing_union_cave_road'
+slowpoke_well = NexusRed::JohtoStory.complete_slowpoke_well_crisis(
+  kanto_story_state,
+  location: 'Slowpoke Well',
+  result: 'rocket_forced_out',
+  area_type: 'villain_hideout'
+)
+raise 'expected JohtoStory Slowpoke Well clear status' unless slowpoke_well['status'] == 'cleared'
+raise 'expected JohtoStory Slowpoke Well event recorded' unless kanto_story_state['johto_story']['cleared_events'].include?('slowpoke_well_crisis')
+raise 'expected JohtoStory Slowpoke Well helper true' unless NexusRed::JohtoStory.slowpoke_well_crisis_cleared?(kanto_story_state)
+raise 'expected JohtoStory Kurt rescue event' unless kanto_story_state['johto_story']['cleared_events'].include?('kurt_slowpoke_well_rescue')
+raise 'expected JohtoStory Bugsy prep event' unless kanto_story_state['johto_story']['cleared_events'].include?('bugsy_hive_badge_prep_unlocked')
+raise 'expected JohtoStory Slowpoke Well flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SLOWPOKE_WELL_CRISIS')
+raise 'expected JohtoStory Kurt rescue flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KURT_SLOWPOKE_WELL_RESCUE')
+raise 'expected JohtoStory Red Slowpoke raid flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SLOWPOKE_WELL_RAID')
+raise 'expected JohtoStory Brock Slowpoke care flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BROCK_SLOWPOKE_CARE')
+raise 'expected JohtoStory Bill Rocket radio core flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ROCKET_RADIO_CORE')
+raise 'expected JohtoStory Rocket Slowpoke tail ring flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_SLOWPOKE_TAIL_RING')
+raise 'expected JohtoStory Bugsy prep flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BUGSY_HIVE_BADGE_PREP_UNLOCKED')
+raise 'expected JohtoStory current act Bugsy prep' unless kanto_story_state['johto_story']['current_act'] == 'act_6_bugsy_hive_badge'
+raise 'expected JohtoStory Red Slowpoke scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('slowpoke_well_raid')
+raise 'expected JohtoStory Brock Slowpoke scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('slowpoke_care')
+raise 'expected JohtoStory Bill Rocket core scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('rocket_radio_core_decode')
+raise 'expected JohtoStory Kurt local ally' unless slowpoke_well['local_allies'].include?('kurt')
+raise 'expected JohtoStory Silver Azalea activity' unless kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Silver') && kanto_story_state['rival_progress']['silver']['latest_activity']['summary'].include?('Bugsy')
+raise 'expected JohtoStory Rocket Slowpoke tail activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['johto'].any? { |activity| activity['operation'] == 'slowpoke_tail_ring' }
+raise 'expected JohtoStory Gold Dust apricorn activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['johto'].any? { |activity| activity['operation'] == 'apricorn_black_market' }
+raise 'expected JohtoStory Moonlight well echo activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['johto'].any? { |activity| activity['operation'] == 'slowpoke_well_dream_echo' }
+raise 'expected JohtoStory Nexus Order well pulse activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['johto'].any? { |activity| activity['operation'] == 'slowpoke_well_pulse_hidden' }
+raise 'expected JohtoStory Rocket Gold Dust Slowpoke conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_gold_dust' && conflict['location'] == 'Slowpoke Well' }
+raise 'expected JohtoStory Nexus Order still hidden after Slowpoke Well' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected JohtoStory Slowpoke Well messages paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'johto_story' && message['text'].include?('Slowpoke Well') && message['text'].include?('Bugsy') && message['delivery'] == 'paused' }
+raise 'expected JohtoStory Slowpoke Well result' unless slowpoke_well['result'] == 'rocket_forced_out'
+raise 'expected JohtoStory Slowpoke Well next hook Bugsy' unless slowpoke_well['next_hook'] == 'bugsy_hive_badge_prep'
+raise 'expected JohtoStory Slowpoke Well current act' unless slowpoke_well['current_act'] == 'act_6_bugsy_hive_badge'
+raise 'expected JohtoStory Slowpoke Well unlocks Bugsy' unless slowpoke_well['unlocks'].include?('bugsy_hive_badge_prep') && slowpoke_well['unlocks'].include?('kurt_apricorn_shop')
+raise 'expected JohtoStory Slowpoke Well factions' unless %w[team_rocket team_gold_dust team_moonlight nexus_order].all? { |faction| slowpoke_well['factions'].include?(faction) }
+second_slowpoke_well = NexusRed::JohtoStory.complete_slowpoke_well_crisis(kanto_story_state)
+raise 'expected JohtoStory Slowpoke Well idempotent guard' unless second_slowpoke_well['status'] == 'already_cleared'
+raise 'expected JohtoStory no duplicate Slowpoke Well history' unless kanto_story_state['johto_story']['event_history'].count { |event| event['event_id'] == 'slowpoke_well_crisis' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

@@ -66,6 +66,17 @@ module NexusRed
     AZALEA_TOWN_UNLOCKED_EVENT_ID = 'azalea_town_unlocked'
     SLOWPOKE_WELL_CRISIS_UNLOCKED_EVENT_ID = 'slowpoke_well_crisis_unlocked'
     KURT_APRICORN_LEAD_EVENT_ID = 'kurt_apricorn_lead'
+    SLOWPOKE_WELL_CRISIS_EVENT_ID = 'slowpoke_well_crisis'
+    KURT_SLOWPOKE_WELL_RESCUE_EVENT_ID = 'kurt_slowpoke_well_rescue'
+    RED_SLOWPOKE_WELL_RAID_EVENT_ID = 'red_slowpoke_well_raid'
+    BROCK_SLOWPOKE_CARE_EVENT_ID = 'brock_slowpoke_care'
+    BILL_ROCKET_RADIO_CORE_EVENT_ID = 'bill_rocket_radio_core'
+    ROCKET_SLOWPOKE_TAIL_RING_EVENT_ID = 'rocket_slowpoke_tail_ring'
+    GOLD_DUST_APRICORN_MARKET_EVENT_ID = 'gold_dust_apricorn_black_market'
+    MOONLIGHT_SLOWPOKE_WELL_ECHO_EVENT_ID = 'moonlight_slowpoke_well_echo'
+    NEXUS_ORDER_SLOWPOKE_WELL_PULSE_EVENT_ID = 'nexus_order_slowpoke_well_pulse_hidden'
+    AZALEA_SERVICES_RESTORED_EVENT_ID = 'azalea_services_restored'
+    BUGSY_HIVE_BADGE_PREP_EVENT_ID = 'bugsy_hive_badge_prep_unlocked'
 
     module_function
 
@@ -1080,6 +1091,169 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_union_cave_fault_line_unrevealed',
         'unlocks' => %w[azalea_town slowpoke_well_crisis kurt_apricorn_lead route_33],
         'next_hook' => 'slowpoke_well_crisis'
+      }
+    end
+
+    def complete_slowpoke_well_crisis(state, location: 'Slowpoke Well', result: 'rocket_forced_out', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => SLOWPOKE_WELL_CRISIS_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_union_cave_road', 'event_id' => SLOWPOKE_WELL_CRISIS_EVENT_ID } unless union_cave_road_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SLOWPOKE_WELL_CRISIS_EVENT_ID } if slowpoke_well_crisis_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_SLOWPOKE_WELL_CRISIS')
+      add_story_flag(state, 'FLAG_NEXUS_KURT_SLOWPOKE_WELL_RESCUE')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SLOWPOKE_WELL_RAID')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_SLOWPOKE_CARE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ROCKET_RADIO_CORE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_SLOWPOKE_TAIL_RING')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_APRICORN_BLACK_MARKET')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_SLOWPOKE_WELL_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_SLOWPOKE_WELL_PULSE')
+      add_story_flag(state, 'FLAG_NEXUS_AZALEA_SERVICES_RESTORED')
+      add_story_flag(state, 'FLAG_NEXUS_BUGSY_HIVE_BADGE_PREP_UNLOCKED')
+
+      [
+        SLOWPOKE_WELL_CRISIS_EVENT_ID,
+        KURT_SLOWPOKE_WELL_RESCUE_EVENT_ID,
+        RED_SLOWPOKE_WELL_RAID_EVENT_ID,
+        BROCK_SLOWPOKE_CARE_EVENT_ID,
+        BILL_ROCKET_RADIO_CORE_EVENT_ID,
+        ROCKET_SLOWPOKE_TAIL_RING_EVENT_ID,
+        GOLD_DUST_APRICORN_MARKET_EVENT_ID,
+        MOONLIGHT_SLOWPOKE_WELL_ECHO_EVENT_ID,
+        NEXUS_ORDER_SLOWPOKE_WELL_PULSE_EVENT_ID,
+        AZALEA_SERVICES_RESTORED_EVENT_ID,
+        BUGSY_HIVE_BADGE_PREP_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'slowpoke_well_raid',
+        location: location,
+        summary: 'Red enters Slowpoke Well with Antman as backup, then lets Antman lead the raid against Rocket.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'slowpoke_care',
+        location: location,
+        summary: 'Brock stabilizes injured Slowpoke and turns the rescue into a lesson about caring for Pokemon after the battle ends.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'rocket_radio_core_decode',
+        location: location,
+        summary: 'Bill cracks Rocket radio core traffic inside Slowpoke Well and confirms the Johto operation is not isolated.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Azalea Town',
+        'Silver refused to thank anyone after Slowpoke Well and turned toward Bugsy, chasing strength before understanding why Rocket ran.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'slowpoke_tail_ring',
+        threat_delta: 3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Azalea Apricorn Market',
+        'apricorn_black_market',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        location,
+        'slowpoke_well_dream_echo',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        location,
+        'slowpoke_well_pulse_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket tail profits and Gold Dust apricorn buyers collide after Kurt exposes both markets.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_6_bugsy_hive_badge'
+      event = slowpoke_well_crisis_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Slowpoke Well is saved: Kurt exposes the Rocket tail ring, Red and Brock keep Antman focused, Bill finds a radio core, and Bugsy opens the Hive Badge prep.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def slowpoke_well_crisis_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == SLOWPOKE_WELL_CRISIS_EVENT_ID }
+    end
+
+    def slowpoke_well_crisis_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => SLOWPOKE_WELL_CRISIS_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_6_bugsy_hive_badge',
+        'result' => result.to_s,
+        'local_allies' => %w[kurt],
+        'companions' => %w[red brock bill],
+        'rivals' => %w[silver],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'linked_events' => [
+          KURT_SLOWPOKE_WELL_RESCUE_EVENT_ID,
+          RED_SLOWPOKE_WELL_RAID_EVENT_ID,
+          BROCK_SLOWPOKE_CARE_EVENT_ID,
+          BILL_ROCKET_RADIO_CORE_EVENT_ID,
+          ROCKET_SLOWPOKE_TAIL_RING_EVENT_ID,
+          GOLD_DUST_APRICORN_MARKET_EVENT_ID,
+          MOONLIGHT_SLOWPOKE_WELL_ECHO_EVENT_ID,
+          NEXUS_ORDER_SLOWPOKE_WELL_PULSE_EVENT_ID,
+          AZALEA_SERVICES_RESTORED_EVENT_ID,
+          BUGSY_HIVE_BADGE_PREP_EVENT_ID
+        ],
+        'villain_result' => 'rocket_retreats_but_radio_core_survives',
+        'hidden_meta_signal' => 'nexus_order_slowpoke_well_pulse_unrevealed',
+        'unlocks' => %w[bugsy_hive_badge_prep kurt_apricorn_shop azalea_services_restored slowpoke_well_rematch_seed],
+        'next_hook' => 'bugsy_hive_badge_prep'
       }
     end
   end
