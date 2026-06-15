@@ -27,6 +27,7 @@ const Route9RockTunnelApproachScene := preload("res://scenes/world/Route9RockTun
 const RockTunnelInteriorScene := preload("res://scenes/world/RockTunnelInterior.tscn")
 const LavenderOutskirtsScene := preload("res://scenes/world/LavenderOutskirts.tscn")
 const PokemonTowerFirstFloorScene := preload("res://scenes/world/PokemonTowerFirstFloor.tscn")
+const PokemonTowerSilphScopeFloorScene := preload("res://scenes/world/PokemonTowerSilphScopeFloor.tscn")
 const Route8CeladonRoadScene := preload("res://scenes/world/Route8CeladonRoad.tscn")
 const CeladonUndergroundPathScene := preload("res://scenes/world/CeladonUndergroundPath.tscn")
 const CeladonCityScene := preload("res://scenes/world/CeladonCity.tscn")
@@ -379,6 +380,18 @@ func _show_pokemon_tower_first_floor() -> void:
 	tower.save_state = save_state
 	tower.go_to_lavender_outskirts.connect(_on_go_to_lavender_outskirts)
 	tower.go_to_route_8_celadon_road.connect(_on_go_to_route_8_celadon_road)
+	tower.go_to_pokemon_tower_silph_scope_floor.connect(_on_go_to_pokemon_tower_silph_scope_floor)
+	_replace_screen(tower)
+
+
+func _on_go_to_pokemon_tower_silph_scope_floor() -> void:
+	_show_pokemon_tower_silph_scope_floor()
+
+
+func _show_pokemon_tower_silph_scope_floor() -> void:
+	var tower := PokemonTowerSilphScopeFloorScene.instantiate()
+	tower.save_state = save_state
+	tower.go_to_pokemon_tower_first_floor.connect(_on_go_to_pokemon_tower_first_floor)
 	_replace_screen(tower)
 
 

@@ -1,0 +1,50 @@
+{
+  "id": "pokemon_tower_silph_scope_floor_batch",
+  "feed": [
+    {
+      "id": "wl_pokemon_tower_silph_scope_floor_reached",
+      "speaker": "WorldLink",
+      "text": "Antman and Red returned to Pokemon Tower and reached the Silph Scope floor."
+    },
+    {
+      "id": "wl_red_silph_scope_guard",
+      "speaker": "Red",
+      "text": "Red stayed beside Antman as the Silph Scope made the tower's hidden grief visible."
+    },
+    {
+      "id": "wl_bill_silph_scope_reading",
+      "speaker": "Bill",
+      "text": "Bill confirmed the Silph Scope is separating a true spirit signal from Team Moonlight's dream pressure."
+    },
+    {
+      "id": "wl_marowak_spirit_revealed",
+      "speaker": "WorldLink",
+      "text": "Marowak's spirit has been revealed by the Silph Scope."
+    },
+    {
+      "id": "wl_cubone_grief_scene",
+      "speaker": "Red",
+      "text": "Cubone reacted to Marowak's spirit, turning the Lavender mystery into a personal rescue."
+    },
+    {
+      "id": "wl_team_moonlight_tower_ritual",
+      "speaker": "WorldLink",
+      "text": "Team Moonlight is using Pokemon Tower grief as a ritual amplifier."
+    },
+    {
+      "id": "wl_rocket_mr_fuji_hold",
+      "speaker": "WorldLink",
+      "text": "Rocket is holding Mr. Fuji higher in the tower to control the Poke Flute lead."
+    },
+    {
+      "id": "wl_mr_fuji_rescue_path_unlocked",
+      "speaker": "WorldLink",
+      "text": "Mr. Fuji's rescue path is unlocked."
+    },
+    {
+      "id": "wl_poke_flute_lead_unlocked",
+      "speaker": "Bill",
+      "text": "Bill marked the Poke Flute as the next field-tool lead after the tower pressure breaks."
+    }
+  ]
+}

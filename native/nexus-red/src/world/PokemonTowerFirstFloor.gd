@@ -2,6 +2,7 @@ extends Control
 
 signal go_to_lavender_outskirts
 signal go_to_route_8_celadon_road
+signal go_to_pokemon_tower_silph_scope_floor
 
 var save_state
 var dialogue_label: Label
@@ -129,7 +130,11 @@ func trigger_pokemon_tower_first_floor_scene() -> void:
 
 
 func trigger_deeper_tower_path() -> void:
-	dialogue_label.text = "Red: The deeper Pokemon Tower path stays locked until we get the Silph Scope. Without it, the Echo Flute and Bill's readings are just noise."
+	if save_state == null or not bool(save_state.story_flags.get("silph_scope_obtained", false)) or not bool(save_state.story_flags.get("pokemon_tower_deeper_path_unlocked", false)):
+		dialogue_label.text = "Red: The deeper Pokemon Tower path stays locked until we get the Silph Scope. Without it, the Echo Flute and Bill's readings are just noise."
+		return
+	dialogue_label.text = "Red: The Silph Scope is reading the stairs clearly now. Stay close, Antman. Bill says this floor is where Marowak, Cubone, Mr. Fuji, Rocket, and Moonlight all overlap."
+	emit_signal("go_to_pokemon_tower_silph_scope_floor")
 
 
 func trigger_route_8_celadon_lead() -> void:

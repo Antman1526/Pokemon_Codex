@@ -243,6 +243,16 @@ func start_new_game(name: String) -> void:
 		"silph_scope_need_seen": false,
 		"pokemon_tower_deeper_path_locked": false,
 		"worldlink_pokemon_tower_first_floor_batch_queued": false,
+		"pokemon_tower_silph_scope_floor_reached": false,
+		"red_silph_scope_guard_seen": false,
+		"bill_silph_scope_reading_seen": false,
+		"marowak_spirit_revealed": false,
+		"cubone_grief_scene_seen": false,
+		"team_moonlight_tower_ritual_seen": false,
+		"rocket_mr_fuji_hold_seen": false,
+		"mr_fuji_rescue_path_unlocked": false,
+		"poke_flute_lead_unlocked": false,
+		"worldlink_pokemon_tower_silph_scope_floor_batch_queued": false,
 		"route_8_celadon_road_reached": false,
 		"red_route_8_westbound_seen": false,
 		"bill_silph_scope_celadon_trace_seen": false,
@@ -1056,6 +1066,41 @@ func queue_pokemon_tower_first_floor_batch() -> void:
 		"wl_cubone_mr_fuji_thread",
 		"wl_silph_scope_need_seen",
 		"wl_pokemon_tower_deeper_path_locked",
+	])
+
+
+func enter_pokemon_tower_silph_scope_floor() -> void:
+	current_scene = "pokemon_tower_silph_scope_floor"
+	active_companion = "red"
+	set_flag("pokemon_tower_silph_scope_floor_reached", true)
+	queue_worldlink_id("wl_pokemon_tower_silph_scope_floor_reached")
+
+
+func record_pokemon_tower_silph_scope_floor_scene() -> void:
+	active_companion = "red"
+	set_flag("red_silph_scope_guard_seen", true)
+	set_flag("bill_silph_scope_reading_seen", true)
+	set_flag("marowak_spirit_revealed", true)
+	set_flag("cubone_grief_scene_seen", true)
+	set_flag("team_moonlight_tower_ritual_seen", true)
+	set_flag("rocket_mr_fuji_hold_seen", true)
+	set_flag("mr_fuji_rescue_path_unlocked", true)
+	set_flag("poke_flute_lead_unlocked", true)
+	queue_pokemon_tower_silph_scope_floor_batch()
+
+
+func queue_pokemon_tower_silph_scope_floor_batch() -> void:
+	set_flag("worldlink_pokemon_tower_silph_scope_floor_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_pokemon_tower_silph_scope_floor_reached",
+		"wl_red_silph_scope_guard",
+		"wl_bill_silph_scope_reading",
+		"wl_marowak_spirit_revealed",
+		"wl_cubone_grief_scene",
+		"wl_team_moonlight_tower_ritual",
+		"wl_rocket_mr_fuji_hold",
+		"wl_mr_fuji_rescue_path_unlocked",
+		"wl_poke_flute_lead_unlocked",
 	])
 
 
