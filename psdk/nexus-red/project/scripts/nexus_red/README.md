@@ -173,6 +173,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::JohtoStory.complete_goldenrod_road(state, location:, area_type:)` resolves the Route 34 and Goldenrod City arrival beat after Ilex Forest. It unlocks the Route 34 Daycare plus the daycare remote terminal, makes Goldenrod's specialty mart available, keeps Red as the grounding travel companion, lets Brock teach breeding/daycare responsibility, lets Bill trace Radio Tower static, updates Blue/Ava/Silver through WorldLink, introduces Rocket/Gold Dust/Team Gas pressure in the city, keeps Nexus Order hidden in the broadcast frequency, and opens `whitney_plain_badge_prep` while leaving `goldenrod_radio_tower_shadow` as the secondary city-crisis hook.
 
+`NexusRed::JohtoStory.complete_whitney_plain_badge_prep(state, location:, area_type:)` resolves the Goldenrod Gym setup before Whitney's solo badge battle. Red warms Antman up without entering the gym battle, Brock teaches Rollout and Miltank counterplay, Bill links Plain Badge hype to Radio Tower static, Blue sends a practical Miltank warning, Silver gets checked by the badge wall, Rocket and Moonlight clash over badge-frequency broadcasts, Gold Dust runs match betting, Team Gas probes the gym basement vents, Nexus Order remains hidden in the Plain Badge frequency, and the method returns the `whitney_plain_badge_battle` hook.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

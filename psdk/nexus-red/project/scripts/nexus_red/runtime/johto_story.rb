@@ -127,6 +127,19 @@ module NexusRed
     MOONLIGHT_GOLDENROD_RADIO_JINGLE_EVENT_ID = 'moonlight_goldenrod_radio_sleep_jingle'
     NEXUS_ORDER_GOLDENROD_FREQUENCY_EVENT_ID = 'nexus_order_goldenrod_frequency_hidden'
     WHITNEY_PLAIN_BADGE_PREP_UNLOCKED_EVENT_ID = 'whitney_plain_badge_prep_unlocked'
+    WHITNEY_PLAIN_BADGE_PREP_EVENT_ID = 'whitney_plain_badge_prep'
+    WHITNEY_ROLLOUT_COUNTER_TRAINING_EVENT_ID = 'whitney_rollout_counter_training'
+    RED_WHITNEY_PREP_EVENT_ID = 'red_whitney_prep'
+    BROCK_WHITNEY_COUNTER_ADVICE_EVENT_ID = 'brock_whitney_counter_advice'
+    BILL_RADIO_TOWER_BADGE_SCAN_EVENT_ID = 'bill_radio_tower_badge_scan'
+    BLUE_MILTANK_WARNING_EVENT_ID = 'blue_miltank_warning'
+    SILVER_WHITNEY_PRESSURE_EVENT_ID = 'silver_whitney_pressure'
+    ROCKET_PLAIN_BADGE_RADIO_SYNC_EVENT_ID = 'rocket_plain_badge_radio_sync'
+    GOLD_DUST_WHITNEY_BETTING_EVENT_ID = 'gold_dust_whitney_match_betting_ring'
+    TEAM_GAS_GYM_BASEMENT_PRESSURE_EVENT_ID = 'team_gas_gym_basement_vent_pressure'
+    MOONLIGHT_PLAIN_BADGE_JINGLE_EVENT_ID = 'moonlight_plain_badge_sleep_jingle'
+    NEXUS_ORDER_PLAIN_BADGE_FREQUENCY_EVENT_ID = 'nexus_order_plain_badge_frequency_hidden'
+    WHITNEY_PLAIN_BADGE_BATTLE_UNLOCKED_EVENT_ID = 'whitney_plain_badge_battle_unlocked'
 
     module_function
 
@@ -2014,6 +2027,207 @@ module NexusRed
         'unlocks' => %w[route_34_daycare daycare_remote_check goldenrod_specialty_mart whitney_plain_badge_prep radio_tower_shadow_lead],
         'secondary_hook' => 'goldenrod_radio_tower_shadow',
         'next_hook' => 'whitney_plain_badge_prep'
+      }
+    end
+
+    def complete_whitney_plain_badge_prep(state, location: 'Goldenrod Gym Plaza', area_type: 'town')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => WHITNEY_PLAIN_BADGE_PREP_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_goldenrod_road', 'event_id' => WHITNEY_PLAIN_BADGE_PREP_EVENT_ID } unless goldenrod_road_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => WHITNEY_PLAIN_BADGE_PREP_EVENT_ID } if whitney_plain_badge_prep_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_WHITNEY_PLAIN_BADGE_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_WHITNEY_ROLLOUT_COUNTER_TRAINING')
+      add_story_flag(state, 'FLAG_NEXUS_RED_WHITNEY_PREP')
+      add_story_flag(state, 'FLAG_NEXUS_BROCK_WHITNEY_COUNTER_ADVICE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_RADIO_TOWER_BADGE_SCAN')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_MILTANK_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_WHITNEY_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_PLAIN_BADGE_RADIO_SYNC')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_WHITNEY_BETTING')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_GYM_BASEMENT_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_PLAIN_BADGE_JINGLE')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_PLAIN_BADGE_FREQUENCY')
+      add_story_flag(state, 'FLAG_NEXUS_WHITNEY_PLAIN_BADGE_BATTLE_UNLOCKED')
+
+      [
+        WHITNEY_PLAIN_BADGE_PREP_EVENT_ID,
+        WHITNEY_ROLLOUT_COUNTER_TRAINING_EVENT_ID,
+        RED_WHITNEY_PREP_EVENT_ID,
+        BROCK_WHITNEY_COUNTER_ADVICE_EVENT_ID,
+        BILL_RADIO_TOWER_BADGE_SCAN_EVENT_ID,
+        BLUE_MILTANK_WARNING_EVENT_ID,
+        SILVER_WHITNEY_PRESSURE_EVENT_ID,
+        ROCKET_PLAIN_BADGE_RADIO_SYNC_EVENT_ID,
+        GOLD_DUST_WHITNEY_BETTING_EVENT_ID,
+        TEAM_GAS_GYM_BASEMENT_PRESSURE_EVENT_ID,
+        MOONLIGHT_PLAIN_BADGE_JINGLE_EVENT_ID,
+        NEXUS_ORDER_PLAIN_BADGE_FREQUENCY_EVENT_ID,
+        WHITNEY_PLAIN_BADGE_BATTLE_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'whitney_prep_focus',
+        location: location,
+        summary: 'Red warms up with Antman outside Goldenrod Gym and reminds him that Whitney is a real wall because confidence breaks faster than HP.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'rollout_counter_advice',
+        location: location,
+        summary: 'Brock drills Rollout counterplay, status timing, and switching discipline so Antman can answer Miltank without relying on brute force.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'radio_tower_badge_scan',
+        location: 'Goldenrod Radio Tower',
+        summary: 'Bill notices the Radio Tower static pulsing whenever Whitney tests her Plain Badge broadcast spot, tying the gym challenge to the city signal.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Goldenrod Gym',
+        'Silver challenged Whitney too quickly, got checked by the Plain Badge wall, and stormed out toward the Radio Tower crowd.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        'Goldenrod Department Store',
+        'Blue sent a blunt WorldLink warning: respect Miltank, carry a real answer, and do not let Rollout stack for free.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        'Goldenrod Radio Tower',
+        'plain_badge_radio_sync',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Game Corner',
+        'whitney_match_betting_ring',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Gym Basement',
+        'gym_basement_vent_pressure',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower',
+        'plain_badge_sleep_jingle',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower',
+        'plain_badge_frequency_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        'Goldenrod Radio Tower',
+        'Rocket badge-frequency sync is distorted by Moonlight sleep-jingle interference before Whitney opens the gym floor.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_10_whitney_plain_badge_challenge'
+      event = whitney_plain_badge_prep_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Whitney opens the Plain Badge challenge: Red steadies Antman, Brock drills Miltank answers, and Bill catches Radio Tower static pulsing under the gym hype.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def whitney_plain_badge_prep_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == WHITNEY_PLAIN_BADGE_PREP_EVENT_ID }
+    end
+
+    def whitney_plain_badge_prep_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => WHITNEY_PLAIN_BADGE_PREP_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_10_whitney_plain_badge_challenge',
+        'gym_leader' => 'Whitney',
+        'badge' => 'Plain Badge',
+        'level_cap' => 26,
+        'companions' => %w[red brock bill],
+        'rivals' => %w[blue silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          WHITNEY_ROLLOUT_COUNTER_TRAINING_EVENT_ID,
+          RED_WHITNEY_PREP_EVENT_ID,
+          BROCK_WHITNEY_COUNTER_ADVICE_EVENT_ID,
+          BILL_RADIO_TOWER_BADGE_SCAN_EVENT_ID,
+          BLUE_MILTANK_WARNING_EVENT_ID,
+          SILVER_WHITNEY_PRESSURE_EVENT_ID,
+          ROCKET_PLAIN_BADGE_RADIO_SYNC_EVENT_ID,
+          GOLD_DUST_WHITNEY_BETTING_EVENT_ID,
+          TEAM_GAS_GYM_BASEMENT_PRESSURE_EVENT_ID,
+          MOONLIGHT_PLAIN_BADGE_JINGLE_EVENT_ID,
+          NEXUS_ORDER_PLAIN_BADGE_FREQUENCY_EVENT_ID,
+          WHITNEY_PLAIN_BADGE_BATTLE_UNLOCKED_EVENT_ID
+        ],
+        'battle_hook' => {
+          'battle_id' => 'whitney_plain_badge_battle',
+          'leader' => 'Whitney',
+          'level_cap' => 26,
+          'companion_rule' => 'no_companion_assist_in_gym_battle',
+          'standard_team' => [
+            { 'species' => 'Clefairy', 'level' => 24, 'role' => 'support' },
+            { 'species' => 'Miltank', 'level' => 26, 'role' => 'ace' }
+          ],
+          'hard_team' => [
+            { 'species' => 'Clefairy', 'level' => 25, 'role' => 'support' },
+            { 'species' => 'Lopunny', 'level' => 25, 'role' => 'speed_control' },
+            { 'species' => 'Miltank', 'level' => 26, 'role' => 'ace' }
+          ]
+        },
+        'hidden_meta_signal' => 'nexus_order_plain_badge_frequency_unrevealed',
+        'unlocks' => %w[whitney_plain_badge_battle goldenrod_gym_services rollout_counter_training],
+        'next_hook' => 'whitney_plain_badge_battle'
       }
     end
   end
