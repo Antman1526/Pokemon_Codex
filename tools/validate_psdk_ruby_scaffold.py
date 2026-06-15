@@ -224,6 +224,8 @@ REQUIRED_MARKERS = (
     "silph_co_lobby_lockdown_cleared?",
     "complete_silph_co_2f_key_search",
     "silph_co_2f_key_search_cleared?",
+    "complete_silph_co_3f_warp_panel_ambush",
+    "silph_co_3f_warp_panel_ambush_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2069,6 +2071,41 @@ raise 'expected KantoStory Silph 2F card key clue unlock' unless silph_2f['unloc
 second_silph_2f = NexusRed::KantoStory.complete_silph_co_2f_key_search(kanto_story_state)
 raise 'expected KantoStory Silph 2F idempotent guard' unless second_silph_2f['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Silph 2F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_2f_key_search' } == 1
+pre_silph_3f = NexusRed::KantoStory.complete_silph_co_3f_warp_panel_ambush(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Silph 3F gated before 2F' unless pre_silph_3f['status'] == 'blocked_missing_silph_co_2f_key_search'
+silph_3f = NexusRed::KantoStory.complete_silph_co_3f_warp_panel_ambush(
+  kanto_story_state,
+  location: 'Silph Co 3F Warp Panel',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Silph 3F clear status' unless silph_3f['status'] == 'cleared'
+raise 'expected KantoStory Silph 3F event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('silph_co_3f_warp_panel_ambush')
+raise 'expected KantoStory Silph 3F helper true' unless NexusRed::KantoStory.silph_co_3f_warp_panel_ambush_cleared?(kanto_story_state)
+raise 'expected KantoStory Silph 3F flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_CO_3F_WARP_PANEL_AMBUSH')
+raise 'expected KantoStory Red Silph 3F rescue route flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_SILPH_3F_RESCUE_ROUTE')
+raise 'expected KantoStory Blue Silph 3F tag interruption flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BLUE_SILPH_3F_TAG_INTERRUPTION')
+raise 'expected KantoStory Bill Master Ball pressure trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_MASTER_BALL_PRESSURE_TRACE')
+raise 'expected KantoStory Rocket warp trap flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_WARP_TRAP')
+raise 'expected KantoStory Gold Dust prototype bid flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GOLD_DUST_PROTOTYPE_BID')
+raise 'expected KantoStory Moonlight warp distortion flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_WARP_DISTORTION')
+raise 'expected KantoStory Nexus prototype sponsor trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ORDER_MASTER_BALL_SPONSOR_TRACE')
+raise 'expected KantoStory Silph 5F elevator route flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_5F_ELEVATOR_ROUTE_UNLOCKED')
+raise 'expected KantoStory Red Silph 3F scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('silph_3f_rescue_route')
+raise 'expected KantoStory Bill Silph 3F scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('silph_master_ball_pressure_trace')
+raise 'expected KantoStory Blue Silph 3F clue' unless kanto_story_state['rival_progress']['blue']['latest_activity']['summary'].include?('warp panel')
+raise 'expected KantoStory Rocket Silph 3F activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 3F Warp Panel' && activity['operation'] == 'warp_panel_ambush' }
+raise 'expected KantoStory Gold Dust Silph 3F activity' unless kanto_story_state['faction_progress']['team_gold_dust']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 3F Warp Panel' && activity['operation'] == 'prototype_bid_scouting' }
+raise 'expected KantoStory Moonlight Silph 3F activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 3F Warp Panel' && activity['operation'] == 'warp_distortion_static' }
+raise 'expected KantoStory Nexus Silph 3F activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Silph Co 3F Warp Panel' && activity['operation'] == 'master_ball_sponsor_trace' }
+raise 'expected KantoStory Nexus Order still hidden after Silph 3F' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Moonlight Silph 3F conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Silph Co 3F Warp Panel' }
+raise 'expected KantoStory Silph 3F story alert paused' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('3F') && message['text'].include?('Blue') && message['text'].include?('5F') }
+raise 'expected KantoStory Silph 3F next hook 5F elevator route' unless silph_3f['next_hook'] == 'silph_co_5f_elevator_route'
+raise 'expected KantoStory Silph 3F factions' unless silph_3f['factions'].include?('team_rocket') && silph_3f['factions'].include?('nexus_order')
+raise 'expected KantoStory Silph 3F unlocks 5F elevator route' unless silph_3f['unlocks'].include?('silph_co_5f_elevator_route') && silph_3f['unlocks'].include?('master_ball_pressure_trace')
+second_silph_3f = NexusRed::KantoStory.complete_silph_co_3f_warp_panel_ambush(kanto_story_state)
+raise 'expected KantoStory Silph 3F idempotent guard' unless second_silph_3f['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Silph 3F history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'silph_co_3f_warp_panel_ambush' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

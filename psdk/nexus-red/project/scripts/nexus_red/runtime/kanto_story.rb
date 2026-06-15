@@ -207,6 +207,16 @@ module NexusRed
     CARD_KEY_CLUE_OBTAINED_EVENT_ID = 'card_key_clue_obtained'
     SILPH_3F_WARP_PANEL_EVENT_ID = 'silph_3f_warp_panel_unlocked'
     ROCKET_SILPH_2F_PATROL_BATTLE_ID = 'rocket_silph_2f_card_key_patrol'
+    SILPH_CO_3F_WARP_AMBUSH_EVENT_ID = 'silph_co_3f_warp_panel_ambush'
+    RED_SILPH_3F_RESCUE_ROUTE_EVENT_ID = 'red_silph_3f_rescue_route'
+    BLUE_SILPH_3F_TAG_EVENT_ID = 'blue_silph_3f_tag_interruption'
+    BILL_MASTER_BALL_PRESSURE_EVENT_ID = 'bill_master_ball_pressure_trace'
+    ROCKET_WARP_TRAP_EVENT_ID = 'rocket_warp_panel_trap'
+    GOLD_DUST_PROTOTYPE_BID_EVENT_ID = 'gold_dust_prototype_bid'
+    MOONLIGHT_WARP_DISTORTION_EVENT_ID = 'moonlight_warp_distortion'
+    NEXUS_ORDER_MASTER_BALL_SPONSOR_EVENT_ID = 'nexus_order_master_ball_sponsor_trace'
+    SILPH_5F_ELEVATOR_ROUTE_EVENT_ID = 'silph_5f_elevator_route_unlocked'
+    ROCKET_SILPH_3F_WARP_BATTLE_ID = 'rocket_silph_3f_warp_ambush'
 
     module_function
 
@@ -3357,6 +3367,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_2F_KEY_SEARCH_EVENT_ID }
     end
 
+    def complete_silph_co_3f_warp_panel_ambush(state, location: 'Silph Co 3F Warp Panel', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_co_2f_key_search', 'event_id' => SILPH_CO_3F_WARP_AMBUSH_EVENT_ID } unless silph_co_2f_key_search_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SILPH_CO_3F_WARP_AMBUSH_EVENT_ID } if silph_co_3f_warp_panel_ambush_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_3F_WARP_PANEL_AMBUSH')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SILPH_3F_RESCUE_ROUTE')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_SILPH_3F_TAG_INTERRUPTION')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_MASTER_BALL_PRESSURE_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_WARP_TRAP')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_PROTOTYPE_BID')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_WARP_DISTORTION')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_MASTER_BALL_SPONSOR_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_5F_ELEVATOR_ROUTE_UNLOCKED')
+      mark_cleared_event(story, SILPH_CO_3F_WARP_AMBUSH_EVENT_ID)
+      mark_cleared_event(story, RED_SILPH_3F_RESCUE_ROUTE_EVENT_ID)
+      mark_cleared_event(story, BLUE_SILPH_3F_TAG_EVENT_ID)
+      mark_cleared_event(story, BILL_MASTER_BALL_PRESSURE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_WARP_TRAP_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_PROTOTYPE_BID_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_WARP_DISTORTION_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_MASTER_BALL_SPONSOR_EVENT_ID)
+      mark_cleared_event(story, SILPH_5F_ELEVATOR_ROUTE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'warp_panel_ambush',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'prototype_bid_scouting',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'warp_distortion_static',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'master_ball_sponsor_trace',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket needs predictable warp routing, but Moonlight distortion is bending panel exits into unstable dream loops',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Gold Dust scouts are pricing Silph prototypes while Rocket tries to keep the Master Ball trail internal',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'silph_3f_rescue_route',
+        location: location,
+        summary: 'Red marks a safe rescue route through the 3F warp panels so Silph employees can keep moving while Antman takes the trap.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_master_ball_pressure_trace',
+        location: location,
+        summary: 'Bill confirms the hidden sponsor signal is pushing Rocket toward Silph prototype storage and the Master Ball project.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue cut through a warp panel trap, forced a tag interruption, and found the 5F elevator route before Rocket could seal it.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Silph Co 3F warp panel ambush cleared: Blue broke the trap, Red kept the rescue route open, and the 5F elevator route is exposed.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = silph_co_3f_warp_panel_ambush_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def silph_co_3f_warp_panel_ambush_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_3F_WARP_AMBUSH_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -4121,6 +4250,39 @@ module NexusRed
         'locked_systems' => %w[upper_warp_panels_boardroom_master_lock],
         'unlocks' => %w[card_key_clue silph_co_3f_warp_panel employee_safe_room],
         'next_hook' => 'silph_co_3f_warp_panel_ambush'
+      }
+    end
+
+    def silph_co_3f_warp_panel_ambush_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SILPH_CO_3F_WARP_AMBUSH_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_SILPH_3F_RESCUE_ROUTE_EVENT_ID,
+          BLUE_SILPH_3F_TAG_EVENT_ID,
+          BILL_MASTER_BALL_PRESSURE_EVENT_ID,
+          ROCKET_WARP_TRAP_EVENT_ID,
+          GOLD_DUST_PROTOTYPE_BID_EVENT_ID,
+          MOONLIGHT_WARP_DISTORTION_EVENT_ID,
+          NEXUS_ORDER_MASTER_BALL_SPONSOR_EVENT_ID,
+          SILPH_5F_ELEVATOR_ROUTE_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'dungeon_state' => '3f_warp_ambush_cleared',
+        'battle_hook' => {
+          'battle_id' => ROCKET_SILPH_3F_WARP_BATTLE_ID,
+          'battle_type' => 'villain_tag_ambush',
+          'location' => 'silph_co_3f_warp_panel',
+          'level_cap' => 42,
+          'opponent_species' => %w[Magneton Hypno Arbok],
+          'tag_support' => 'blue_interrupts_warp_trap',
+          'companion_support' => 'red_holds_rescue_route'
+        },
+        'prototype_pressure' => 'master_ball_project',
+        'locked_systems' => %w[executive_warp_boardroom_master_lock],
+        'unlocks' => %w[silph_co_5f_elevator_route master_ball_pressure_trace blue_tag_interruption],
+        'next_hook' => 'silph_co_5f_elevator_route'
       }
     end
 
