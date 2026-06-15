@@ -275,6 +275,14 @@ module NexusRed
     NEXUS_ORDER_PSYCHIC_SIGNAL_OBSERVER_EVENT_ID = 'nexus_order_psychic_signal_observer_hidden'
     MIND_BADGE_CHALLENGE_UNLOCKED_EVENT_ID = 'mind_badge_challenge_unlocked'
     SABRINA_MIND_BADGE_BATTLE_ID = 'sabrina_mind_badge_challenge'
+    SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID = 'sabrina_mind_badge_challenge'
+    MARSH_BADGE_OBTAINED_EVENT_ID = 'marsh_badge_obtained'
+    PSYCHIC_WARP_TRIAL_CLEARED_EVENT_ID = 'psychic_warp_trial_cleared'
+    MOONLIGHT_SAFFRON_PRESSURE_BROKEN_EVENT_ID = 'moonlight_saffron_pressure_broken'
+    CINNABAR_ISLAND_PATH_EVENT_ID = 'cinnabar_island_path_unlocked'
+    BILL_CINNABAR_LAB_TRACE_EVENT_ID = 'bill_cinnabar_lab_trace'
+    ROCKET_CINNABAR_LAB_PIVOT_EVENT_ID = 'rocket_cinnabar_lab_pivot'
+    NEXUS_ORDER_BADGE_ENERGY_OBSERVER_EVENT_ID = 'nexus_order_badge_energy_observer_hidden'
 
     module_function
 
@@ -4226,6 +4234,106 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SABRINA_GYM_PREP_TRIAL_EVENT_ID }
     end
 
+    def complete_sabrina_mind_badge_challenge(state, location: 'Saffron Gym', result: 'badge_win', area_type: 'gym')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_sabrina_gym_prep', 'event_id' => SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID } unless sabrina_gym_prep_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID } if sabrina_mind_badge_challenge_cleared?(state)
+
+      story['current_act'] = 'act_6_cinnabar_viridian'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_MIND_BADGE_CHALLENGE_STARTED')
+      add_story_flag(state, 'FLAG_NEXUS_SABRINA_MIND_BADGE_CHALLENGE_FINISHED')
+      add_story_flag(state, 'FLAG_NEXUS_MARSH_BADGE_OBTAINED')
+      add_story_flag(state, 'FLAG_NEXUS_PSYCHIC_WARP_TRIAL_CLEARED')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_SAFFRON_PRESSURE_BROKEN')
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_ISLAND_PATH_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_CINNABAR_LAB_TRACE')
+      mark_cleared_event(story, SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID)
+      mark_cleared_event(story, MARSH_BADGE_OBTAINED_EVENT_ID)
+      mark_cleared_event(story, PSYCHIC_WARP_TRIAL_CLEARED_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_SAFFRON_PRESSURE_BROKEN_EVENT_ID)
+      mark_cleared_event(story, CINNABAR_ISLAND_PATH_EVENT_ID)
+      mark_cleared_event(story, BILL_CINNABAR_LAB_TRACE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_CINNABAR_LAB_PIVOT_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_BADGE_ENERGY_OBSERVER_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'saffron_psychic_pressure_broken',
+        threat_delta: -3,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'cinnabar_lab_pivot_after_saffron',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'badge_energy_observation_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket pivots toward Cinnabar lab records while Moonlight loses its hold over Saffron psychic pressure',
+        intensity: 2,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'sabrina_badge_exit',
+        location: location,
+        summary: 'Red meets Antman outside Saffron Gym and points out that Rocket will search for older lab records now that Silph is lost.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'sabrina',
+        'marsh_badge_warning',
+        location: location,
+        summary: 'Sabrina awards the Marsh Badge, then warns that the hidden signal did not vanish when Moonlight pressure broke.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'cinnabar_lab_trace',
+        location: location,
+        summary: 'Bill matches the Gym residue to old Cinnabar lab metadata and marks the next investigation route.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Antman earned the Marsh Badge from Sabrina; Moonlight pressure in Saffron broke, and Bill traced the next Rocket lead toward Cinnabar.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = sabrina_mind_badge_challenge_event_result(location, result)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def sabrina_mind_badge_challenge_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5222,6 +5330,34 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_observes_psychic_residue_unrevealed',
         'unlocks' => %w[sabrina_mind_badge_challenge psychic_trial_warp_room saffron_gym_rematch_seed],
         'next_hook' => 'sabrina_mind_badge_challenge'
+      }
+    end
+
+    def sabrina_mind_badge_challenge_event_result(location, result)
+      {
+        'status' => 'cleared',
+        'event_id' => SABRINA_MIND_BADGE_CHALLENGE_EVENT_ID,
+        'battle_id' => SABRINA_MIND_BADGE_BATTLE_ID,
+        'location' => location.to_s,
+        'result' => result.to_s,
+        'gym_leader' => 'Sabrina',
+        'badge' => 'Marsh Badge',
+        'level_cap' => 47,
+        'opponent_species' => %w[MrMime Venomoth Kadabra Alakazam],
+        'companion_rule' => 'no_companion_assist_in_gym_battle',
+        'linked_events' => [
+          MARSH_BADGE_OBTAINED_EVENT_ID,
+          PSYCHIC_WARP_TRIAL_CLEARED_EVENT_ID,
+          MOONLIGHT_SAFFRON_PRESSURE_BROKEN_EVENT_ID,
+          CINNABAR_ISLAND_PATH_EVENT_ID,
+          BILL_CINNABAR_LAB_TRACE_EVENT_ID,
+          ROCKET_CINNABAR_LAB_PIVOT_EVENT_ID,
+          NEXUS_ORDER_BADGE_ENERGY_OBSERVER_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight nexus_order],
+        'hidden_meta_signal' => 'nexus_order_observes_badge_energy_unrevealed',
+        'unlocks' => %w[marsh_badge cinnabar_island_path psychic_warp_mastery cinnabar_lab_trace],
+        'next_hook' => 'cinnabar_island_arrival'
       }
     end
 

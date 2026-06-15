@@ -238,6 +238,8 @@ REQUIRED_MARKERS = (
     "saffron_sabrina_aftermath_cleared?",
     "complete_sabrina_gym_prep",
     "sabrina_gym_prep_cleared?",
+    "complete_sabrina_mind_badge_challenge",
+    "sabrina_mind_badge_challenge_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2324,6 +2326,43 @@ raise 'expected KantoStory Sabrina gym prep unlocks Mind Badge challenge' unless
 second_sabrina_gym_prep = NexusRed::KantoStory.complete_sabrina_gym_prep(kanto_story_state)
 raise 'expected KantoStory Sabrina gym prep idempotent guard' unless second_sabrina_gym_prep['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Sabrina gym prep history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'sabrina_gym_prep' } == 1
+pre_sabrina_badge = NexusRed::KantoStory.complete_sabrina_mind_badge_challenge(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Sabrina badge gated before gym prep' unless pre_sabrina_badge['status'] == 'blocked_missing_sabrina_gym_prep'
+sabrina_badge = NexusRed::KantoStory.complete_sabrina_mind_badge_challenge(
+  kanto_story_state,
+  location: 'Saffron Gym',
+  result: 'badge_win',
+  area_type: 'gym'
+)
+raise 'expected KantoStory Sabrina badge clear status' unless sabrina_badge['status'] == 'cleared'
+raise 'expected KantoStory Sabrina badge event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('sabrina_mind_badge_challenge')
+raise 'expected KantoStory Sabrina badge helper true' unless NexusRed::KantoStory.sabrina_mind_badge_challenge_cleared?(kanto_story_state)
+raise 'expected KantoStory Sabrina badge started flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_MIND_BADGE_CHALLENGE_STARTED')
+raise 'expected KantoStory Sabrina badge finished flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SABRINA_MIND_BADGE_CHALLENGE_FINISHED')
+raise 'expected KantoStory Marsh Badge obtained flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MARSH_BADGE_OBTAINED')
+raise 'expected KantoStory psychic warp trial cleared flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PSYCHIC_WARP_TRIAL_CLEARED')
+raise 'expected KantoStory Moonlight Saffron pressure broken flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_MOONLIGHT_SAFFRON_PRESSURE_BROKEN')
+raise 'expected KantoStory Cinnabar path unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_ISLAND_PATH_UNLOCKED')
+raise 'expected KantoStory Bill Cinnabar lab trace flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_CINNABAR_LAB_TRACE')
+raise 'expected KantoStory current act Cinnabar Viridian' unless kanto_story_state['kanto_story']['current_act'] == 'act_6_cinnabar_viridian'
+raise 'expected KantoStory Red Sabrina badge exit scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('sabrina_badge_exit')
+raise 'expected KantoStory Sabrina Marsh Badge warning scene' unless kanto_story_state['companion_progress']['sabrina']['scene_flags'].include?('marsh_badge_warning')
+raise 'expected KantoStory Bill Cinnabar trace scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('cinnabar_lab_trace')
+raise 'expected KantoStory Moonlight Saffron pressure broken activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron Gym' && activity['operation'] == 'saffron_psychic_pressure_broken' }
+raise 'expected KantoStory Rocket Cinnabar lab pivot activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron Gym' && activity['operation'] == 'cinnabar_lab_pivot_after_saffron' }
+raise 'expected KantoStory Nexus Order hidden badge observation activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Saffron Gym' && activity['operation'] == 'badge_energy_observation_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Sabrina badge' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Moonlight post badge conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Saffron Gym' }
+raise 'expected KantoStory Sabrina badge story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Marsh Badge') && message['text'].include?('Cinnabar') }
+raise 'expected KantoStory Sabrina badge next hook Cinnabar' unless sabrina_badge['next_hook'] == 'cinnabar_island_arrival'
+raise 'expected KantoStory Sabrina badge badge Marsh Badge' unless sabrina_badge['badge'] == 'Marsh Badge'
+raise 'expected KantoStory Sabrina badge result propagated' unless sabrina_badge['result'] == 'badge_win'
+raise 'expected KantoStory Sabrina badge team species' unless sabrina_badge['opponent_species'] == %w[MrMime Venomoth Kadabra Alakazam]
+raise 'expected KantoStory Sabrina badge companion rule' unless sabrina_badge['companion_rule'] == 'no_companion_assist_in_gym_battle'
+raise 'expected KantoStory Sabrina badge unlocks Cinnabar' unless sabrina_badge['unlocks'].include?('marsh_badge') && sabrina_badge['unlocks'].include?('cinnabar_island_path')
+second_sabrina_badge = NexusRed::KantoStory.complete_sabrina_mind_badge_challenge(kanto_story_state)
+raise 'expected KantoStory Sabrina badge idempotent guard' unless second_sabrina_badge['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Sabrina badge history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'sabrina_mind_badge_challenge' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

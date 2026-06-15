@@ -123,6 +123,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_sabrina_gym_prep(state, location:, area_type:)` resolves the pre-Mind Badge setup. Sabrina reopens the Gym, stabilizes the psychic warp trial, Moonlight dream static weakens, Nexus Order remains a hidden observer, and Red waits outside so Antman takes the Gym challenge solo.
 
+`NexusRed::KantoStory.complete_sabrina_mind_badge_challenge(state, location:, result:, area_type:)` resolves Sabrina's Gym battle. It awards the canonical Marsh Badge, breaks Moonlight pressure over Saffron, keeps Nexus Order hidden, records Red/Sabrina/Bill exit scenes, and opens `cinnabar_island_arrival`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:
