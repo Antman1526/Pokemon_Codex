@@ -180,6 +180,8 @@ REQUIRED_MARKERS = (
     "route_8_celadon_road_cleared?",
     "complete_celadon_underground_path",
     "celadon_underground_path_cleared?",
+    "complete_celadon_city_arrival",
+    "celadon_city_arrival_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1382,6 +1384,33 @@ raise 'expected KantoStory Celadon Underground next hook city arrival' unless ce
 second_celadon_underpass = NexusRed::KantoStory.complete_celadon_underground_path(kanto_story_state)
 raise 'expected KantoStory Celadon Underground idempotent guard' unless second_celadon_underpass['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Celadon Underground history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_underground_path' } == 1
+pre_underpass_celadon_city = NexusRed::KantoStory.complete_celadon_city_arrival(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Celadon City gated before underpass' unless pre_underpass_celadon_city['status'] == 'blocked_missing_celadon_underground_path'
+celadon_city = NexusRed::KantoStory.complete_celadon_city_arrival(
+  kanto_story_state,
+  location: 'Celadon City',
+  area_type: 'city'
+)
+raise 'expected KantoStory Celadon City clear status' unless celadon_city['status'] == 'cleared'
+raise 'expected KantoStory Celadon City event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('celadon_city_arrival')
+raise 'expected KantoStory Celadon City helper true' unless NexusRed::KantoStory.celadon_city_arrival_cleared?(kanto_story_state)
+raise 'expected KantoStory Celadon City reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CELADON_CITY_REACHED')
+raise 'expected KantoStory Red Celadon city arrival flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_CELADON_CITY_ARRIVAL')
+raise 'expected KantoStory Bill Game Corner exterior signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_GAME_CORNER_EXTERIOR_SIGNAL')
+raise 'expected KantoStory Rocket Game Corner front flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_GAME_CORNER_FRONT')
+raise 'expected KantoStory Moonlight Celadon ad flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_CELADON_AD')
+raise 'expected KantoStory Erika gym tease flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ERIKA_GYM_TEASED')
+raise 'expected KantoStory Game Corner investigation unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_GAME_CORNER_INVESTIGATION_UNLOCKED')
+raise 'expected KantoStory Rocket Game Corner front activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon City' && activity['operation'] == 'game_corner_public_front' }
+raise 'expected KantoStory Moonlight Celadon ad activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Celadon City' && activity['operation'] == 'celadon_dream_ad_campaign' }
+raise 'expected KantoStory Rocket Moonlight Celadon conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Celadon City' }
+raise 'expected KantoStory Red Celadon city scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('celadon_city_arrival')
+raise 'expected KantoStory Bill Game Corner exterior scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('game_corner_exterior_signal')
+raise 'expected KantoStory Celadon City story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Erika') && message['text'].include?('Game Corner') }
+raise 'expected KantoStory Celadon City next hook Game Corner exterior' unless celadon_city['next_hook'] == 'celadon_game_corner_exterior'
+second_celadon_city = NexusRed::KantoStory.complete_celadon_city_arrival(kanto_story_state)
+raise 'expected KantoStory Celadon City idempotent guard' unless second_celadon_city['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Celadon City history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'celadon_city_arrival' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

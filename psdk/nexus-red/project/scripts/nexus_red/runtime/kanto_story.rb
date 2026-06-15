@@ -63,6 +63,13 @@ module NexusRed
     TEAM_MOONLIGHT_DREAM_POSTER_EVENT_ID = 'team_moonlight_dream_poster'
     SILPH_SCOPE_GAME_CORNER_EVENT_ID = 'silph_scope_game_corner_confirmed'
     CELADON_CITY_ARRIVAL_EVENT_ID = 'celadon_city_arrival_unlocked'
+    CELADON_CITY_EVENT_ID = 'celadon_city_arrival'
+    RED_CELADON_CITY_EVENT_ID = 'red_celadon_city_arrival'
+    BILL_GAME_CORNER_EXTERIOR_EVENT_ID = 'bill_game_corner_exterior_signal'
+    ROCKET_GAME_CORNER_FRONT_EVENT_ID = 'rocket_game_corner_front'
+    TEAM_MOONLIGHT_CELADON_AD_EVENT_ID = 'team_moonlight_celadon_ad'
+    ERIKA_GYM_TEASED_EVENT_ID = 'erika_gym_teased'
+    GAME_CORNER_INVESTIGATION_EVENT_ID = 'game_corner_investigation_unlocked'
 
     module_function
 
@@ -1326,6 +1333,87 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_UNDERGROUND_EVENT_ID }
     end
 
+    def complete_celadon_city_arrival(state, location: 'Celadon City', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_celadon_underground_path', 'event_id' => CELADON_CITY_EVENT_ID } unless celadon_underground_path_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => CELADON_CITY_EVENT_ID } if celadon_city_arrival_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CELADON_CITY_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_CELADON_CITY_ARRIVAL')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_GAME_CORNER_EXTERIOR_SIGNAL')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_GAME_CORNER_FRONT')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_CELADON_AD')
+      add_story_flag(state, 'FLAG_NEXUS_ERIKA_GYM_TEASED')
+      add_story_flag(state, 'FLAG_NEXUS_GAME_CORNER_INVESTIGATION_UNLOCKED')
+      mark_cleared_event(story, CELADON_CITY_EVENT_ID)
+      mark_cleared_event(story, RED_CELADON_CITY_EVENT_ID)
+      mark_cleared_event(story, BILL_GAME_CORNER_EXTERIOR_EVENT_ID)
+      mark_cleared_event(story, ROCKET_GAME_CORNER_FRONT_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_CELADON_AD_EVENT_ID)
+      mark_cleared_event(story, ERIKA_GYM_TEASED_EVENT_ID)
+      mark_cleared_event(story, GAME_CORNER_INVESTIGATION_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'game_corner_public_front',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'celadon_dream_ad_campaign',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket hides in plain sight at the Game Corner while Moonlight turns Celadon nightlife into dream pressure',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'celadon_city_arrival',
+        location: location,
+        summary: 'Red stays close as Antman realizes Rocket can control a city without making it panic.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'game_corner_exterior_signal',
+        location: location,
+        summary: 'Bill traces the Silph Scope signal to the public Game Corner exterior.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Celadon City opened the Game Corner investigation, exposed Moonlight dream ads, and teased Erika while Rocket operated in public.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = celadon_city_arrival_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def celadon_city_arrival_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == CELADON_CITY_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1597,6 +1685,26 @@ module NexusRed
         ],
         'factions' => %w[team_rocket team_moonlight],
         'next_hook' => 'celadon_city_arrival'
+      }
+    end
+
+    def celadon_city_arrival_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => CELADON_CITY_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_CELADON_CITY_EVENT_ID,
+          BILL_GAME_CORNER_EXTERIOR_EVENT_ID,
+          ROCKET_GAME_CORNER_FRONT_EVENT_ID,
+          TEAM_MOONLIGHT_CELADON_AD_EVENT_ID,
+          ERIKA_GYM_TEASED_EVENT_ID,
+          GAME_CORNER_INVESTIGATION_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_moonlight],
+        'city_objective' => 'game_corner_investigation',
+        'gym_tease' => 'erika',
+        'next_hook' => 'celadon_game_corner_exterior'
       }
     end
 
