@@ -56,6 +56,13 @@ REQUIRED_MARKERS = (
     "has_tool?",
     "can_use_replacement?",
     "expanded_dig_actions",
+    "module PokedexAvailability",
+    "ensure_pokedex",
+    "set_required_species",
+    "record_seen",
+    "record_caught",
+    "readiness_report",
+    "pre_final_ready?",
     "on_player_initialize(:nexus_red)",
     "on_expand_global_variables(:nexus_red)",
 )
@@ -416,6 +423,63 @@ raise 'expected Fly replacement available with Sky Pass' unless NexusRed::FieldT
 raise 'expected expanded Fly actions available' unless NexusRed::FieldTools.expanded_fly_actions(state).include?('story_gated_inter_region_transit')
 raise 'expected unknown field tool rejected' unless begin
   NexusRed::FieldTools.unlock_tool(state, 'rocket_warp_glove')
+  false
+rescue ArgumentError
+  true
+end
+
+dex = NexusRed::PokedexAvailability.ensure_pokedex(state)
+raise 'expected Gen 9 Pokedex scope' unless dex['species_scope'] == 'through_generation_9'
+raise 'expected WorldLink Pokedex readiness surface' unless dex['readiness_surface'] == 'WorldLink'
+raise 'expected weather availability channel known' unless dex['availability_channels'].include?('weather')
+raise 'expected all base species commitment' unless dex['all_base_species_before_final_boss'] == true
+
+NexusRed::PokedexAvailability.set_required_species(state, %w[Bulbasaur Charmander Squirtle])
+initial_report = NexusRed::PokedexAvailability.readiness_report(state)
+raise 'expected incomplete initial Pokedex readiness' unless initial_report['readiness_status'] == 'incomplete'
+raise 'expected three missing required species' unless initial_report['missing_species'] == %w[Bulbasaur Charmander Squirtle]
+
+seen_message = NexusRed::PokedexAvailability.record_seen(
+  state,
+  'Bulbasaur',
+  location: 'Route 1',
+  channel: 'wild_grass',
+  area_type: 'route'
+)
+raise 'expected seen message immediate delivery' unless seen_message['delivery'] == 'immediate'
+raise 'expected Bulbasaur seen location recorded' unless state['pokedex']['seen_species']['Bulbasaur'].first['location'] == 'Route 1'
+
+caught_message = NexusRed::PokedexAvailability.record_caught(
+  state,
+  'Bulbasaur',
+  location: 'Route 1',
+  channel: 'wild_grass',
+  area_type: 'route'
+)
+raise 'expected caught message immediate delivery' unless caught_message['delivery'] == 'immediate'
+raise 'expected Bulbasaur caught recorded' unless state['pokedex']['caught_species'].key?('Bulbasaur')
+raise 'expected pre-final readiness still incomplete' if NexusRed::PokedexAvailability.pre_final_ready?(state)
+
+hint = NexusRed::PokedexAvailability.register_availability_hint(
+  state,
+  'Squirtle',
+  region: 'kanto',
+  channel: 'fishing',
+  hint: 'Seen near Route 3 ponds after Old Rod access.',
+  area_type: 'route'
+)
+raise 'expected availability hint immediate delivery' unless hint['delivery'] == 'immediate'
+raise 'expected Squirtle hint recorded' unless state['pokedex']['active_hints']['Squirtle'].first['channel'] == 'fishing'
+
+NexusRed::PokedexAvailability.record_caught(state, 'Charmander', location: 'Route 1', channel: 'wild_grass', area_type: 'route')
+NexusRed::PokedexAvailability.record_caught(state, 'Squirtle', location: 'Route 3', channel: 'fishing', area_type: 'route')
+complete_report = NexusRed::PokedexAvailability.readiness_report(state)
+raise 'expected completed Pokedex readiness' unless complete_report['readiness_status'] == 'ready'
+raise 'expected all required caught' unless complete_report['caught_count'] == 3
+raise 'expected no missing species after catches' unless complete_report['missing_species'].empty?
+raise 'expected pre-final readiness true after required catches' unless NexusRed::PokedexAvailability.pre_final_ready?(state)
+raise 'expected unknown availability channel rejected' unless begin
+  NexusRed::PokedexAvailability.record_seen(state, 'Mew', location: 'Unknown', channel: 'truck_rumor')
   false
 rescue ArgumentError
   true
