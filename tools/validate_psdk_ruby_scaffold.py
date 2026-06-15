@@ -264,6 +264,8 @@ REQUIRED_MARKERS = (
     "elite_four_cleared?",
     "complete_lance_legendary_energy_warning",
     "lance_legendary_energy_warning_cleared?",
+    "complete_oak_world_circuit_passport",
+    "oak_world_circuit_passport_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2786,6 +2788,40 @@ raise 'expected KantoStory Lance warning unlocks Oak and Johto lead' unless lanc
 second_lance_warning = NexusRed::KantoStory.complete_lance_legendary_energy_warning(kanto_story_state)
 raise 'expected KantoStory Lance warning idempotent guard' unless second_lance_warning['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Lance warning history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'lance_legendary_energy_warning' } == 1
+pre_oak_passport = NexusRed::KantoStory.complete_oak_world_circuit_passport(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Oak passport gated before Lance warning' unless pre_oak_passport['status'] == 'blocked_missing_lance_legendary_energy_warning'
+oak_passport = NexusRed::KantoStory.complete_oak_world_circuit_passport(
+  kanto_story_state,
+  location: 'Oak Lab',
+  area_type: 'town'
+)
+raise 'expected KantoStory Oak passport clear status' unless oak_passport['status'] == 'cleared'
+raise 'expected KantoStory Oak passport event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('oak_world_circuit_passport')
+raise 'expected KantoStory Oak passport helper true' unless NexusRed::KantoStory.oak_world_circuit_passport_cleared?(kanto_story_state)
+raise 'expected KantoStory World Circuit passport flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_WORLD_CIRCUIT_PASSPORT')
+raise 'expected KantoStory Kanto chapter complete flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KANTO_CHAPTER_COMPLETE')
+raise 'expected KantoStory Johto travel unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_JOHTO_TRAVEL_UNLOCKED')
+raise 'expected KantoStory Kanto rematch tier two flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_KANTO_REMATCHES_TIER_2')
+raise 'expected KantoStory Pokedex readiness beta flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEDEX_READINESS_BETA')
+raise 'expected KantoStory Red Johto promise scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('johto_departure_promise')
+raise 'expected KantoStory Bill WorldLink passport sync scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('worldlink_passport_sync')
+raise 'expected KantoStory current region Johto after passport' unless kanto_story_state['current_region'] == 'johto'
+raise 'expected KantoStory Kanto completed after passport' unless kanto_story_state['region_progress']['completed_regions'].include?('kanto')
+raise 'expected KantoStory only Johto unlocked after passport' unless kanto_story_state['region_progress']['unlocked_regions'] == ['johto']
+raise 'expected KantoStory region history Kanto Johto after passport' unless kanto_story_state['region_progress']['region_history'] == %w[kanto johto]
+raise 'expected KantoStory Johto enterable after passport' unless NexusRed::RegionProgress.can_enter_region?(kanto_story_state, 'johto')
+raise 'expected KantoStory Kanto no longer active-enterable after passport' if NexusRed::RegionProgress.can_enter_region?(kanto_story_state, 'kanto')
+raise 'expected KantoStory Oak passport story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('World Circuit Passport') && message['text'].include?('Johto') && message['text'].include?('Red') }
+raise 'expected KantoStory RegionProgress Johto unlock immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'region_progress' && message['text'].include?('Johto') && message['delivery'] == 'immediate' }
+raise 'expected KantoStory Oak passport issuer' unless oak_passport['issuer'] == 'Professor Oak'
+raise 'expected KantoStory Oak passport item' unless oak_passport['passport_item'] == 'World Circuit Passport'
+raise 'expected KantoStory Oak passport transition to Johto' unless oak_passport['region_transition']['to_region'] == 'johto'
+raise 'expected KantoStory Oak passport transition flag' unless oak_passport['region_transition']['completion_flag'] == 'kanto_indigo_league_clear'
+raise 'expected KantoStory Oak passport next hook Johto opening' unless oak_passport['next_hook'] == 'johto_new_bark_arrival'
+raise 'expected KantoStory Oak passport unlocks' unless oak_passport['unlocks'].include?('johto_travel') && oak_passport['unlocks'].include?('world_circuit_passport')
+second_oak_passport = NexusRed::KantoStory.complete_oak_world_circuit_passport(kanto_story_state)
+raise 'expected KantoStory Oak passport idempotent guard' unless second_oak_passport['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Oak passport history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'oak_world_circuit_passport' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

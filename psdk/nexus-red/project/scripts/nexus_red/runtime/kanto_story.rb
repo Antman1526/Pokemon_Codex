@@ -359,6 +359,12 @@ module NexusRed
     JOHTO_TOWER_ECHO_DETECTED_EVENT_ID = 'johto_tower_echo_detected'
     OAK_WORLD_CIRCUIT_PASSPORT_UNLOCKED_EVENT_ID = 'oak_world_circuit_passport_unlocked'
     NEXUS_ORDER_INTERREGIONAL_SIGNAL_EVENT_ID = 'nexus_order_interregional_signal_hidden'
+    OAK_WORLD_CIRCUIT_PASSPORT_EVENT_ID = 'oak_world_circuit_passport'
+    WORLD_CIRCUIT_PASSPORT_EVENT_ID = 'world_circuit_passport'
+    KANTO_CHAPTER_COMPLETE_EVENT_ID = 'kanto_chapter_complete'
+    JOHTO_TRAVEL_UNLOCKED_EVENT_ID = 'johto_travel_unlocked'
+    KANTO_REMATCHES_TIER_2_EVENT_ID = 'kanto_rematches_tier_2_unlocked'
+    POKEDEX_READINESS_BETA_EVENT_ID = 'pokedex_readiness_beta_unlocked'
 
     module_function
 
@@ -5405,6 +5411,66 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == LANCE_LEGENDARY_ENERGY_WARNING_EVENT_ID }
     end
 
+    def complete_oak_world_circuit_passport(state, location: 'Oak Lab', area_type: 'town')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_lance_legendary_energy_warning', 'event_id' => OAK_WORLD_CIRCUIT_PASSPORT_EVENT_ID } unless lance_legendary_energy_warning_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => OAK_WORLD_CIRCUIT_PASSPORT_EVENT_ID } if oak_world_circuit_passport_cleared?(state)
+
+      story['current_act'] = 'act_7_indigo_complete'
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_WORLD_CIRCUIT_PASSPORT')
+      add_story_flag(state, 'FLAG_NEXUS_KANTO_CHAPTER_COMPLETE')
+      add_story_flag(state, 'FLAG_NEXUS_JOHTO_TRAVEL_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_KANTO_REMATCHES_TIER_2')
+      add_story_flag(state, 'FLAG_NEXUS_POKEDEX_READINESS_BETA')
+      mark_cleared_event(story, OAK_WORLD_CIRCUIT_PASSPORT_EVENT_ID)
+      mark_cleared_event(story, WORLD_CIRCUIT_PASSPORT_EVENT_ID)
+      mark_cleared_event(story, KANTO_CHAPTER_COMPLETE_EVENT_ID)
+      mark_cleared_event(story, JOHTO_TRAVEL_UNLOCKED_EVENT_ID)
+      mark_cleared_event(story, KANTO_REMATCHES_TIER_2_EVENT_ID)
+      mark_cleared_event(story, POKEDEX_READINESS_BETA_EVENT_ID)
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'johto_departure_promise',
+        location: location,
+        summary: 'Red promises Antman that Johto is not a detour; it is the first proof that the Kanto journey has become global.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'worldlink_passport_sync',
+        location: location,
+        summary: 'Bill syncs the World Circuit Passport with WorldLink so Johto travel opens as one continuous journey.',
+        area_type: area_type
+      )
+      transition_message = RegionProgress.advance_to_next_region(
+        state,
+        completion_flag: 'kanto_indigo_league_clear',
+        transition_hub: 'New Bark Town',
+        area_type: area_type
+      )
+      transition = state.dig('region_progress', 'latest_transition').dup
+      transition['delivery'] = transition_message['delivery']
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Professor Oak issued the World Circuit Passport; Red and Antman can now travel to Johto as the next region opens.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = oak_world_circuit_passport_event_result(location, transition)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def oak_world_circuit_passport_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == OAK_WORLD_CIRCUIT_PASSPORT_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -6881,6 +6947,30 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_interregional_signal_unrevealed',
         'unlocks' => %w[oak_world_circuit_passport johto_tower_echo_lead kanto_legendary_bird_readiness],
         'next_hook' => 'oak_world_circuit_passport'
+      }
+    end
+
+    def oak_world_circuit_passport_event_result(location, transition)
+      {
+        'status' => 'cleared',
+        'event_id' => OAK_WORLD_CIRCUIT_PASSPORT_EVENT_ID,
+        'location' => location.to_s,
+        'issuer' => 'Professor Oak',
+        'passport_item' => 'World Circuit Passport',
+        'region_transition' => transition,
+        'linked_events' => [
+          WORLD_CIRCUIT_PASSPORT_EVENT_ID,
+          KANTO_CHAPTER_COMPLETE_EVENT_ID,
+          JOHTO_TRAVEL_UNLOCKED_EVENT_ID,
+          KANTO_REMATCHES_TIER_2_EVENT_ID,
+          POKEDEX_READINESS_BETA_EVENT_ID
+        ],
+        'companions' => %w[red bill],
+        'completed_region' => 'kanto',
+        'next_region' => 'johto',
+        'chapter_state' => 'kanto_complete_world_circuit_open',
+        'unlocks' => %w[world_circuit_passport johto_travel kanto_rematches_tier_2 pokedex_readiness_beta],
+        'next_hook' => 'johto_new_bark_arrival'
       }
     end
 
