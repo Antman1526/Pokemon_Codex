@@ -634,6 +634,24 @@ python3 tools/validate_native_route25_bill_intro.py
 godot --headless --path native/nexus-red --script tests/route25_bill_intro_test.gd
 ```
 
+### Task 7.33: Add Cerulean Rocket house theft and stolen TM recovery
+
+Acceptance:
+
+- Cerulean's Rocket house stays locked until Bill's Route 25 intro has explained the WorldLink/storage clue.
+- Cerulean can transition into the burglarized Rocket house scene after Bill's intro.
+- The house scene records the stolen TM clue and connects classic Rocket theft to the southbound Vermilion shipping route.
+- The Rocket TM thief can start a placeholder battle and returns the player to the house after completion.
+- Defeating the thief records the stolen TM recovery and unlocks Route 5 toward Vermilion as the next story target.
+- WorldLink checklist adds Cerulean theft, stolen TM recovery, and Route 5/Vermilion path unlock milestones.
+
+Verification:
+
+```sh
+python3 tools/validate_native_cerulean_rocket_house.py
+godot --headless --path native/nexus-red --script tests/cerulean_rocket_house_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

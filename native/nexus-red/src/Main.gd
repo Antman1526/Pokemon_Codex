@@ -16,6 +16,7 @@ const Route4CeruleanApproachScene := preload("res://scenes/world/Route4CeruleanA
 const CeruleanCityScene := preload("res://scenes/world/CeruleanCity.tscn")
 const NuggetBridgeScene := preload("res://scenes/world/NuggetBridge.tscn")
 const Route25BillScene := preload("res://scenes/world/Route25Bill.tscn")
+const CeruleanRocketHouseScene := preload("res://scenes/world/CeruleanRocketHouse.tscn")
 const BattlePlaceholderScene := preload("res://scenes/battle/BattlePlaceholder.tscn")
 const WildEncounterPlaceholderScene := preload("res://scenes/encounter/WildEncounterPlaceholder.tscn")
 const SaveState := preload("res://src/save/SaveState.gd")
@@ -195,6 +196,7 @@ func _show_cerulean_city() -> void:
 	cerulean.go_to_nugget_bridge.connect(_on_go_to_nugget_bridge)
 	cerulean.start_battle_placeholder.connect(_on_start_battle_placeholder)
 	cerulean.go_to_route_25_bill.connect(_on_go_to_route_25_bill)
+	cerulean.go_to_cerulean_rocket_house.connect(_on_go_to_cerulean_rocket_house)
 	_replace_screen(cerulean)
 
 
@@ -221,6 +223,18 @@ func _show_route_25_bill() -> void:
 	_replace_screen(route25)
 
 
+func _on_go_to_cerulean_rocket_house() -> void:
+	_show_cerulean_rocket_house()
+
+
+func _show_cerulean_rocket_house() -> void:
+	var house := CeruleanRocketHouseScene.instantiate()
+	house.save_state = save_state
+	house.go_to_cerulean_city.connect(_on_go_to_cerulean_city)
+	house.start_battle_placeholder.connect(_on_start_battle_placeholder)
+	_replace_screen(house)
+
+
 func _on_start_battle_placeholder(battle_id: String) -> void:
 	save_state.start_battle_placeholder(battle_id)
 	var battle := BattlePlaceholderScene.instantiate()
@@ -241,6 +255,8 @@ func _on_battle_placeholder_finished(result: String) -> void:
 		_show_nugget_bridge()
 	elif battle_return_scene == "cerulean_city":
 		_show_cerulean_city()
+	elif battle_return_scene == "cerulean_rocket_house":
+		_show_cerulean_rocket_house()
 	else:
 		_on_go_to_route_1()
 

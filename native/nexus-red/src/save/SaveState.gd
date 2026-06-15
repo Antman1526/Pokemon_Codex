@@ -126,6 +126,14 @@ func start_new_game(name: String) -> void:
 		"bill_storage_network_clue_seen": false,
 		"nexus_network_first_decode_seen": false,
 		"worldlink_route_25_bill_batch_queued": false,
+		"cerulean_rocket_house_reached": false,
+		"cerulean_house_theft_seen": false,
+		"rocket_stolen_tm_clue_seen": false,
+		"cerulean_rocket_house_thief_battle_started": false,
+		"cerulean_rocket_house_thief_battle_finished": false,
+		"stolen_tm_recovered": false,
+		"route_5_vermilion_path_unlocked": false,
+		"worldlink_cerulean_rocket_house_batch_queued": false,
 		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
@@ -396,6 +404,27 @@ func queue_route_25_bill_batch() -> void:
 	])
 
 
+func enter_cerulean_rocket_house() -> void:
+	current_scene = "cerulean_rocket_house"
+	active_companion = "red"
+	set_flag("cerulean_rocket_house_reached", true)
+
+
+func record_cerulean_house_theft() -> void:
+	active_companion = "red"
+	set_flag("cerulean_house_theft_seen", true)
+	set_flag("rocket_stolen_tm_clue_seen", true)
+	queue_cerulean_rocket_house_batch()
+
+
+func queue_cerulean_rocket_house_batch() -> void:
+	set_flag("worldlink_cerulean_rocket_house_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_cerulean_house_theft_seen",
+		"wl_rocket_stolen_tm_clue",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -491,6 +520,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 		set_flag("nugget_bridge_captain_battle_started", true)
 	if battle_id == "misty_cerulean_gym":
 		set_flag("misty_cerulean_gym_started", true)
+	if battle_id == "cerulean_rocket_house_thief":
+		set_flag("cerulean_rocket_house_thief_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -527,6 +558,12 @@ func finish_battle_placeholder(result: String) -> void:
 		queue_worldlink_id("wl_misty_cerulean_gym_finished")
 		queue_worldlink_id("wl_misty_cascade_badge_earned")
 		queue_worldlink_id("wl_misty_recurring_friend_unlocked")
+	if active_battle_id == "cerulean_rocket_house_thief":
+		set_flag("cerulean_rocket_house_thief_battle_finished", true)
+		set_flag("stolen_tm_recovered", true)
+		set_flag("route_5_vermilion_path_unlocked", true)
+		queue_worldlink_id("wl_stolen_tm_recovered")
+		queue_worldlink_id("wl_route_5_vermilion_path_unlocked")
 	active_battle_id = ""
 
 

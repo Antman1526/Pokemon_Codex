@@ -10,6 +10,7 @@ const BATTLE_DATA_PATHS := {
 	"nugget_bridge_recruiter_1": "res://content/battles/nugget_bridge_recruiter_1.json",
 	"nugget_bridge_captain": "res://content/battles/nugget_bridge_captain.json",
 	"misty_cerulean_gym": "res://content/battles/misty_cerulean_gym.json",
+	"cerulean_rocket_house_thief": "res://content/battles/cerulean_rocket_house_thief.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

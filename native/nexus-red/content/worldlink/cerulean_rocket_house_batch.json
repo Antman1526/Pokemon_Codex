@@ -1,0 +1,30 @@
+{
+  "id": "cerulean_rocket_house_batch",
+  "name": "Cerulean Rocket House Batch",
+  "feed": [
+    {
+      "id": "wl_cerulean_house_theft_seen",
+      "speaker": "Misty",
+      "category": "alert",
+      "text": "Misty reported a burglary near Cerulean's east side: Rocket stole a technical machine and left boot prints toward the south road."
+    },
+    {
+      "id": "wl_rocket_stolen_tm_clue",
+      "speaker": "Red",
+      "category": "faction",
+      "text": "Red found Rocket notes tying the stolen TM to black-market transport routes and Bill's unusual storage-network readings."
+    },
+    {
+      "id": "wl_stolen_tm_recovered",
+      "speaker": "WorldLink",
+      "category": "progress",
+      "text": "Stolen TM recovered from the Rocket thief. Cerulean's local crisis is contained for now."
+    },
+    {
+      "id": "wl_route_5_vermilion_path_unlocked",
+      "speaker": "Bill",
+      "category": "travel",
+      "text": "Bill marked the south road open. Route 5 and Vermilion are the next leads for Rocket's shipping network."
+    }
+  ]
+}

@@ -4,6 +4,7 @@ signal go_to_route_4_cerulean_approach
 signal go_to_nugget_bridge
 signal start_battle_placeholder(battle_id)
 signal go_to_route_25_bill
+signal go_to_cerulean_rocket_house
 
 var save_state
 var dialogue_label: Label
@@ -25,6 +26,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_misty_gym_battle()
 	if event.is_action_pressed("ui_down"):
 		trigger_route_25_bill_entry()
+	if event.is_action_pressed("ui_left"):
+		trigger_cerulean_rocket_house_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_4_cerulean_approach()
 
@@ -144,5 +147,13 @@ func trigger_route_25_bill_entry() -> void:
 	emit_signal("go_to_route_25_bill")
 
 
+func trigger_cerulean_rocket_house_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("bill_route25_intro_seen", false)):
+		dialogue_label.text = "Red: Before we check the Rocket house, we need Bill's read on the WorldLink signal."
+		return
+	dialogue_label.text = "Misty: The Rocket house is on the east side. A TM was stolen, and the thief ran toward the south road."
+	emit_signal("go_to_cerulean_rocket_house")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, Down for Route 25, or X/Esc to step back to Route 4."
+	dialogue_label.text = "Red: Cerulean City. Press Z/Enter to meet Misty, Up for Nugget Bridge, Right for Misty's gym, Down for Route 25, Left for the Rocket house, or X/Esc to step back to Route 4."

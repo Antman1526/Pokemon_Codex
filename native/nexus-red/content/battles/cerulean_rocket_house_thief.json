@@ -1,0 +1,42 @@
+{
+  "id": "cerulean_rocket_house_thief",
+  "display_title": "Cerulean House - Rocket TM Thief",
+  "status": "placeholder",
+  "battle_type": "villain_grunt",
+  "location": "cerulean_rocket_house",
+  "level_cap": 22,
+  "difficulty_note": "Post-Misty Rocket cleanup fight. Keeps classic Cerulean TM theft structure while adding a Drowzee clue that Rocket is tracking Bill's network data.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "slots": ["party"],
+    "story_support": "Red blocks the ruined doorway so the Rocket thief cannot run while Antman battles."
+  },
+  "opponent": {
+    "id": "rocket_tm_thief",
+    "display_name": "Rocket TM Thief",
+    "faction": "rocket",
+    "slots": [
+      {
+        "species": "Machop",
+        "level": 20,
+        "role": "classic physical opener"
+      },
+      {
+        "species": "Drowzee",
+        "level": 21,
+        "role": "network-memory clue"
+      }
+    ],
+    "intent": "recover the stolen TM beat, show Rocket's black-market item route, and point the player toward Vermilion shipping pressure"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": [
+      "cerulean_rocket_house_thief_battle_started",
+      "cerulean_rocket_house_thief_battle_finished",
+      "stolen_tm_recovered",
+      "route_5_vermilion_path_unlocked"
+    ]
+  }
+}
