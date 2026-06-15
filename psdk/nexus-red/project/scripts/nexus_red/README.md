@@ -113,6 +113,8 @@ After a wild battle returns, map scripts should call `NexusRed::WildBattleResult
 
 `NexusRed::KantoStory.complete_silph_co_5f_elevator_route(state, location:, area_type:)` resolves the Card Key/elevator routing checkpoint. It records Red guarding the stairwell fallback, Bill rerouting the elevator grid toward 7F, Blue pressuring Rocket guards, Rocket moving Master Ball files, and Gold Dust/Moonlight interference while opening `silph_co_7f_executive_floor`.
 
+`NexusRed::KantoStory.complete_silph_co_7f_executive_floor(state, location:, area_type:)` resolves the executive-floor hostage and boardroom-lock checkpoint. It records Red guarding the route, Blue pressuring Rocket's executive guards, Bill tracing the boardroom lock to a hidden sponsor credential, and opens `silph_co_10f_president_suite`.
+
 The loader is intentionally conservative. It only reads committed JSON seed files and prepares a guarded `PFM::GameState` extension when PSDK is available. Map events, battles, Pokemon creation, and UI calls should be added in later scripts after the blank PSDK project structure is confirmed in Pokemon Studio.
 
 Seed refresh command:

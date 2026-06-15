@@ -227,6 +227,16 @@ module NexusRed
     NEXUS_ORDER_EXECUTIVE_SPONSOR_EVENT_ID = 'nexus_order_executive_sponsor_trace'
     SILPH_7F_EXECUTIVE_FLOOR_EVENT_ID = 'silph_7f_executive_floor_unlocked'
     ROCKET_SILPH_5F_FILE_BATTLE_ID = 'rocket_silph_5f_file_guard'
+    SILPH_CO_7F_EXECUTIVE_FLOOR_EVENT_ID = 'silph_co_7f_executive_floor'
+    RED_SILPH_7F_ROUTE_GUARD_EVENT_ID = 'red_silph_7f_route_guard'
+    BLUE_SILPH_7F_EXECUTIVE_PRESSURE_EVENT_ID = 'blue_silph_7f_executive_pressure'
+    BILL_BOARDROOM_LOCK_TRACE_EVENT_ID = 'bill_boardroom_lock_trace'
+    ROCKET_EXECUTIVE_HOSTAGE_FILE_EVENT_ID = 'rocket_executive_hostage_file'
+    GOLD_DUST_PROTOTYPE_CONTRACT_EVENT_ID = 'gold_dust_prototype_contract'
+    MOONLIGHT_WITNESS_MEMORY_EVENT_ID = 'moonlight_witness_memory_static'
+    NEXUS_ORDER_BOARDROOM_LOCK_SPONSOR_EVENT_ID = 'nexus_order_boardroom_lock_sponsor'
+    SILPH_10F_PRESIDENT_SUITE_EVENT_ID = 'silph_10f_president_suite_unlocked'
+    ROCKET_SILPH_7F_EXECUTIVE_BATTLE_ID = 'rocket_silph_7f_executive_guard'
 
     module_function
 
@@ -3615,6 +3625,125 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_5F_ELEVATOR_ROUTE_EVENT_ID }
     end
 
+    def complete_silph_co_7f_executive_floor(state, location: 'Silph Co 7F Executive Floor', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_silph_co_5f_elevator_route', 'event_id' => SILPH_CO_7F_EXECUTIVE_FLOOR_EVENT_ID } unless silph_co_5f_elevator_route_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => SILPH_CO_7F_EXECUTIVE_FLOOR_EVENT_ID } if silph_co_7f_executive_floor_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_CO_7F_EXECUTIVE_FLOOR')
+      add_story_flag(state, 'FLAG_NEXUS_RED_SILPH_7F_ROUTE_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_SILPH_7F_EXECUTIVE_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_BOARDROOM_LOCK_TRACE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_EXECUTIVE_HOSTAGE_FILE')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_PROTOTYPE_CONTRACT')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_WITNESS_MEMORY_STATIC')
+      add_story_flag(state, 'FLAG_NEXUS_ORDER_BOARDROOM_LOCK_SPONSOR')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_10F_PRESIDENT_SUITE_UNLOCKED')
+      mark_cleared_event(story, SILPH_CO_7F_EXECUTIVE_FLOOR_EVENT_ID)
+      mark_cleared_event(story, RED_SILPH_7F_ROUTE_GUARD_EVENT_ID)
+      mark_cleared_event(story, BLUE_SILPH_7F_EXECUTIVE_PRESSURE_EVENT_ID)
+      mark_cleared_event(story, BILL_BOARDROOM_LOCK_TRACE_EVENT_ID)
+      mark_cleared_event(story, ROCKET_EXECUTIVE_HOSTAGE_FILE_EVENT_ID)
+      mark_cleared_event(story, GOLD_DUST_PROTOTYPE_CONTRACT_EVENT_ID)
+      mark_cleared_event(story, MOONLIGHT_WITNESS_MEMORY_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_BOARDROOM_LOCK_SPONSOR_EVENT_ID)
+      mark_cleared_event(story, SILPH_10F_PRESIDENT_SUITE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'executive_hostage_file',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'kanto',
+        location,
+        'prototype_contract_broker',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'witness_memory_static',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'boardroom_lock_sponsor',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        location,
+        'Rocket is using executive hostages to control prototype files while Gold Dust brokers push signed contracts across the same floor',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Moonlight memory static is corrupting witness testimony before Rocket can identify which executive has the president suite code',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'silph_7f_route_guard',
+        location: location,
+        summary: 'Red guards the 7F executive route so Antman can break Rocket pressure without losing the stairwell fallback.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'silph_boardroom_lock_trace',
+        location: location,
+        summary: 'Bill traces the boardroom lock to a sponsor credential and confirms the president suite route is exposed on 10F.',
+        area_type: area_type
+      )
+      record_rival_story_clue(
+        state,
+        'blue',
+        location,
+        'Blue pressured the executive guards until one admitted the president suite route continues on 10F.',
+        area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Silph Co 7F executive floor is cleared: Bill traced the boardroom lock, Blue found the president route, and 10F is now exposed.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = silph_co_7f_executive_floor_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def silph_co_7f_executive_floor_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == SILPH_CO_7F_EXECUTIVE_FLOOR_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -4446,6 +4575,40 @@ module NexusRed
         'locked_systems' => %w[boardroom_master_lock_president_suite],
         'unlocks' => %w[silph_co_7f_executive_floor elevator_reroute master_ball_file_trace],
         'next_hook' => 'silph_co_7f_executive_floor'
+      }
+    end
+
+    def silph_co_7f_executive_floor_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => SILPH_CO_7F_EXECUTIVE_FLOOR_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_SILPH_7F_ROUTE_GUARD_EVENT_ID,
+          BLUE_SILPH_7F_EXECUTIVE_PRESSURE_EVENT_ID,
+          BILL_BOARDROOM_LOCK_TRACE_EVENT_ID,
+          ROCKET_EXECUTIVE_HOSTAGE_FILE_EVENT_ID,
+          GOLD_DUST_PROTOTYPE_CONTRACT_EVENT_ID,
+          MOONLIGHT_WITNESS_MEMORY_EVENT_ID,
+          NEXUS_ORDER_BOARDROOM_LOCK_SPONSOR_EVENT_ID,
+          SILPH_10F_PRESIDENT_SUITE_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_gold_dust team_moonlight nexus_order],
+        'dungeon_state' => '7f_executive_floor_cleared',
+        'battle_hook' => {
+          'battle_id' => ROCKET_SILPH_7F_EXECUTIVE_BATTLE_ID,
+          'battle_type' => 'villain_executive_guard',
+          'location' => 'silph_co_7f_executive_floor',
+          'level_cap' => 44,
+          'opponent_species' => %w[Arbok Weezing Hypno],
+          'route_advantage' => 'elevator_reroute_to_executive_floor',
+          'companion_support' => 'red_guards_route_fallback'
+        },
+        'prototype_pressure' => 'boardroom_lock_and_master_ball_contracts',
+        'executive_state' => 'hostages_rescued_boardroom_lock_traced',
+        'locked_systems' => %w[president_suite_giovanni_boardroom],
+        'unlocks' => %w[silph_co_10f_president_suite boardroom_lock_trace executive_rescue_lead],
+        'next_hook' => 'silph_co_10f_president_suite'
       }
     end
 
