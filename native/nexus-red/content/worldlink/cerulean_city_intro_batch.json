@@ -1,0 +1,22 @@
+{
+  "id": "cerulean_city_intro_batch",
+  "name": "Cerulean City Intro Batch",
+  "trigger": "cerulean_city_first_entry_after_route_4_warning",
+  "feed": [
+    {
+      "id": "wl_cerulean_city_reached",
+      "category": "story",
+      "text": "Antman and Red reached Cerulean City after the Mt. Moon fossil choice."
+    },
+    {
+      "id": "wl_misty_cerulean_intro",
+      "category": "companion",
+      "text": "Misty confronted Antman and Red near her gym, then shifted focus to the growing Nugget Bridge threat."
+    },
+    {
+      "id": "wl_nugget_bridge_threat_setup",
+      "category": "faction",
+      "text": "Cerulean reports say Rocket and Gold Dust recruiters are testing Trainers around Nugget Bridge."
+    }
+  ]
+}

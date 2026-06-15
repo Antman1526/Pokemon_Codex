@@ -544,6 +544,24 @@ python3 tools/validate_native_route4_cerulean_approach.py
 godot --headless --path native/nexus-red --script tests/route4_cerulean_approach_test.gd
 ```
 
+### Task 7.28: Add Cerulean City Misty intro
+
+Acceptance:
+
+- Route 4 can transition into Cerulean City after Red's Route 4 warning is seen.
+- Cerulean City becomes a playable city shell with the gym, Pokemon Center, and Nugget Bridge visually represented.
+- Misty is introduced as a strong local ally, but she does not become a full companion yet.
+- Misty and Red identify Nugget Bridge as the immediate crisis before the gym challenge.
+- Save state and WorldLink record Cerulean arrival, Misty's intro, and Rocket/Gold Dust pressure around Nugget Bridge.
+- Cerulean can return to Route 4 until the Nugget Bridge slice exists.
+
+Verification:
+
+```sh
+python3 tools/validate_native_cerulean_city_intro.py
+godot --headless --path native/nexus-red --script tests/cerulean_city_intro_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_mt_moon_fossil_decision
+signal go_to_cerulean_city
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_red_cerulean_warning()
+	if event.is_action_pressed("ui_right"):
+		trigger_cerulean_city_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_mt_moon_fossil_decision()
 
@@ -99,5 +102,13 @@ func return_to_mt_moon_fossil_decision() -> void:
 	emit_signal("go_to_mt_moon_fossil_decision")
 
 
+func trigger_cerulean_city_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("red_route_4_cerulean_warning_seen", false)):
+		dialogue_label.text = "Red: Before we enter Cerulean, talk this through with me. Misty needs facts, not panic."
+		return
+	dialogue_label.text = "Red: Cerulean City is ahead. We find Misty first, then we handle Nugget Bridge."
+	emit_signal("go_to_cerulean_city")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Route 4 is the breath after Mt. Moon. Press Z/Enter to talk through the Cerulean plan, or X/Esc to step back toward the fossil table."
+	dialogue_label.text = "Red: Route 4 is the breath after Mt. Moon. Press Z/Enter to talk through the Cerulean plan, Right for Cerulean City, or X/Esc to step back toward the fossil table."

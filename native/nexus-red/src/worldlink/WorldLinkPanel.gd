@@ -8,6 +8,7 @@ const MT_MOON_BATCH_PATH := "res://content/worldlink/mt_moon_faction_conflict_ba
 const MT_MOON_INTERIOR_BATCH_PATH := "res://content/worldlink/mt_moon_interior_split_batch.json"
 const MT_MOON_FOSSIL_DECISION_BATCH_PATH := "res://content/worldlink/mt_moon_fossil_decision_batch.json"
 const ROUTE_4_CERULEAN_BATCH_PATH := "res://content/worldlink/route_4_cerulean_approach_batch.json"
+const CERULEAN_CITY_BATCH_PATH := "res://content/worldlink/cerulean_city_intro_batch.json"
 const ROUTE_1_RUMORS_PATH := "res://content/encounters/route_1_rumors.json"
 
 var save_state
@@ -69,7 +70,7 @@ func _build_feed_text() -> String:
 
 
 func _build_checklist_text() -> String:
-	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning" % [
+	return "Checklist\n%s Visit Oak\n%s Choose first partner\n%s Step onto Route 1\n%s Finish Blue Route 1 battle\n%s Check Route 1 rumors\n%s Reach Viridian City\n%s Talk to Red in Viridian\n%s Find Viridian Rocket clue\n%s Reach Pewter City\n%s Earn Boulder Badge\n%s Investigate Pewter Museum anomaly\n%s Reach Mt. Moon entrance\n%s Witness Rocket and Gold Dust clash\n%s Enter Mt. Moon interior\n%s Map the fossil split paths\n%s Reach fossil decision\n%s Choose Mt. Moon fossil\n%s Reach Route 4\n%s Hear Red's Cerulean warning\n%s Reach Cerulean City\n%s Meet Misty\n%s Identify Nugget Bridge threat" % [
 		_checkmark(_flag("mom_opening_scene_seen")),
 		_checkmark(_flag("starter_chosen")),
 		_checkmark(_flag("route_1_reached")),
@@ -89,6 +90,9 @@ func _build_checklist_text() -> String:
 		_checkmark(_flag("mt_moon_fossil_choice_made")),
 		_checkmark(_flag("route_4_cerulean_approach_reached")),
 		_checkmark(_flag("red_route_4_cerulean_warning_seen")),
+		_checkmark(_flag("cerulean_city_reached")),
+		_checkmark(_flag("misty_cerulean_intro_seen")),
+		_checkmark(_flag("nugget_bridge_threat_setup_seen")),
 	]
 
 
@@ -125,6 +129,7 @@ func _build_item_index() -> Dictionary:
 	_add_feed_items(index, MT_MOON_INTERIOR_BATCH_PATH, "feed")
 	_add_feed_items(index, MT_MOON_FOSSIL_DECISION_BATCH_PATH, "feed")
 	_add_feed_items(index, ROUTE_4_CERULEAN_BATCH_PATH, "feed")
+	_add_feed_items(index, CERULEAN_CITY_BATCH_PATH, "feed")
 	_add_feed_items(index, ROUTE_1_RUMORS_PATH, "rumors")
 	return index
 

@@ -105,6 +105,10 @@ func start_new_game(name: String) -> void:
 		"red_route_4_cerulean_warning_seen": false,
 		"cerulean_bridge_threat_teased": false,
 		"worldlink_route_4_cerulean_batch_queued": false,
+		"cerulean_city_reached": false,
+		"misty_cerulean_intro_seen": false,
+		"nugget_bridge_threat_setup_seen": false,
+		"worldlink_cerulean_city_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -302,6 +306,29 @@ func queue_route_4_cerulean_batch() -> void:
 		"wl_route_4_cerulean_approach",
 		"wl_red_route_4_cerulean_warning",
 		"wl_cerulean_bridge_threat_tease",
+	])
+
+
+func enter_cerulean_city() -> void:
+	current_scene = "cerulean_city"
+	active_companion = "red"
+	set_flag("cerulean_city_reached", true)
+	queue_worldlink_id("wl_cerulean_city_reached")
+
+
+func record_misty_cerulean_intro() -> void:
+	active_companion = "red"
+	set_flag("misty_cerulean_intro_seen", true)
+	set_flag("nugget_bridge_threat_setup_seen", true)
+	queue_cerulean_city_batch()
+
+
+func queue_cerulean_city_batch() -> void:
+	set_flag("worldlink_cerulean_city_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_cerulean_city_reached",
+		"wl_misty_cerulean_intro",
+		"wl_nugget_bridge_threat_setup",
 	])
 
 
