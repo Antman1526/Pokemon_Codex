@@ -7,6 +7,7 @@ const BATTLE_DATA_PATHS := {
 	"brock_pewter_gym": "res://content/battles/brock_pewter_gym.json",
 	"mt_moon_rocket_left_path": "res://content/battles/mt_moon_rocket_left_path.json",
 	"mt_moon_gold_dust_right_path": "res://content/battles/mt_moon_gold_dust_right_path.json",
+	"nugget_bridge_recruiter_1": "res://content/battles/nugget_bridge_recruiter_1.json",
 }
 const BLUE_COMPATIBILITY_MARKER := "Blue"
 

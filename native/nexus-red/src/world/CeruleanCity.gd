@@ -1,6 +1,7 @@
 extends Control
 
 signal go_to_route_4_cerulean_approach
+signal go_to_nugget_bridge
 
 var save_state
 var dialogue_label: Label
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
 		trigger_misty_intro()
+	if event.is_action_pressed("ui_up"):
+		trigger_nugget_bridge_entry()
 	if event.is_action_pressed("cancel"):
 		return_to_route_4_cerulean_approach()
 
@@ -109,5 +112,13 @@ func return_to_route_4_cerulean_approach() -> void:
 	emit_signal("go_to_route_4_cerulean_approach")
 
 
+func trigger_nugget_bridge_entry() -> void:
+	if save_state and not bool(save_state.story_flags.get("misty_cerulean_intro_seen", false)):
+		dialogue_label.text = "Red: Misty knows this city. Talk to Misty before we walk into Nugget Bridge."
+		return
+	dialogue_label.text = "Misty: Nugget Bridge is north. Red, stay close to Antman. Rocket and Gold Dust are testing recruits up there."
+	emit_signal("go_to_nugget_bridge")
+
+
 func _update_intro_dialogue() -> void:
-	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, or X/Esc to step back to Route 4."
+	dialogue_label.text = "Red: Cerulean City. Misty is near the gym, but Nugget Bridge is already crowded. Press Z/Enter to meet Misty, Up for Nugget Bridge, or X/Esc to step back to Route 4."

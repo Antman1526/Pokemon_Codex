@@ -562,6 +562,24 @@ python3 tools/validate_native_cerulean_city_intro.py
 godot --headless --path native/nexus-red --script tests/cerulean_city_intro_test.gd
 ```
 
+### Task 7.29: Add Nugget Bridge recruiter setup
+
+Acceptance:
+
+- Cerulean City can transition to Nugget Bridge after Misty's intro identifies the threat.
+- Nugget Bridge becomes a playable bridge shell with Red and Misty scouting Rocket and Gold Dust recruitment pressure.
+- The first bridge recruiter can start a placeholder battle.
+- Battle data documents a Cerulean-appropriate level cap, faction recruiter identity, and early Rocket/Gold Dust front team.
+- Placeholder battle return sends the player back to Nugget Bridge.
+- Save state and WorldLink record bridge arrival, bridge scouting, and first recruiter battle completion.
+
+Verification:
+
+```sh
+python3 tools/validate_native_nugget_bridge_recruiter.py
+godot --headless --path native/nexus-red --script tests/nugget_bridge_recruiter_test.gd
+```
+
 ## Checkpoint
 
 The native migration is healthy when:

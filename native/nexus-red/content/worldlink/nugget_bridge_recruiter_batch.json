@@ -1,0 +1,22 @@
+{
+  "id": "nugget_bridge_recruiter_batch",
+  "name": "Nugget Bridge Recruiter Batch",
+  "trigger": "nugget_bridge_rocket_gold_dust_recruiter_setup",
+  "feed": [
+    {
+      "id": "wl_nugget_bridge_reached",
+      "category": "story",
+      "text": "Antman, Red, and Misty reached Nugget Bridge as recruiters started testing passing Trainers."
+    },
+    {
+      "id": "wl_nugget_bridge_scouting",
+      "category": "faction",
+      "text": "Red and Misty spotted Rocket and Gold Dust pressure overlapping inside the bridge challenge line."
+    },
+    {
+      "id": "wl_nugget_bridge_recruiter_1_battle_finished",
+      "category": "battle",
+      "text": "Antman defeated the first bridge recruiter, disrupting the shared Rocket and Gold Dust recruitment screen."
+    }
+  ]
+}

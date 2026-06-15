@@ -1,0 +1,39 @@
+{
+  "id": "nugget_bridge_recruiter_1",
+  "display_title": "Nugget Bridge - First Recruiter",
+  "status": "placeholder",
+  "battle_type": "faction_recruiter",
+  "location": "nugget_bridge",
+  "level_cap": 21,
+  "tag_story_setup": true,
+  "difficulty_note": "First Cerulean crisis fight. Mainline-hard pressure with simple poison and pickup-style tempo before Misty's gym.",
+  "player_side": {
+    "trainer_id": "antman",
+    "companion_id": "red",
+    "support_ids": ["misty"],
+    "slots": ["party"],
+    "story_support": "Red watches the bridge line while Misty blocks recruiters from pulling civilians into the fight."
+  },
+  "opponent": {
+    "id": "bridge_recruiter_1",
+    "display_name": "Bridge Recruiter",
+    "faction": "rocket_gold_dust_front",
+    "slots": [
+      {
+        "species": "Ekans",
+        "level": 17,
+        "role": "poison pressure"
+      },
+      {
+        "species": "Meowth",
+        "level": 18,
+        "role": "fast prize-money tease"
+      }
+    ],
+    "intent": "prove Rocket and Gold Dust are testing the same trainer pipeline around Cerulean without openly wearing one uniform yet"
+  },
+  "outcome": {
+    "default_result": "placeholder_win",
+    "sets_flags": ["nugget_bridge_recruiter_1_battle_started", "nugget_bridge_recruiter_1_battle_finished"]
+  }
+}

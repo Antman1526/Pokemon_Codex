@@ -109,6 +109,11 @@ func start_new_game(name: String) -> void:
 		"misty_cerulean_intro_seen": false,
 		"nugget_bridge_threat_setup_seen": false,
 		"worldlink_cerulean_city_batch_queued": false,
+		"nugget_bridge_reached": false,
+		"red_misty_nugget_bridge_scout_seen": false,
+		"nugget_bridge_recruiter_1_battle_started": false,
+		"nugget_bridge_recruiter_1_battle_finished": false,
+		"worldlink_nugget_bridge_batch_queued": false,
 	}
 	worldlink_queue = [
 		"red_route_1_tracks",
@@ -332,6 +337,27 @@ func queue_cerulean_city_batch() -> void:
 	])
 
 
+func enter_nugget_bridge() -> void:
+	current_scene = "nugget_bridge"
+	active_companion = "red"
+	set_flag("nugget_bridge_reached", true)
+	queue_worldlink_id("wl_nugget_bridge_reached")
+
+
+func record_nugget_bridge_scouting() -> void:
+	active_companion = "red"
+	set_flag("red_misty_nugget_bridge_scout_seen", true)
+	queue_nugget_bridge_batch()
+
+
+func queue_nugget_bridge_batch() -> void:
+	set_flag("worldlink_nugget_bridge_batch_queued", true)
+	queue_worldlink_ids([
+		"wl_nugget_bridge_reached",
+		"wl_nugget_bridge_scouting",
+	])
+
+
 func record_viridian_center_visit() -> void:
 	set_flag("viridian_center_visited", true)
 	queue_worldlink_id("viridian_center_visited")
@@ -421,6 +447,8 @@ func start_battle_placeholder(battle_id: String) -> void:
 	if battle_id == "mt_moon_gold_dust_right_path":
 		set_flag("mt_moon_gold_dust_right_battle_started", true)
 		set_flag("gold_dust_helix_claim_blocked", true)
+	if battle_id == "nugget_bridge_recruiter_1":
+		set_flag("nugget_bridge_recruiter_1_battle_started", true)
 
 
 func finish_battle_placeholder(result: String) -> void:
@@ -440,6 +468,10 @@ func finish_battle_placeholder(result: String) -> void:
 	if active_battle_id == "mt_moon_gold_dust_right_path":
 		set_flag("mt_moon_gold_dust_right_battle_finished", true)
 		queue_worldlink_id("mt_moon_gold_dust_right_battle_finished")
+	if active_battle_id == "nugget_bridge_recruiter_1":
+		set_flag("nugget_bridge_recruiter_1_battle_finished", true)
+		queue_worldlink_id("nugget_bridge_recruiter_1_battle_finished")
+		queue_worldlink_id("wl_nugget_bridge_recruiter_1_battle_finished")
 	active_battle_id = ""
 
 
