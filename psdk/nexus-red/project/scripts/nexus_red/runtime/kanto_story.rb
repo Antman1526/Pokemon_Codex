@@ -40,6 +40,14 @@ module NexusRed
     ROCKET_LAVENDER_SURVEILLANCE_EVENT_ID = 'rocket_lavender_surveillance'
     POKEMON_TOWER_SIGNAL_EVENT_ID = 'pokemon_tower_signal_confirmed'
     POKEMON_TOWER_ENTRY_EVENT_ID = 'pokemon_tower_entry_unlocked'
+    POKEMON_TOWER_FIRST_FLOOR_EVENT_ID = 'pokemon_tower_first_floor'
+    RED_POKEMON_TOWER_GUARD_EVENT_ID = 'red_pokemon_tower_guard'
+    BILL_TOWER_ECHO_EVENT_ID = 'bill_tower_echo_flute_distortion'
+    TEAM_MOONLIGHT_TOWER_EVENT_ID = 'team_moonlight_tower_pressure'
+    ROCKET_TOWER_GRUNT_EVENT_ID = 'rocket_tower_grunt_seen'
+    CUBONE_MR_FUJI_EVENT_ID = 'cubone_mr_fuji_thread'
+    SILPH_SCOPE_NEED_EVENT_ID = 'silph_scope_need_seen'
+    POKEMON_TOWER_DEEPER_LOCK_EVENT_ID = 'pokemon_tower_deeper_path_locked'
 
     module_function
 
@@ -1051,6 +1059,89 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == LAVENDER_OUTSKIRTS_EVENT_ID }
     end
 
+    def complete_pokemon_tower_first_floor(state, location: 'Pokemon Tower 1F', area_type: 'story_dungeon')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_lavender_outskirts', 'event_id' => POKEMON_TOWER_FIRST_FLOOR_EVENT_ID } unless lavender_outskirts_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => POKEMON_TOWER_FIRST_FLOOR_EVENT_ID } if pokemon_tower_first_floor_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_FIRST_FLOOR_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_POKEMON_TOWER_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_TOWER_ECHO_FLUTE_DISTORTION')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_TOWER_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_TOWER_GRUNT')
+      add_story_flag(state, 'FLAG_NEXUS_CUBONE_MR_FUJI_THREAD')
+      add_story_flag(state, 'FLAG_NEXUS_SILPH_SCOPE_NEED_SEEN')
+      add_story_flag(state, 'FLAG_NEXUS_POKEMON_TOWER_DEEPER_PATH_LOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE8_CELADON_ROAD_UNLOCKED')
+      mark_cleared_event(story, POKEMON_TOWER_FIRST_FLOOR_EVENT_ID)
+      mark_cleared_event(story, RED_POKEMON_TOWER_GUARD_EVENT_ID)
+      mark_cleared_event(story, BILL_TOWER_ECHO_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_TOWER_EVENT_ID)
+      mark_cleared_event(story, ROCKET_TOWER_GRUNT_EVENT_ID)
+      mark_cleared_event(story, CUBONE_MR_FUJI_EVENT_ID)
+      mark_cleared_event(story, SILPH_SCOPE_NEED_EVENT_ID)
+      mark_cleared_event(story, POKEMON_TOWER_DEEPER_LOCK_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'tower_grief_distortion',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'tower_grunt_lookout',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket grunt keeps watch while Moonlight pressure bends the first-floor memorial signal',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'pokemon_tower_guard',
+        location: location,
+        summary: 'Red guards Antman through Pokemon Tower first floor without letting the grief become a maze.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'tower_echo_flute_distortion',
+        location: location,
+        summary: 'Bill detects the Echo Flute bending around Pokemon Tower grief and dream pressure.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Pokemon Tower first floor revealed the Cubone and Mr. Fuji thread, but the deeper path needs the Silph Scope from Celadon.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = pokemon_tower_first_floor_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def pokemon_tower_first_floor_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == POKEMON_TOWER_FIRST_FLOOR_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -1264,6 +1355,26 @@ module NexusRed
         ],
         'factions' => %w[team_moonlight team_rocket],
         'next_hook' => 'pokemon_tower_first_floor'
+      }
+    end
+
+    def pokemon_tower_first_floor_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => POKEMON_TOWER_FIRST_FLOOR_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          RED_POKEMON_TOWER_GUARD_EVENT_ID,
+          BILL_TOWER_ECHO_EVENT_ID,
+          TEAM_MOONLIGHT_TOWER_EVENT_ID,
+          ROCKET_TOWER_GRUNT_EVENT_ID,
+          CUBONE_MR_FUJI_EVENT_ID,
+          SILPH_SCOPE_NEED_EVENT_ID,
+          POKEMON_TOWER_DEEPER_LOCK_EVENT_ID
+        ],
+        'factions' => %w[team_moonlight team_rocket],
+        'locked_until' => 'silph_scope',
+        'next_hook' => 'route_8_celadon_road'
       }
     end
 

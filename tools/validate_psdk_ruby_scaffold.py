@@ -174,6 +174,8 @@ REQUIRED_MARKERS = (
     "rock_tunnel_interior_cleared?",
     "complete_lavender_outskirts",
     "lavender_outskirts_cleared?",
+    "complete_pokemon_tower_first_floor",
+    "pokemon_tower_first_floor_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1290,6 +1292,35 @@ raise 'expected KantoStory Lavender next hook Pokemon Tower' unless lavender_out
 second_lavender_outskirts = NexusRed::KantoStory.complete_lavender_outskirts(kanto_story_state)
 raise 'expected KantoStory Lavender idempotent guard' unless second_lavender_outskirts['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Lavender history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'lavender_outskirts' } == 1
+pre_lavender_tower = NexusRed::KantoStory.complete_pokemon_tower_first_floor(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Pokemon Tower gated before Lavender' unless pre_lavender_tower['status'] == 'blocked_missing_lavender_outskirts'
+pokemon_tower = NexusRed::KantoStory.complete_pokemon_tower_first_floor(
+  kanto_story_state,
+  location: 'Pokemon Tower 1F',
+  area_type: 'story_dungeon'
+)
+raise 'expected KantoStory Pokemon Tower clear status' unless pokemon_tower['status'] == 'cleared'
+raise 'expected KantoStory Pokemon Tower event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('pokemon_tower_first_floor')
+raise 'expected KantoStory Pokemon Tower helper true' unless NexusRed::KantoStory.pokemon_tower_first_floor_cleared?(kanto_story_state)
+raise 'expected KantoStory Pokemon Tower reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_FIRST_FLOOR_REACHED')
+raise 'expected KantoStory Red Pokemon Tower guard flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_POKEMON_TOWER_GUARD')
+raise 'expected KantoStory Bill Tower Echo Flute distortion flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_TOWER_ECHO_FLUTE_DISTORTION')
+raise 'expected KantoStory Moonlight tower pressure flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_TOWER_PRESSURE')
+raise 'expected KantoStory Rocket tower grunt flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_TOWER_GRUNT')
+raise 'expected KantoStory Cubone Mr Fuji thread flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CUBONE_MR_FUJI_THREAD')
+raise 'expected KantoStory Silph Scope need flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_SILPH_SCOPE_NEED_SEEN')
+raise 'expected KantoStory tower deeper path locked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_POKEMON_TOWER_DEEPER_PATH_LOCKED')
+raise 'expected KantoStory Route 8 Celadon road unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE8_CELADON_ROAD_UNLOCKED')
+raise 'expected KantoStory Moonlight tower pressure activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Tower 1F' && activity['operation'] == 'tower_grief_distortion' }
+raise 'expected KantoStory Rocket tower grunt activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Pokemon Tower 1F' && activity['operation'] == 'tower_grunt_lookout' }
+raise 'expected KantoStory Rocket Moonlight tower conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Pokemon Tower 1F' }
+raise 'expected KantoStory Red Pokemon Tower scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('pokemon_tower_guard')
+raise 'expected KantoStory Bill Tower distortion scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('tower_echo_flute_distortion')
+raise 'expected KantoStory Pokemon Tower story alert paused in dungeon' unless kanto_story_state['worldlink_paused_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Silph Scope') }
+raise 'expected KantoStory Pokemon Tower next hook Route 8' unless pokemon_tower['next_hook'] == 'route_8_celadon_road'
+second_pokemon_tower = NexusRed::KantoStory.complete_pokemon_tower_first_floor(kanto_story_state)
+raise 'expected KantoStory Pokemon Tower idempotent guard' unless second_pokemon_tower['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Pokemon Tower history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pokemon_tower_first_floor' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
