@@ -192,6 +192,20 @@ module NexusRed
     MOONLIGHT_BASEMENT_SIGNAL_RELAY_EVENT_ID = 'moonlight_basement_signal_relay'
     NEXUS_ORDER_BASEMENT_GRID_EVENT_ID = 'nexus_order_basement_grid_hidden'
     RADIO_TOWER_DIRECTOR_RESCUE_UNLOCKED_EVENT_ID = 'radio_tower_director_rescue_unlocked'
+    RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID = 'radio_tower_director_rescue'
+    RADIO_TOWER_DIRECTOR_SAFE_EVENT_ID = 'radio_tower_director_safe'
+    CARD_KEY_SHUTTER_UNLOCK_EVENT_ID = 'card_key_shutter_unlock'
+    RED_DIRECTOR_RESCUE_GUARD_EVENT_ID = 'red_director_rescue_guard'
+    BLUE_REJOINS_TOWER_CLIMB_EVENT_ID = 'blue_rejoins_tower_climb'
+    BILL_TRANSMITTER_KEY_DECODE_EVENT_ID = 'bill_transmitter_key_decode'
+    SILVER_EXECUTIVE_STAIRS_PRESSURE_EVENT_ID = 'silver_executive_stairs_pressure'
+    AVA_DIRECTOR_TESTIMONY_UPLOAD_EVENT_ID = 'ava_director_testimony_upload'
+    ROCKET_DIRECTOR_IMPERSONATION_CONFIRMED_EVENT_ID = 'rocket_director_impersonation_confirmed'
+    GOLD_DUST_RANSOM_LEDGER_EVENT_ID = 'gold_dust_ransom_ledger_recovered'
+    TEAM_GAS_TRANSMITTER_COOLANT_EVENT_ID = 'team_gas_transmitter_coolant_pressure'
+    MOONLIGHT_DIRECTOR_VOICEPRINT_EVENT_ID = 'moonlight_director_voiceprint_echo'
+    NEXUS_ORDER_DIRECTOR_SIGNAL_MASK_EVENT_ID = 'nexus_order_director_signal_mask_hidden'
+    RADIO_TOWER_EXECUTIVE_FLOOR_UNLOCKED_EVENT_ID = 'radio_tower_executive_floor_unlocked'
 
     module_function
 
@@ -3060,6 +3074,210 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_basement_grid_unrevealed',
         'unlocks' => %w[radio_tower_director_rescue director_card_key rocket_elevator_route warehouse_digest_after_exit],
         'next_hook' => 'radio_tower_director_rescue'
+      }
+    end
+
+    def complete_radio_tower_director_rescue(state, location: 'Goldenrod Underground Holding Room', area_type: 'villain_hideout')
+      story = ensure_johto_story(state)
+      return { 'status' => 'blocked_missing_johto_region_unlock', 'event_id' => RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID } unless johto_unlocked?(state)
+      return { 'status' => 'blocked_missing_goldenrod_underground_warehouse', 'event_id' => RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID } unless goldenrod_underground_warehouse_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID } if radio_tower_director_rescue_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_DIRECTOR_RESCUE')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_DIRECTOR_SAFE')
+      add_story_flag(state, 'FLAG_NEXUS_CARD_KEY_SHUTTER_UNLOCK')
+      add_story_flag(state, 'FLAG_NEXUS_RED_DIRECTOR_RESCUE_GUARD')
+      add_story_flag(state, 'FLAG_NEXUS_BLUE_REJOINS_TOWER_CLIMB')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_TRANSMITTER_KEY_DECODE')
+      add_story_flag(state, 'FLAG_NEXUS_SILVER_EXECUTIVE_STAIRS_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_AVA_DIRECTOR_TESTIMONY_UPLOAD')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_DIRECTOR_IMPERSONATION_CONFIRMED')
+      add_story_flag(state, 'FLAG_NEXUS_GOLD_DUST_RANSOM_LEDGER_RECOVERED')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_GAS_TRANSMITTER_COOLANT_PRESSURE')
+      add_story_flag(state, 'FLAG_NEXUS_MOONLIGHT_DIRECTOR_VOICEPRINT_ECHO')
+      add_story_flag(state, 'FLAG_NEXUS_NEXUS_ORDER_DIRECTOR_SIGNAL_MASK')
+      add_story_flag(state, 'FLAG_NEXUS_RADIO_TOWER_EXECUTIVE_FLOOR_UNLOCKED')
+
+      [
+        RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID,
+        RADIO_TOWER_DIRECTOR_SAFE_EVENT_ID,
+        CARD_KEY_SHUTTER_UNLOCK_EVENT_ID,
+        RED_DIRECTOR_RESCUE_GUARD_EVENT_ID,
+        BLUE_REJOINS_TOWER_CLIMB_EVENT_ID,
+        BILL_TRANSMITTER_KEY_DECODE_EVENT_ID,
+        SILVER_EXECUTIVE_STAIRS_PRESSURE_EVENT_ID,
+        AVA_DIRECTOR_TESTIMONY_UPLOAD_EVENT_ID,
+        ROCKET_DIRECTOR_IMPERSONATION_CONFIRMED_EVENT_ID,
+        GOLD_DUST_RANSOM_LEDGER_EVENT_ID,
+        TEAM_GAS_TRANSMITTER_COOLANT_EVENT_ID,
+        MOONLIGHT_DIRECTOR_VOICEPRINT_EVENT_ID,
+        NEXUS_ORDER_DIRECTOR_SIGNAL_MASK_EVENT_ID,
+        RADIO_TOWER_EXECUTIVE_FLOOR_UNLOCKED_EVENT_ID
+      ].each { |event_id| mark_cleared_event(story, event_id) }
+
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'director_rescue_guard',
+        location: location,
+        summary: 'Red guards the rescued Director while Antman takes the Card Key route back toward the Radio Tower shutter.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'blue',
+        'rejoins_tower_climb',
+        location: 'Goldenrod Radio Tower Shutter',
+        summary: 'Blue rejoins Antman and Red at the shutter, admitting the lobby is clear enough for the climb to become personal again.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'transmitter_key_decode',
+        location: location,
+        summary: 'Bill decodes the Director testimony and confirms the Card Key opens a route toward Rocket orders inside the transmitter level.',
+        area_type: area_type
+      )
+
+      record_rival_story_clue(
+        state,
+        'silver',
+        'Goldenrod Radio Tower Executive Stairs',
+        'Silver was seen forcing his way toward the executive stairs after learning Rocket used a fake Director voiceprint.',
+        area_type,
+        region: 'johto'
+      )
+      record_rival_story_clue(
+        state,
+        'ava',
+        'Goldenrod Station Upload Kiosk',
+        'Ava uploaded Director testimony from Goldenrod, warning WorldLink that Rocket impersonated the tower staff.',
+        area_type,
+        region: 'johto'
+      )
+
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'johto',
+        location,
+        'director_impersonation_confirmed',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gold_dust',
+        'johto',
+        'Goldenrod Underground Holding Room',
+        'ransom_ledger_recovered',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_gas',
+        'johto',
+        'Goldenrod Radio Tower Transmitter Coolant',
+        'transmitter_coolant_pressure',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'johto',
+        'Goldenrod Radio Tower Broadcast Booth',
+        'director_voiceprint_echo',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'johto',
+        'Goldenrod Radio Tower Director Signal',
+        'director_signal_mask_hidden',
+        threat_delta: 0,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        'Goldenrod Radio Tower Broadcast Booth',
+        'Rocket confirms the fake Director broadcast while Moonlight voiceprint echoes begin drifting out of their control.',
+        intensity: 2,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_gold_dust',
+        'Goldenrod Underground Holding Room',
+        'Rocket tries to erase the ransom ledger while Gold Dust wants proof of who paid for the Director kidnapping.',
+        intensity: 2,
+        area_type: area_type
+      )
+
+      story['current_act'] = 'act_15_radio_tower_executive_floor'
+      event = radio_tower_director_rescue_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'The Director is safe, the Card Key opens the Radio Tower shutter, and Rocket executives are exposed on the upper floors.',
+        source: 'johto_story',
+        area_type: area_type
+      )
+
+      event
+    end
+
+    def radio_tower_director_rescue_cleared?(state)
+      ensure_johto_story(state)['event_history'].any? { |event| event['event_id'] == RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID }
+    end
+
+    def radio_tower_director_rescue_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => RADIO_TOWER_DIRECTOR_RESCUE_EVENT_ID,
+        'location' => location.to_s,
+        'region' => 'johto',
+        'current_act' => 'act_15_radio_tower_executive_floor',
+        'route_chain' => ['Goldenrod Underground Holding Room', 'Radio Tower Shutter', 'Radio Tower Executive Floor'],
+        'companions' => %w[red blue bill],
+        'rivals' => %w[ava silver],
+        'factions' => %w[team_rocket team_gold_dust team_gas team_moonlight nexus_order],
+        'linked_events' => [
+          RADIO_TOWER_DIRECTOR_SAFE_EVENT_ID,
+          CARD_KEY_SHUTTER_UNLOCK_EVENT_ID,
+          RED_DIRECTOR_RESCUE_GUARD_EVENT_ID,
+          BLUE_REJOINS_TOWER_CLIMB_EVENT_ID,
+          BILL_TRANSMITTER_KEY_DECODE_EVENT_ID,
+          SILVER_EXECUTIVE_STAIRS_PRESSURE_EVENT_ID,
+          AVA_DIRECTOR_TESTIMONY_UPLOAD_EVENT_ID,
+          ROCKET_DIRECTOR_IMPERSONATION_CONFIRMED_EVENT_ID,
+          GOLD_DUST_RANSOM_LEDGER_EVENT_ID,
+          TEAM_GAS_TRANSMITTER_COOLANT_EVENT_ID,
+          MOONLIGHT_DIRECTOR_VOICEPRINT_EVENT_ID,
+          NEXUS_ORDER_DIRECTOR_SIGNAL_MASK_EVENT_ID,
+          RADIO_TOWER_EXECUTIVE_FLOOR_UNLOCKED_EVENT_ID
+        ],
+        'recovered_items' => ['Card Key', 'Director Testimony', 'Tower Shutter Route'],
+        'battle_hook' => {
+          'battle_id' => 'radio_tower_shutter_admin_battle',
+          'level_cap' => 30,
+          'companion_rule' => 'red_and_blue_tag_allowed_outside_gym',
+          'enemy_trainers' => %w[rocket_shutter_admin moonlight_voiceprint_agent],
+          'enemy_team_theme' => %w[poison dark psychic normal]
+        },
+        'hidden_meta_signal' => 'nexus_order_director_signal_mask_unrevealed',
+        'unlocks' => %w[radio_tower_executive_floor card_key_shutter director_testimony tower_upper_floor_digest],
+        'next_hook' => 'radio_tower_executive_floor'
       }
     end
   end
