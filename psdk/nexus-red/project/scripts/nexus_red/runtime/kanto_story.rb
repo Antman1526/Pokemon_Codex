@@ -299,6 +299,14 @@ module NexusRed
     CINNABAR_GYM_KEY_RUMOR_EVENT_ID = 'cinnabar_gym_key_rumor'
     NEXUS_ORDER_MEWTWO_GENEALOGY_EVENT_ID = 'nexus_order_mewtwo_genealogy_signal_hidden'
     PHOENIX_MANSION_RESEARCH_BATTLE_ID = 'phoenix_mansion_research_assistant'
+    CINNABAR_GYM_KEY_RECOVERED_EVENT_ID = 'cinnabar_gym_key_recovered'
+    CINNABAR_GYM_PREP_EVENT_ID = 'cinnabar_gym_prep_unlocked'
+    VOLCANO_BADGE_BATTLE_EVENT_ID = 'volcano_badge_battle_unlocked'
+    PHOENIX_REVIVAL_WARNING_EVENT_ID = 'phoenix_revival_warning'
+    ROCKET_LAB_RECORDS_BURNED_EVENT_ID = 'rocket_lab_records_burned'
+    BILL_REVIVAL_MACHINE_AUDIT_EVENT_ID = 'bill_revival_machine_audit'
+    NEXUS_ORDER_REVIVAL_OBSERVER_EVENT_ID = 'nexus_order_revival_energy_observer_hidden'
+    BLAINE_VOLCANO_BADGE_BATTLE_ID = 'blaine_volcano_badge_battle'
 
     module_function
 
@@ -4547,6 +4555,104 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == POKEMON_MANSION_MEWTWO_ECHOES_EVENT_ID }
     end
 
+    def complete_blaine_revival_warning(state, location: 'Cinnabar Lab', area_type: 'city')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_pokemon_mansion_mewtwo_echoes', 'event_id' => BLAINE_REVIVAL_WARNING_EVENT_ID } unless pokemon_mansion_mewtwo_echoes_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => BLAINE_REVIVAL_WARNING_EVENT_ID } if blaine_revival_warning_cleared?(state)
+
+      state['active_companion'] = 'red'
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_GYM_KEY_RECOVERED')
+      add_story_flag(state, 'FLAG_NEXUS_CINNABAR_GYM_PREP_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_VOLCANO_BADGE_BATTLE_UNLOCKED')
+      add_story_flag(state, 'FLAG_NEXUS_PHOENIX_REVIVAL_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_LAB_RECORDS_BURNED')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_REVIVAL_MACHINE_AUDIT')
+      mark_cleared_event(story, BLAINE_REVIVAL_WARNING_EVENT_ID)
+      mark_cleared_event(story, CINNABAR_GYM_KEY_RECOVERED_EVENT_ID)
+      mark_cleared_event(story, CINNABAR_GYM_PREP_EVENT_ID)
+      mark_cleared_event(story, VOLCANO_BADGE_BATTLE_EVENT_ID)
+      mark_cleared_event(story, PHOENIX_REVIVAL_WARNING_EVENT_ID)
+      mark_cleared_event(story, ROCKET_LAB_RECORDS_BURNED_EVENT_ID)
+      mark_cleared_event(story, BILL_REVIVAL_MACHINE_AUDIT_EVENT_ID)
+      mark_cleared_event(story, NEXUS_ORDER_REVIVAL_OBSERVER_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_phoenix',
+        'kanto',
+        location,
+        'revival_doctrine_pressure',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'lab_records_burned',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'nexus_order',
+        'kanto',
+        location,
+        'revival_energy_observer_hidden',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_phoenix',
+        location,
+        'Rocket burns evidence to keep Cinnabar controllable while Phoenix turns Blaine warnings into revival doctrine',
+        intensity: 3,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'blaine_warning_restraint',
+        location: location,
+        summary: 'Red keeps Antman from rushing into the Gym until Blaine explains why the Mansion key and revival machine are connected.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'revival_machine_audit',
+        location: location,
+        summary: 'Bill audits the revival machine and confirms someone has been using old lab records to map badge energy.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'brock',
+        'fossil_revival_boundary',
+        location: location,
+        summary: 'Brock draws a hard line between careful fossil revival and Phoenix attempts to force life back through fire.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Blaine recovered the Cinnabar Gym key, warned Antman about Phoenix revival doctrine, and opened Volcano Badge prep.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = blaine_revival_warning_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def blaine_revival_warning_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == BLAINE_REVIVAL_WARNING_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -5626,6 +5732,39 @@ module NexusRed
         'hidden_meta_signal' => 'nexus_order_mewtwo_genealogy_signal_unrevealed',
         'unlocks' => %w[blaine_revival_warning cinnabar_gym_key_rumor mansion_lab_records],
         'next_hook' => 'blaine_revival_warning'
+      }
+    end
+
+    def blaine_revival_warning_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => BLAINE_REVIVAL_WARNING_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          CINNABAR_GYM_KEY_RECOVERED_EVENT_ID,
+          CINNABAR_GYM_PREP_EVENT_ID,
+          VOLCANO_BADGE_BATTLE_EVENT_ID,
+          PHOENIX_REVIVAL_WARNING_EVENT_ID,
+          ROCKET_LAB_RECORDS_BURNED_EVENT_ID,
+          BILL_REVIVAL_MACHINE_AUDIT_EVENT_ID,
+          NEXUS_ORDER_REVIVAL_OBSERVER_EVENT_ID
+        ],
+        'factions' => %w[team_rocket team_phoenix nexus_order],
+        'gym_leader' => 'Blaine',
+        'badge' => 'Volcano Badge',
+        'training_hooks' => %w[sun_pressure water_ground_rock_planning fire_route_pressure],
+        'battle_hook' => {
+          'battle_id' => BLAINE_VOLCANO_BADGE_BATTLE_ID,
+          'battle_type' => 'gym_leader_blaine',
+          'location' => 'cinnabar_gym',
+          'level_cap' => 48,
+          'opponent_species' => %w[Growlithe Rapidash Magmar],
+          'companion_support' => 'companions_train_only_no_gym_assist'
+        },
+        'lab_state' => 'revival_machine_audited_gym_key_recovered',
+        'hidden_meta_signal' => 'nexus_order_revival_energy_unrevealed',
+        'unlocks' => %w[cinnabar_gym_access volcano_badge_battle sun_pressure_training],
+        'next_hook' => 'blaine_volcano_badge_prep'
       }
     end
 

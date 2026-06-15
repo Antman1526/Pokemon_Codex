@@ -244,6 +244,8 @@ REQUIRED_MARKERS = (
     "cinnabar_island_arrival_cleared?",
     "complete_pokemon_mansion_mewtwo_echoes",
     "pokemon_mansion_mewtwo_echoes_cleared?",
+    "complete_blaine_revival_warning",
+    "blaine_revival_warning_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -2435,6 +2437,40 @@ raise 'expected KantoStory Mansion echoes level cap' unless mansion_echoes['batt
 second_mansion_echoes = NexusRed::KantoStory.complete_pokemon_mansion_mewtwo_echoes(kanto_story_state)
 raise 'expected KantoStory Mansion echoes idempotent guard' unless second_mansion_echoes['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Mansion echoes history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'pokemon_mansion_mewtwo_echoes' } == 1
+pre_blaine_warning = NexusRed::KantoStory.complete_blaine_revival_warning(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Blaine warning gated before Mansion echoes' unless pre_blaine_warning['status'] == 'blocked_missing_pokemon_mansion_mewtwo_echoes'
+blaine_warning = NexusRed::KantoStory.complete_blaine_revival_warning(
+  kanto_story_state,
+  location: 'Cinnabar Lab',
+  area_type: 'city'
+)
+raise 'expected KantoStory Blaine warning clear status' unless blaine_warning['status'] == 'cleared'
+raise 'expected KantoStory Blaine warning helper true' unless NexusRed::KantoStory.blaine_revival_warning_cleared?(kanto_story_state)
+raise 'expected KantoStory Cinnabar gym key recovered flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_GYM_KEY_RECOVERED')
+raise 'expected KantoStory Cinnabar gym prep unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_CINNABAR_GYM_PREP_UNLOCKED')
+raise 'expected KantoStory Volcano Badge battle unlocked flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_VOLCANO_BADGE_BATTLE_UNLOCKED')
+raise 'expected KantoStory Phoenix revival warning flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_PHOENIX_REVIVAL_WARNING')
+raise 'expected KantoStory Rocket lab records burned flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_LAB_RECORDS_BURNED')
+raise 'expected KantoStory Bill revival machine audit flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_REVIVAL_MACHINE_AUDIT')
+raise 'expected KantoStory Red Blaine restraint scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('blaine_warning_restraint')
+raise 'expected KantoStory Bill revival machine audit scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('revival_machine_audit')
+raise 'expected KantoStory Brock fossil revival boundary scene' unless kanto_story_state['companion_progress']['brock']['scene_flags'].include?('fossil_revival_boundary')
+raise 'expected KantoStory Phoenix Cinnabar doctrine activity' unless kanto_story_state['faction_progress']['team_phoenix']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Lab' && activity['operation'] == 'revival_doctrine_pressure' }
+raise 'expected KantoStory Rocket Cinnabar records burn activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Lab' && activity['operation'] == 'lab_records_burned' }
+raise 'expected KantoStory Nexus revival observer activity' unless kanto_story_state['faction_progress']['nexus_order']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Cinnabar Lab' && activity['operation'] == 'revival_energy_observer_hidden' }
+raise 'expected KantoStory Nexus Order still hidden after Blaine warning' if kanto_story_state['faction_progress']['nexus_order']['revealed']
+raise 'expected KantoStory Rocket Phoenix Cinnabar Lab conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_phoenix' && conflict['location'] == 'Cinnabar Lab' }
+raise 'expected KantoStory Blaine warning story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['text'].include?('Blaine') && message['text'].include?('Volcano Badge') && message['text'].include?('Gym') }
+raise 'expected KantoStory Blaine warning next hook prep' unless blaine_warning['next_hook'] == 'blaine_volcano_badge_prep'
+raise 'expected KantoStory Blaine warning gym leader' unless blaine_warning['gym_leader'] == 'Blaine'
+raise 'expected KantoStory Blaine warning badge' unless blaine_warning['badge'] == 'Volcano Badge'
+raise 'expected KantoStory Blaine warning battle hook' unless blaine_warning['battle_hook']['battle_id'] == 'blaine_volcano_badge_battle'
+raise 'expected KantoStory Blaine warning level cap' unless blaine_warning['battle_hook']['level_cap'] == 48
+raise 'expected KantoStory Blaine warning unlocks gym access and battle' unless blaine_warning['unlocks'].include?('cinnabar_gym_access') && blaine_warning['unlocks'].include?('volcano_badge_battle')
+raise 'expected KantoStory Blaine warning training hooks' unless blaine_warning['training_hooks'].include?('sun_pressure') && blaine_warning['training_hooks'].include?('water_ground_rock_planning')
+second_blaine_warning = NexusRed::KantoStory.complete_blaine_revival_warning(kanto_story_state)
+raise 'expected KantoStory Blaine warning idempotent guard' unless second_blaine_warning['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Blaine warning history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'blaine_revival_warning' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0
