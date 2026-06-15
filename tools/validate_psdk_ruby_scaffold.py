@@ -168,6 +168,8 @@ REQUIRED_MARKERS = (
     "diglett_cave_detour_cleared?",
     "complete_route_2_east_field_lab",
     "route_2_east_field_lab_cleared?",
+    "complete_route_9_rock_tunnel_approach",
+    "route_9_rock_tunnel_approach_cleared?",
     "storage_anomalies",
     "field_healing_charges_for",
     "module Route1MigrationEvent",
@@ -1198,6 +1200,33 @@ raise 'expected KantoStory Route 2 east lab next hook Route 9' unless route_2_la
 second_route_2_lab = NexusRed::KantoStory.complete_route_2_east_field_lab(kanto_story_state)
 raise 'expected KantoStory Route 2 east lab idempotent guard' unless second_route_2_lab['status'] == 'already_cleared'
 raise 'expected KantoStory no duplicate Route 2 east lab history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_2_east_field_lab' } == 1
+pre_lab_route_9 = NexusRed::KantoStory.complete_route_9_rock_tunnel_approach(NexusRed::RuntimeState.build)
+raise 'expected KantoStory Route 9 gated before Route 2 east lab' unless pre_lab_route_9['status'] == 'blocked_missing_route_2_east_lab'
+route_9_approach = NexusRed::KantoStory.complete_route_9_rock_tunnel_approach(
+  kanto_story_state,
+  location: 'Route 9',
+  area_type: 'route'
+)
+raise 'expected KantoStory Route 9 clear status' unless route_9_approach['status'] == 'cleared'
+raise 'expected KantoStory Route 9 event recorded' unless kanto_story_state['kanto_story']['cleared_events'].include?('route_9_rock_tunnel_approach')
+raise 'expected KantoStory Route 9 helper true' unless NexusRed::KantoStory.route_9_rock_tunnel_approach_cleared?(kanto_story_state)
+raise 'expected KantoStory Route 9 reached flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROUTE9_ROCK_TUNNEL_APPROACH_REACHED')
+raise 'expected KantoStory Red Route 9 trainer lane flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_RED_ROUTE9_TRAINER_LANE')
+raise 'expected KantoStory Bill Rock Tunnel darkness warning flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_BILL_ROCK_TUNNEL_DARKNESS_WARNING')
+raise 'expected KantoStory Moonlight Route 9 debut flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_TEAM_MOONLIGHT_ROUTE9_DEBUT')
+raise 'expected KantoStory Rocket Route 9 cache flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCKET_ROUTE9_SUPPLY_CACHE')
+raise 'expected KantoStory Lavender tower signal flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_LAVENDER_TOWER_SIGNAL_CONFIRMED')
+raise 'expected KantoStory Rock Tunnel entry unlock flag' unless kanto_story_state['story_flags'].include?('FLAG_NEXUS_ROCK_TUNNEL_ENTRY_UNLOCKED')
+raise 'expected KantoStory Moonlight Route 9 activity' unless kanto_story_state['faction_progress']['team_moonlight']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 9' && activity['operation'] == 'route_9_sleep_marker' }
+raise 'expected KantoStory Rocket Route 9 cache activity' unless kanto_story_state['faction_progress']['team_rocket']['region_activity']['kanto'].any? { |activity| activity['location'] == 'Route 9' && activity['operation'] == 'rock_tunnel_supply_cache' }
+raise 'expected KantoStory Rocket Moonlight Route 9 conflict' unless kanto_story_state['faction_progress']['team_rocket']['conflicts'].any? { |conflict| conflict['opponent'] == 'team_moonlight' && conflict['location'] == 'Route 9' }
+raise 'expected KantoStory Red Route 9 scene' unless kanto_story_state['companion_progress']['red']['scene_flags'].include?('route_9_trainer_lane')
+raise 'expected KantoStory Bill Rock Tunnel warning scene' unless kanto_story_state['companion_progress']['bill']['scene_flags'].include?('rock_tunnel_darkness_warning')
+raise 'expected KantoStory Route 9 story alert immediate' unless kanto_story_state['worldlink_recent_messages'].any? { |message| message['source'] == 'kanto_story' && message['category'] == 'story_alert' && message['text'].include?('Lavender') }
+raise 'expected KantoStory Route 9 next hook Rock Tunnel' unless route_9_approach['next_hook'] == 'rock_tunnel_interior'
+second_route_9_approach = NexusRed::KantoStory.complete_route_9_rock_tunnel_approach(kanto_story_state)
+raise 'expected KantoStory Route 9 idempotent guard' unless second_route_9_approach['status'] == 'already_cleared'
+raise 'expected KantoStory no duplicate Route 9 history' unless kanto_story_state['kanto_story']['event_history'].count { |event| event['event_id'] == 'route_9_rock_tunnel_approach' } == 1
 casual_kanto_state = NexusRed::RuntimeState.build
 NexusRed::GameplayOptions.set_difficulty(casual_kanto_state, 'casual')
 raise 'expected KantoStory casual field healing charge recommendation zero' unless NexusRed::KantoStory.field_healing_charges_for(casual_kanto_state) == 0

@@ -24,6 +24,9 @@ module NexusRed
     ROCKET_GOLD_DUST_CAVE_EVENT_ID = 'rocket_gold_dust_cave_argument'
     ROUTE_2_EAST_LAB_EVENT_ID = 'route_2_east_field_lab'
     ROCKET_MOONLIGHT_SLEEP_EVENT_ID = 'rocket_moonlight_sleep_signal'
+    ROUTE_9_EVENT_ID = 'route_9_rock_tunnel_approach'
+    TEAM_MOONLIGHT_ROUTE_9_EVENT_ID = 'team_moonlight_route_9_debut'
+    ROCKET_ROUTE_9_CACHE_EVENT_ID = 'rocket_route_9_supply_cache'
 
     module_function
 
@@ -793,6 +796,82 @@ module NexusRed
       ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_2_EAST_LAB_EVENT_ID }
     end
 
+    def complete_route_9_rock_tunnel_approach(state, location: 'Route 9', area_type: 'route')
+      story = ensure_kanto_story(state)
+      return { 'status' => 'blocked_missing_route_2_east_lab', 'event_id' => ROUTE_9_EVENT_ID } unless route_2_east_field_lab_cleared?(state)
+      return { 'status' => 'already_cleared', 'event_id' => ROUTE_9_EVENT_ID } if route_9_rock_tunnel_approach_cleared?(state)
+
+      add_story_flag(state, 'FLAG_NEXUS_ROUTE9_ROCK_TUNNEL_APPROACH_REACHED')
+      add_story_flag(state, 'FLAG_NEXUS_RED_ROUTE9_TRAINER_LANE')
+      add_story_flag(state, 'FLAG_NEXUS_BILL_ROCK_TUNNEL_DARKNESS_WARNING')
+      add_story_flag(state, 'FLAG_NEXUS_TEAM_MOONLIGHT_ROUTE9_DEBUT')
+      add_story_flag(state, 'FLAG_NEXUS_ROCKET_ROUTE9_SUPPLY_CACHE')
+      add_story_flag(state, 'FLAG_NEXUS_LAVENDER_TOWER_SIGNAL_CONFIRMED')
+      add_story_flag(state, 'FLAG_NEXUS_ROCK_TUNNEL_ENTRY_UNLOCKED')
+      mark_cleared_event(story, ROUTE_9_EVENT_ID)
+      mark_cleared_event(story, TEAM_MOONLIGHT_ROUTE_9_EVENT_ID)
+      mark_cleared_event(story, ROCKET_ROUTE_9_CACHE_EVENT_ID)
+      FactionWar.record_activity(
+        state,
+        'team_moonlight',
+        'kanto',
+        location,
+        'route_9_sleep_marker',
+        threat_delta: 2,
+        area_type: area_type
+      )
+      FactionWar.record_activity(
+        state,
+        'team_rocket',
+        'kanto',
+        location,
+        'rock_tunnel_supply_cache',
+        threat_delta: 1,
+        area_type: area_type
+      )
+      FactionWar.record_conflict(
+        state,
+        'team_rocket',
+        'team_moonlight',
+        location,
+        'Rocket cache sits beside Moonlight route marker near the Lavender signal',
+        intensity: 1,
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'red',
+        'route_9_trainer_lane',
+        location: location,
+        summary: 'Red turns Route 9 into a training lane before Rock Tunnel.',
+        area_type: area_type
+      )
+      CompanionProgress.record_scene(
+        state,
+        'bill',
+        'rock_tunnel_darkness_warning',
+        location: location,
+        summary: 'Bill warns that Rock Tunnel needs darkness planning before the Lavender signal is followed.',
+        area_type: area_type
+      )
+      WorldLink.queue_message(
+        state,
+        'story_alert',
+        'Route 9 exposed Team Moonlight on the road, a Rocket supply cache, and the Lavender tower signal before Rock Tunnel.',
+        source: 'kanto_story',
+        area_type: area_type
+      )
+
+      event = route_9_event_result(location)
+      story['event_history'] << event
+      story['latest_event'] = event
+      event
+    end
+
+    def route_9_rock_tunnel_approach_cleared?(state)
+      ensure_kanto_story(state)['event_history'].any? { |event| event['event_id'] == ROUTE_9_EVENT_ID }
+    end
+
     def storage_anomalies(state)
       state['storage_anomalies'] ||= []
     end
@@ -954,6 +1033,22 @@ module NexusRed
         'linked_events' => [ROCKET_MOONLIGHT_SLEEP_EVENT_ID, 'bill_echo_flute_decoder', 'oak_aide_field_tool_brief', 'lavender_signal_path_teased'],
         'factions' => %w[team_rocket team_moonlight],
         'next_hook' => 'route_9_rock_tunnel_approach'
+      }
+    end
+
+    def route_9_event_result(location)
+      {
+        'status' => 'cleared',
+        'event_id' => ROUTE_9_EVENT_ID,
+        'location' => location.to_s,
+        'linked_events' => [
+          TEAM_MOONLIGHT_ROUTE_9_EVENT_ID,
+          ROCKET_ROUTE_9_CACHE_EVENT_ID,
+          'lavender_tower_signal_confirmed',
+          'rock_tunnel_entry_unlocked'
+        ],
+        'factions' => %w[team_moonlight team_rocket],
+        'next_hook' => 'rock_tunnel_interior'
       }
     end
 
